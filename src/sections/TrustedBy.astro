@@ -1,8 +1,11 @@
 ---
-// Trusted by — clinic logos placeholder (replace with real exports from Figma)
-const clinics = [
-  'MedSpa Pro', 'Glow Aesthetics', 'DermaCare', 'SkinLab',
-  'Pure Beauty', 'Revive Clinic',
+const clinicImages = [
+  '/images/clinic-1.png',
+  '/images/clinic-2.png',
+  '/images/clinic-3.png',
+  '/images/clinic-4.png',
+  '/images/clinic-5.png',
+  '/images/clinic-6.png',
 ];
 ---
 
@@ -10,11 +13,15 @@ const clinics = [
   <div class="container">
     <span class="label trusted__label">Trusted by</span>
     <h2 class="h2">The clinics looking for you<br />are already here.</h2>
-    <p class="trusted__sub">From boutique medspas to multi-location dermatology practices — they're all on Enhance.</p>
+    <p class="trusted__sub">
+      Leading practices across Florida use Enhance to find and hire aesthetic professionals.
+    </p>
 
-    <div class="trusted__logos">
-      {clinics.map((c) => (
-        <div class="trusted__logo-pill">{c}</div>
+    <div class="trusted__grid">
+      {clinicImages.map((src, i) => (
+        <div class="trusted__img-wrap">
+          <img src={src} alt={`Partner clinic ${i + 1}`} class="trusted__img" loading="lazy" />
+        </div>
       ))}
     </div>
   </div>
@@ -31,25 +38,33 @@ const clinics = [
   .trusted__sub {
     margin: 1.25rem auto 3rem;
     max-width: 480px;
-    color: var(--color-text-secondary);
+    color: #606362;
     font-size: 1rem;
     line-height: 1.65;
   }
 
-  .trusted__logos {
-    display: flex;
-    flex-wrap: wrap;
+  .trusted__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
-    justify-content: center;
+    max-width: 800px;
+    margin: 0 auto;
   }
 
-  .trusted__logo-pill {
-    background: var(--color-card-bg);
-    border: 1px solid var(--color-border);
-    border-radius: 100px;
-    padding: .6rem 1.5rem;
-    font-size: .9rem;
-    font-weight: 500;
-    color: var(--color-text-secondary);
+  .trusted__img-wrap {
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 3/2;
+    background: #e0e0e0;
+  }
+
+  .trusted__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (max-width: 600px) {
+    .trusted__grid { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
