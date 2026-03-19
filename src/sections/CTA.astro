@@ -1,0 +1,78 @@
+---
+import StatCard from '../components/StatCard.astro';
+---
+
+<section class="cta" id="apply">
+  <div class="container cta__inner">
+    <div class="cta__content">
+      <span class="label" style="color:rgba(240,245,243,.6)">Ready to grow?</span>
+      <h2 class="h2 cta__headline">Ready to grow your career<br />in aesthetics?</h2>
+      <p class="cta__sub">Join the talent network used by leading aesthetic professionals in South Florida.</p>
+
+      <div class="cta__actions">
+        <a href="#" class="btn btn-primary cta__btn-main">Create your professional profile</a>
+        <a href="#roles" class="btn btn-ghost">Browse opportunities</a>
+      </div>
+    </div>
+
+    <div class="cta__stats">
+      <StatCard value="1.2k" suffix="+" label="Active professionals" dark />
+      <StatCard value="318"  suffix="+" label="Partner clinics" dark />
+      <StatCard value="94%"  suffix="+" label="Match satisfaction" dark />
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    background: var(--color-bg-dark);
+    padding: var(--section-padding);
+    border-radius: 24px;
+    margin: 0 1.5rem 4rem;
+  }
+
+  .cta__inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .cta__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .cta__headline { color: var(--color-white-soft); }
+
+  .cta__sub {
+    color: rgba(240,245,243,.55);
+    font-size: 1rem;
+    line-height: 1.65;
+    max-width: 420px;
+  }
+
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+  }
+
+  .cta__btn-main {
+    background: var(--color-accent);
+    color: #fff;
+  }
+
+  .cta__stats {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .cta__inner { grid-template-columns: 1fr; }
+    .cta__stats { flex-direction: row; flex-wrap: wrap; }
+    .cta { margin: 0 0 0; border-radius: 0; }
+  }
+</style>

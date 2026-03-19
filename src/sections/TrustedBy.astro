@@ -1,0 +1,55 @@
+---
+// Trusted by — clinic logos placeholder (replace with real exports from Figma)
+const clinics = [
+  'MedSpa Pro', 'Glow Aesthetics', 'DermaCare', 'SkinLab',
+  'Pure Beauty', 'Revive Clinic',
+];
+---
+
+<section class="trusted" id="trusted-by">
+  <div class="container">
+    <span class="label trusted__label">Trusted by</span>
+    <h2 class="h2">The clinics looking for you<br />are already here.</h2>
+    <p class="trusted__sub">From boutique medspas to multi-location dermatology practices — they're all on Enhance.</p>
+
+    <div class="trusted__logos">
+      {clinics.map((c) => (
+        <div class="trusted__logo-pill">{c}</div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .trusted {
+    padding: var(--section-padding);
+    text-align: center;
+  }
+
+  .trusted__label { display: block; margin-bottom: 1rem; }
+
+  .trusted__sub {
+    margin: 1.25rem auto 3rem;
+    max-width: 480px;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  .trusted__logos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .trusted__logo-pill {
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 100px;
+    padding: .6rem 1.5rem;
+    font-size: .9rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+  }
+</style>

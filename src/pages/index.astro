@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav        from '../components/Nav.astro';
+import Hero       from '../sections/Hero.astro';
+import HowItWorks from '../sections/HowItWorks.astro';
+import Roles      from '../sections/Roles.astro';
+import WhyJoin    from '../sections/WhyJoin.astro';
+import TrustedBy  from '../sections/TrustedBy.astro';
+import CTA        from '../sections/CTA.astro';
+import Footer     from '../sections/Footer.astro';
+---
+
+<BaseLayout>
+  <Nav />
+  <main>
+    <Hero />
+    <HowItWorks />
+    <Roles />
+    <WhyJoin />
+    <TrustedBy />
+    <CTA />
+  </main>
+  <Footer />
+</BaseLayout>

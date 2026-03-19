@@ -1,0 +1,39 @@
+---
+// StatCard — Figma Frame 6: "1.2k +", "318 +", "94% +"
+interface Props {
+  value: string;
+  suffix?: string;
+  label: string;
+  dark?: boolean;
+}
+const { value, suffix = '', label, dark = false } = Astro.props;
+---
+
+<div class:list={['stat', { 'stat--dark': dark }]}>
+  <p class="stat__value">{value}<span class="stat__suffix">{suffix}</span></p>
+  <p class="stat__label">{label}</p>
+</div>
+
+<style>
+  .stat { display: flex; flex-direction: column; gap: .25rem; }
+
+  .stat__value {
+    font-family: var(--font-heading);
+    font-size: 3.75rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-text-primary);
+  }
+
+  .stat__suffix { color: var(--color-accent); }
+
+  .stat__label {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+  }
+
+  /* Dark variant */
+  .stat--dark .stat__value  { color: var(--color-white-soft); }
+  .stat--dark .stat__label  { color: rgba(240,245,243,.45); }
+</style>

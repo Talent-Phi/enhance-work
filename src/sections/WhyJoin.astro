@@ -1,0 +1,86 @@
+---
+const benefits = [
+  {
+    icon: '🏥',
+    title: 'Work with leading aesthetic clinics',
+    desc: 'Get matched with top practices in the aesthetic industry across South Florida.',
+  },
+  {
+    icon: '💼',
+    title: 'Industry-specific job opportunities',
+    desc: 'Access a curated list of jobs that fit your aesthetic skills and experience level.',
+  },
+  {
+    icon: '🏆',
+    title: 'Build your professional reputation',
+    desc: 'Highlight certifications, get endorsements, and improve your profile visibility.',
+  },
+];
+---
+
+<section class="why" id="why-join">
+  <div class="container">
+    <div class="why__header">
+      <span class="label">Why professionals join</span>
+      <h2 class="h2">Built for your career<br />in aesthetics</h2>
+    </div>
+
+    <div class="why__grid">
+      {benefits.map((b) => (
+        <div class="why__card">
+          <div class="why__icon-wrap">{b.icon}</div>
+          <h3 class="h3">{b.title}</h3>
+          <p>{b.desc}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .why { padding: var(--section-padding); background: var(--color-card-bg); }
+
+  .why__header {
+    max-width: 520px;
+    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+  }
+
+  .why__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .why__card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 2rem;
+    border: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: .9rem;
+  }
+
+  .why__icon-wrap {
+    width: 48px; height: 48px;
+    background: var(--color-accent-light);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+  }
+
+  .why__card p {
+    color: var(--color-text-secondary);
+    font-size: .95rem;
+    line-height: 1.65;
+  }
+
+  @media (max-width: 768px) {
+    .why__grid { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,104 @@
+---
+---
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <span class="footer__logo">enhance<span>.</span>work</span>
+      <p>Your gateway to a thriving aesthetic career in South Florida.</p>
+    </div>
+
+    <nav class="footer__nav">
+      <div class="footer__col">
+        <p class="footer__col-title">Platform</p>
+        <a href="#how-it-works">How it works</a>
+        <a href="#roles">Roles</a>
+        <a href="#trusted-by">Partner clinics</a>
+      </div>
+      <div class="footer__col">
+        <p class="footer__col-title">Professionals</p>
+        <a href="#apply">Create profile</a>
+        <a href="#roles">Browse jobs</a>
+        <a href="#why-join">Why join</a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="container footer__bottom">
+    <p>© {new Date().getFullYear()} enhance.work — All rights reserved.</p>
+    <p>A growing demand for aesthetic professionals in South Florida.</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--color-card-bg);
+    border-top: 1px solid var(--color-border);
+    padding: 4rem 1.5rem 2rem;
+  }
+
+  .footer__inner {
+    display: flex;
+    justify-content: space-between;
+    gap: 3rem;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .footer__logo {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    display: block;
+    margin-bottom: .75rem;
+  }
+
+  .footer__logo span { color: var(--color-accent); }
+
+  .footer__brand p {
+    color: var(--color-text-secondary);
+    font-size: .9rem;
+    line-height: 1.6;
+    max-width: 280px;
+  }
+
+  .footer__nav {
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .footer__col {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+  }
+
+  .footer__col-title {
+    font-weight: 600;
+    font-size: .8rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: .25rem;
+  }
+
+  .footer__col a {
+    font-size: .9rem;
+    color: var(--color-text-secondary);
+    transition: color .15s;
+  }
+
+  .footer__col a:hover { color: var(--color-accent); }
+
+  .footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    font-size: .8rem;
+    color: var(--color-text-muted);
+  }
+</style>
