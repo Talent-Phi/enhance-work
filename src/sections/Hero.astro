@@ -3,156 +3,203 @@ import StatCard from '../components/StatCard.astro';
 ---
 
 <section class="hero" id="hero">
-  <!-- decorative blobs -->
-  <div class="hero__blob hero__blob--1" aria-hidden="true"></div>
-  <div class="hero__blob hero__blob--2" aria-hidden="true"></div>
+  <div class="hero__layout">
 
-  <div class="container hero__inner">
-    <div class="hero__content">
-      <span class="badge">Now live — 1,200+ professionals in South Florida</span>
+    <!-- LEFT: text content (x=138 in Figma) -->
+    <div class="hero__left">
 
-      <h1 class="h1 hero__headline">
-        The platform built for your aesthetic career
-        <span class="hero__headline-accent"> in South Florida</span>
-      </h1>
-
-      <p class="hero__sub">
-        Enhance.work is a hiring platform built specifically for aesthetic professionals.
-        Get matched with top clinics, build your reputation, and grow your career.
-      </p>
-
-      <div class="hero__actions">
-        <a href="#apply" class="btn btn-primary">Create your profile</a>
-        <a href="#roles" class="btn btn-secondary">Browse opportunities</a>
+      <!-- Badge: "Now live — 1,200+ professionals in South Florida" -->
+      <div class="hero__badge">
+        <span class="hero__badge-dot"></span>
+        Now live — 1,200+ professionals in South Florida
       </div>
 
+      <!-- Headline: Poppins 50px #555 -->
+      <h1 class="h1 hero__headline">
+        The platform built for your aesthetic career in South Florida
+      </h1>
+
+      <!-- Body: Inter 18px #606362 -->
+      <p class="hero__body">
+        Whether you're an experienced injector or just starting your aesthetic journey —
+        Enhance.work connects you with the right clinics across Miami, Doral, and surrounding areas.
+      </p>
+
+      <!-- CTAs -->
+      <div class="hero__actions">
+        <a href="#apply" class="btn btn-primary">Create your profile</a>
+        <a href="#roles" class="btn hero__btn-outline">Browse opportunities</a>
+      </div>
+
+      <!-- Stats row (y=790 in Figma, below buttons) -->
       <div class="hero__stats">
         <StatCard value="1.2k" suffix="+" label="Active professionals" />
-        <div class="hero__stats-divider" aria-hidden="true"></div>
-        <StatCard value="318" suffix="+" label="Partner clinics" />
-        <div class="hero__stats-divider" aria-hidden="true"></div>
-        <StatCard value="94%" suffix="+" label="Match satisfaction" />
+        <div class="hero__divider"></div>
+        <StatCard value="318"  suffix="+" label="Partner clinics" />
+        <div class="hero__divider"></div>
+        <StatCard value="94%"  suffix="+" label="Match satisfaction" />
       </div>
     </div>
 
-    <div class="hero__visual">
-      <div class="hero__img-wrap">
-        <!-- Placeholder — replace with actual hero image from Figma export -->
+    <!-- RIGHT: hero image (x=781, ~54% from left) -->
+    <div class="hero__right">
+      <div class="hero__img-container">
+        <!-- Replace with real image from Figma export -->
         <div class="hero__img-placeholder">
-          <span>Aesthetic professional</span>
+          <div class="hero__img-badge">⭐ Top rated clinic</div>
         </div>
       </div>
     </div>
+
   </div>
 </section>
 
 <style>
   .hero {
-    position: relative;
-    overflow: hidden;
-    padding: 4rem 1.5rem 6rem;
-  }
-
-  /* Decorative blobs */
-  .hero__blob {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: .18;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .hero__blob--1 {
-    width: 500px; height: 500px;
-    background: var(--color-accent);
-    top: -120px; right: -80px;
-  }
-  .hero__blob--2 {
-    width: 350px; height: 350px;
-    background: #b2f5f0;
-    bottom: 0; left: -60px;
-  }
-
-  .hero__inner {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    background: var(--color-bg); /* #F2F2F2 */
+    padding-top: 68px; /* nav height */
+    min-height: 100vh;
+    display: flex;
     align-items: center;
   }
 
-  .hero__content {
+  .hero__layout {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 4rem 141px 5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .hero__left {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
   }
 
+  /* Badge */
+  .hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    background: var(--color-accent-light); /* #E6F9F9 */
+    color: var(--color-accent);
+    font-family: var(--font-body);
+    font-size: .8rem;
+    font-weight: 500;
+    padding: .45rem 1rem;
+    border-radius: 100px;
+    width: fit-content;
+  }
+
+  .hero__badge-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    flex-shrink: 0;
+  }
+
+  /* Headline: Poppins 50px, #555 */
   .hero__headline {
-    margin-top: .25rem;
+    font-size: clamp(1.8rem, 3.5vw, 3.125rem);
+    font-weight: 600;
+    color: #555555;
+    line-height: 1.2;
+    margin: 0;
   }
 
-  .hero__headline-accent { color: var(--color-accent); }
-
-  .hero__sub {
-    font-size: 1.05rem;
-    line-height: 1.7;
-    color: var(--color-text-secondary);
-    max-width: 480px;
+  /* Body: Inter 18px, #606362 */
+  .hero__body {
+    font-family: var(--font-body); /* Inter */
+    font-size: 1.125rem;
+    line-height: 1.65;
+    color: #606362;
+    max-width: 520px;
   }
 
+  /* Buttons */
   .hero__actions {
     display: flex;
+    gap: 1rem;
     flex-wrap: wrap;
-    gap: .75rem;
   }
 
+  .hero__btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-body);
+    font-size: .95rem;
+    font-weight: 500;
+    padding: .85rem 1.75rem;
+    border-radius: 8px;
+    border: 1.5px solid rgba(0,0,0,0.15);
+    background: #fff;
+    color: #555;
+    cursor: pointer;
+    transition: border-color .2s;
+  }
+  .hero__btn-outline:hover { border-color: var(--color-accent); color: var(--color-accent); }
+
+  /* Stats */
   .hero__stats {
     display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
     align-items: flex-start;
-    padding-top: 1rem;
-    border-top: 1px solid var(--color-border);
+    gap: 2rem;
+    padding-top: 1.5rem;
     margin-top: .5rem;
   }
 
-  .hero__stats-divider {
+  .hero__divider {
     width: 1px;
-    height: 60px;
-    background: var(--color-border);
+    height: 56px;
+    background: rgba(0,0,0,0.1);
     align-self: center;
   }
 
-  /* Visual */
-  .hero__visual {
+  /* Right: hero image */
+  .hero__right {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
   }
 
-  .hero__img-wrap {
+  .hero__img-container {
     width: 100%;
-    max-width: 520px;
-    aspect-ratio: 4/5;
-    border-radius: 24px;
+    max-width: 540px;
+    aspect-ratio: 3/4;
+    border-radius: 20px;
+    background: #dde8e6;
     overflow: hidden;
-    background: var(--color-accent-light);
+    position: relative;
   }
 
   .hero__img-placeholder {
     width: 100%; height: 100%;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: .85rem;
-    color: var(--color-text-muted);
-    border: 2px dashed var(--color-border);
-    border-radius: 24px;
+    align-items: flex-end;
+    padding: 1.5rem;
   }
 
-  @media (max-width: 900px) {
-    .hero__inner { grid-template-columns: 1fr; }
-    .hero__visual { display: none; }
-    .hero__stats-divider { display: none; }
+  .hero__img-badge {
+    background: #fff;
+    border-radius: 10px;
+    padding: .6rem 1rem;
+    font-size: .85rem;
+    font-weight: 500;
+    color: #555;
+    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+  }
+
+  @media (max-width: 1024px) {
+    .hero__layout { padding: 3rem 2rem; }
+  }
+
+  @media (max-width: 768px) {
+    .hero__layout { grid-template-columns: 1fr; padding: 2rem 1.25rem; }
+    .hero__right { display: none; }
+    .hero__divider { display: none; }
   }
 </style>

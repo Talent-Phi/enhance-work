@@ -1,22 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
 
 :root {
-  /* ── Colors (Figma Lightmode) ── */
-  --color-bg:             #ffffff;
-  --color-bg-dark:        #0f1a17;
-  --color-text-primary:   #0f1a17;
-  --color-text-secondary: rgba(15, 26, 23, 0.55);
-  --color-text-muted:     rgba(15, 26, 23, 0.35);
-  --color-accent:         #2bbcb0;
-  --color-accent-light:   #e8f9f8;
+  /* ── Colors (Figma Lightmode — exact) ── */
+  --color-bg:             #f2f2f2;
+  --color-bg-white:       #ffffff;
+  --color-bg-dark:        #18232c;   /* rgb(24,35,44) */
+  --color-bg-dark-2:      #1b2936;   /* rgb(27,41,54) footer */
+  --color-text-heading:   #555555;   /* Figma headlines */
+  --color-text-body:      #606362;   /* Figma body text */
+  --color-text-light:     #dff5f3;   /* rgb(223,245,243) dark section text */
+  --color-accent:         #2bbcb0;   /* rgb(43,188,176) */
+  --color-accent-light:   #e6f9f9;   /* badge bg rgb(230,249,249) */
   --color-accent-hover:   #22a89d;
   --color-white-soft:     #f0f5f3;
-  --color-border:         rgba(15, 26, 23, 0.1);
-  --color-card-bg:        #f7faf9;
+  --color-border:         rgba(0,0,0,0.08);
+  --color-card-bg:        #ffffff;
 
-  /* ── Typography ── */
-  --font-heading: 'Syne', sans-serif;
-  --font-body:    'Poppins', sans-serif;
+  /* ── Typography (exact from Figma) ── */
+  --font-display: 'Syne', sans-serif;      /* logo, stat numbers */
+  --font-heading: 'Poppins', sans-serif;   /* headlines h1/h2/h3 */
+  --font-body:    'Inter', sans-serif;     /* body text, labels */
 
   /* ── Spacing ── */
   --section-padding: 6rem 1.5rem;
@@ -29,7 +32,7 @@
 html {
   font-family: var(--font-body);
   background: var(--color-bg);
-  color: var(--color-text-primary);
+  color: var(--color-text-body);
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
 }
@@ -117,24 +120,25 @@ a { color: inherit; text-decoration: none; }
 }
 .btn-ghost:hover { border-color: var(--color-white-soft); }
 
-/* ── Headings ── */
+/* ── Headings (Figma: Poppins, ~#555) ── */
 .h1 {
   font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  line-height: 1.1;
-  letter-spacing: -.02em;
+  font-weight: 600;
+  font-size: clamp(2rem, 3.5vw, 3.125rem); /* ~50px */
+  line-height: 1.2;
+  color: var(--color-text-heading);
 }
 .h2 {
   font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-  line-height: 1.15;
-  letter-spacing: -.015em;
+  font-weight: 600;
+  font-size: clamp(1.75rem, 3vw, 3.125rem); /* ~50px */
+  line-height: 1.2;
+  color: var(--color-text-heading);
 }
 .h3 {
   font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 1.35rem;
-  line-height: 1.3;
+  font-weight: 600;
+  font-size: 1.2rem;
+  line-height: 1.35;
+  color: var(--color-text-heading);
 }

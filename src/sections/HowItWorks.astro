@@ -41,8 +41,12 @@ const steps = [
 <style>
   .how {
     padding: var(--section-padding);
-    background: var(--color-card-bg);
+    background: #18232c; /* Figma dark section */
   }
+
+  .how__header .label { color: #dff5f3; }
+  .how__header .h2 { color: #dff5f3; }
+  .how__header .how__sub { color: rgba(223,245,243,.6); }
 
   .how__header {
     max-width: 640px;
@@ -66,14 +70,16 @@ const steps = [
   }
 
   .how__step {
-    background: #fff;
+    background: rgba(255,255,255,.05);
     border-radius: 16px;
     padding: 2rem;
-    border: 1px solid var(--color-border);
+    border: 1px solid rgba(255,255,255,.08);
     display: flex;
     flex-direction: column;
     gap: .75rem;
   }
+
+  .how__step .h3 { color: #dff5f3; }
 
   .how__step-num {
     font-family: var(--font-heading);
@@ -84,7 +90,7 @@ const steps = [
   }
 
   .how__step p {
-    color: var(--color-text-secondary);
+    color: rgba(223,245,243,.55);
     font-size: .95rem;
     line-height: 1.65;
   }
