@@ -223,23 +223,35 @@ const steps = [
     display: block;
   }
 
-  /* Mobile: stack vertically */
+  /* Mobile: carousel (one step at a time, swipe, dots) */
   @media (max-width: 768px) {
+    .how__header { text-align: left; margin: 0 0 2rem; }
+    .how__h2 { font-size: 1.75rem; }
+
     .how__row {
-      flex-direction: column;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      flex-direction: row;
+      gap: 1rem;
+      padding-bottom: 1rem;
       min-height: auto;
+      /* hide scrollbar */
+      scrollbar-width: none;
     }
+    .how__row::-webkit-scrollbar { display: none; }
 
     .how__card {
-      flex: none !important;
+      flex: 0 0 88vw !important;
+      scroll-snap-align: center;
+      min-height: 480px;
     }
 
     .how__card.active .how__card-expand {
-      max-height: 300px;
+      max-height: 350px;
     }
 
-    .how__card-img {
-      max-width: 100%;
-    }
+    .how__card-img { max-width: 100%; }
   }
 </style>

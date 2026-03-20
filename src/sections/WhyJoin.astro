@@ -128,11 +128,26 @@ const benefits = [
     line-height: 1.65;
   }
 
-  @media (max-width: 900px) {
-    .why__grid { grid-template-columns: 1fr 1fr; }
-  }
+  /* Mobile: horizontal carousel (one card visible, swipe) */
+  @media (max-width: 768px) {
+    .why__header { text-align: left; margin: 0 0 2rem; }
 
-  @media (max-width: 560px) {
-    .why__grid { grid-template-columns: 1fr; }
+    .why__grid {
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      gap: 1rem;
+      padding-bottom: 0.5rem;
+      scrollbar-width: none;
+    }
+    .why__grid::-webkit-scrollbar { display: none; }
+
+    .why__card {
+      flex: 0 0 82vw;
+      scroll-snap-align: center;
+    }
   }
 </style>

@@ -269,19 +269,20 @@ import StatCard from '../components/StatCard.astro';
     .hero__stats-band { padding: 2rem 80px; }
   }
 
+  /* Tablet */
   @media (max-width: 1024px) {
-    .hero__inner {
-      grid-template-columns: 1fr;
-      padding: 3rem 2rem 2rem;
-      min-height: auto;
-    }
-    .hero__right { display: none; }
-    .hero__stats-band { padding: 2rem 2rem; gap: 2rem; }
+    .hero__inner { grid-template-columns: 480px 1fr; padding: 3.5rem 60px 2.5rem 80px; gap: 3rem; }
+    .hero__stats-band { padding: 2rem 80px; }
   }
 
-  @media (max-width: 600px) {
+  /* Mobile: single column, show hero right below text */
+  @media (max-width: 768px) {
+    .hero__inner { grid-template-columns: 1fr; padding: 2rem 1.5rem 1rem; gap: 1.5rem; min-height: auto; }
+    .hero__right { display: flex; justify-content: center; padding-right: 0; }
+    .hero__mockup { max-width: 100%; }
+    .hero__headline { font-size: 2rem; }
     .hero__actions { flex-wrap: wrap; }
-    .hero__stats-band { gap: 1.25rem; }
+    .hero__stats-band { padding: 1.5rem 1.5rem; gap: 2rem; }
     .hero__divider { display: none; }
   }
 </style>
