@@ -5,51 +5,90 @@ import StatCard from '../components/StatCard.astro';
 <section class="hero" id="hero">
   <div class="hero__layout">
 
-    <!-- LEFT: text content (x=138 in Figma) -->
+    <!-- LEFT -->
     <div class="hero__left">
 
-      <!-- Badge: "Now live — 1,200+ professionals in South Florida" -->
+      <!-- Badge -->
       <div class="hero__badge">
         <span class="hero__badge-dot"></span>
         Now live — 1,200+ professionals in South Florida
       </div>
 
-      <!-- Headline: Poppins 50px #555 — accent on "your aesthetic career in" -->
+      <!-- Headline: "your aesthetic career" = teal italic; rest = dark gray -->
       <h1 class="h1 hero__headline">
-        The platform built for <em>your aesthetic career in</em> South Florida
+        The platform built for <em>your aesthetic career</em> in South Florida
       </h1>
 
-      <!-- Body: Inter 18px #606362 -->
+      <!-- Body -->
       <p class="hero__body">
-        Whether you're an experienced injector or just starting your aesthetic journey —
-        Enhance.work connects you with the right clinics across Miami, Doral, and surrounding areas.
+        Whether you're an experienced injector or just starting out, Enhance
+        connects you with top aesthetic clinics across Miami, Doral, and
+        surrounding areas. Create your profile, get discovered, and apply to
+        real opportunities near you.
       </p>
+
+      <!-- Social proof row -->
+      <div class="hero__social">
+        <div class="hero__avatars">
+          <span class="hero__av" style="background:#7EC8C8">KL</span>
+          <span class="hero__av" style="background:#9b8ec4">MR</span>
+          <span class="hero__av" style="background:#5bb5a2">SN</span>
+          <span class="hero__av" style="background:#7BAFD4">TP</span>
+        </div>
+        <div class="hero__social-text">
+          <strong>Join 1,200+ professionals</strong>
+          <span>already building their career on Enhance</span>
+        </div>
+      </div>
 
       <!-- CTAs -->
       <div class="hero__actions">
         <a href="#apply" class="btn btn-primary">Create your profile</a>
         <a href="#roles" class="btn btn-secondary">Browse opportunities</a>
       </div>
+    </div>
 
-      <!-- Stats row (y=790 in Figma, below buttons) -->
-      <div class="hero__stats">
-        <StatCard value="1.2k" suffix="+" label="Active professionals" />
-        <div class="hero__divider"></div>
-        <StatCard value="318"  suffix="+" label="Partner clinics" />
-        <div class="hero__divider"></div>
-        <StatCard value="94%"  suffix="+" label="Match satisfaction" />
+    <!-- RIGHT: photo card + floating cards -->
+    <div class="hero__right">
+      <!-- "New profiles" stat card — top left of photo -->
+      <div class="hero__card hero__card--profiles">
+        <img
+          src="/images/hero-new-profiles.png"
+          alt="New profiles stat"
+          class="hero__card-img"
+        />
+      </div>
+
+      <!-- Main photo card -->
+      <div class="hero__photo-wrap">
+        <img
+          src="/images/hero-photo.png"
+          alt="Aesthetic professional"
+          class="hero__photo"
+        />
+      </div>
+
+      <!-- "Top hiring areas" card — bottom right -->
+      <div class="hero__card hero__card--hiring">
+        <img
+          src="/images/hero-top-hiring.png"
+          alt="Top hiring areas in South Florida"
+          class="hero__card-img"
+        />
       </div>
     </div>
 
-    <!-- RIGHT: Figma Group 3135 — profile card + "Top hiring areas" + stat overlay -->
-    <div class="hero__right">
-      <img
-        src="/images/mockups/hero-right-mockup.png"
-        alt="Aesthetic professional with platform UI"
-        class="hero__mockup"
-      />
-    </div>
+  </div>
 
+  <!-- Stats band -->
+  <div class="hero__stats-band">
+    <div class="hero__stats">
+      <StatCard value="1.2k" suffix="+" label="Active professionals" />
+      <div class="hero__divider"></div>
+      <StatCard value="318"  suffix="+" label="Partner clinics" />
+      <div class="hero__divider"></div>
+      <StatCard value="94%"  suffix="+" label="Match satisfaction" />
+    </div>
   </div>
 </section>
 
@@ -57,39 +96,36 @@ import StatCard from '../components/StatCard.astro';
   .hero {
     background: var(--color-bg); /* #F2F2F2 */
     padding-top: 68px; /* nav height */
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
   }
 
   .hero__layout {
-    width: 100%;
     max-width: 1440px;
     margin: 0 auto;
-    padding: 4rem 141px 5rem;
+    padding: 3.5rem 141px 2rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
     align-items: center;
+    min-height: calc(100vh - 68px - 120px);
   }
 
+  /* ── LEFT ── */
   .hero__left {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.4rem;
   }
 
-  /* Badge */
   .hero__badge {
     display: inline-flex;
     align-items: center;
     gap: .5rem;
-    background: var(--color-accent-light); /* #E6F9F9 */
+    background: var(--color-accent-light);
     color: var(--color-accent);
     font-family: var(--font-body);
     font-size: .8rem;
     font-weight: 500;
-    padding: .45rem 1rem;
+    padding: .4rem 1rem;
     border-radius: 100px;
     width: fit-content;
   }
@@ -101,7 +137,7 @@ import StatCard from '../components/StatCard.astro';
     flex-shrink: 0;
   }
 
-  /* Headline: Poppins 50px, #555 — accent phrase in teal */
+  /* Headline */
   .hero__headline {
     font-size: clamp(1.8rem, 3.5vw, 3.125rem);
     font-weight: 600;
@@ -110,66 +146,166 @@ import StatCard from '../components/StatCard.astro';
     margin: 0;
   }
 
+  /* Only "your aesthetic career" in teal italic */
   .hero__headline em {
     font-style: italic;
-    color: var(--color-accent);  /* teal accent like Figma */
+    color: var(--color-accent);
   }
 
-  /* Body: Inter 18px, #606362 */
   .hero__body {
-    font-family: var(--font-body); /* Inter */
+    font-family: var(--font-body);
     font-size: 1.125rem;
     line-height: 1.65;
     color: #606362;
     max-width: 520px;
+    margin: 0;
   }
 
-  /* Buttons */
+  /* Social proof */
+  .hero__social {
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+  }
+
+  .hero__avatars {
+    display: flex;
+  }
+
+  .hero__av {
+    width: 33px;
+    height: 33px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .65rem;
+    font-weight: 700;
+    color: #fff;
+    font-family: var(--font-heading);
+    margin-left: -8px;
+  }
+
+  .hero__avatars .hero__av:first-child { margin-left: 0; }
+
+  .hero__social-text {
+    display: flex;
+    flex-direction: column;
+    gap: .1rem;
+    font-family: var(--font-body);
+    font-size: .85rem;
+    color: #606362;
+    line-height: 1.3;
+  }
+
+  .hero__social-text strong {
+    color: #3a3a3a;
+    font-weight: 600;
+  }
+
   .hero__actions {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
   }
 
-  /* btn-secondary handles outline button styles via global.css */
-
-  /* Stats */
-  .hero__stats {
+  /* ── RIGHT ── */
+  .hero__right {
+    position: relative;
     display: flex;
-    align-items: flex-start;
-    gap: 2rem;
-    padding-top: 1.5rem;
-    margin-top: .5rem;
+    justify-content: flex-end;
+    align-items: center;
+    min-height: 480px;
+  }
+
+  /* Main photo card */
+  .hero__photo-wrap {
+    width: 100%;
+    max-width: 480px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+  }
+
+  .hero__photo {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 20px;
+  }
+
+  /* Floating cards */
+  .hero__card {
+    position: absolute;
+  }
+
+  .hero__card-img {
+    display: block;
+    border-radius: 14px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+  }
+
+  /* "New profiles" — top left, overlapping photo */
+  .hero__card--profiles {
+    top: 0;
+    left: -20px;
+    z-index: 2;
+  }
+
+  .hero__card--profiles .hero__card-img {
+    width: 160px;
+  }
+
+  /* "Top hiring areas" — bottom right, overlapping photo */
+  .hero__card--hiring {
+    bottom: 0;
+    right: -10px;
+    z-index: 2;
+  }
+
+  .hero__card--hiring .hero__card-img {
+    width: 280px;
+  }
+
+  /* ── STATS BAND ── */
+  .hero__stats-band {
+    border-top: 1px solid rgba(0,0,0,0.08);
+    padding: 2.5rem 0;
+  }
+
+  .hero__stats {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 141px;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
   }
 
   .hero__divider {
     width: 1px;
     height: 56px;
-    background: rgba(0,0,0,0.1);
-    align-self: center;
+    background: rgba(0,0,0,0.12);
+    flex-shrink: 0;
   }
 
-  /* Right: Figma mockup composite */
-  .hero__right {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  }
-
-  .hero__mockup {
-    width: 100%;
-    max-width: 520px;
-    height: auto;
-    display: block;
-  }
-
+  /* Mobile */
   @media (max-width: 1024px) {
-    .hero__layout { padding: 3rem 2rem; }
+    .hero__layout { padding: 3rem 2rem 2rem; }
+    .hero__stats { padding: 0 2rem; }
   }
 
   @media (max-width: 768px) {
-    .hero__layout { grid-template-columns: 1fr; padding: 2rem 1.25rem; }
+    .hero__layout {
+      grid-template-columns: 1fr;
+      padding: 2rem 1.25rem 1.5rem;
+    }
     .hero__right { display: none; }
+    .hero__stats {
+      padding: 0 1.25rem;
+      gap: 1.5rem;
+    }
     .hero__divider { display: none; }
   }
 </style>
