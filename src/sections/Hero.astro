@@ -3,10 +3,6 @@ import StatCard from '../components/StatCard.astro';
 ---
 
 <section class="hero" id="hero">
-  <!-- Figma: Mask group blob (4656×1023px oval, #f2f2f2 center, #0b0f0e dark edge + dot pattern) -->
-  <div class="hero__blob" aria-hidden="true">
-    <img src="/images/hero-blob.png" alt="" class="hero__blob-img" />
-  </div>
   <div class="hero__layout">
 
     <!-- LEFT: text content (x=138 in Figma) -->
@@ -59,37 +55,11 @@ import StatCard from '../components/StatCard.astro';
 
 <style>
   .hero {
-    background: #d9d9d9;   /* Figma: Rectangle 5 in hero mask = #d9d9d9 */
-    padding-top: 68px;     /* nav height */
+    background: var(--color-bg); /* #F2F2F2 */
+    padding-top: 68px; /* nav height */
     min-height: 100vh;
     display: flex;
     align-items: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* Figma blob: giant horizontal oval (4656×1023) centered, above hero
-     #f2f2f2 center → dark edges (#0b0f0e) with drop shadow + dot texture */
-  .hero__blob {
-    position: absolute;
-    top: -180px;          /* blob starts 316px above hero, nav is 68px → -248px from content area */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 3240px;        /* 4656 * 0.7 — scaled for screen */
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.9;
-  }
-
-  .hero__blob-img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-
-  .hero__layout {
-    position: relative;
-    z-index: 1;
   }
 
   .hero__layout {
