@@ -1,40 +1,63 @@
 ---
-import StatCard from '../components/StatCard.astro';
 ---
 
 <section class="cta" id="apply">
-  <div class="container cta__inner">
+  <div class="cta__inner">
+
+    <!-- Left content -->
     <div class="cta__content">
-      <span class="label" style="color:rgba(240,245,243,.6)">Ready to grow?</span>
-      <h2 class="h2 cta__headline">Ready to grow your career<br />in aesthetics?</h2>
-      <p class="cta__sub">Join the talent network used by leading aesthetic professionals in South Florida.</p>
+      <span class="cta__label">Ready to grow?</span>
+
+      <h2 class="cta__headline">
+        Ready to grow your career<br />
+        <em>in aesthetics?</em>
+      </h2>
+
+      <p class="cta__sub">
+        Join the talent network used by leading aesthetic clinics across the country.
+      </p>
 
       <div class="cta__actions">
-        <a href="#" class="btn btn-primary cta__btn-main">Create your professional profile</a>
-        <a href="#roles" class="btn btn-ghost">Browse opportunities</a>
+        <a href="#" class="btn cta__btn-primary">Create your professional profile</a>
+        <a href="#roles" class="btn cta__btn-outline">Browse opportunities</a>
       </div>
     </div>
 
-    <div class="cta__stats">
-      <StatCard value="1.2k" suffix="+" label="Active professionals" dark />
-      <StatCard value="318"  suffix="+" label="Partner clinics" dark />
-      <StatCard value="94%"  suffix="+" label="Match satisfaction" dark />
+    <!-- Right: decorative stat/visual block -->
+    <div class="cta__right">
+      <div class="cta__stat-stack">
+        <div class="cta__stat">
+          <span class="cta__stat-num">1.2k<span class="cta__stat-suffix">+</span></span>
+          <span class="cta__stat-label">Active professionals</span>
+        </div>
+        <div class="cta__divider"></div>
+        <div class="cta__stat">
+          <span class="cta__stat-num">318<span class="cta__stat-suffix">+</span></span>
+          <span class="cta__stat-label">Partner clinics</span>
+        </div>
+        <div class="cta__divider"></div>
+        <div class="cta__stat">
+          <span class="cta__stat-num">94%<span class="cta__stat-suffix">+</span></span>
+          <span class="cta__stat-label">Match satisfaction</span>
+        </div>
+      </div>
     </div>
+
   </div>
 </section>
 
 <style>
   .cta {
-    background: #18232c; /* Figma: rgb(24,35,44) */
-    padding: var(--section-padding);
-    border-radius: 24px;
-    margin: 0 1.5rem 4rem;
+    background: #1b2936;
+    padding: 5rem 1.5rem;
   }
 
   .cta__inner {
+    max-width: var(--container-max);
+    margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr auto;
-    gap: 4rem;
+    gap: 5rem;
     align-items: center;
   }
 
@@ -44,35 +67,144 @@ import StatCard from '../components/StatCard.astro';
     gap: 1.25rem;
   }
 
-  .cta__headline { color: var(--color-white-soft); }
+  .cta__label {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #b2ecec;
+    background: rgba(43,188,176,.15);
+    padding: .3rem .9rem;
+    border-radius: 100px;
+    width: fit-content;
+  }
+
+  .cta__headline {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: clamp(2rem, 3vw, 2.75rem);
+    line-height: 1.2;
+    color: #ffffff;
+    margin: 0;
+  }
+
+  .cta__headline em {
+    font-style: normal;
+    color: #ffffff;
+  }
 
   .cta__sub {
-    color: rgba(240,245,243,.55);
-    font-size: 1rem;
+    color: rgba(255,255,255,.55);
+    font-size: .95rem;
     line-height: 1.65;
-    max-width: 420px;
+    max-width: 480px;
   }
 
   .cta__actions {
     display: flex;
     flex-wrap: wrap;
-    gap: .75rem;
+    gap: .9rem;
+    margin-top: .5rem;
   }
 
-  .cta__btn-main {
-    background: var(--color-accent);
-    color: #fff;
+  /* Primary button — teal */
+  .cta__btn-primary {
+    background: var(--color-accent);   /* #2bbcb0 */
+    color: #ffffff;
+    font-family: var(--font-heading);
+    font-size: .95rem;
+    font-weight: 600;
+    padding: .8rem 1.75rem;
+    border-radius: 53px;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    transition:
+      background .22s ease,
+      transform .22s cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow .22s ease;
   }
 
-  .cta__stats {
+  .cta__btn-primary:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(43,188,176,0.35);
+  }
+
+  /* Outline button — white border on dark */
+  .cta__btn-outline {
+    background: transparent;
+    color: rgba(255,255,255,.75);
+    font-family: var(--font-heading);
+    font-size: .95rem;
+    font-weight: 600;
+    padding: .8rem 1.75rem;
+    border-radius: 53px;
+    border: 1.5px solid rgba(255,255,255,.25);
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    transition:
+      border-color .22s ease,
+      color .22s ease,
+      transform .22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .cta__btn-outline:hover {
+    border-color: rgba(255,255,255,.65);
+    color: #ffffff;
+    transform: translateY(-2px);
+  }
+
+  /* Right stats */
+  .cta__right {
+    flex-shrink: 0;
+  }
+
+  .cta__stat-stack {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.75rem;
+    align-items: flex-start;
+  }
+
+  .cta__stat {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+  }
+
+  .cta__stat-num {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #f0f5f3;
+    line-height: 1;
+  }
+
+  .cta__stat-suffix {
+    font-size: 1.5rem;
+    color: var(--color-accent);
+  }
+
+  .cta__stat-label {
+    font-size: .85rem;
+    color: rgba(240,245,243,.5);
+    font-weight: 400;
+  }
+
+  .cta__divider {
+    width: 40px;
+    height: 1px;
+    background: rgba(255,255,255,.12);
   }
 
   @media (max-width: 900px) {
-    .cta__inner { grid-template-columns: 1fr; }
-    .cta__stats { flex-direction: row; flex-wrap: wrap; }
-    .cta { margin: 0 0 0; border-radius: 0; }
+    .cta__inner { grid-template-columns: 1fr; gap: 3rem; }
+    .cta__stat-stack { flex-direction: row; flex-wrap: wrap; gap: 1.5rem 3rem; }
+    .cta__divider { display: none; }
   }
 </style>

@@ -4,16 +4,22 @@ const steps = [
     number: 'STEP 01',
     title: 'Join the Enhance.Work Network',
     desc: 'Create your profile and showcase your skills and certifications.',
+    card: '/images/mockups/step1-card.png',
+    cardAlt: 'Profile creation mockup',
   },
   {
     number: 'STEP 02',
     title: 'Match Your Skills With the Right Opportunities',
     desc: 'Get discovered by aesthetic practices across South Florida.',
+    card: '/images/mockups/step2-card.png',
+    cardAlt: 'Job matching mockup',
   },
   {
     number: 'STEP 03',
     title: 'Start and Grow Your Career in Aesthetics',
     desc: 'Apply or get invited to opportunities that fit your experience.',
+    card: '/images/mockups/step3-card.png',
+    cardAlt: 'Career growth mockup',
   },
 ];
 ---
@@ -23,38 +29,70 @@ const steps = [
     <div class="how__header">
       <span class="label how__label">How it works</span>
       <h2 class="h2 how__h2">Three steps to your next<br />role in South Florida</h2>
-      <p class="how__sub">From profile to placement — Enhance makes it easy to find your next opportunity.</p>
+      <p class="how__sub">No recruiters, no cold applications. Just a smart platform built for aesthetic professionals.</p>
     </div>
 
     <div class="how__layout">
-      <div class="how__steps">
+      <!-- Accordion steps -->
+      <div class="how__steps" id="how-steps">
         {steps.map((step, i) => (
-          <div class="how__step">
-            <div class="how__step-top">
-              <span class="how__step-num">{step.number}</span>
-              <div class="how__step-icon">
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                  <circle cx="14" cy="14" r="14" fill="rgba(203,197,255,0.2)"/>
-                  <path d="M9 14l3.5 3.5L19 10.5" stroke="#cbc5ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <div class={`how__step ${i === 0 ? 'active' : ''}`} data-index={i}>
+            <button class="how__step-btn" aria-expanded={i === 0 ? 'true' : 'false'}>
+              <div class="how__step-left">
+                <span class="how__step-num">{step.number}</span>
+                <h3 class="how__step-title">{step.title}</h3>
+              </div>
+              <div class="how__step-chevron">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M5 7.5L10 12.5L15 7.5" stroke="#cbc5ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
+            </button>
+            <div class="how__step-body">
+              <p class="how__step-desc">{step.desc}</p>
+              <!-- Mobile card (shown inside accordion on small screens) -->
+              <div class="how__step-card-mobile">
+                <img src={step.card} alt={step.cardAlt} />
+              </div>
             </div>
-            <h3 class="h3 how__step-title">{step.title}</h3>
-            <p class="how__step-desc">{step.desc}</p>
           </div>
         ))}
       </div>
 
-      <div class="how__mockup-wrap">
-        <img
-          src="/images/mockups/how-it-works.png"
-          alt="How Enhance.work works — step by step"
-          class="how__mockup"
-        />
+      <!-- Right: card preview (desktop) -->
+      <div class="how__preview" id="how-preview">
+        {steps.map((step, i) => (
+          <div class={`how__preview-card ${i === 0 ? 'visible' : ''}`} data-index={i}>
+            <img src={step.card} alt={step.cardAlt} class="how__card-img" />
+          </div>
+        ))}
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  const steps = document.querySelectorAll('.how__step');
+  const previews = document.querySelectorAll('.how__preview-card');
+
+  steps.forEach((step) => {
+    step.querySelector('.how__step-btn')?.addEventListener('click', () => {
+      const idx = step.dataset.index;
+
+      // Collapse all
+      steps.forEach(s => {
+        s.classList.remove('active');
+        s.querySelector('.how__step-btn')?.setAttribute('aria-expanded', 'false');
+      });
+      previews.forEach(p => p.classList.remove('visible'));
+
+      // Expand clicked
+      step.classList.add('active');
+      step.querySelector('.how__step-btn')?.setAttribute('aria-expanded', 'true');
+      document.querySelector(`.how__preview-card[data-index="${idx}"]`)?.classList.add('visible');
+    });
+  });
+</script>
 
 <style>
   .how {
@@ -63,7 +101,6 @@ const steps = [
   }
 
   .how__label { color: rgba(223,245,243,0.7); }
-
   .how__h2 { color: #dff5f3; }
 
   .how__header {
@@ -84,82 +121,139 @@ const steps = [
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 4rem;
-    align-items: center;
+    align-items: start;
   }
 
+  /* Steps accordion */
   .how__steps {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: .75rem;
   }
 
   .how__step {
     background: rgba(255,255,255,.05);
     border-radius: 16px;
-    padding: 1.75rem 2rem;
     border: 1px solid rgba(255,255,255,.08);
-    display: flex;
-    flex-direction: column;
-    gap: .7rem;
-    transition:
-      transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
-      background 0.28s ease,
-      border-color 0.28s ease,
-      box-shadow 0.28s ease;
+    overflow: hidden;
+    transition: border-color .25s ease, background .25s ease;
   }
 
-  .how__step:hover {
-    transform: translateY(-6px) translateX(4px);
-    background: rgba(255,255,255,.08);
-    border-color: rgba(43,188,176,.35);
-    box-shadow: 0 16px 36px rgba(0,0,0,0.25);
+  .how__step.active {
+    background: rgba(255,255,255,.09);
+    border-color: rgba(43,188,176,.4);
   }
 
-  .how__step-top {
+  .how__step-btn {
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 1.5rem 1.75rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 1rem;
+    text-align: left;
+  }
+
+  .how__step-left {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
   }
 
   .how__step-num {
     font-family: var(--font-heading);
-    font-size: .75rem;
+    font-size: .7rem;
     font-weight: 700;
     letter-spacing: .12em;
     color: #cbc5ff;
   }
 
-  .how__step-icon {
-    opacity: .7;
+  .how__step-title {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #dff5f3;
+    line-height: 1.35;
+    margin: 0;
   }
 
-  .how__step-title {
-    color: #dff5f3;
-    font-size: 1.1rem;
-    font-weight: 600;
+  .how__step-chevron {
+    flex-shrink: 0;
+    transition: transform .3s ease;
+  }
+
+  .how__step.active .how__step-chevron {
+    transform: rotate(180deg);
+  }
+
+  /* Accordion body */
+  .how__step-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .35s ease;
+  }
+
+  .how__step.active .how__step-body {
+    grid-template-rows: 1fr;
+  }
+
+  .how__step-body > * {
+    overflow: hidden;
   }
 
   .how__step-desc {
     color: rgba(223,245,243,.55);
     font-size: .9rem;
     line-height: 1.65;
+    padding: 0 1.75rem 1.5rem;
   }
 
-  .how__mockup-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .how__step-card-mobile {
+    display: none;
+    padding: 0 1.75rem 1.5rem;
   }
 
-  .how__mockup {
+  .how__step-card-mobile img {
     width: 100%;
-    max-width: 480px;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+  }
+
+  /* Right preview */
+  .how__preview {
+    position: relative;
+    min-height: 350px;
+  }
+
+  .how__preview-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+    transition: opacity .4s ease, transform .4s cubic-bezier(0.34, 1.2, 0.64, 1);
+    pointer-events: none;
+  }
+
+  .how__preview-card.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .how__card-img {
+    width: 100%;
     border-radius: 16px;
     box-shadow: 0 24px 60px rgba(0,0,0,0.35);
   }
 
   @media (max-width: 960px) {
     .how__layout { grid-template-columns: 1fr; }
-    .how__mockup-wrap { display: none; }
+    .how__preview { display: none; }
+    .how__step-card-mobile { display: block; }
   }
 </style>

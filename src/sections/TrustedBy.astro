@@ -1,28 +1,43 @@
 ---
-const clinicImages = [
-  '/images/clinic-1.png',
-  '/images/clinic-2.png',
-  '/images/clinic-3.png',
-  '/images/clinic-4.png',
-  '/images/clinic-5.png',
-  '/images/clinic-6.png',
+const gridImages = [
+  { src: '/images/clinic-1.png', alt: 'Partner clinic 1' },
+  { src: '/images/clinic-2.png', alt: 'Partner clinic 2' },
+  { src: '/images/clinic-3.png', alt: 'Partner clinic 3' },
+  { src: '/images/clinic-4.png', alt: 'Partner clinic 4' },
+  { src: '/images/clinic-5.png', alt: 'Partner clinic 5' },
+  { src: '/images/clinic-6.png', alt: 'Partner clinic 6' },
 ];
 ---
 
 <section class="trusted" id="trusted-by">
   <div class="container">
-    <span class="label trusted__label">Trusted by</span>
-    <h2 class="h2">The clinics looking for you<br />are already here.</h2>
-    <p class="trusted__sub">
-      Leading practices across Florida use Enhance to find and hire aesthetic professionals.
-    </p>
+    <div class="trusted__header">
+      <span class="label">Trusted by</span>
+      <h2 class="h2">The clinics looking for you<br />are already here.</h2>
+      <p class="trusted__sub">
+        Leading practices across Florida use Enhance.work to find and hire aesthetic professionals.
+      </p>
+    </div>
 
-    <div class="trusted__grid">
-      {clinicImages.map((src, i) => (
-        <div class="trusted__img-wrap">
-          <img src={src} alt={`Partner clinic ${i + 1}`} class="trusted__img" loading="lazy" />
-        </div>
-      ))}
+    <div class="trusted__layout">
+      <!-- Left: tall hero image -->
+      <div class="trusted__hero-wrap">
+        <img
+          src="/images/mockups/trusted-hero.png"
+          alt="Aesthetic professional at work"
+          class="trusted__hero-img"
+          loading="lazy"
+        />
+      </div>
+
+      <!-- Right: 3×2 image grid -->
+      <div class="trusted__grid">
+        {gridImages.map((img) => (
+          <div class="trusted__img-wrap">
+            <img src={img.src} alt={img.alt} class="trusted__img" loading="lazy" />
+          </div>
+        ))}
+      </div>
     </div>
   </div>
 </section>
@@ -30,31 +45,71 @@ const clinicImages = [
 <style>
   .trusted {
     padding: var(--section-padding);
-    text-align: center;
+    background: #ffffff;
   }
 
-  .trusted__label { display: block; margin-bottom: 1rem; }
+  .trusted__header {
+    margin-bottom: 3rem;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+  }
 
   .trusted__sub {
-    margin: 1.25rem auto 3rem;
-    max-width: 480px;
-    color: #606362;
+    color: #595959;
     font-size: 1rem;
     line-height: 1.65;
+    max-width: 560px;
   }
 
+  .trusted__layout {
+    display: grid;
+    grid-template-columns: 358fr 566fr;
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  /* Left tall image */
+  .trusted__hero-wrap {
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 358 / 459;
+    background: #dde8e6;
+    transition:
+      transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 0.28s ease;
+  }
+
+  .trusted__hero-wrap:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 16px 40px rgba(43,188,176,0.15), 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  .trusted__hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .trusted__hero-wrap:hover .trusted__hero-img {
+    transform: scale(1.04);
+  }
+
+  /* Right 2-col grid */
   .trusted__grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    max-width: 800px;
-    margin: 0 auto;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
   }
 
   .trusted__img-wrap {
     border-radius: 12px;
     overflow: hidden;
-    aspect-ratio: 3/2;
+    aspect-ratio: 267 / 133;
     background: #e0e0e0;
     transition:
       transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -62,8 +117,8 @@ const clinicImages = [
   }
 
   .trusted__img-wrap:hover {
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 16px 32px rgba(43,188,176,0.15), 0 4px 12px rgba(0,0,0,0.1);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(43,188,176,0.15), 0 4px 10px rgba(0,0,0,0.1);
   }
 
   .trusted__img {
@@ -77,7 +132,12 @@ const clinicImages = [
     transform: scale(1.05);
   }
 
-  @media (max-width: 600px) {
-    .trusted__grid { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 768px) {
+    .trusted__layout { grid-template-columns: 1fr; }
+    .trusted__hero-wrap { aspect-ratio: 4/3; }
+  }
+
+  @media (max-width: 480px) {
+    .trusted__grid { grid-template-columns: 1fr; }
   }
 </style>
