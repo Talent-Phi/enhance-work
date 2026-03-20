@@ -88,19 +88,18 @@ import StatCard from '../components/StatCard.astro';
     z-index: 0;
   }
 
-  /* Curved separator — white element with CONVEX top bulges UP into hero bg,
-     creating the CONCAVE bowl shape at the bottom of the hero (as in Frame 3544) */
+  /* Curved separator — very subtle concave arc at hero bottom (Frame 3544) */
   .hero::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 105%;        /* slightly wider so no seams at edges */
-    height: 70px;       /* depth of the curve */
-    background: #f2f2f2;
-    border-radius: 50% 50% 0 0 / 70px 70px 0 0;  /* elliptical: same as height = full arc */
-    z-index: 2;         /* above texture overlay */
+    width: 120%;
+    height: 40px;
+    background: #ebebeb;   /* slightly lighter than hero #d9d9d9 — matches stats area tone */
+    border-radius: 50% 50% 0 0 / 40px 40px 0 0;
+    z-index: 2;
   }
 
   /* ── Main layout: 2 cols, left 52% right 48% ── */
