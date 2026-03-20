@@ -1,0 +1,247 @@
+---
+---
+
+<section class="gateway" id="gateway">
+  <div class="container">
+    <div class="gateway__layout">
+
+      <!-- Left: testimonial + stats -->
+      <div class="gateway__left">
+        <span class="label">gateway</span>
+        <h2 class="h2 gateway__title">Your gateway to a thriving<br />aesthetic career<br />in South Florida.</h2>
+
+        <!-- Testimonial card -->
+        <div class="gateway__testimonial">
+          <span class="gateway__quote">"</span>
+          <p class="gateway__quote-text">
+            Enhance helped me connect with a clinic that perfectly matched my skills and schedule.
+            I got hired within two weeks of creating my profile.
+          </p>
+          <div class="gateway__stars">★★★★★</div>
+          <div class="gateway__author">
+            <div class="gateway__avatar">KL</div>
+            <div>
+              <p class="gateway__name">Megan Roberts</p>
+              <p class="gateway__role">Nurse Injector · Miami, FL</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stat mini-cards -->
+        <div class="gateway__stats">
+          <div class="gateway__stat-card">
+            <p class="gateway__stat-label">Interviews</p>
+            <p class="gateway__stat-value green">342</p>
+            <span class="gateway__stat-badge green">↑ +7%</span>
+            <div class="gateway__stat-bar"><div class="gateway__stat-bar-fill" style="width:57%"></div></div>
+          </div>
+          <div class="gateway__stat-card">
+            <p class="gateway__stat-label">Placements</p>
+            <p class="gateway__stat-value green">218</p>
+            <span class="gateway__stat-badge green">↑ +12%</span>
+            <div class="gateway__stat-bar"><div class="gateway__stat-bar-fill" style="width:75%"></div></div>
+          </div>
+          <div class="gateway__stat-card">
+            <p class="gateway__stat-label">New profiles</p>
+            <p class="gateway__stat-value">1.2k</p>
+            <span class="gateway__stat-badge neutral">↑ +0%</span>
+            <div class="gateway__stat-bar"><div class="gateway__stat-bar-fill neutral" style="width:30%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: profile mockup -->
+      <div class="gateway__right">
+        <img
+          src="/images/mockups/profile-mockup.png"
+          alt="Enhance.work professional profile"
+          class="gateway__mockup"
+        />
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .gateway {
+    padding: var(--section-padding);
+    background: #f9f9f9;
+  }
+
+  .gateway__layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .gateway__left {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .gateway__title {
+    margin: 0;
+  }
+
+  /* Testimonial card */
+  .gateway__testimonial {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 2rem;
+    box-shadow: 0 4px 27px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: .9rem;
+    transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s ease;
+  }
+
+  .gateway__testimonial:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(43,188,176,0.12);
+  }
+
+  .gateway__quote {
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: #b2ecec;
+    line-height: 1;
+  }
+
+  .gateway__quote-text {
+    font-size: 1rem;
+    color: #5c6b7a;
+    line-height: 1.7;
+  }
+
+  .gateway__stars {
+    color: var(--color-accent);
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+  }
+
+  .gateway__author {
+    display: flex;
+    align-items: center;
+    gap: .9rem;
+  }
+
+  .gateway__avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: .9rem;
+    flex-shrink: 0;
+  }
+
+  .gateway__name {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: .95rem;
+    color: #1e2b38;
+  }
+
+  .gateway__role {
+    font-size: .8rem;
+    color: #9aa5b1;
+  }
+
+  /* Stat cards row */
+  .gateway__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .75rem;
+  }
+
+  .gateway__stat-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1rem .9rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s ease;
+  }
+
+  .gateway__stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(43,188,176,0.15);
+  }
+
+  .gateway__stat-label {
+    font-size: .75rem;
+    color: #595959;
+    font-weight: 400;
+  }
+
+  .gateway__stat-value {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #bababa;
+  }
+
+  .gateway__stat-value.green { color: #1a716a; }
+
+  .gateway__stat-badge {
+    display: inline-block;
+    font-size: .7rem;
+    font-weight: 500;
+    padding: .2rem .5rem;
+    border-radius: 100px;
+    background: #eaf8f7;
+    color: #208d84;
+    width: fit-content;
+  }
+
+  .gateway__stat-badge.neutral {
+    background: #f0f0f0;
+    color: #bababa;
+  }
+
+  .gateway__stat-bar {
+    height: 3px;
+    background: #d9d9d9;
+    border-radius: 2px;
+    margin-top: .4rem;
+    overflow: hidden;
+  }
+
+  .gateway__stat-bar-fill {
+    height: 100%;
+    background: var(--color-accent);
+    border-radius: 2px;
+  }
+
+  .gateway__stat-bar-fill.neutral {
+    background: #d9d9d9;
+  }
+
+  /* Right mockup */
+  .gateway__right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .gateway__mockup {
+    width: 100%;
+    max-width: 520px;
+    border-radius: 20px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.12);
+  }
+
+  @media (max-width: 960px) {
+    .gateway__layout { grid-template-columns: 1fr; }
+    .gateway__right { display: none; }
+  }
+</style>

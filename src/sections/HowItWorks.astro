@@ -1,19 +1,19 @@
 ---
 const steps = [
   {
-    number: '01',
-    title: 'Create your profile',
-    desc: 'Build a professional profile highlighting your certifications, experience, and aesthetic specialties.',
+    number: 'STEP 01',
+    title: 'Join the Enhance.Work Network',
+    desc: 'Create your profile and showcase your skills and certifications.',
   },
   {
-    number: '02',
-    title: 'Get matched',
-    desc: 'Our platform connects you with clinics and opportunities that fit your skills and career goals.',
+    number: 'STEP 02',
+    title: 'Match Your Skills With the Right Opportunities',
+    desc: 'Get discovered by aesthetic practices across South Florida.',
   },
   {
-    number: '03',
-    title: 'Start working',
-    desc: 'Accept placements, build your reputation, and grow your career in South Florida aesthetics.',
+    number: 'STEP 03',
+    title: 'Start and Grow Your Career in Aesthetics',
+    desc: 'Apply or get invited to opportunities that fit your experience.',
   },
 ];
 ---
@@ -21,19 +21,37 @@ const steps = [
 <section class="how" id="how-it-works">
   <div class="container">
     <div class="how__header">
-      <span class="label">How it works</span>
-      <h2 class="h2">From profile to placement —<br />Enhance makes it simple</h2>
-      <p class="how__sub">Everything aesthetic professionals need to take the next step in their career.</p>
+      <span class="label how__label">How it works</span>
+      <h2 class="h2 how__h2">Three steps to your next<br />role in South Florida</h2>
+      <p class="how__sub">From profile to placement — Enhance makes it easy to find your next opportunity.</p>
     </div>
 
-    <div class="how__steps">
-      {steps.map((step) => (
-        <div class="how__step">
-          <span class="how__step-num">{step.number}</span>
-          <h3 class="h3">{step.title}</h3>
-          <p>{step.desc}</p>
-        </div>
-      ))}
+    <div class="how__layout">
+      <div class="how__steps">
+        {steps.map((step, i) => (
+          <div class="how__step">
+            <div class="how__step-top">
+              <span class="how__step-num">{step.number}</span>
+              <div class="how__step-icon">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                  <circle cx="14" cy="14" r="14" fill="rgba(203,197,255,0.2)"/>
+                  <path d="M9 14l3.5 3.5L19 10.5" stroke="#cbc5ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+            <h3 class="h3 how__step-title">{step.title}</h3>
+            <p class="how__step-desc">{step.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="how__mockup-wrap">
+        <img
+          src="/images/mockups/how-it-works.png"
+          alt="How Enhance.work works — step by step"
+          class="how__mockup"
+        />
+      </div>
     </div>
   </div>
 </section>
@@ -41,42 +59,48 @@ const steps = [
 <style>
   .how {
     padding: var(--section-padding);
-    background: #18232c; /* Figma dark section */
+    background: #18232c;
   }
 
-  .how__header .label { color: #dff5f3; }
-  .how__header .h2 { color: #dff5f3; }
-  .how__header .how__sub { color: rgba(223,245,243,.6); }
+  .how__label { color: rgba(223,245,243,0.7); }
+
+  .how__h2 { color: #dff5f3; }
 
   .how__header {
     max-width: 640px;
-    margin: 0 auto 4rem;
-    text-align: center;
+    margin-bottom: 3.5rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
 
   .how__sub {
-    color: var(--color-text-secondary);
+    color: rgba(223,245,243,.55);
     font-size: 1rem;
     line-height: 1.7;
   }
 
-  .how__steps {
+  .how__layout {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .how__steps {
+    display: flex;
+    flex-direction: column;
     gap: 2rem;
   }
 
   .how__step {
     background: rgba(255,255,255,.05);
     border-radius: 16px;
-    padding: 2rem;
+    padding: 1.75rem 2rem;
     border: 1px solid rgba(255,255,255,.08);
     display: flex;
     flex-direction: column;
-    gap: .75rem;
+    gap: .7rem;
     transition:
       transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
       background 0.28s ease,
@@ -85,29 +109,57 @@ const steps = [
   }
 
   .how__step:hover {
-    transform: translateY(-8px);
+    transform: translateY(-6px) translateX(4px);
     background: rgba(255,255,255,.08);
     border-color: rgba(43,188,176,.35);
     box-shadow: 0 16px 36px rgba(0,0,0,0.25);
   }
 
-  .how__step .h3 { color: #dff5f3; }
+  .how__step-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
   .how__step-num {
     font-family: var(--font-heading);
-    font-size: 2.5rem;
+    font-size: .75rem;
     font-weight: 700;
-    color: var(--color-accent);
-    line-height: 1;
+    letter-spacing: .12em;
+    color: #cbc5ff;
   }
 
-  .how__step p {
+  .how__step-icon {
+    opacity: .7;
+  }
+
+  .how__step-title {
+    color: #dff5f3;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .how__step-desc {
     color: rgba(223,245,243,.55);
-    font-size: .95rem;
+    font-size: .9rem;
     line-height: 1.65;
   }
 
-  @media (max-width: 768px) {
-    .how__steps { grid-template-columns: 1fr; }
+  .how__mockup-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .how__mockup {
+    width: 100%;
+    max-width: 480px;
+    border-radius: 16px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+  }
+
+  @media (max-width: 960px) {
+    .how__layout { grid-template-columns: 1fr; }
+    .how__mockup-wrap { display: none; }
   }
 </style>

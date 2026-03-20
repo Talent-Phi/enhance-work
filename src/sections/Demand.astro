@@ -1,0 +1,216 @@
+---
+---
+
+<section class="demand" id="demand">
+  <div class="container">
+    <div class="demand__header">
+      <h2 class="h2">A growing demand for<br />aesthetic professionals<br />in South Florida.</h2>
+      <p class="demand__sub">
+        Clinics across Miami, Doral, and surrounding areas are looking for skilled professionals like you.
+      </p>
+    </div>
+
+    <div class="demand__cards">
+      <!-- Chart card 1: Line chart -->
+      <div class="demand__card">
+        <div class="demand__card-header">
+          <div>
+            <p class="demand__card-title">Demand for aesthetic professional</p>
+            <p class="demand__card-sub">(South Florida)</p>
+          </div>
+          <span class="demand__badge">+146%</span>
+        </div>
+        <div class="demand__chart-wrap">
+          <img src="/images/mockups/chart-demand.png" alt="Demand chart" class="demand__chart-img" />
+        </div>
+      </div>
+
+      <!-- Chart card 2: Bar chart -->
+      <div class="demand__card">
+        <div class="demand__card-header">
+          <p class="demand__card-title">Most in-demand roles</p>
+          <span class="demand__view-all">View all</span>
+        </div>
+        <div class="demand__bars">
+          <div class="demand__bar-row">
+            <span class="demand__bar-label">Nurse injector</span>
+            <div class="demand__bar-track">
+              <div class="demand__bar-fill" style="width:80%"></div>
+            </div>
+            <span class="demand__bar-pct">80%</span>
+          </div>
+          <div class="demand__bar-row">
+            <span class="demand__bar-label">Medical Aesthetician</span>
+            <div class="demand__bar-track">
+              <div class="demand__bar-fill" style="width:65%"></div>
+            </div>
+            <span class="demand__bar-pct">65%</span>
+          </div>
+          <div class="demand__bar-row">
+            <span class="demand__bar-label">Laser Technician</span>
+            <div class="demand__bar-track">
+              <div class="demand__bar-fill" style="width:50%"></div>
+            </div>
+            <span class="demand__bar-pct">50%</span>
+          </div>
+          <div class="demand__bar-row">
+            <span class="demand__bar-label">Dermatology Assistant</span>
+            <div class="demand__bar-track">
+              <div class="demand__bar-fill" style="width:40%"></div>
+            </div>
+            <span class="demand__bar-pct">40%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .demand {
+    padding: var(--section-padding);
+    background: #fff;
+  }
+
+  .demand__header {
+    max-width: 720px;
+    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .demand__sub {
+    color: #606362;
+    font-size: 1rem;
+    line-height: 1.65;
+    max-width: 560px;
+  }
+
+  .demand__cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .demand__card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 27px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    transition:
+      transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 0.28s ease;
+  }
+
+  .demand__card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(43,188,176,0.12), 0 4px 12px rgba(0,0,0,0.06);
+  }
+
+  .demand__card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .demand__card-title {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #404040;
+    line-height: 1.4;
+  }
+
+  .demand__card-sub {
+    font-size: .875rem;
+    font-weight: 400;
+    color: #595959;
+    margin-top: .2rem;
+  }
+
+  .demand__badge {
+    background: #dff5f3;
+    color: #208d84;
+    font-family: var(--font-heading);
+    font-size: .8rem;
+    font-weight: 600;
+    padding: .3rem .75rem;
+    border-radius: 100px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .demand__view-all {
+    font-size: .95rem;
+    color: #bababa;
+    font-weight: 500;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .demand__chart-wrap {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .demand__chart-img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Bar chart */
+  .demand__bars {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .demand__bar-row {
+    display: grid;
+    grid-template-columns: 160px 1fr 40px;
+    align-items: center;
+    gap: .75rem;
+  }
+
+  .demand__bar-label {
+    font-size: .875rem;
+    color: #595959;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .demand__bar-track {
+    height: 24px;
+    background: #bdeae7;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .demand__bar-fill {
+    height: 100%;
+    background: var(--color-accent);
+    border-radius: 4px;
+    transition: width 1s ease;
+  }
+
+  .demand__bar-pct {
+    font-size: .875rem;
+    font-weight: 500;
+    color: var(--color-accent);
+    text-align: right;
+  }
+
+  @media (max-width: 768px) {
+    .demand__cards { grid-template-columns: 1fr; }
+    .demand__bar-row { grid-template-columns: 120px 1fr 36px; }
+  }
+</style>
