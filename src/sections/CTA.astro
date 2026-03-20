@@ -23,25 +23,8 @@
       </div>
     </div>
 
-    <!-- Right: decorative stat/visual block -->
-    <div class="cta__right">
-      <div class="cta__stat-stack">
-        <div class="cta__stat">
-          <span class="cta__stat-num">1.2k<span class="cta__stat-suffix">+</span></span>
-          <span class="cta__stat-label">Active professionals</span>
-        </div>
-        <div class="cta__divider"></div>
-        <div class="cta__stat">
-          <span class="cta__stat-num">318<span class="cta__stat-suffix">+</span></span>
-          <span class="cta__stat-label">Partner clinics</span>
-        </div>
-        <div class="cta__divider"></div>
-        <div class="cta__stat">
-          <span class="cta__stat-num">94%<span class="cta__stat-suffix">+</span></span>
-          <span class="cta__stat-label">Match satisfaction</span>
-        </div>
-      </div>
-    </div>
+    <!-- Right: decorative teal radial glow (Figma: radial gradient rgba(42,191,191,0.18)→transparent) -->
+    <div class="cta__right" aria-hidden="true"></div>
 
   </div>
 </section>
@@ -50,14 +33,28 @@
   .cta {
     background: #1b2936;
     padding: 5rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Dark clinic photo bg image (Figma: Rectangle 1425 IMAGE fill) */
+  .cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('/images/cta-bg.png') center/cover no-repeat;
+    opacity: 0.15;
+    pointer-events: none;
   }
 
   .cta__inner {
+    position: relative;
+    z-index: 1;
     max-width: var(--container-max);
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 5rem;
+    grid-template-columns: 1fr 400px;
+    gap: 3rem;
     align-items: center;
   }
 
@@ -65,6 +62,8 @@
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
+    position: relative;
+    z-index: 1;
   }
 
   .cta__label {
@@ -159,52 +158,16 @@
     transform: translateY(-2px);
   }
 
-  /* Right stats */
+  /* Right: teal radial glow decoration (Figma: GRADIENT_RADIAL teal→transparent) */
   .cta__right {
-    flex-shrink: 0;
-  }
-
-  .cta__stat-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 1.75rem;
-    align-items: flex-start;
-  }
-
-  .cta__stat {
-    display: flex;
-    flex-direction: column;
-    gap: .25rem;
-  }
-
-  .cta__stat-num {
-    font-family: var(--font-display);
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #f0f5f3;
-    line-height: 1;
-  }
-
-  .cta__stat-suffix {
-    font-size: 1.5rem;
-    color: var(--color-accent);
-  }
-
-  .cta__stat-label {
-    font-size: .85rem;
-    color: rgba(240,245,243,.5);
-    font-weight: 400;
-  }
-
-  .cta__divider {
-    width: 40px;
-    height: 1px;
-    background: rgba(255,255,255,.12);
+    width: 100%;
+    height: 400px;
+    background: radial-gradient(circle at center, rgba(42,191,191,0.18) 0%, rgba(0,0,0,0) 65%);
+    border-radius: 50%;
   }
 
   @media (max-width: 900px) {
-    .cta__inner { grid-template-columns: 1fr; gap: 3rem; }
-    .cta__stat-stack { flex-direction: row; flex-wrap: wrap; gap: 1.5rem 3rem; }
-    .cta__divider { display: none; }
+    .cta__inner { grid-template-columns: 1fr; }
+    .cta__right { display: none; }
   }
 </style>
