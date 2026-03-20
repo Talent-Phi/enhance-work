@@ -88,18 +88,19 @@ import StatCard from '../components/StatCard.astro';
     z-index: 0;
   }
 
-  /* Curved separator (Rectangle 2 from Figma, elliptical top edge) */
+  /* Curved separator — white element with CONVEX top bulges UP into hero bg,
+     creating the CONCAVE bowl shape at the bottom of the hero (as in Frame 3544) */
   .hero::after {
     content: '';
     position: absolute;
-    bottom: -1px;
+    bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 130%;
-    height: 90px;
+    width: 105%;        /* slightly wider so no seams at edges */
+    height: 70px;       /* depth of the curve */
     background: #f2f2f2;
-    border-radius: 50% 50% 0 0 / 100% 100% 0 0;  /* elliptical top = concave from hero's POV */
-    z-index: 0;
+    border-radius: 50% 50% 0 0 / 70px 70px 0 0;  /* elliptical: same as height = full arc */
+    z-index: 2;         /* above texture overlay */
   }
 
   /* ── Main layout: 2 cols, left 52% right 48% ── */
@@ -241,12 +242,15 @@ import StatCard from '../components/StatCard.astro';
 
   /* ── STATS BAND ── */
   .hero__stats-band {
-    background: #f2f2f2;   /* same as section bg — matches frame */
-    padding: 2.5rem 141px;
+    background: #f2f2f2;
+    padding: 2rem 141px 2.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 3.5rem;
+    position: relative;
+    z-index: 3;   /* above hero ::after curve, no gap */
+    margin-top: -2px;
   }
 
   .hero__divider {
