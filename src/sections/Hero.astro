@@ -48,36 +48,13 @@ import StatCard from '../components/StatCard.astro';
 
     </div>
 
-    <!-- RIGHT: photo + floating cards -->
+    <!-- RIGHT: composite mockup (photo + New profiles card + Top hiring areas card) -->
     <div class="hero__right">
-
-      <!-- "New profiles" floating card — top left -->
-      <div class="hero__float hero__float--profiles">
-        <div class="hero__profiles-card">
-          <span class="hero__profiles-label">New profiles</span>
-          <span class="hero__profiles-value">847</span>
-          <span class="hero__profiles-delta">↑ +12%</span>
-        </div>
-      </div>
-
-      <!-- Main photo -->
-      <div class="hero__photo-card">
-        <img
-          src="/images/hero-photo.png"
-          alt="Aesthetic professional"
-          class="hero__photo"
-        />
-      </div>
-
-      <!-- "Top hiring areas" floating card — bottom right -->
-      <div class="hero__float hero__float--hiring">
-        <img
-          src="/images/hero-top-hiring.png"
-          alt="Top hiring areas in South Florida"
-          class="hero__float-img"
-        />
-      </div>
-
+      <img
+        src="/images/mockups/hero-right-mockup.png"
+        alt="Aesthetic professional — top hiring areas in South Florida"
+        class="hero__mockup"
+      />
     </div>
   </div>
 
@@ -216,89 +193,18 @@ import StatCard from '../components/StatCard.astro';
 
   /* ── RIGHT ── */
   .hero__right {
-    position: relative;
     display: flex;
     align-items: center;
-    justify-content: center;
-    height: 100%;
-    min-height: 480px;
+    justify-content: flex-end;
+    padding-right: 20px;
   }
 
-  /* Main photo card */
-  .hero__photo-card {
+  /* Single composite mockup PNG (photo + New profiles card + Top hiring areas card) */
+  .hero__mockup {
     width: 100%;
-    max-width: 540px;
-    border-radius: 22px;
-    overflow: hidden;
-    box-shadow: 0 24px 70px rgba(0,0,0,0.10);
-    position: relative;
-    z-index: 1;
-  }
-
-  .hero__photo {
-    width: 100%;
+    max-width: 580px;
     height: auto;
     display: block;
-  }
-
-  /* ── Floating cards ── */
-  .hero__float {
-    position: absolute;
-    z-index: 2;
-  }
-
-  /* "New profiles" — top left, partially above photo */
-  .hero__float--profiles {
-    top: 20px;
-    left: -30px;
-  }
-
-  /* Inline card (built in HTML so we can show real values) */
-  .hero__profiles-card {
-    background: #fff;
-    border-radius: 14px;
-    padding: .85rem 1.1rem;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.10);
-    display: flex;
-    flex-direction: column;
-    gap: .15rem;
-    min-width: 140px;
-  }
-
-  .hero__profiles-label {
-    font-family: var(--font-body);
-    font-size: .72rem;
-    color: #888;
-    font-weight: 500;
-    letter-spacing: .02em;
-  }
-
-  .hero__profiles-value {
-    font-family: var(--font-heading);
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #1a1a1a;
-    line-height: 1.1;
-  }
-
-  .hero__profiles-delta {
-    font-family: var(--font-body);
-    font-size: .78rem;
-    font-weight: 600;
-    color: var(--color-accent);
-  }
-
-  /* "Top hiring areas" — bottom right */
-  .hero__float--hiring {
-    bottom: 10px;
-    right: -15px;
-  }
-
-  .hero__float-img {
-    display: block;
-    width: 260px;
-    border-radius: 16px;
-    box-shadow: 0 8px 28px rgba(0,0,0,0.10);
   }
 
   /* ── STATS BAND ── */
