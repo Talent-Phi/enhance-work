@@ -28,7 +28,7 @@ import StatCard from '../components/StatCard.astro';
       <!-- CTAs -->
       <div class="hero__actions">
         <a href="#apply" class="btn btn-primary">Create your profile</a>
-        <a href="#roles" class="btn hero__btn-outline">Browse opportunities</a>
+        <a href="#roles" class="btn btn-secondary">Browse opportunities</a>
       </div>
 
       <!-- Stats row (y=790 in Figma, below buttons) -->
@@ -124,22 +124,7 @@ import StatCard from '../components/StatCard.astro';
     flex-wrap: wrap;
   }
 
-  .hero__btn-outline {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-body);
-    font-size: .95rem;
-    font-weight: 500;
-    padding: .85rem 1.75rem;
-    border-radius: 8px;
-    border: 1.5px solid rgba(0,0,0,0.15);
-    background: #fff;
-    color: #555;
-    cursor: pointer;
-    transition: border-color .2s;
-  }
-  .hero__btn-outline:hover { border-color: var(--color-accent); color: var(--color-accent); }
+  /* btn-secondary handles outline button styles via global.css */
 
   /* Stats */
   .hero__stats {

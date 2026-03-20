@@ -90,35 +90,55 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   justify-content: center;
   gap: .5rem;
-  font-family: var(--font-body);
-  font-size: .95rem;
+  font-family: var(--font-heading);  /* Poppins — matches Figma */
+  font-size: 1.125rem;               /* 18px — Figma exact */
   font-weight: 600;
-  padding: .85rem 1.75rem;
-  border-radius: 8px;
+  padding: .8rem 2rem;
+  border-radius: 53px;               /* Figma: pill shape r=53 */
   cursor: pointer;
-  transition: all .2s ease;
+  transition:
+    background 0.22s ease,
+    border-color 0.22s ease,
+    color 0.22s ease,
+    transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.22s ease;
   border: none;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
 }
 
 .btn-primary {
-  background: var(--color-accent);
+  background: var(--color-accent);  /* #2bbcb0 */
   color: #fff;
 }
-.btn-primary:hover { background: var(--color-accent-hover); }
+.btn-primary:hover {
+  background: var(--color-accent-hover);
+  box-shadow: 0 8px 24px rgba(43,188,176,0.35);
+}
 
 .btn-secondary {
-  background: transparent;
-  color: var(--color-text-primary);
-  border: 1.5px solid var(--color-border);
+  background: #ffffff;               /* Figma Button 6: white fill */
+  color: #404040;                    /* Figma: #404040 */
+  border: 1.5px solid rgba(0,0,0,0.12);
 }
-.btn-secondary:hover { border-color: var(--color-accent); color: var(--color-accent); }
+.btn-secondary:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  box-shadow: 0 6px 18px rgba(43,188,176,0.15);
+}
 
 .btn-ghost {
   background: transparent;
   color: var(--color-white-soft);
   border: 1.5px solid rgba(240,245,243,.3);
 }
-.btn-ghost:hover { border-color: var(--color-white-soft); }
+.btn-ghost:hover {
+  border-color: var(--color-white-soft);
+  box-shadow: 0 6px 18px rgba(240,245,243,0.1);
+}
 
 /* ── Headings (Figma: Poppins, ~#555) ── */
 .h1 {
