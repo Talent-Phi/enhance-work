@@ -104,11 +104,12 @@ const steps = [
   }
 
   .how__card {
-    flex: 1;                /* collapsed: equal width */
+    flex: 1;
     min-width: 0;
-    background: rgba(255,255,255,.05);
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 16px;
+    /* Figma: step cards are white fill with text on dark section bg = white cards */
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 15px;    /* Figma: r=15 */
     overflow: hidden;
     cursor: pointer;
     transition:
@@ -121,10 +122,10 @@ const steps = [
   }
 
   .how__card.active {
-    flex: 3;               /* expanded: 3× wider than collapsed */
-    background: rgba(255,255,255,.08);
-    border-color: rgba(43,188,176,.4);
-    box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+    flex: 3;
+    background: rgba(255,255,255,.13);
+    border-color: rgba(43,188,176,.5);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.3);
   }
 
   /* Button (text area — always visible) */

@@ -120,12 +120,13 @@ a { color: inherit; text-decoration: none; }
 }
 
 .btn-secondary {
-  background: #ffffff;               /* Figma Button 6: white fill */
+  background: #ffffff;               /* Figma Button 6: white fill, r=53 */
   color: #404040;                    /* Figma: #404040 */
-  border: 1.5px solid rgba(0,0,0,0.12);
+  border: none;                      /* No border in Figma — white on hero bg */
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
 }
 .btn-secondary:hover {
-  border-color: var(--color-accent);
+  background: #f4fffe;
   color: var(--color-accent);
   box-shadow: 0 6px 18px rgba(43,188,176,0.15);
 }
