@@ -16,7 +16,7 @@ import StatCard from '../components/StatCard.astro';
       </div>
 
       <h1 class="hero__headline">
-        The platform built for <em>your aesthetic career</em> in South Florida
+        The platform built for <em>your aesthetic career in</em> South Florida
       </h1>
 
       <p class="hero__body">
@@ -76,28 +76,29 @@ import StatCard from '../components/StatCard.astro';
     position: relative;
   }
 
-  /* Dot grid texture from Figma EFM-1410 2 (PATTERN fill, ~8% opacity) */
+  /* Dot grid texture from Figma EFM-1410 2 (PATTERN fill) */
   .hero::before {
     content: '';
     position: absolute;
     inset: 0;
     background: url('/images/hero-texture.png') repeat center center;
-    background-size: 400px auto;
-    opacity: 0.06;
+    background-size: 300px auto;
+    opacity: 0.09;   /* subtle but visible like in the frame */
     pointer-events: none;
     z-index: 0;
   }
 
-  /* Rectangle 2 from Figma: 1502×75 white bar at bottom of hero (separator) */
+  /* Curved separator (Rectangle 2 from Figma, elliptical top edge) */
   .hero::after {
     content: '';
     position: absolute;
-    bottom: 0;
+    bottom: -1px;
     left: 50%;
     transform: translateX(-50%);
-    width: 110%;
-    height: 75px;
-    background: #ffffff;
+    width: 130%;
+    height: 90px;
+    background: #f2f2f2;
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;  /* elliptical top = concave from hero's POV */
     z-index: 0;
   }
 
@@ -240,12 +241,11 @@ import StatCard from '../components/StatCard.astro';
 
   /* ── STATS BAND ── */
   .hero__stats-band {
-    background: #ffffff;
+    background: #f2f2f2;   /* same as section bg — matches frame */
     padding: 2.5rem 141px;
-    border-top: 1px solid rgba(0,0,0,0.07);
     display: flex;
     align-items: center;
-    justify-content: center;   /* Center stats in band */
+    justify-content: center;
     gap: 3.5rem;
   }
 
