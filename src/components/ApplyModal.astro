@@ -1212,6 +1212,51 @@
 
 <script>
 (function() {
+
+  // ── Date field validation ──────────────────────────────────────────────────
+  function daysInMonth(month, year) {
+    const m = parseInt(month, 10);
+    const y = parseInt(year, 10) || new Date().getFullYear();
+    if (!m || m < 1 || m > 12) return 31;
+    return new Date(y, m, 0).getDate(); // last day of that month
+  }
+
+  const dobMonth = document.querySelector('[name="dob_month"]');
+  const dobDay   = document.querySelector('[name="dob_day"]');
+  const dobYear  = document.querySelector('[name="dob_year"]');
+
+  function clamp(input, min, max) {
+    const val = parseInt(input.value, 10);
+    if (!isNaN(val) && val > max) input.value = max;
+    if (!isNaN(val) && val < 1 && input.value.length >= 2) input.value = min;
+  }
+
+  dobMonth?.addEventListener('input', () => {
+    dobMonth.value = dobMonth.value.replace(/\D/g, '');
+    clamp(dobMonth, 1, 12);
+    // re-clamp day if month changed
+    if (dobDay?.value) clamp(dobDay, 1, daysInMonth(dobMonth.value, dobYear?.value));
+  });
+
+  dobDay?.addEventListener('input', () => {
+    dobDay.value = dobDay.value.replace(/\D/g, '');
+    const maxDays = daysInMonth(dobMonth?.value, dobYear?.value);
+    clamp(dobDay, 1, maxDays);
+  });
+
+  dobYear?.addEventListener('input', () => {
+    dobYear.value = dobYear.value.replace(/\D/g, '');
+    const currentYear = new Date().getFullYear();
+    if (dobYear.value.length === 4) {
+      const y = parseInt(dobYear.value, 10);
+      if (y > currentYear) dobYear.value = currentYear;
+      if (y < 1900) dobYear.value = 1900;
+      // re-clamp day with new year (leap year check)
+      if (dobDay?.value) clamp(dobDay, 1, daysInMonth(dobMonth?.value, dobYear.value));
+    }
+  });
+  // ──────────────────────────────────────────────────────────────────────────
+
   const form    = document.getElementById('apply-modal');
   const steps   = Array.from(document.querySelectorAll('.ew-step'));
   const segs    = Array.from(document.querySelectorAll('.ew-seg'));
