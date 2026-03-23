@@ -142,6 +142,8 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
     // Fire-and-forget: send to Zapier webhook (non-blocking, won't fail the response)
     // Field names match what Monday.com / Zapier mapping expects (Title Case)
     const zapPayload = {
+      // --- Item Name (required by Monday.com) ---
+      'Item Name':            `${data.first_name} ${data.last_name}`,
       // --- Identity ---
       'First Name':           data.first_name,
       'Last Name':            data.last_name,
