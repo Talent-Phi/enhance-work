@@ -12,7 +12,7 @@ const { value, suffix = '', label, dark = false } = Astro.props;
 ---
 
 <div class:list={['stat', { 'stat--dark': dark }]}>
-  <p class="stat__value">{value}<span class="stat__suffix">{suffix}</span></p>
+  <p class="stat__value">{value}<span class="stat__suffix"> {suffix}</span></p>
   <p class="stat__label">{label}</p>
 </div>
 
