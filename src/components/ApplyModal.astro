@@ -247,10 +247,11 @@
           </button>
         </div>
         <div id="ew-license-extra" hidden>
+          <div id="ew-license-chips" class="ew-license-chips-row"></div>
           <div class="ew-skill-input-row" style="max-width:340px">
             <input type="text" name="license_other" id="ew-license-input" placeholder="Enter license or certification">
             <button type="button" class="ew-skill-confirm" id="ew-license-confirm" title="Confirm" aria-label="Confirm license">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
           </div>
         </div>
@@ -276,7 +277,7 @@
             <div class="ew-skill-input-row">
               <input type="text" id="ew-skill-input" placeholder="Type a skill…" autocomplete="off">
               <button type="button" class="ew-skill-confirm" id="ew-skill-add" title="Add skill" aria-label="Add skill">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
             </div>
           </div>
@@ -1142,8 +1143,8 @@
 }
 .ew-skill-confirm {
   flex-shrink: 0;
-  width: 28px; height: 28px;
-  border-radius: 6px;
+  width: 22px; height: 22px;
+  border-radius: 5px;
   background: #2bbcb0;
   border: none;
   cursor: pointer;
@@ -1153,6 +1154,13 @@
   transition: background 0.15s;
 }
 .ew-skill-confirm:hover { background: #27a89e; }
+.ew-license-chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+.ew-license-chips-row:empty { display: none; }
 
 /* ── Mobile ── */
 @media (max-width: 700px) {
@@ -1559,14 +1567,24 @@
     document.getElementById('ew-skills-row')?.addEventListener('click', () => skillInput.focus());
   }
 
-  // License confirm button (green check)
-  document.getElementById('ew-license-confirm')?.addEventListener('click', () => {
+  // License confirm button (green check) — adds chip
+  function addLicenseChip() {
     const inp = document.getElementById('ew-license-input');
-    if (inp?.value.trim()) {
-      // visual feedback: flash border green
-      inp.style.outline = '2px solid #2bbcb0';
-      setTimeout(() => { inp.style.outline = ''; }, 800);
-    }
+    const chipsRow = document.getElementById('ew-license-chips');
+    if (!inp || !chipsRow) return;
+    const val = inp.value.trim();
+    if (!val) return;
+    const chip = document.createElement('div');
+    chip.className = 'ew-skill-tag';
+    chip.innerHTML = `<span>${val}</span><button type="button" aria-label="Remove">×</button>`;
+    chip.querySelector('button').addEventListener('click', () => chip.remove());
+    chipsRow.appendChild(chip);
+    inp.value = '';
+    inp.focus();
+  }
+  document.getElementById('ew-license-confirm')?.addEventListener('click', addLicenseChip);
+  document.getElementById('ew-license-input')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); addLicenseChip(); }
   });
 
   // Clear licenses
