@@ -35,30 +35,26 @@
           <div class="demand__bar-row">
             <span class="demand__bar-label">Nurse injector</span>
             <div class="demand__bar-track">
-              <div class="demand__bar-fill" style="width:80%"></div>
+              <div class="demand__bar-fill" style="width:80%"><span class="demand__bar-pct">80%</span></div>
             </div>
-            <span class="demand__bar-pct">80%</span>
           </div>
           <div class="demand__bar-row">
             <span class="demand__bar-label">Medical Aesthetician</span>
             <div class="demand__bar-track">
-              <div class="demand__bar-fill" style="width:65%"></div>
+              <div class="demand__bar-fill" style="width:65%"><span class="demand__bar-pct">65%</span></div>
             </div>
-            <span class="demand__bar-pct">65%</span>
           </div>
           <div class="demand__bar-row">
             <span class="demand__bar-label">Laser Technician</span>
             <div class="demand__bar-track">
-              <div class="demand__bar-fill" style="width:50%"></div>
+              <div class="demand__bar-fill" style="width:50%"><span class="demand__bar-pct">50%</span></div>
             </div>
-            <span class="demand__bar-pct">50%</span>
           </div>
           <div class="demand__bar-row">
             <span class="demand__bar-label">Dermatology Assistant</span>
             <div class="demand__bar-track">
-              <div class="demand__bar-fill" style="width:40%"></div>
+              <div class="demand__bar-fill" style="width:40%"><span class="demand__bar-pct">40%</span></div>
             </div>
-            <span class="demand__bar-pct">40%</span>
           </div>
         </div>
       </div>
@@ -179,7 +175,7 @@
 
   .demand__bar-row {
     display: grid;
-    grid-template-columns: 160px 1fr 40px;
+    grid-template-columns: 160px 1fr;
     align-items: center;
     gap: .75rem;
   }
@@ -205,17 +201,22 @@
     background: var(--color-accent);
     border-radius: 4px;
     transition: width 1s ease;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 2.5rem;
   }
 
   .demand__bar-pct {
-    font-size: .875rem;
-    font-weight: 500;
-    color: var(--color-accent);
-    text-align: right;
+    font-size: .8rem;
+    font-weight: 600;
+    color: #fff;
+    padding-right: 0.5rem;
+    white-space: nowrap;
   }
 
   @media (max-width: 768px) {
     .demand__cards { grid-template-columns: 1fr; }
-    .demand__bar-row { grid-template-columns: 120px 1fr 36px; }
+    .demand__bar-row { grid-template-columns: 110px 1fr; }
   }
 </style>
