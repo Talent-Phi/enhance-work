@@ -37,8 +37,8 @@
         <h2 class="ew-title">What role are you looking for?</h2>
         <p class="ew-subtitle">Select all that apply</p>
         <hr class="ew-divider">
-        <p class="ew-field-label" style="padding: 0 4rem 0.4rem;">Select Position*</p>
-        <div class="ew-role-grid" style="flex:1;padding:0 4rem 0;">
+        <p class="ew-field-label ew-field-label--grid">Select Position*</p>
+        <div class="ew-role-grid ew-role-grid--main">
           <label class="ew-role-card">
             <input type="checkbox" name="role" value="aesthetic_provider">
             <div class="ew-role-card__img"><img src="/images/form/role-aesthetic-provider.jpg" alt="Aesthetic Provider"></div>
@@ -532,8 +532,15 @@
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(2, 1fr);
   gap: 0.65rem;
-  /* flex:1 and padding set inline on step 1 */
   min-height: 0;
+}
+/* Step 1 — grid fills remaining height, padded like body */
+.ew-role-grid--main {
+  flex: 1;
+  padding: 0 4rem 0.5rem;
+}
+.ew-field-label--grid {
+  padding: 0 4rem 0.4rem;
 }
 .ew-role-card {
   display: flex;
@@ -989,9 +996,10 @@
 @media (max-width: 700px) {
   /* ── Container & card ── */
   .ew-form {
-    padding: 0;               /* edge-to-edge background */
+    padding: 0;
     justify-content: flex-start;
     align-items: stretch;
+    overflow-x: hidden;
   }
 
   /* Logo + back arrow row outside card */
@@ -1036,13 +1044,17 @@
   /* DOB row stays 3 cols but smaller */
   .ew-dob { grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; }
 
-  /* Role grid: 2 columns */
-  .ew-role-grid {
+  /* Role grid: 2 columns, remove desktop padding */
+  .ew-role-grid,
+  .ew-role-grid--main {
     grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
     gap: 0.6rem;
     flex: none;
+    padding: 0 !important;
   }
-  .ew-role-card__img { min-height: 90px; }
+  .ew-field-label--grid { padding: 0 0 0.4rem !important; }
+  .ew-role-card__img { flex: none; height: 90px; }
 
   /* License grid: 2 cols */
   .ew-license-grid { grid-template-columns: 1fr 1fr; }
