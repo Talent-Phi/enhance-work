@@ -1122,12 +1122,15 @@
 .ew-skill-input-row {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.35rem;
   border: 1.5px solid #ddd;
   border-radius: 8px;
-  padding: 0 0.4rem 0 0.75rem;
+  padding: 0.4rem 0.4rem 0.4rem 0.75rem;
   background: #fff;
   transition: border-color 0.15s;
+  width: 100%;
+  max-width: 340px;
+  box-sizing: border-box;
 }
 .ew-skill-input-row:focus-within { border-color: #2bbcb0; }
 .ew-skill-input-row input {
@@ -1135,16 +1138,17 @@
   border: none;
   outline: none;
   background: transparent;
-  padding: 0.55rem 0;
+  padding: 0;
   font-size: 0.875rem;
   font-family: var(--font-body);
   color: #333;
   min-width: 0;
+  line-height: 1.4;
 }
 .ew-skill-confirm {
   flex-shrink: 0;
-  width: 22px; height: 22px;
-  border-radius: 5px;
+  width: 20px; height: 20px;
+  border-radius: 4px;
   background: #2bbcb0;
   border: none;
   cursor: pointer;
@@ -1152,6 +1156,7 @@
   align-items: center;
   justify-content: center;
   transition: background 0.15s;
+  padding: 0;
 }
 .ew-skill-confirm:hover { background: #27a89e; }
 .ew-license-chips-row {
@@ -1551,8 +1556,7 @@
     chip.className = 'ew-skill-tag';
     chip.innerHTML = `<span>${val}</span><button type="button" aria-label="Remove">×</button>`;
     chip.querySelector('button').addEventListener('click', () => chip.remove());
-    // Insert chip before the + button so it stays at end
-    skillsRow.insertBefore(chip, addBtn);
+    skillChips.appendChild(chip);
     skillInput.value = '';
     skillInput.focus();
   }
