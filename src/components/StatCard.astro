@@ -21,14 +21,17 @@ const { value, suffix = '', label, dark = false } = Astro.props;
 
   /* Light variant (hero section) */
   .stat__value {
-    font-family: 'Syne', sans-serif;
-    font-size: 3.75rem; /* 60px */
+    font-family: 'Poppins', sans-serif;
+    font-size: 3.75rem;
     font-weight: 700;
     line-height: 1;
     color: #404040;
   }
 
-  .stat__suffix { color: #cbc5ff; } /* Figma: lavender accent on stats */
+  .stat__suffix {
+    color: #7b6bb5;
+    font-weight: 600;
+  }
 
   .stat__label {
     font-family: 'Poppins', sans-serif;
