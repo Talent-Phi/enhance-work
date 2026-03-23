@@ -40,52 +40,52 @@
         <p class="ew-field-label ew-field-label--grid">Select Position*</p>
         <div class="ew-role-grid ew-role-grid--main">
           <label class="ew-role-card">
-            <input type="checkbox" name="role" value="aesthetic_provider">
+            <input type="radio" name="role" value="aesthetic_provider">
             <div class="ew-role-card__img"><img src="/images/form/role-aesthetic-provider.jpg" alt="Aesthetic Provider"></div>
             <span>Aesthetic Provider</span>
           </label>
           <label class="ew-role-card">
-            <input type="checkbox" name="role" value="medical_director">
+            <input type="radio" name="role" value="medical_director">
             <div class="ew-role-card__img"><img src="/images/form/role-medical-director.jpg" alt="Medical Director"></div>
             <span>Medical Director</span>
           </label>
           <label class="ew-role-card">
-            <input type="checkbox" name="role" value="medical_esthetician">
+            <input type="radio" name="role" value="medical_esthetician">
             <div class="ew-role-card__img"><img src="/images/form/role-medical-esthetician.jpg" alt="Medical Esthetician"></div>
             <span>Medical Esthetician</span>
           </label>
           <label class="ew-role-card">
-            <input type="checkbox" name="role" value="laser_technician">
+            <input type="radio" name="role" value="laser_technician">
             <div class="ew-role-card__img"><img src="/images/form/role-laser-technician.jpg" alt="Laser Technician"></div>
             <span>Laser Technician</span>
           </label>
           <label class="ew-role-card">
-            <input type="checkbox" name="role" value="body_technician">
+            <input type="radio" name="role" value="body_technician">
             <div class="ew-role-card__img"><img src="/images/form/role-body-technician.jpg" alt="Body Technician"></div>
             <span>Body Technician</span>
           </label>
           <label class="ew-role-card">
-            <input type="checkbox" name="role" value="patient_coordinator">
+            <input type="radio" name="role" value="patient_coordinator">
             <div class="ew-role-card__img"><img src="/images/form/role-patient-coordinator.jpg" alt="Patient Coordinator"></div>
             <span>Patient Coordinator</span>
           </label>
           <label class="ew-role-card">
-            <input type="checkbox" name="role" value="sales_associate">
+            <input type="radio" name="role" value="sales_associate">
             <div class="ew-role-card__img"><img src="/images/form/role-sales-associate.jpg" alt="Sales Associate"></div>
             <span>Sales Associate</span>
           </label>
           <label class="ew-role-card">
-            <input type="checkbox" name="role" value="marketing">
+            <input type="radio" name="role" value="marketing">
             <div class="ew-role-card__img"><img src="/images/form/role-marketing.jpg" alt="Marketing"></div>
             <span>Marketing</span>
           </label>
           <label class="ew-role-card">
-            <input type="checkbox" name="role" value="practice_manager">
+            <input type="radio" name="role" value="practice_manager">
             <div class="ew-role-card__img"><img src="/images/form/role-practice-manager.jpg" alt="Practice Manager"></div>
             <span>Practice Manager</span>
           </label>
           <label class="ew-role-card">
-            <input type="checkbox" name="role" value="medical_assistant">
+            <input type="radio" name="role" value="medical_assistant">
             <div class="ew-role-card__img"><img src="/images/form/role-medical-assistant.jpg" alt="Medical Assistant"></div>
             <span>Medical Assistant</span>
           </label>
@@ -792,10 +792,11 @@
 .ew-skill-tag {
   display: flex;
   align-items: center;
-  gap: 0.3rem;
-  padding: 0.2rem 0.55rem;
-  background: #d4f5f1;
-  color: #1aaa94;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem 0.25rem 0.7rem;
+  background: #fff;
+  color: #2bbcb0;
+  border: 1.5px solid #2bbcb0;
   border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 500;
@@ -803,12 +804,14 @@
 .ew-skill-tag button {
   background: none;
   border: none;
-  color: #1aaa94;
+  color: #2bbcb0;
   cursor: pointer;
   font-size: 1rem;
   line-height: 1;
   padding: 0;
+  opacity: 0.7;
 }
+.ew-skill-tag button:hover { opacity: 1; }
 
 /* ── Start options (step 5) ── */
 .ew-start-opts {
@@ -1151,23 +1154,29 @@
     if (e.key === 'Escape' && !form.hidden) close();
   });
 
-  // Skills (Enter key)
+  // Skills — badge input
   const skillInput = document.getElementById('ew-skill-input');
   const skillChips = document.getElementById('ew-skill-chips');
+  function addSkill() {
+    if (!skillInput || !skillInput.value.trim()) return;
+    const val = skillInput.value.trim();
+    const chip = document.createElement('div');
+    chip.className = 'ew-skill-tag';
+    chip.innerHTML = `<span>${val}</span><button type="button" aria-label="Remove">×</button>`;
+    chip.querySelector('button').addEventListener('click', () => chip.remove());
+    skillChips.appendChild(chip);
+    skillInput.value = '';
+    skillInput.focus();
+  }
   if (skillInput) {
     skillInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter' && skillInput.value.trim()) {
-        e.preventDefault();
-        const val = skillInput.value.trim();
-        const chip = document.createElement('div');
-        chip.className = 'ew-skill-tag';
-        chip.innerHTML = `<span>${val}</span><button type="button" aria-label="Remove">×</button>`;
-        chip.querySelector('button').addEventListener('click', () => chip.remove());
-        skillChips.appendChild(chip);
-        skillInput.value = '';
-      }
+      if (e.key === 'Enter') { e.preventDefault(); addSkill(); }
     });
-    // clicking the container focuses input
+    document.getElementById('ew-skill-add')?.addEventListener('click', e => {
+      e.preventDefault();
+      if (skillInput.value.trim()) addSkill();
+      else skillInput.focus();
+    });
     document.getElementById('ew-skills-row')?.addEventListener('click', () => skillInput.focus());
   }
 
