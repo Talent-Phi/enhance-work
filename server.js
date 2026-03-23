@@ -137,7 +137,60 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
       ]
     );
 
-    res.json({ success: true, id: result.rows[0].id });
+    const appId = result.rows[0].id;
+
+    // Fire-and-forget: send to Zapier webhook (non-blocking, won't fail the response)
+    const zapPayload = {
+      // --- Identity ---
+      first_name:       data.first_name,
+      last_name:        data.last_name,
+      email:            data.email,
+      phone:            data.phone || '',
+      gender:           data.gender || '',
+      date_of_birth:    dob || '',
+      // --- Position ---
+      role:             data.role,
+      // --- Address ---
+      address:          data.address1 || '',
+      apt_suite:        data.address2 || '',
+      city:             data.city || '',
+      state:            data.state || '',
+      zip:              data.zip || '',
+      // --- Competences ---
+      language:         data.language || '',
+      language_level:   data.language_level || '',
+      language_other:   data.language_other || '',
+      language_2:       data.language_2 || '',
+      language_level_2: data.language_level_2 || '',
+      language_3:       data.language_3 || '',
+      language_level_3: data.language_level_3 || '',
+      language_4:       data.language_4 || '',
+      language_level_4: data.language_level_4 || '',
+      licenses:         licenses.join(', '),
+      license_other:    data.license_other || '',
+      // --- Experience ---
+      years_experience: data.years_experience || '',
+      skills:           skills.join(', '),
+      start_date:       data.start_date || '',
+      employed:         data.employed || '',
+      // --- Salary / Resume ---
+      salary:           data.salary || '',
+      pay_type:         data.pay_type || '',
+      resume_filename:  resumeFilename || '',
+      // --- Meta ---
+      application_id:   appId,
+      submitted_at:     new Date().toISOString(),
+      form_name:        'Enhance.work Application',
+      page_url:         'https://enhance.work',
+    };
+
+    fetch('https://hooks.zapier.com/hooks/catch/12621312/37nxjvq/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(zapPayload),
+    }).catch(err => console.error('[Zapier] Webhook error:', err.message));
+
+    res.json({ success: true, id: appId });
   } catch (err) {
     console.error('Error saving application:', err);
     res.status(500).json({ success: false, error: 'Failed to save application' });
