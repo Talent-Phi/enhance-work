@@ -185,27 +185,13 @@
           </div>
           <div class="ew-field">
             <label>City<span class="req">*</span></label>
-            <div class="ew-select-wrap">
-              <select name="city">
-                <option>Miami</option>
-                <option>Doral</option>
-                <option>Coral Gables</option>
-                <option>Hialeah</option>
-                <option>Fort Lauderdale</option>
-                <option>Boca Raton</option>
-                <option>West Palm Beach</option>
-                <option>Other</option>
-              </select>
-              <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            </div>
+            <input type="text" name="city" placeholder="City" autocomplete="address-level2">
           </div>
         </div>
         <div class="ew-field" style="max-width:340px">
           <label>Zip code<span class="req">*</span></label>
-          <div class="ew-select-wrap">
-            <input type="text" name="zip" placeholder="00000000-00" maxlength="10" autocomplete="postal-code" style="padding-right:2rem">
-            <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          </div>
+          <input type="text" name="zip" id="ew-zip" placeholder="e.g. 33101" maxlength="10" autocomplete="postal-code">
+          <p class="ew-zip-status" id="ew-zip-status" hidden></p>
         </div>
         </div><!-- /.ew-step-content -->
       </div>
@@ -701,6 +687,12 @@
   font-size: 0.76rem;
   color: #bbb;
   margin: 0.25rem 0 0;
+}
+
+.ew-zip-status {
+  font-size: 0.78rem;
+  margin: 0.3rem 0 0;
+  transition: color 0.2s;
 }
 
 /* ── License grid (step 4) ── */
@@ -1541,5 +1533,54 @@
   resumeFile?.addEventListener('change', () => {
     if (resumeLabel) resumeLabel.textContent = resumeFile.files[0]?.name || 'Attatch Resume';
   });
+
+  // Zip code → auto-fill city & state via zippopotam.us
+  const zipInput = document.getElementById('ew-zip');
+  const zipStatus = document.getElementById('ew-zip-status');
+  const stateSelect = form.querySelector('select[name="state"]');
+  const cityInput = form.querySelector('input[name="city"]');
+  let zipTimeout = null;
+
+  if (zipInput) {
+    zipInput.addEventListener('input', () => {
+      const val = zipInput.value.replace(/\D/g, '');
+      if (zipTimeout) clearTimeout(zipTimeout);
+      if (val.length === 5) {
+        zipStatus.textContent = 'Looking up...';
+        zipStatus.hidden = false;
+        zipStatus.style.color = '#888';
+        zipTimeout = setTimeout(() => {
+          fetch(`https://api.zippopotam.us/us/${val}`)
+            .then(r => {
+              if (!r.ok) throw new Error('not found');
+              return r.json();
+            })
+            .then(data => {
+              const place = data.places?.[0];
+              if (place) {
+                if (cityInput) cityInput.value = place['place name'];
+                if (stateSelect) {
+                  const stateName = place['state'];
+                  for (const opt of stateSelect.options) {
+                    if (opt.textContent === stateName || opt.value === stateName) {
+                      stateSelect.value = opt.value || opt.textContent;
+                      break;
+                    }
+                  }
+                }
+                zipStatus.textContent = `${place['place name']}, ${place['state abbreviation']}`;
+                zipStatus.style.color = '#2bbcb0';
+              }
+            })
+            .catch(() => {
+              zipStatus.textContent = 'Zip code not found';
+              zipStatus.style.color = '#e05555';
+            });
+        }, 300);
+      } else {
+        zipStatus.hidden = true;
+      }
+    });
+  }
 })();
 </script>
