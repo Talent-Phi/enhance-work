@@ -140,48 +140,49 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
     const appId = result.rows[0].id;
 
     // Fire-and-forget: send to Zapier webhook (non-blocking, won't fail the response)
+    // Field names match what Monday.com / Zapier mapping expects (Title Case)
     const zapPayload = {
       // --- Identity ---
-      first_name:       data.first_name,
-      last_name:        data.last_name,
-      email:            data.email,
-      phone:            data.phone || '',
-      gender:           data.gender || '',
-      date_of_birth:    dob || '',
+      'First Name':           data.first_name,
+      'Last Name':            data.last_name,
+      'Email':                data.email,
+      'Phone Number':         data.phone || '',
+      'Gender':               data.gender || '',
+      'Date of Birth':        dob || '',
       // --- Position ---
-      role:             data.role,
+      'Role':                 data.role,
       // --- Address ---
-      address:          data.address1 || '',
-      apt_suite:        data.address2 || '',
-      city:             data.city || '',
-      state:            data.state || '',
-      zip:              data.zip || '',
+      'Address':              data.address1 || '',
+      'Apt / Suite':          data.address2 || '',
+      'City':                 data.city || '',
+      'State':                data.state || '',
+      'Zip Code':             data.zip || '',
       // --- Competences ---
-      language:         data.language || '',
-      language_level:   data.language_level || '',
-      language_other:   data.language_other || '',
-      language_2:       data.language_2 || '',
-      language_level_2: data.language_level_2 || '',
-      language_3:       data.language_3 || '',
-      language_level_3: data.language_level_3 || '',
-      language_4:       data.language_4 || '',
-      language_level_4: data.language_level_4 || '',
-      licenses:         licenses.join(', '),
-      license_other:    data.license_other || '',
+      'Language':             data.language || '',
+      'Language Level':       data.language_level || '',
+      'Language (Other)':     data.language_other || '',
+      'Language 2':           data.language_2 || '',
+      'Language Level 2':     data.language_level_2 || '',
+      'Language 3':           data.language_3 || '',
+      'Language Level 3':     data.language_level_3 || '',
+      'Language 4':           data.language_4 || '',
+      'Language Level 4':     data.language_level_4 || '',
+      'Licenses':             licenses.join(', '),
+      'License (Other)':      data.license_other || '',
       // --- Experience ---
-      years_experience: data.years_experience || '',
-      skills:           skills.join(', '),
-      start_date:       data.start_date || '',
-      employed:         data.employed || '',
+      'Years of Experience':  data.years_experience || '',
+      'Skills':               skills.join(', '),
+      'Start Date':           data.start_date || '',
+      'Currently Employed':   data.employed || '',
       // --- Salary / Resume ---
-      salary:           data.salary || '',
-      pay_type:         data.pay_type || '',
-      resume_filename:  resumeFilename || '',
+      'Salary Expectations':  data.salary || '',
+      'Salary Type':          data.pay_type || '',
+      'Resume Filename':      resumeFilename || '',
       // --- Meta ---
-      application_id:   appId,
-      submitted_at:     new Date().toISOString(),
-      form_name:        'Enhance.work Application',
-      page_url:         'https://enhance.work',
+      'Application ID':       appId,
+      'Submitted At':         new Date().toISOString(),
+      'Form Name':            'Enhance.work Application',
+      'Page URL':             'https://enhance.work',
     };
 
     fetch('https://hooks.zapier.com/hooks/catch/12621312/37nxjvq/', {
