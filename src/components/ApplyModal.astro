@@ -1,874 +1,1075 @@
 ---
-// ApplyModal.astro — 6-step application form
-// Triggered by .apply-btn clicks anywhere on the page
+// ApplyModal.astro — 6-step application form (pixel-perfect Figma match)
+// Opens fullscreen on .apply-btn click
 ---
 
-<div id="apply-modal" class="modal" role="dialog" aria-modal="true" aria-label="Apply to Enhance.work" hidden>
+<div id="apply-modal" class="ew-form" role="dialog" aria-modal="true" aria-label="Apply to Enhance.work" hidden>
 
-  <div class="modal__panel">
+  <!-- Logo above card -->
+  <div class="ew-form__logo-wrap">
+    <span class="ew-logo-text">Enhance</span><span class="ew-logo-badge">.work</span>
+  </div>
 
-    <!-- Header: logo + close -->
-    <div class="modal__header">
-      <div class="modal__logo">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="14" cy="14" r="14" fill="#2bbcb0"/>
-          <path d="M8 14h12M14 8v12" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
-        </svg>
-        <span>enhance.work</span>
+  <!-- Card -->
+  <div class="ew-form__card">
+
+    <!-- Progress bar row -->
+    <div class="ew-form__progress-row">
+      <button class="ew-back-btn" id="ew-back" aria-label="Go back" hidden>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="ew-segments" aria-hidden="true">
+        <div class="ew-seg" data-seg="1"></div>
+        <div class="ew-seg" data-seg="2"></div>
+        <div class="ew-seg" data-seg="3"></div>
+        <div class="ew-seg" data-seg="4"></div>
+        <div class="ew-seg" data-seg="5"></div>
+        <div class="ew-seg" data-seg="6"></div>
       </div>
-      <button class="modal__close" id="modal-cancel" aria-label="Close">×</button>
+      <span class="ew-step-label" id="ew-step-label">STEP 1 / 6</span>
     </div>
 
-    <!-- Progress bar (6 steps) -->
-    <div class="modal__progress" aria-hidden="true">
-      <div class="progress__track">
-        <div class="progress__bar" id="modal-progress-bar" style="width:16.66%"></div>
-      </div>
-      <span class="progress__label" id="modal-step-label">STEP 1 / 6</span>
-    </div>
+    <!-- Steps -->
+    <div class="ew-form__body">
 
-    <!-- Steps container -->
-    <div class="modal__steps">
-
-      <!-- ── STEP 1: Role ── -->
-      <div class="modal__step" data-step="1">
-        <h2 class="step__title">What role are you looking for?</h2>
-        <p class="step__subtitle">Select all that apply</p>
-        <p class="step__field-label">Select Position*</p>
-        <div class="role-grid">
-          <label class="role-chip"><input type="checkbox" name="role" value="aesthetic_provider"><span>Aesthetic Provider</span></label>
-          <label class="role-chip"><input type="checkbox" name="role" value="patient_coordinator"><span>Patient Coordinator</span></label>
-          <label class="role-chip"><input type="checkbox" name="role" value="medical_director"><span>Medical Director</span></label>
-          <label class="role-chip"><input type="checkbox" name="role" value="sales_associate"><span>Sales Associate</span></label>
-          <label class="role-chip"><input type="checkbox" name="role" value="medical_esthetician"><span>Medical Esthetician</span></label>
-          <label class="role-chip"><input type="checkbox" name="role" value="marketing"><span>Marketing</span></label>
-          <label class="role-chip"><input type="checkbox" name="role" value="laser_technician"><span>Laser Technician</span></label>
-          <label class="role-chip"><input type="checkbox" name="role" value="practice_manager"><span>Practice Manager</span></label>
-          <label class="role-chip"><input type="checkbox" name="role" value="body_technician"><span>Body Technician</span></label>
-          <label class="role-chip"><input type="checkbox" name="role" value="medical_assistant"><span>Medical Assistant</span></label>
+      <!-- ── STEP 1 ── -->
+      <div class="ew-step" data-step="1">
+        <h2 class="ew-title">What role are you looking for?</h2>
+        <p class="ew-subtitle">Select all that apply</p>
+        <hr class="ew-divider">
+        <p class="ew-field-label">Select Position*</p>
+        <div class="ew-role-grid">
+          <label class="ew-role-card">
+            <input type="checkbox" name="role" value="aesthetic_provider">
+            <div class="ew-role-card__img"><img src="/images/form/role-aesthetic-provider.jpg" alt="Aesthetic Provider"></div>
+            <span>Aesthetic Provider</span>
+          </label>
+          <label class="ew-role-card">
+            <input type="checkbox" name="role" value="medical_director">
+            <div class="ew-role-card__img"><img src="/images/form/role-medical-director.jpg" alt="Medical Director"></div>
+            <span>Medical Director</span>
+          </label>
+          <label class="ew-role-card">
+            <input type="checkbox" name="role" value="medical_esthetician">
+            <div class="ew-role-card__img"><img src="/images/form/role-medical-esthetician.jpg" alt="Medical Esthetician"></div>
+            <span>Medical Esthetician</span>
+          </label>
+          <label class="ew-role-card">
+            <input type="checkbox" name="role" value="laser_technician">
+            <div class="ew-role-card__img"><img src="/images/form/role-laser-technician.jpg" alt="Laser Technician"></div>
+            <span>Laser Technician</span>
+          </label>
+          <label class="ew-role-card">
+            <input type="checkbox" name="role" value="body_technician">
+            <div class="ew-role-card__img"><img src="/images/form/role-body-technician.jpg" alt="Body Technician"></div>
+            <span>Body Technician</span>
+          </label>
+          <label class="ew-role-card">
+            <input type="checkbox" name="role" value="patient_coordinator">
+            <div class="ew-role-card__img"><img src="/images/form/role-patient-coordinator.jpg" alt="Patient Coordinator"></div>
+            <span>Patient Coordinator</span>
+          </label>
+          <label class="ew-role-card">
+            <input type="checkbox" name="role" value="sales_associate">
+            <div class="ew-role-card__img"><img src="/images/form/role-sales-associate.jpg" alt="Sales Associate"></div>
+            <span>Sales Associate</span>
+          </label>
+          <label class="ew-role-card">
+            <input type="checkbox" name="role" value="marketing">
+            <div class="ew-role-card__img"><img src="/images/form/role-marketing.jpg" alt="Marketing"></div>
+            <span>Marketing</span>
+          </label>
+          <label class="ew-role-card">
+            <input type="checkbox" name="role" value="practice_manager">
+            <div class="ew-role-card__img"><img src="/images/form/role-practice-manager.jpg" alt="Practice Manager"></div>
+            <span>Practice Manager</span>
+          </label>
+          <label class="ew-role-card">
+            <input type="checkbox" name="role" value="medical_assistant">
+            <div class="ew-role-card__img"><img src="/images/form/role-medical-assistant.jpg" alt="Medical Assistant"></div>
+            <span>Medical Assistant</span>
+          </label>
         </div>
       </div>
 
-      <!-- ── STEP 2: Personal Info ── -->
-      <div class="modal__step" data-step="2" hidden>
-        <h2 class="step__title">Help us get in touch with you.</h2>
-        <p class="step__subtitle">Personal information</p>
-        <p class="step__hint">(This information is only used to verify your legal availability to work)</p>
-        <div class="form-grid form-grid--2">
-          <div class="form-field">
-            <label>First name*</label>
+      <!-- ── STEP 2 ── -->
+      <div class="ew-step" data-step="2" hidden>
+        <h2 class="ew-title">Help us get in touch with you.</h2>
+        <p class="ew-subtitle">Personal information</p>
+        <hr class="ew-divider">
+        <div class="ew-grid-3" style="margin-bottom:1.25rem">
+          <div class="ew-field">
+            <label>First name<span class="req">*</span></label>
             <input type="text" name="first_name" placeholder="Leo" autocomplete="given-name">
           </div>
-          <div class="form-field">
-            <label>Last name*</label>
+          <div class="ew-field">
+            <label>Last name<span class="req">*</span></label>
             <input type="text" name="last_name" placeholder="Gibson" autocomplete="family-name">
           </div>
-          <div class="form-field">
-            <label>Email*</label>
-            <input type="email" name="email" placeholder="l_gibson857@gmail.com" autocomplete="email">
-          </div>
-          <div class="form-field">
-            <label>Phone number*</label>
-            <input type="tel" name="phone" placeholder="+1 000 000 0000" autocomplete="tel">
-          </div>
-          <div class="form-field">
-            <label>Date of birth*</label>
-            <div class="dob-row">
-              <select name="dob_month"><option value="">Month</option>
-                <option>January</option><option>February</option><option>March</option>
-                <option>April</option><option>May</option><option>June</option>
-                <option>July</option><option>August</option><option>September</option>
-                <option>October</option><option>November</option><option>December</option>
+          <div class="ew-field">
+            <label>Gender<span class="req">*</span></label>
+            <div class="ew-select-wrap">
+              <select name="gender">
+                <option value="">Select gender</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Non-binary</option>
+                <option>Prefer not to say</option>
               </select>
-              <select name="dob_day"><option value="">Day</option>
-                <!-- JS fills 1-31 -->
-              </select>
-              <select name="dob_year"><option value="">Year</option>
-                <!-- JS fills years -->
-              </select>
+              <span class="ew-chevron">&#8964;</span>
             </div>
           </div>
-          <div class="form-field">
-            <label>Gender*</label>
-            <select name="gender">
-              <option value="">Select gender</option>
-              <option>Male</option>
-              <option>Female</option>
-              <option>Non-binary</option>
-              <option>Prefer not to say</option>
-            </select>
+        </div>
+        <div class="ew-field" style="margin-bottom:0.35rem">
+          <label>Date of birth<span class="req">*</span></label>
+          <div class="ew-dob">
+            <input type="text" name="dob_month" placeholder="Month" maxlength="2">
+            <input type="text" name="dob_day"   placeholder="Day"   maxlength="2">
+            <input type="text" name="dob_year"  placeholder="Year"  maxlength="4">
+          </div>
+        </div>
+        <p class="ew-hint">(This information is only used to verify your legal availability to work)</p>
+        <div class="ew-grid-2" style="margin-top:1.25rem">
+          <div class="ew-field">
+            <label>Email<span class="req">*</span></label>
+            <input type="email" name="email" placeholder="l_gibson857@gmail.com" autocomplete="email">
+          </div>
+          <div class="ew-field">
+            <label>Phone number<span class="req">*</span></label>
+            <input type="tel" name="phone" placeholder="+000 000 00 00" autocomplete="tel">
           </div>
         </div>
       </div>
 
-      <!-- ── STEP 3: Location ── -->
-      <div class="modal__step" data-step="3" hidden>
-        <h2 class="step__title">Where are you located?</h2>
-        <p class="step__subtitle">Your address details</p>
-        <div class="form-grid form-grid--1">
-          <div class="form-field">
-            <label>Address*</label>
-            <input type="text" name="address1" placeholder="Line 1" autocomplete="address-line1">
+      <!-- ── STEP 3 ── -->
+      <div class="ew-step" data-step="3" hidden>
+        <h2 class="ew-title">Where are you located?</h2>
+        <p class="ew-subtitle">Your address details</p>
+        <hr class="ew-divider">
+        <div class="ew-field" style="margin-bottom:0.6rem">
+          <label>Address<span class="req">*</span></label>
+          <input type="text" name="address1" placeholder="Line 1" autocomplete="address-line1">
+        </div>
+        <div class="ew-field" style="margin-bottom:1.25rem">
+          <input type="text" name="address2" placeholder="Line 2 (optional)" autocomplete="address-line2">
+        </div>
+        <div class="ew-grid-2" style="margin-bottom:1rem">
+          <div class="ew-field">
+            <label>State<span class="req">*</span></label>
+            <div class="ew-select-wrap">
+              <select name="state">
+                <option value="" selected>Florida</option>
+                <option>Alabama</option><option>Alaska</option><option>Arizona</option>
+                <option>Arkansas</option><option>California</option><option>Colorado</option>
+                <option>Connecticut</option><option>Delaware</option><option>Florida</option>
+                <option>Georgia</option><option>Hawaii</option><option>Idaho</option>
+                <option>Illinois</option><option>Indiana</option><option>Iowa</option>
+                <option>Kansas</option><option>Kentucky</option><option>Louisiana</option>
+                <option>Maine</option><option>Maryland</option><option>Massachusetts</option>
+                <option>Michigan</option><option>Minnesota</option><option>Mississippi</option>
+                <option>Missouri</option><option>Montana</option><option>Nebraska</option>
+                <option>Nevada</option><option>New Hampshire</option><option>New Jersey</option>
+                <option>New Mexico</option><option>New York</option><option>North Carolina</option>
+                <option>North Dakota</option><option>Ohio</option><option>Oklahoma</option>
+                <option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option>
+                <option>South Carolina</option><option>South Dakota</option><option>Tennessee</option>
+                <option>Texas</option><option>Utah</option><option>Vermont</option>
+                <option>Virginia</option><option>Washington</option><option>West Virginia</option>
+                <option>Wisconsin</option><option>Wyoming</option>
+              </select>
+              <span class="ew-chevron">&#8964;</span>
+            </div>
           </div>
-          <div class="form-field">
-            <input type="text" name="address2" placeholder="Line 2 (optional)" autocomplete="address-line2">
+          <div class="ew-field">
+            <label>City<span class="req">*</span></label>
+            <div class="ew-select-wrap">
+              <select name="city">
+                <option>Miami</option>
+                <option>Doral</option>
+                <option>Coral Gables</option>
+                <option>Hialeah</option>
+                <option>Fort Lauderdale</option>
+                <option>Boca Raton</option>
+                <option>West Palm Beach</option>
+                <option>Other</option>
+              </select>
+              <span class="ew-chevron">&#8964;</span>
+            </div>
           </div>
         </div>
-        <div class="form-grid form-grid--3">
-          <div class="form-field">
-            <label>State*</label>
-            <select name="state">
-              <option value="">Florida</option>
-              <option>Alabama</option><option>Alaska</option><option>Arizona</option>
-              <option>Arkansas</option><option>California</option><option>Colorado</option>
-              <option>Connecticut</option><option>Delaware</option><option selected>Florida</option>
-              <option>Georgia</option><option>Hawaii</option><option>Idaho</option>
-              <option>Illinois</option><option>Indiana</option><option>Iowa</option>
-              <option>Kansas</option><option>Kentucky</option><option>Louisiana</option>
-              <option>Maine</option><option>Maryland</option><option>Massachusetts</option>
-              <option>Michigan</option><option>Minnesota</option><option>Mississippi</option>
-              <option>Missouri</option><option>Montana</option><option>Nebraska</option>
-              <option>Nevada</option><option>New Hampshire</option><option>New Jersey</option>
-              <option>New Mexico</option><option>New York</option><option>North Carolina</option>
-              <option>North Dakota</option><option>Ohio</option><option>Oklahoma</option>
-              <option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option>
-              <option>South Carolina</option><option>South Dakota</option><option>Tennessee</option>
-              <option>Texas</option><option>Utah</option><option>Vermont</option>
-              <option>Virginia</option><option>Washington</option><option>West Virginia</option>
-              <option>Wisconsin</option><option>Wyoming</option>
-            </select>
-          </div>
-          <div class="form-field">
-            <label>City*</label>
-            <input type="text" name="city" placeholder="Miami" autocomplete="address-level2">
-          </div>
-          <div class="form-field">
-            <label>Zip code*</label>
-            <input type="text" name="zip" placeholder="00000" autocomplete="postal-code" maxlength="10">
+        <div class="ew-field" style="max-width:340px">
+          <label>Zip code<span class="req">*</span></label>
+          <div class="ew-select-wrap">
+            <input type="text" name="zip" placeholder="00000000-00" maxlength="10" autocomplete="postal-code" style="padding-right:2rem">
+            <span class="ew-chevron">&#8964;</span>
           </div>
         </div>
       </div>
 
-      <!-- ── STEP 4: Competences ── -->
-      <div class="modal__step" data-step="4" hidden>
-        <h2 class="step__title">Competences</h2>
-        <p class="step__subtitle">Languages and licenses you hold</p>
-
-        <div class="form-grid form-grid--2" style="margin-bottom:1.5rem">
-          <div class="form-field">
-            <label>Languages</label>
+      <!-- ── STEP 4 ── -->
+      <div class="ew-step" data-step="4" hidden>
+        <h2 class="ew-title">Competences</h2>
+        <p class="ew-subtitle">Languages and licenses you hold</p>
+        <hr class="ew-divider">
+        <div class="ew-field" style="margin-bottom:0.4rem">
+          <label>Languages</label>
+        </div>
+        <div class="ew-grid-2" style="margin-bottom:0.75rem">
+          <div class="ew-select-wrap">
             <select name="language">
               <option value="">Select</option>
               <option>English</option><option>Spanish</option><option>French</option>
               <option>Portuguese</option><option>Mandarin</option><option>Other</option>
             </select>
+            <span class="ew-chevron">&#8964;</span>
           </div>
-          <div class="form-field">
-            <label>&nbsp;</label>
+          <div class="ew-select-wrap">
             <select name="language_level">
               <option value="">Level</option>
               <option>Basic</option><option>Conversational</option>
               <option>Fluent</option><option>Native</option>
             </select>
+            <span class="ew-chevron">&#8964;</span>
           </div>
         </div>
-
-        <div class="form-field" style="margin-bottom:0.5rem">
-          <label>Licenses you hold</label>
-          <button type="button" class="link-btn" id="clear-licenses">Clear All</button>
-        </div>
-        <div class="license-grid">
-          <label class="license-chip"><input type="checkbox" name="license" value="md_do"><span>M.D. / D.O.</span></label>
-          <label class="license-chip"><input type="checkbox" name="license" value="np"><span>N.P.</span></label>
-          <label class="license-chip"><input type="checkbox" name="license" value="pa"><span>P.A.</span></label>
-          <label class="license-chip"><input type="checkbox" name="license" value="electrologist"><span>Electrologist</span></label>
-          <label class="license-chip"><input type="checkbox" name="license" value="cosmetologist"><span>Cosmetologist</span></label>
-          <label class="license-chip"><input type="checkbox" name="license" value="phlebotomist"><span>Phlebotomist</span></label>
-          <label class="license-chip"><input type="checkbox" name="license" value="medical_assistant"><span>Medical Assistant</span></label>
-        </div>
-        <button type="button" class="add-btn" id="add-license-btn">
-          <span class="add-btn__icon">+</span> Add something else.
+        <button type="button" class="ew-link-btn" id="ew-add-lang">
+          <span style="font-size:1.1rem;line-height:1">+</span> Add something else.
         </button>
-        <div id="add-license-extra" hidden style="margin-top:0.75rem">
-          <input type="text" name="license_other" placeholder="Enter license or certification" style="width:100%">
+        <div id="ew-extra-lang" hidden style="margin:0.5rem 0 0.75rem">
+          <input type="text" name="language_other" placeholder="Add another language" style="width:100%;max-width:340px">
+        </div>
+
+        <div class="ew-licenses-header">
+          <label class="ew-field-label">Licenses you hold</label>
+          <button type="button" class="ew-clear-btn" id="ew-clear-licenses">Clear All</button>
+        </div>
+        <div class="ew-license-grid">
+          <label class="ew-license-chip"><input type="checkbox" name="license" value="md_do"><span class="ew-radio-dot"></span>M.D. / D.O.</label>
+          <label class="ew-license-chip"><input type="checkbox" name="license" value="np"><span class="ew-radio-dot"></span>N.P.</label>
+          <label class="ew-license-chip"><input type="checkbox" name="license" value="pa"><span class="ew-radio-dot"></span>P.A.</label>
+          <label class="ew-license-chip"><input type="checkbox" name="license" value="cosmetologist"><span class="ew-radio-dot"></span>Cosmetologist</label>
+          <label class="ew-license-chip"><input type="checkbox" name="license" value="electrologist"><span class="ew-radio-dot"></span>Electrologist</label>
+          <label class="ew-license-chip"><input type="checkbox" name="license" value="phlebotomist"><span class="ew-radio-dot"></span>Phlebotomist</label>
+          <label class="ew-license-chip"><input type="checkbox" name="license" value="medical_assistant"><span class="ew-radio-dot"></span>Medical Assistant</label>
+          <button type="button" class="ew-license-chip ew-license-add" id="ew-add-license-btn">
+            <span class="ew-license-add__icon">+</span> Add licenses
+          </button>
+        </div>
+        <div id="ew-license-extra" hidden style="margin-top:0.75rem">
+          <input type="text" name="license_other" placeholder="Enter license or certification" style="width:100%;max-width:340px">
         </div>
       </div>
 
-      <!-- ── STEP 5: Experience ── -->
-      <div class="modal__step" data-step="5" hidden>
-        <h2 class="step__title">What is your Medical Aesthetics experience?</h2>
-        <p class="step__subtitle">Tell us about your background</p>
+      <!-- ── STEP 5 ── -->
+      <div class="ew-step" data-step="5" hidden>
+        <h2 class="ew-title">What is your Medical Aesthetics experience?</h2>
+        <p class="ew-subtitle">Tell us about your background</p>
+        <hr class="ew-divider">
 
-        <div class="form-grid form-grid--2">
-          <div class="form-field">
-            <label>Years of experience*</label>
-            <select name="years_experience">
-              <option value="">Years</option>
-              <option>Less than 1</option><option>1</option><option>2</option>
-              <option>3</option><option>4</option><option>5+</option><option>10+</option>
-            </select>
-          </div>
-          <div class="form-field">
-            <label>When are you looking to start working?*</label>
-            <div class="btn-group">
-              <label class="option-chip"><input type="radio" name="start_date" value="asap"><span>ASAP</span></label>
-              <label class="option-chip"><input type="radio" name="start_date" value="2_4_weeks"><span>2 - 4 Weeks</span></label>
-              <label class="option-chip"><input type="radio" name="start_date" value="over_4_weeks"><span>Over 4 Weeks</span></label>
-            </div>
-          </div>
+        <div class="ew-field" style="max-width:200px;margin-bottom:1.25rem">
+          <label>Years of experience<span class="req">*</span></label>
+          <input type="text" name="years_experience" placeholder="Years">
         </div>
 
-        <div class="form-field" style="margin-top:1.25rem">
+        <div class="ew-field" style="margin-bottom:1.25rem">
           <label>If you see fit, list some of your skills relevant to Aesthetics</label>
-          <div class="skills-input-row">
-            <div id="skills-chips"></div>
-            <input type="text" id="skill-input" placeholder="| Skill" autocomplete="off">
+          <div class="ew-skills-row" id="ew-skills-row">
+            <div id="ew-skill-chips"></div>
+            <button type="button" class="ew-skill-add-btn" id="ew-skill-add">
+              <span class="ew-skill-plus">+</span>
+              <input type="text" id="ew-skill-input" placeholder="| Skill" autocomplete="off">
+            </button>
           </div>
         </div>
 
-        <div class="form-field" style="margin-top:1.25rem">
+        <div class="ew-field" style="margin-bottom:1.25rem">
+          <label>When are you looking to start working?<span class="req">*</span></label>
+          <div class="ew-start-opts">
+            <label class="ew-start-opt"><input type="radio" name="start_date" value="asap"><span class="ew-radio-dot"></span>ASAP</label>
+            <label class="ew-start-opt"><input type="radio" name="start_date" value="2_4_weeks"><span class="ew-radio-dot"></span>2 - 4 Weeks</label>
+            <label class="ew-start-opt"><input type="radio" name="start_date" value="over_4"><span class="ew-radio-dot"></span>Over 4 Weeks</label>
+          </div>
+        </div>
+
+        <div class="ew-field">
           <label>Are you currently employed?</label>
-          <div class="radio-row">
-            <label class="radio-opt"><input type="radio" name="employed" value="yes"><span>Yes</span></label>
-            <label class="radio-opt"><input type="radio" name="employed" value="no"><span>No</span></label>
+          <div class="ew-radio-row">
+            <label class="ew-radio-opt"><input type="radio" name="employed" value="yes"><span class="ew-radio-circle" data-active></span>Yes</label>
+            <label class="ew-radio-opt"><input type="radio" name="employed" value="no"><span class="ew-radio-circle"></span>No</label>
           </div>
         </div>
       </div>
 
-      <!-- ── STEP 6: Compensation ── -->
-      <div class="modal__step" data-step="6" hidden>
-        <h2 class="step__title">What are your compensation expectations?</h2>
-        <p class="step__subtitle">Final step — almost there</p>
+      <!-- ── STEP 6 ── -->
+      <div class="ew-step" data-step="6" hidden>
+        <h2 class="ew-title">What are your compensation expectations?</h2>
+        <p class="ew-subtitle">Final step almost there</p>
+        <hr class="ew-divider">
 
-        <div class="form-grid form-grid--2">
-          <div class="form-field">
-            <label>Salary expectations*</label>
-            <input type="text" name="salary" placeholder="$0.00 USD">
-          </div>
-          <div class="form-field">
-            <label>&nbsp;</label>
+        <div class="ew-field" style="margin-bottom:0.4rem">
+          <label>Salary expectations<span class="req">*</span></label>
+        </div>
+        <div class="ew-grid-salary" style="margin-bottom:1.25rem">
+          <input type="text" name="salary" placeholder="$0.00 USD">
+          <div class="ew-select-wrap">
             <select name="pay_type">
               <option>Hourly</option>
               <option>Annual</option>
               <option>Per procedure</option>
               <option>Commission</option>
             </select>
+            <span class="ew-chevron">&#8964;</span>
           </div>
         </div>
 
-        <div class="resume-upload" id="resume-upload">
-          <input type="file" name="resume" id="resume-file" accept=".pdf,.doc,.docx" hidden>
-          <label for="resume-file" class="resume-upload__label">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 5v10M7 10l5-5 5 5" stroke="#2bbcb0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 19h14" stroke="#2bbcb0" stroke-width="2" stroke-linecap="round"/></svg>
-            <span id="resume-label-text">Attach Resume</span>
-          </label>
-        </div>
-
-        <div class="message-box">
-          <div class="message-box__header">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#555" stroke-width="1.5"/><path d="M12 8v4M12 16h.01" stroke="#555" stroke-width="2" stroke-linecap="round"/></svg>
-            <strong>Important message to New Injectors</strong>
-            <button type="button" class="link-btn" id="toggle-message">Click to read</button>
+        <!-- Important message box -->
+        <div class="ew-msg-box" style="margin-bottom:1.25rem">
+          <div class="ew-msg-box__row">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex-shrink:0"><circle cx="12" cy="12" r="10" stroke="#2bbcb0" stroke-width="1.5"/><path d="M12 8v4M12 16h.01" stroke="#2bbcb0" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="ew-msg-box__title">Important message to New Injectors</span>
+            <button type="button" class="ew-clear-btn" id="ew-toggle-msg">Click to read</button>
           </div>
-          <div id="message-content" hidden>
-            <p>Before joining the platform, new injectors must provide proof of supervision or collaborative agreement with a licensed Medical Director. Make sure to upload your documentation or note it in your resume.</p>
+          <div id="ew-msg-content" hidden style="padding:0.6rem 0 0 1.5rem;font-size:0.82rem;color:#666;line-height:1.5">
+            Before joining the platform, new injectors must provide proof of supervision or collaborative agreement with a licensed Medical Director. Make sure to upload your documentation or note it in your resume.
           </div>
         </div>
 
-        <div class="checkbox-row">
-          <label class="checkbox-opt">
-            <input type="checkbox" name="terms" required>
-            <span>Agree terms and conditions.</span>
+        <!-- Checkboxes -->
+        <div class="ew-checkbox-row" style="margin-bottom:1.25rem">
+          <label class="ew-checkbox-opt">
+            <span class="ew-checkbox-box"><input type="checkbox" name="injector_msg"></span>
+            I've read New Injector's message.
           </label>
-          <label class="checkbox-opt">
-            <input type="checkbox" name="injector_msg">
-            <span>I've read New Injector's message.</span>
+          <label class="ew-checkbox-opt">
+            <span class="ew-checkbox-box ew-checkbox-box--checked"><input type="checkbox" name="terms" checked></span>
+            Agree terms and conditions.
           </label>
         </div>
 
-        <p class="recaptcha-notice">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms of Service</a> apply.</p>
+        <!-- Attach resume -->
+        <div style="text-align:center;margin-bottom:1rem">
+          <input type="file" name="resume" id="ew-resume-file" accept=".pdf,.doc,.docx" hidden>
+          <label for="ew-resume-file" class="ew-resume-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v10M7 10l5-5 5 5" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 19h14" stroke="#555" stroke-width="2" stroke-linecap="round"/></svg>
+            <span id="ew-resume-label">Attatch Resume</span>
+          </label>
+        </div>
+
+        <p class="ew-recaptcha">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms of Service</a> apply.</p>
       </div>
 
-    </div><!-- /.modal__steps -->
+    </div><!-- /.ew-form__body -->
 
-    <!-- Footer: action buttons -->
-    <div class="modal__footer">
-      <button type="button" class="btn btn--ghost" id="modal-back" hidden>← Back</button>
-      <div class="modal__footer-right">
-        <button type="button" class="btn btn--ghost" id="modal-cancel-2">Cancel</button>
-        <button type="button" class="btn btn--primary" id="modal-next">Continue</button>
-      </div>
+    <!-- Footer buttons -->
+    <div class="ew-form__footer">
+      <button type="button" class="ew-btn ew-btn--cancel" id="ew-cancel">Cancel</button>
+      <button type="button" class="ew-btn ew-btn--continue" id="ew-next">Continue</button>
     </div>
 
-  </div><!-- /.modal__panel -->
-</div><!-- /#apply-modal -->
+  </div><!-- /.ew-form__card -->
+</div>
 
 <style>
-/* ── Fullscreen overlay ── */
-.modal {
+/* ── Fullscreen container ── */
+.ew-form {
   position: fixed;
   inset: 0;
   z-index: 9999;
+  background: #e0e0e0;
+  /* subtle dot pattern like Figma */
+  background-image: radial-gradient(circle, #c8c8c8 1px, transparent 1px);
+  background-size: 20px 20px;
   display: flex;
   flex-direction: column;
-  background: #fff;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
   overflow-y: auto;
 }
-.modal[hidden] { display: none !important; }
+.ew-form[hidden] { display: none !important; }
 
-/* ── Panel — full viewport ── */
-.modal__panel {
+/* ── Logo above card ── */
+.ew-form__logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 1.5rem;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.ew-logo-text {
+  color: #1a1c1b;
+}
+.ew-logo-badge {
+  background: #2bbcb0;
+  color: #fff;
+  padding: 0.18em 0.55em;
+  border-radius: 20px;
+  font-size: 0.95em;
+  font-weight: 700;
+  margin-left: 1px;
+}
+
+/* ── Card ── */
+.ew-form__card {
+  background: #fff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 900px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+  overflow: hidden;
+}
+
+/* ── Progress row ── */
+.ew-form__progress-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem 2rem 0;
+}
+.ew-back-btn {
+  background: none;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color 0.15s;
+  color: #555;
+  padding: 0;
+}
+.ew-back-btn:hover { border-color: #bbb; }
+.ew-segments {
+  display: flex;
+  gap: 6px;
+  flex: 1;
+}
+.ew-seg {
+  height: 4px;
+  flex: 1;
+  border-radius: 4px;
+  background: #e0e0e0;
+  transition: background 0.3s ease;
+}
+.ew-seg.active {
+  background: #2bbcb0;
+}
+.ew-step-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #aaa;
+  white-space: nowrap;
+  font-family: var(--font-body);
+}
+
+/* ── Body ── */
+.ew-form__body {
+  padding: 1.75rem 2rem 1rem;
+}
+
+/* ── Title / subtitle / divider ── */
+.ew-title {
+  font-family: var(--font-heading);
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #363636;
+  text-align: center;
+  margin-bottom: 0.3rem;
+  line-height: 1.25;
+}
+.ew-subtitle {
+  font-size: 0.9rem;
+  color: #8a8a8a;
+  text-align: center;
+  margin-bottom: 0;
+}
+.ew-divider {
+  border: none;
+  border-top: 1px solid #ebebeb;
+  margin: 1.25rem 0;
+}
+.ew-field-label, .req {
+  font-size: 0.82rem;
+  color: #8a8a8a;
+}
+.req { color: inherit; }
+
+/* ── Role grid ── */
+.ew-role-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.65rem;
+}
+.ew-role-card {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  width: 100%;
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
-/* ── Header ── */
-.modal__header {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 1.5rem 1.75rem 0;
-}
-.modal__logo {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: var(--font-display);
-  font-size: 1rem;
-  font-weight: 700;
-  color: #18232c;
-}
-.modal__close {
-  background: none;
-  border: none;
-  font-size: 1.75rem;
-  line-height: 1;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 10px;
+  overflow: hidden;
   cursor: pointer;
-  color: #888;
-  padding: 0.25rem 0.5rem;
-  border-radius: 6px;
-  transition: background 0.15s;
+  background: #fff;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  user-select: none;
+  padding-bottom: 0.6rem;
 }
-.modal__close:hover { background: #f2f2f2; }
+.ew-role-card input { display: none; }
+.ew-role-card__img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+}
+.ew-role-card__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.ew-role-card span {
+  font-size: 0.78rem;
+  color: #333;
+  margin-top: 0.5rem;
+  text-align: center;
+  padding: 0 0.4rem;
+  line-height: 1.3;
+  font-family: var(--font-body);
+}
+.ew-role-card:has(input:checked) {
+  border-color: #2bbcb0;
+  box-shadow: 0 0 0 2px rgba(43,188,176,0.15);
+}
+.ew-role-card:has(input:checked) span { color: #2bbcb0; font-weight: 500; }
+.ew-role-card:hover { border-color: #2bbcb0; }
 
-/* ── Progress ── */
-.modal__progress {
-  padding: 1.25rem 1.75rem 0;
+/* ── Grids ── */
+.ew-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.ew-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+.ew-grid-salary { display: grid; grid-template-columns: 1fr 260px; gap: 1rem; }
+
+/* ── Fields & inputs ── */
+.ew-field {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
 }
-.progress__track {
-  width: 100%;
-  height: 4px;
-  background: #e8e8e8;
-  border-radius: 4px;
-  overflow: hidden;
-}
-.progress__bar {
-  height: 100%;
-  background: #2bbcb0;
-  border-radius: 4px;
-  transition: width 0.35s ease;
-}
-.progress__label {
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: #bbb;
-  font-family: var(--font-body);
-  text-transform: uppercase;
-}
-
-/* ── Steps ── */
-.modal__steps {
-  padding: 1.5rem 1.75rem;
-  flex: 1;
-}
-.step__title {
-  font-family: var(--font-heading);
-  font-size: 1.35rem;
-  font-weight: 600;
-  color: #363636;
-  margin-bottom: 0.3rem;
-  line-height: 1.3;
-}
-.step__subtitle {
-  font-size: 0.88rem;
-  color: #7a7a7a;
-  margin-bottom: 0.25rem;
-}
-.step__hint {
-  font-size: 0.78rem;
-  color: #bbb;
-  margin-bottom: 1.25rem;
-}
-.step__field-label {
-  font-size: 0.82rem;
-  color: #7a7a7a;
-  margin-bottom: 0.75rem;
-}
-
-/* ── Role chips ── */
-.role-grid, .license-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-.role-chip, .license-chip {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.55rem 0.9rem;
-  border: 1.5px solid #e5e5e5;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  color: #1a1c1b;
-  background: #fff;
-  transition: border-color 0.15s, background 0.15s;
-  user-select: none;
-}
-.role-chip input, .license-chip input { display: none; }
-.role-chip:has(input:checked), .license-chip:has(input:checked) {
-  border-color: #2bbcb0;
-  background: #f0fbfa;
-  color: #2bbcb0;
-  font-weight: 500;
-}
-.role-chip:hover, .license-chip:hover { border-color: #2bbcb0; }
-
-/* ── Forms ── */
-.form-grid { display: grid; gap: 1rem; }
-.form-grid--1 { grid-template-columns: 1fr; }
-.form-grid--2 { grid-template-columns: 1fr 1fr; }
-.form-grid--3 { grid-template-columns: 1fr 1fr 1fr; }
-
-.form-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-.form-field label {
+.ew-field label {
   font-size: 0.82rem;
   font-weight: 500;
-  color: #333;
+  color: #2a2a2a;
   font-family: var(--font-body);
 }
-.form-field input,
-.form-field select {
+.ew-field input,
+.ew-field select,
+.ew-form__card input[type="text"],
+.ew-form__card input[type="email"],
+.ew-form__card input[type="tel"],
+.ew-form__card select {
   padding: 0.6rem 0.85rem;
-  border: 1.5px solid #e5e5e5;
+  border: 1.5px solid #e0e0e0;
   border-radius: 8px;
   font-size: 0.88rem;
   color: #bbb;
+  font-family: var(--font-body);
   background: #fff;
   outline: none;
-  font-family: var(--font-body);
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, color 0.15s;
+  width: 100%;
+  box-sizing: border-box;
   appearance: none;
   -webkit-appearance: none;
 }
-.form-field input:focus,
-.form-field select:focus { border-color: #2bbcb0; color: #333; }
-.form-field input::placeholder { color: #bbb; }
-
-.dob-row {
-  display: grid;
-  grid-template-columns: 1.6fr 1fr 1.2fr;
-  gap: 0.5rem;
+.ew-form__card input::placeholder { color: #bbb; }
+.ew-form__card input:focus,
+.ew-form__card select:focus {
+  border-color: #2bbcb0;
+  color: #333;
 }
-.dob-row select { color: #bbb; }
+.ew-form__card input:not(:placeholder-shown) { color: #333; }
 
-/* ── Option chips (radio-style) ── */
-.btn-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.4rem;
-}
-.option-chip {
+/* ── Select wrapper (custom chevron) ── */
+.ew-select-wrap {
+  position: relative;
   display: flex;
   align-items: center;
-  padding: 0.45rem 0.9rem;
-  border: 1.5px solid #e5e5e5;
-  border-radius: 20px;
+}
+.ew-select-wrap select { padding-right: 2rem; }
+.ew-chevron {
+  position: absolute;
+  right: 0.75rem;
+  font-size: 1rem;
+  color: #555;
+  pointer-events: none;
+  line-height: 1;
+}
+
+/* ── Date of birth ── */
+.ew-dob {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr;
+  gap: 0.5rem;
+}
+
+/* ── Hint text ── */
+.ew-hint {
+  font-size: 0.76rem;
+  color: #bbb;
+  margin: 0.25rem 0 0;
+}
+
+/* ── License grid (step 4) ── */
+.ew-licenses-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem 0 0.6rem;
+}
+.ew-licenses-header .ew-field-label { margin: 0; }
+.ew-clear-btn {
+  background: none;
+  border: none;
+  font-size: 0.8rem;
+  color: #555;
+  cursor: pointer;
+  font-family: var(--font-body);
+  padding: 0;
+}
+.ew-clear-btn:hover { text-decoration: underline; }
+
+.ew-license-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+.ew-license-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.85rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 0.83rem;
   color: #333;
+  font-family: var(--font-body);
   background: #fff;
-  transition: border-color 0.15s, background 0.15s;
+  transition: border-color 0.15s;
   user-select: none;
 }
-.option-chip input { display: none; }
-.option-chip:has(input:checked) {
-  border-color: #2bbcb0;
-  background: #f0fbfa;
-  color: #2bbcb0;
-  font-weight: 500;
+.ew-license-chip input { display: none; }
+.ew-radio-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid #ccc;
+  flex-shrink: 0;
+  transition: border-color 0.15s, background 0.15s;
+  background: #fff;
+  display: inline-block;
 }
-.option-chip:hover { border-color: #2bbcb0; }
+.ew-license-chip:has(input:checked) .ew-radio-dot {
+  background: #2bbcb0;
+  border-color: #2bbcb0;
+}
+.ew-license-chip:has(input:checked) { border-color: #2bbcb0; color: #2bbcb0; }
+.ew-license-chip:hover { border-color: #2bbcb0; }
 
-/* ── Radio opts ── */
-.radio-row { display: flex; gap: 1.5rem; margin-top: 0.5rem; }
-.radio-opt {
+.ew-license-add {
+  border-style: dashed;
+  color: #2bbcb0;
+  border-color: #2bbcb0;
+  gap: 0.35rem;
+  background: none;
+  cursor: pointer;
+}
+.ew-license-add__icon {
+  font-size: 1rem;
+  line-height: 1;
+  color: #2bbcb0;
+}
+
+.ew-link-btn {
+  background: none;
+  border: none;
+  color: #2bbcb0;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-family: var(--font-body);
   display: flex;
   align-items: center;
-  gap: 0.45rem;
-  cursor: pointer;
-  font-size: 0.88rem;
-  color: #333;
+  gap: 0.3rem;
+  padding: 0.2rem 0;
+  margin-bottom: 0.5rem;
 }
-.radio-opt input[type="radio"] {
-  width: 18px; height: 18px;
-  accent-color: #2bbcb0;
-}
+.ew-link-btn:hover { text-decoration: underline; }
 
-/* ── Skills input ── */
-.skills-input-row {
-  border: 1.5px solid #e5e5e5;
-  border-radius: 8px;
-  padding: 0.5rem 0.75rem;
+/* ── Skills row (step 5) ── */
+.ew-skills-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
   align-items: center;
-  min-height: 44px;
+  gap: 0.4rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.4rem 0.75rem;
+  min-height: 42px;
+  cursor: text;
 }
-.skills-input-row:focus-within { border-color: #2bbcb0; }
-#skill-input {
+.ew-skills-row:focus-within { border-color: #2bbcb0; }
+.ew-skill-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: text;
+}
+.ew-skill-plus {
+  color: #2bbcb0;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+#ew-skill-input {
   border: none;
   outline: none;
   font-size: 0.85rem;
   color: #2bbcb0;
-  flex: 1;
-  min-width: 100px;
+  width: 80px;
+  background: transparent;
+  font-family: var(--font-body);
   padding: 0;
 }
-.skill-tag {
+#ew-skill-input::placeholder { color: #2bbcb0; opacity: 0.6; }
+.ew-skill-tag {
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  padding: 0.25rem 0.6rem;
-  background: #d1f5f1;
-  color: #0faa82;
-  border-radius: 6px;
+  padding: 0.2rem 0.55rem;
+  background: #d4f5f1;
+  color: #1aaa94;
+  border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 500;
 }
-.skill-tag__remove {
+.ew-skill-tag button {
   background: none;
   border: none;
-  color: #0faa82;
+  color: #1aaa94;
   cursor: pointer;
   font-size: 1rem;
   line-height: 1;
   padding: 0;
 }
 
-/* ── Add / link buttons ── */
-.add-btn {
+/* ── Start options (step 5) ── */
+.ew-start-opts {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+.ew-start-opt {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
-  background: none;
-  border: none;
-  color: #2bbcb0;
-  font-size: 0.88rem;
+  gap: 0.5rem;
+  padding: 0.5rem 1.1rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
   cursor: pointer;
-  padding: 0.6rem 0;
+  font-size: 0.85rem;
+  color: #333;
   font-family: var(--font-body);
+  background: #fff;
+  transition: border-color 0.15s;
+  user-select: none;
 }
-.add-btn:hover { text-decoration: underline; }
-.link-btn {
-  background: none;
-  border: none;
-  color: #2bbcb0;
-  font-size: 0.8rem;
-  cursor: pointer;
-  padding: 0;
-  font-family: var(--font-body);
-}
-.link-btn:hover { text-decoration: underline; }
+.ew-start-opt input { display: none; }
+.ew-start-opt:has(input:checked) { border-color: #2bbcb0; color: #2bbcb0; }
+.ew-start-opt:has(input:checked) .ew-radio-dot { background: #2bbcb0; border-color: #2bbcb0; }
+.ew-start-opt:hover { border-color: #2bbcb0; }
 
-/* ── Resume upload ── */
-.resume-upload {
-  margin-top: 1.25rem;
-  margin-bottom: 1.25rem;
+/* ── Radio yes/no (step 5) ── */
+.ew-radio-row { display: flex; gap: 1.5rem; margin-top: 0.4rem; }
+.ew-radio-opt {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.88rem;
+  color: #333;
+  font-family: var(--font-body);
+  user-select: none;
 }
-.resume-upload__label {
+.ew-radio-opt input { display: none; }
+.ew-radio-circle {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid #ccc;
+  display: inline-block;
+  position: relative;
+  flex-shrink: 0;
+  transition: border-color 0.15s;
+}
+.ew-radio-opt:has(input:checked) .ew-radio-circle {
+  border-color: #2bbcb0;
+  background: #fff;
+}
+.ew-radio-opt:has(input:checked) .ew-radio-circle::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: #2bbcb0;
+}
+
+/* ── Message box (step 6) ── */
+.ew-msg-box {
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+}
+.ew-msg-box__row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.ew-msg-box__title {
+  flex: 1;
+  font-size: 0.85rem;
+  color: #333;
+  font-family: var(--font-body);
+  font-weight: 500;
+}
+
+/* ── Checkboxes (step 6) ── */
+.ew-checkbox-row {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+.ew-checkbox-opt {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  color: #333;
+  font-family: var(--font-body);
+  cursor: pointer;
+  user-select: none;
+}
+.ew-checkbox-opt input { display: none; }
+.ew-checkbox-box {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid #ccc;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.15s, background 0.15s;
+  background: #fff;
+}
+.ew-checkbox-box--checked,
+.ew-checkbox-opt:has(input:checked) .ew-checkbox-box {
+  background: #2bbcb0;
+  border-color: #2bbcb0;
+}
+.ew-checkbox-box--checked::after,
+.ew-checkbox-opt:has(input:checked) .ew-checkbox-box::after {
+  content: '';
+  display: block;
+  width: 10px;
+  height: 6px;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(-45deg) translateY(-1px);
+}
+
+/* ── Attach resume ── */
+.ew-resume-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  border: 1.5px solid #2bbcb0;
+  border: 1.5px solid #ccc;
   border-radius: 8px;
-  padding: 0.6rem 1.1rem;
-  color: #2bbcb0;
+  padding: 0.55rem 1.5rem;
   font-size: 0.88rem;
-  font-weight: 500;
+  color: #444;
   cursor: pointer;
-  transition: background 0.15s;
+  font-family: var(--font-body);
+  transition: border-color 0.15s;
 }
-.resume-upload__label:hover { background: #f0fbfa; }
+.ew-resume-btn:hover { border-color: #888; }
 
-/* ── Message box ── */
-.message-box {
-  border: 1.5px solid #e5e5e5;
-  border-radius: 10px;
-  padding: 0.85rem 1rem;
-  margin-bottom: 1rem;
-  background: #fafafa;
-}
-.message-box__header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-.message-box__header strong {
-  flex: 1;
-  font-size: 0.88rem;
-  color: #333;
-}
-#message-content {
-  margin-top: 0.6rem;
-  font-size: 0.83rem;
-  color: #666;
-  line-height: 1.5;
-}
-
-/* ── Checkboxes ── */
-.checkbox-row {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  margin-bottom: 1rem;
-}
-.checkbox-opt {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 0.88rem;
-  color: #333;
-  cursor: pointer;
-}
-.checkbox-opt input[type="checkbox"] {
-  width: 18px; height: 18px;
-  accent-color: #2bbcb0;
-  flex-shrink: 0;
-}
-
-/* ── reCAPTCHA notice ── */
-.recaptcha-notice {
+/* ── reCAPTCHA ── */
+.ew-recaptcha {
   font-size: 0.72rem;
-  color: #aaa;
+  color: #bbb;
+  text-align: center;
+  margin-top: 0.75rem;
   line-height: 1.4;
-  margin-bottom: 0.5rem;
 }
-.recaptcha-notice a { color: #2bbcb0; text-decoration: none; }
-.recaptcha-notice a:hover { text-decoration: underline; }
+.ew-recaptcha a { color: #2bbcb0; text-decoration: none; }
+.ew-recaptcha a:hover { text-decoration: underline; }
 
 /* ── Footer ── */
-.modal__footer {
+.ew-form__footer {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 1.75rem 1.5rem;
-  border-top: 1px solid #f0f0f0;
+  justify-content: flex-end;
   gap: 0.75rem;
+  padding: 1rem 2rem 1.5rem;
+  border-top: 1px solid #f2f2f2;
 }
-.modal__footer-right {
-  display: flex;
-  gap: 0.75rem;
-  margin-left: auto;
-}
-.btn {
-  padding: 0.65rem 1.5rem;
-  border-radius: 8px;
+.ew-btn {
+  padding: 0.6rem 2rem;
+  border-radius: 25px;
   font-size: 0.9rem;
   font-weight: 600;
+  font-family: var(--font-body);
   cursor: pointer;
   border: none;
-  font-family: var(--font-body);
   transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
-.btn--primary {
-  background: #2bbcb0;
-  color: #fff;
-}
-.btn--primary:hover { background: #22a89d; }
-.btn--ghost {
+.ew-btn--cancel {
   background: #fff;
   color: #444;
-  border: 1.5px solid #e5e5e5;
+  border: 1.5px solid #ddd;
 }
-.btn--ghost:hover { border-color: #bbb; }
+.ew-btn--cancel:hover { border-color: #bbb; }
+.ew-btn--continue {
+  background: #2bbcb0;
+  color: #fff;
+  border: 1.5px solid #2bbcb0;
+}
+.ew-btn--continue:hover { background: #22a89d; }
 
 /* ── Mobile ── */
-@media (max-width: 600px) {
-  .modal__panel { padding: 0 1rem; }
-  .modal__header,
-  .modal__progress,
-  .modal__steps { padding-left: 0; padding-right: 0; }
-  .modal__footer { padding: 0.85rem 0 1.25rem; }
-
-  .form-grid--2,
-  .form-grid--3 { grid-template-columns: 1fr; }
-
-  .role-grid, .license-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .dob-row { grid-template-columns: 1fr 1fr 1fr; }
-
-  .step__title { font-size: 1.15rem; }
+@media (max-width: 700px) {
+  .ew-form { padding: 1rem 0.75rem; justify-content: flex-start; }
+  .ew-form__logo-wrap { margin-bottom: 1rem; }
+  .ew-form__card { border-radius: 14px; }
+  .ew-form__progress-row,
+  .ew-form__body,
+  .ew-form__footer { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .ew-title { font-size: 1.25rem; }
+  .ew-role-grid { grid-template-columns: repeat(2, 1fr); }
+  .ew-grid-2, .ew-grid-3, .ew-grid-salary { grid-template-columns: 1fr; }
+  .ew-dob { grid-template-columns: 1fr 1fr 1fr; }
+  .ew-license-grid { grid-template-columns: 1fr 1fr; }
+  .ew-start-opts { flex-direction: column; }
+  .ew-checkbox-row { flex-direction: column; gap: 0.75rem; }
 }
 </style>
 
 <script>
 (function() {
-  const modal      = document.getElementById('apply-modal');
-  const steps      = Array.from(document.querySelectorAll('.modal__step'));
-  const nextBtn    = document.getElementById('modal-next');
-  const backBtn    = document.getElementById('modal-back');
-  const cancelBtns = document.querySelectorAll('#modal-cancel, #modal-cancel-2');
-  const progressBar = document.getElementById('modal-progress-bar');
-  const stepLabel  = document.getElementById('modal-step-label');
-  const totalSteps = 6;
+  const form    = document.getElementById('apply-modal');
+  const steps   = Array.from(document.querySelectorAll('.ew-step'));
+  const segs    = Array.from(document.querySelectorAll('.ew-seg'));
+  const nextBtn = document.getElementById('ew-next');
+  const backBtn = document.getElementById('ew-back');
+  const cancelBtn = document.getElementById('ew-cancel');
+  const stepLabel = document.getElementById('ew-step-label');
+  const total = 6;
   let current = 1;
 
   function showStep(n) {
-    steps.forEach(s => {
-      const sn = parseInt(s.dataset.step);
-      s.hidden = sn !== n;
-    });
-    // Progress
-    progressBar.style.width = ((n / totalSteps) * 100) + '%';
-    stepLabel.textContent = 'STEP ' + n + ' / ' + totalSteps;
-    // Buttons
+    steps.forEach(s => s.hidden = parseInt(s.dataset.step) !== n);
+    segs.forEach((seg, i) => seg.classList.toggle('active', i < n));
+    stepLabel.textContent = `STEP ${n} / ${total}`;
     backBtn.hidden = n === 1;
-    nextBtn.textContent = n === totalSteps ? 'Finish' : 'Continue';
+    nextBtn.textContent = n === total ? 'Finish' : 'Continue';
     current = n;
+    form.scrollTop = 0;
   }
 
-  function openModal() {
-    modal.hidden = false;
+  function open() {
+    form.hidden = false;
     showStep(1);
     document.body.style.overflow = 'hidden';
   }
 
-  function closeModal() {
-    modal.hidden = true;
+  function close() {
+    form.hidden = true;
     document.body.style.overflow = '';
   }
 
-  // Open on any .apply-btn click
+  // Open on any .apply-btn
   document.addEventListener('click', e => {
-    if (e.target.closest('.apply-btn')) openModal();
+    if (e.target.closest('.apply-btn')) open();
   });
 
-  // Cancel buttons
-  cancelBtns.forEach(btn => btn.addEventListener('click', closeModal));
+  cancelBtn.addEventListener('click', close);
 
-  // Navigation
   nextBtn.addEventListener('click', () => {
-    if (current < totalSteps) {
-      showStep(current + 1);
-    } else {
-      // Submit
-      console.log('Form submitted');
-      closeModal();
-    }
+    if (current < total) showStep(current + 1);
+    else { console.log('Form submitted'); close(); }
   });
 
   backBtn.addEventListener('click', () => {
     if (current > 1) showStep(current - 1);
   });
 
-  // Escape key
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && !modal.hidden) closeModal();
+    if (e.key === 'Escape' && !form.hidden) close();
   });
 
-  // DOB: fill day/year dropdowns
-  const dobDay  = document.querySelector('select[name="dob_day"]');
-  const dobYear = document.querySelector('select[name="dob_year"]');
-  if (dobDay) {
-    for (let d = 1; d <= 31; d++) {
-      const o = document.createElement('option');
-      o.value = d; o.textContent = d;
-      dobDay.appendChild(o);
-    }
-  }
-  if (dobYear) {
-    const now = new Date().getFullYear();
-    for (let y = now - 18; y >= now - 80; y--) {
-      const o = document.createElement('option');
-      o.value = y; o.textContent = y;
-      dobYear.appendChild(o);
-    }
-  }
-
-  // Skills input (Enter to add chip)
-  const skillInput = document.getElementById('skill-input');
-  const skillsChips = document.getElementById('skills-chips');
+  // Skills (Enter key)
+  const skillInput = document.getElementById('ew-skill-input');
+  const skillChips = document.getElementById('ew-skill-chips');
   if (skillInput) {
     skillInput.addEventListener('keydown', e => {
-      if ((e.key === 'Enter' || e.key === ',') && skillInput.value.trim()) {
+      if (e.key === 'Enter' && skillInput.value.trim()) {
         e.preventDefault();
-        const val = skillInput.value.trim().replace(/,$/, '');
-        if (!val) return;
+        const val = skillInput.value.trim();
         const chip = document.createElement('div');
-        chip.className = 'skill-tag';
-        chip.innerHTML = `<span>${val}</span><button class="skill-tag__remove" type="button" aria-label="Remove ${val}">×</button>`;
-        chip.querySelector('.skill-tag__remove').addEventListener('click', () => chip.remove());
-        skillsChips.appendChild(chip);
+        chip.className = 'ew-skill-tag';
+        chip.innerHTML = `<span>${val}</span><button type="button" aria-label="Remove">×</button>`;
+        chip.querySelector('button').addEventListener('click', () => chip.remove());
+        skillChips.appendChild(chip);
         skillInput.value = '';
       }
     });
+    // clicking the container focuses input
+    document.getElementById('ew-skills-row')?.addEventListener('click', () => skillInput.focus());
   }
 
   // Clear licenses
-  const clearLicenses = document.getElementById('clear-licenses');
-  if (clearLicenses) {
-    clearLicenses.addEventListener('click', () => {
-      document.querySelectorAll('input[name="license"]').forEach(cb => cb.checked = false);
-    });
-  }
+  document.getElementById('ew-clear-licenses')?.addEventListener('click', () => {
+    document.querySelectorAll('input[name="license"]').forEach(cb => cb.checked = false);
+  });
 
   // Add license toggle
-  const addLicenseBtn = document.getElementById('add-license-btn');
-  const addLicenseExtra = document.getElementById('add-license-extra');
-  if (addLicenseBtn) {
-    addLicenseBtn.addEventListener('click', () => {
-      addLicenseExtra.hidden = !addLicenseExtra.hidden;
-      if (!addLicenseExtra.hidden) addLicenseExtra.querySelector('input').focus();
-    });
-  }
+  document.getElementById('ew-add-license-btn')?.addEventListener('click', () => {
+    const extra = document.getElementById('ew-license-extra');
+    if (extra) { extra.hidden = !extra.hidden; if (!extra.hidden) extra.querySelector('input').focus(); }
+  });
+
+  // Add language toggle
+  document.getElementById('ew-add-lang')?.addEventListener('click', () => {
+    const extra = document.getElementById('ew-extra-lang');
+    if (extra) { extra.hidden = !extra.hidden; if (!extra.hidden) extra.querySelector('input').focus(); }
+  });
 
   // Toggle injector message
-  const toggleMsg = document.getElementById('toggle-message');
-  const msgContent = document.getElementById('message-content');
-  if (toggleMsg) {
-    toggleMsg.addEventListener('click', () => {
-      msgContent.hidden = !msgContent.hidden;
-      toggleMsg.textContent = msgContent.hidden ? 'Click to read' : 'Hide';
-    });
-  }
+  document.getElementById('ew-toggle-msg')?.addEventListener('click', function() {
+    const c = document.getElementById('ew-msg-content');
+    if (c) { c.hidden = !c.hidden; this.textContent = c.hidden ? 'Click to read' : 'Hide'; }
+  });
 
-  // Resume file label
-  const resumeFile = document.getElementById('resume-file');
-  const resumeLabelText = document.getElementById('resume-label-text');
-  if (resumeFile) {
-    resumeFile.addEventListener('change', () => {
-      resumeLabelText.textContent = resumeFile.files[0]?.name || 'Attach Resume';
-    });
-  }
+  // Resume label
+  const resumeFile = document.getElementById('ew-resume-file');
+  const resumeLabel = document.getElementById('ew-resume-label');
+  resumeFile?.addEventListener('change', () => {
+    if (resumeLabel) resumeLabel.textContent = resumeFile.files[0]?.name || 'Attatch Resume';
+  });
 })();
 </script>
