@@ -19,28 +19,24 @@ const gridImages = [
       </p>
     </div>
 
-    <!-- Clinic logo grid: 3 columns × 2 rows -->
-    <div class="trusted__grid">
-      {gridImages.map((img) => (
-        <div class="trusted__img-wrap">
-          <img src={img.src} alt={img.alt} class="trusted__img" loading="lazy" />
-        </div>
-      ))}
-    </div>
+    <div class="trusted__layout">
+      <!-- Left: tall clinic photo -->
+      <div class="trusted__hero-wrap">
+        <img
+          src="/images/trusted-clinic.png"
+          alt="Aesthetic clinic interior"
+          class="trusted__hero-img"
+          loading="lazy"
+        />
+      </div>
 
-    <!-- Testimonial card (Figma: Megan Roberts) -->
-    <div class="trusted__testimonial">
-      <div class="trusted__quote-icon">"</div>
-      <p class="trusted__quote">
-        Enhance helped me connect with a clinic that perfectly matched my skills and schedule. Within two weeks I had my first interview.
-      </p>
-      <div class="trusted__stars">★★★★★</div>
-      <div class="trusted__author">
-        <div class="trusted__avatar">KL</div>
-        <div>
-          <div class="trusted__author-name">Megan Roberts</div>
-          <div class="trusted__author-role">Nurse Injector · Miami, FL</div>
-        </div>
+      <!-- Right: 2-col × 3-row logo grid -->
+      <div class="trusted__grid">
+        {gridImages.slice(1).map((img) => (
+          <div class="trusted__img-wrap">
+            <img src={img.src} alt={img.alt} class="trusted__img" loading="lazy" />
+          </div>
+        ))}
       </div>
     </div>
   </div>
@@ -70,12 +66,35 @@ const gridImages = [
     max-width: 560px;
   }
 
-  /* 3-column logo grid */
+  /* Two-column layout: tall photo left + logo grid right */
+  .trusted__layout {
+    display: grid;
+    grid-template-columns: 358fr 566fr;
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  /* Left: tall clinic photo */
+  .trusted__hero-wrap {
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 358 / 459;
+    background: #dde8e6;
+  }
+
+  .trusted__hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  /* Right: 2-col logo grid (3 rows) */
   .trusted__grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr 1fr;
     gap: 1.25rem;
-    margin-bottom: 3rem;
   }
 
   .trusted__img-wrap {
@@ -84,7 +103,7 @@ const gridImages = [
     aspect-ratio: 267 / 133;
     background: #ffffff;
     border: 1px solid rgba(0,0,0,0.07);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -103,64 +122,9 @@ const gridImages = [
     display: block;
   }
 
-  /* Testimonial card */
-  .trusted__testimonial {
-    max-width: 640px;
-    margin: 0 auto;
-    background: #fff;
-    border-radius: 16px;
-    padding: 2rem 2.5rem;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .trusted__quote-icon {
-    font-size: 3rem;
-    color: #b2ecec;
-    line-height: 1;
-    font-family: Georgia, serif;
-  }
-
-  .trusted__quote {
-    color: #5c6b7a;
-    font-size: 1rem;
-    line-height: 1.7;
-    margin: 0;
-  }
-
-  .trusted__stars { color: #2abfbf; font-size: 1.1rem; letter-spacing: 0.1em; }
-
-  .trusted__author {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .trusted__avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #2abfbf;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-
-  .trusted__author-name { font-weight: 600; color: #1e2b38; font-size: 0.9rem; }
-  .trusted__author-role { color: #9aa5b1; font-size: 0.8rem; }
-
   @media (max-width: 768px) {
-    .trusted__grid { grid-template-columns: repeat(2, 1fr); }
-    .trusted__testimonial { padding: 1.5rem; }
-  }
-
-  @media (max-width: 480px) {
+    .trusted__layout { grid-template-columns: 1fr; }
+    .trusted__hero-wrap { aspect-ratio: 4/3; }
     .trusted__grid { grid-template-columns: 1fr 1fr; }
   }
 </style>
