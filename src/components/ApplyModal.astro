@@ -797,31 +797,32 @@
   padding: 0;
 }
 #ew-skill-input::placeholder { color: #2bbcb0; opacity: 0.6; }
-.ew-skill-tag {
+:global(.ew-skill-tag) {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  padding: 0.2rem 0.5rem 0.2rem 0.65rem;
-  background: #d4f5f3;   /* teal claro */
-  color: #0f7a72;         /* teal oscuro */
+  padding: 0.2rem 0.6rem 0.2rem 0.75rem;
+  background: #d4f5f3;
+  color: #0f7a72;
   border: none;
   border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 500;
   white-space: nowrap;
+  flex-shrink: 0;
 }
-.ew-skill-tag button {
+:global(.ew-skill-tag button) {
   background: none;
   border: none;
   color: #0f7a72;
   cursor: pointer;
-  font-size: 0.95rem;
+  font-size: 1rem;
   line-height: 1;
-  padding: 0;
+  padding: 0 0 0 0.1rem;
   display: inline-flex;
   align-items: center;
 }
-.ew-skill-tag button:hover { color: #085a54; }
+:global(.ew-skill-tag button:hover) { color: #085a54; }
 
 /* ── Start options (step 5) ── */
 .ew-start-opts {
