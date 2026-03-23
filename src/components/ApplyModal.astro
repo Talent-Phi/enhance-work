@@ -1550,7 +1550,7 @@
         zipStatus.hidden = false;
         zipStatus.style.color = '#888';
         zipTimeout = setTimeout(() => {
-          fetch(`https://api.zippopotam.us/us/${val}`)
+          fetch(`/api/zip/${val}`)
             .then(r => {
               if (!r.ok) throw new Error('not found');
               return r.json();

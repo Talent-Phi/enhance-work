@@ -208,6 +208,24 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, error: 'Internal server error' });
 });
 
+app.get('/api/zip/:code', async (req, res) => {
+  try {
+    const code = req.params.code.replace(/\D/g, '');
+    if (code.length !== 5) {
+      return res.status(400).json({ success: false, error: 'Invalid zip code' });
+    }
+    const response = await fetch(`https://api.zippopotam.us/us/${code}`);
+    if (!response.ok) {
+      return res.status(404).json({ success: false, error: 'Zip code not found' });
+    }
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error('Zip lookup error:', err);
+    res.status(500).json({ success: false, error: 'Zip lookup failed' });
+  }
+});
+
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
