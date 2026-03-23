@@ -71,22 +71,17 @@ import StatCard from '../components/StatCard.astro';
 
 <style>
   .hero {
-    background: #d9d9d9;
+    background-color: #e0e0e0;
+    background-image: radial-gradient(circle, #c8c8c8 1px, transparent 1px);
+    background-size: 20px 20px;
     padding-top: 68px;
     position: relative;
     overflow: hidden;   /* clip ::before/::after pseudo-elements (prevent horizontal scroll) */
   }
 
-  /* Dot grid texture from Figma EFM-1410 2 (PATTERN fill) */
+  /* no extra pseudo-element texture needed — bg handles it */
   .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: url('/images/hero-texture.png') repeat center center;
-    background-size: 300px auto;
-    opacity: 0.09;   /* subtle but visible like in the frame */
-    pointer-events: none;
-    z-index: 0;
+    display: none;
   }
 
   /* Curved separator — very subtle concave arc at hero bottom (Frame 3544) */
