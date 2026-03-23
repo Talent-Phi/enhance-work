@@ -1154,9 +1154,67 @@
 
   cancelBtn.addEventListener('click', close);
 
-  nextBtn.addEventListener('click', () => {
-    if (current < total) showStep(current + 1);
-    else { console.log('Form submitted'); close(); }
+  nextBtn.addEventListener('click', async () => {
+    if (current < total) {
+      showStep(current + 1);
+    } else {
+      nextBtn.disabled = true;
+      nextBtn.textContent = 'Sending...';
+      try {
+        const formData = new FormData();
+
+        const role = form.querySelector('input[name="role"]:checked');
+        formData.append('role', role ? role.value : '');
+
+        ['first_name','last_name','gender','dob_month','dob_day','dob_year',
+         'email','phone','address1','address2','state','city','zip',
+         'language','language_level','language_other','license_other',
+         'years_experience','salary','pay_type'].forEach(name => {
+          const el = form.querySelector(`[name="${name}"]`);
+          if (el) formData.append(name, el.value);
+        });
+
+        form.querySelectorAll('input[name="license"]:checked').forEach(cb => {
+          formData.append('licenses', cb.value);
+        });
+
+        const skillChipEls = form.querySelectorAll('.ew-skill-tag span');
+        skillChipEls.forEach(s => formData.append('skills', s.textContent));
+
+        const startDate = form.querySelector('input[name="start_date"]:checked');
+        formData.append('start_date', startDate ? startDate.value : '');
+
+        const employed = form.querySelector('input[name="employed"]:checked');
+        formData.append('employed', employed ? employed.value : '');
+
+        const injectorMsg = form.querySelector('input[name="injector_msg"]');
+        formData.append('injector_msg_read', injectorMsg ? injectorMsg.checked : false);
+
+        const terms = form.querySelector('input[name="terms"]');
+        formData.append('terms_agreed', terms ? terms.checked : false);
+
+        const resumeInput = form.querySelector('input[name="resume"]');
+        if (resumeInput && resumeInput.files[0]) {
+          formData.append('resume', resumeInput.files[0]);
+        }
+
+        const resp = await fetch('/api/apply', { method: 'POST', body: formData });
+        const result = await resp.json();
+
+        if (result.success) {
+          alert('Application submitted successfully!');
+          close();
+        } else {
+          alert('There was an error submitting your application. Please try again.');
+        }
+      } catch (err) {
+        console.error('Submit error:', err);
+        alert('There was an error submitting your application. Please try again.');
+      } finally {
+        nextBtn.disabled = false;
+        nextBtn.textContent = 'Finish';
+      }
+    }
   });
 
   backBtn.addEventListener('click', () => {

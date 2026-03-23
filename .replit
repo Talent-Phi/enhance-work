@@ -1,6 +1,10 @@
-modules = ["nodejs-22"]
+modules = ["nodejs-22", "postgresql-16"]
 [agent]
 expertMode = true
+
+[[ports]]
+localPort = 3000
+externalPort = 3000
 
 [[ports]]
 localPort = 4321
@@ -9,10 +13,6 @@ externalPort = 80
 [[ports]]
 localPort = 5000
 externalPort = 80
-
-[[ports]]
-localPort = 5001
-externalPort = 3000
 
 [workflows]
 runButton = "Project"
@@ -30,16 +30,19 @@ args = "Start application"
 name = "Start application"
 author = "agent"
 
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "npm run dev"
-waitForPort = 5000
-
 [workflows.workflow.metadata]
 outputType = "webview"
 
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node server.js & npm run dev"
+waitForPort = 5000
+
 [deployment]
 build = ["npm", "run", "build"]
-run = ["sh", "-c", "npm run start"]
-deploymentTarget = "static"
+run = ["node", "server.js"]
+deploymentTarget = "autoscale"
 publicDir = "dist"
+
+[nix]
+channel = "stable-25_05"
