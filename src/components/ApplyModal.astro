@@ -687,10 +687,14 @@
 
 /* ── Date of birth ── */
 .ew-dob {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1.5fr;
+  display: flex;
   gap: 0.5rem;
+  width: fit-content;
 }
+
+.ew-dob input[name="dob_month"] { width: 90px; }
+.ew-dob input[name="dob_day"]   { width: 66px; }
+.ew-dob input[name="dob_year"]  { width: 90px; }
 
 /* ── Hint text ── */
 .ew-hint {
@@ -1156,7 +1160,10 @@
   .ew-grid-salary { grid-template-columns: 1fr; gap: 0.75rem; }
 
   /* DOB row stays 3 cols but smaller */
-  .ew-dob { grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; }
+  .ew-dob { width: 100%; }
+  .ew-dob input[name="dob_month"],
+  .ew-dob input[name="dob_day"],
+  .ew-dob input[name="dob_year"] { flex: 1; width: auto; }
 
   /* Role grid: 2 columns, remove desktop padding */
   .ew-role-grid,
