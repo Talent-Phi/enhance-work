@@ -100,7 +100,7 @@
         <p class="ew-subtitle">Personal information</p>
         <hr class="ew-divider">
         <div class="ew-step-content">
-        <div class="ew-grid-3" style="margin-bottom:1.25rem">
+        <div class="ew-grid-3">
           <div class="ew-field">
             <label>First name<span class="req">*</span></label>
             <input type="text" name="first_name" placeholder="Leo" autocomplete="given-name">
@@ -123,7 +123,7 @@
             </div>
           </div>
         </div>
-        <div class="ew-field" style="margin-bottom:0.35rem">
+        <div class="ew-field">
           <label>Date of birth<span class="req">*</span></label>
           <div class="ew-dob">
             <input type="text" name="dob_month" placeholder="Month" maxlength="2">
@@ -132,7 +132,7 @@
           </div>
         </div>
         <p class="ew-hint">(This information is only used to verify your legal availability to work)</p>
-        <div class="ew-grid-2" style="margin-top:1.25rem">
+        <div class="ew-grid-2">
           <div class="ew-field">
             <label>Email<span class="req">*</span></label>
             <input type="email" name="email" placeholder="l_gibson857@gmail.com" autocomplete="email">
@@ -151,14 +151,14 @@
         <p class="ew-subtitle">Your address details</p>
         <hr class="ew-divider">
         <div class="ew-step-content">
-        <div class="ew-field" style="margin-bottom:0.6rem">
+        <div class="ew-field">
           <label>Address<span class="req">*</span></label>
           <input type="text" name="address1" placeholder="Line 1" autocomplete="address-line1">
         </div>
-        <div class="ew-field" style="margin-bottom:1.25rem">
+        <div class="ew-field">
           <input type="text" name="address2" placeholder="Line 2 (optional)" autocomplete="address-line2">
         </div>
-        <div class="ew-grid-2" style="margin-bottom:1rem">
+        <div class="ew-grid-2">
           <div class="ew-field">
             <label>State<span class="req">*</span></label>
             <div class="ew-select-wrap">
@@ -218,10 +218,10 @@
         <p class="ew-subtitle">Languages and licenses you hold</p>
         <hr class="ew-divider">
         <div class="ew-step-content">
-        <div class="ew-field" style="margin-bottom:0.4rem">
+        <div class="ew-field">
           <label>Languages</label>
         </div>
-        <div class="ew-grid-2" style="margin-bottom:0.75rem">
+        <div class="ew-grid-2">
           <div class="ew-select-wrap">
             <select name="language">
               <option value="">Select</option>
@@ -262,7 +262,7 @@
             <span class="ew-license-add__icon">+</span> Add licenses
           </button>
         </div>
-        <div id="ew-license-extra" hidden style="margin-top:0.75rem">
+        <div id="ew-license-extra" hidden>
           <input type="text" name="license_other" placeholder="Enter license or certification" style="width:100%;max-width:340px">
         </div>
         </div><!-- /.ew-step-content -->
@@ -280,7 +280,7 @@
           <input type="text" name="years_experience" placeholder="Years">
         </div>
 
-        <div class="ew-field" style="margin-bottom:1.25rem">
+        <div class="ew-field">
           <label>If you see fit, list some of your skills relevant to Aesthetics</label>
           <div class="ew-skills-row" id="ew-skills-row">
             <div id="ew-skill-chips"></div>
@@ -291,7 +291,7 @@
           </div>
         </div>
 
-        <div class="ew-field" style="margin-bottom:1.25rem">
+        <div class="ew-field">
           <label>When are you looking to start working?<span class="req">*</span></label>
           <div class="ew-start-opts">
             <label class="ew-start-opt"><input type="radio" name="start_date" value="asap"><span class="ew-radio-dot"></span>ASAP</label>
@@ -317,10 +317,10 @@
         <hr class="ew-divider">
         <div class="ew-step-content">
 
-        <div class="ew-field" style="margin-bottom:0.4rem">
+        <div class="ew-field">
           <label>Salary expectations<span class="req">*</span></label>
         </div>
-        <div class="ew-grid-salary" style="margin-bottom:1.25rem">
+        <div class="ew-grid-salary">
           <input type="text" name="salary" placeholder="$0.00 USD">
           <div class="ew-select-wrap">
             <select name="pay_type">
@@ -334,7 +334,7 @@
         </div>
 
         <!-- Important message box -->
-        <div class="ew-msg-box" style="margin-bottom:1.25rem">
+        <div class="ew-msg-box">
           <div class="ew-msg-box__row">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex-shrink:0"><circle cx="12" cy="12" r="10" stroke="#2bbcb0" stroke-width="1.5"/><path d="M12 8v4M12 16h.01" stroke="#2bbcb0" stroke-width="2" stroke-linecap="round"/></svg>
             <span class="ew-msg-box__title">Important message to New Injectors</span>
@@ -346,7 +346,7 @@
         </div>
 
         <!-- Checkboxes -->
-        <div class="ew-checkbox-row" style="margin-bottom:1.25rem">
+        <div class="ew-checkbox-row">
           <label class="ew-checkbox-opt">
             <span class="ew-checkbox-box"><input type="checkbox" name="injector_msg"></span>
             I've read New Injector's message.
@@ -488,14 +488,14 @@
 /* CRITICAL: hidden attribute must always win over display:flex */
 .ew-step[hidden] { display: none !important; }
 
-/* Fields section after the divider — distribute evenly but not too spread */
+/* Fields section after the divider */
 .ew-step-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding-top: 0.5rem;
-  padding-bottom: 0.25rem;
+  justify-content: flex-start;
+  gap: 1.1rem;
+  padding-top: 0.4rem;
 }
 
 /* ── Title / subtitle / divider ── */
