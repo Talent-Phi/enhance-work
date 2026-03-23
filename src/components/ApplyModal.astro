@@ -397,13 +397,13 @@
   display: block;
 }
 
-/* ── Card — fills almost all screen, height capped ── */
+/* ── Card — fixed height, always same size regardless of step ── */
 .ew-form__card {
   background: #fff;
   border-radius: 16px;
   width: 100%;
   max-width: none;
-  max-height: calc(100vh - 5rem);   /* 2.5rem top + 2.5rem bottom margin */
+  height: calc(100vh - 5rem);   /* fixed height — never shrinks between steps */
   display: flex;
   flex-direction: column;
   box-shadow: 0 4px 32px rgba(0,0,0,0.10);
@@ -415,7 +415,7 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 1.25rem 2rem 0;
+  padding: 1.25rem 4rem 0;
 }
 .ew-back-btn {
   background: none;
@@ -459,7 +459,7 @@
 
 /* ── Body — scrollable, flex-grows to push footer down ── */
 .ew-form__body {
-  padding: 1.5rem 2rem 1rem;
+  padding: 1.5rem 4rem 1rem;
   flex: 1;
   overflow-y: auto;
 }
@@ -915,7 +915,7 @@
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;
-  padding: 1rem 2rem 1.5rem;
+  padding: 1rem 4rem 1.5rem;
   border-top: 1px solid #f2f2f2;
 }
 .ew-btn {
