@@ -376,14 +376,13 @@
   inset: 0;
   z-index: 9999;
   background: #e0e0e0;
-  /* subtle dot pattern like Figma */
   background-image: radial-gradient(circle, #c8c8c8 1px, transparent 1px);
   background-size: 20px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem 1rem;
+  padding: 2.5rem 2.5rem;
   overflow-y: auto;
 }
 .ew-form[hidden] { display: none !important; }
@@ -398,12 +397,12 @@
   display: block;
 }
 
-/* ── Card ── */
+/* ── Card — fills almost all screen (like Figma) ── */
 .ew-form__card {
   background: #fff;
-  border-radius: 20px;
+  border-radius: 16px;
   width: 100%;
-  max-width: 1100px;
+  max-width: none;
   box-shadow: 0 4px 32px rgba(0,0,0,0.10);
   overflow: hidden;
 }
@@ -941,7 +940,7 @@
 @media (max-width: 700px) {
   .ew-form { padding: 1rem 0.75rem; justify-content: flex-start; }
   .ew-form__logo-wrap { margin-bottom: 1rem; }
-  .ew-form__card { border-radius: 14px; }
+  .ew-form__card { border-radius: 10px; }
   .ew-form__progress-row,
   .ew-form__body,
   .ew-form__footer { padding-left: 1.25rem; padding-right: 1.25rem; }
