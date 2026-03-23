@@ -224,27 +224,19 @@ const steps = [
 
   /* Mobile: carousel (one step at a time, swipe, dots) */
   @media (max-width: 768px) {
-    .how__header { text-align: left; margin: 0 0 2rem; }
+    .how__header { text-align: left; margin: 0 0 1.5rem; }
     .how__h2 { font-size: 1.75rem; }
 
     .how__row {
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
-      flex-direction: row;
-      gap: 1rem;
-      padding-bottom: 1rem;
-      min-height: auto;
-      /* hide scrollbar */
-      scrollbar-width: none;
+      flex-direction: column;
+      gap: 0.75rem;
+      overflow-x: visible;
     }
-    .how__row::-webkit-scrollbar { display: none; }
 
     .how__card {
-      flex: 0 0 88vw !important;
-      scroll-snap-align: center;
-      min-height: 480px;
+      flex: none !important;
+      width: 100%;
+      min-height: auto;
     }
 
     .how__card.active .how__card-expand {
