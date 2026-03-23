@@ -397,12 +397,15 @@
   display: block;
 }
 
-/* ── Card — fills almost all screen (like Figma) ── */
+/* ── Card — fills almost all screen, height capped ── */
 .ew-form__card {
   background: #fff;
   border-radius: 16px;
   width: 100%;
   max-width: none;
+  max-height: calc(100vh - 5rem);   /* 2.5rem top + 2.5rem bottom margin */
+  display: flex;
+  flex-direction: column;
   box-shadow: 0 4px 32px rgba(0,0,0,0.10);
   overflow: hidden;
 }
@@ -454,9 +457,11 @@
   font-family: var(--font-body);
 }
 
-/* ── Body ── */
+/* ── Body — scrollable, flex-grows to push footer down ── */
 .ew-form__body {
-  padding: 1.75rem 2rem 1rem;
+  padding: 1.5rem 2rem 1rem;
+  flex: 1;
+  overflow-y: auto;
 }
 
 /* ── Title / subtitle / divider ── */
@@ -508,7 +513,7 @@
 .ew-role-card input { display: none; }
 .ew-role-card__img {
   width: 100%;
-  aspect-ratio: 4/3;
+  aspect-ratio: 16/10;
   overflow: hidden;
 }
 .ew-role-card__img img {
