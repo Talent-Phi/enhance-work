@@ -528,13 +528,11 @@
 }
 .req { color: inherit; }
 
-/* ── Role grid — fills remaining height ── */
+/* ── Role grid ── */
 .ew-role-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 0.5rem;
-  flex: 1;
+  gap: 0.65rem;
 }
 .ew-role-card {
   display: flex;
@@ -547,22 +545,20 @@
   background: #fff;
   transition: border-color 0.15s, box-shadow 0.15s;
   user-select: none;
-  padding-bottom: 0.5rem;
-  min-height: 0;
+  padding-bottom: 0.4rem;
 }
 .ew-role-card input { display: none; }
 .ew-role-card__img {
   width: 100%;
-  flex: 1;
-  min-height: 0;
+  height: 110px;
+  flex-shrink: 0;
   overflow: hidden;
-  background: #f0f0f0;
 }
 .ew-role-card__img img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  object-position: center;
+  object-fit: cover;
+  object-position: top center;
   display: block;
 }
 .ew-role-card span {
