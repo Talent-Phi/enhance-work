@@ -485,6 +485,8 @@
   flex: 1;
   min-height: 0;
 }
+/* CRITICAL: hidden attribute must always win over display:flex */
+.ew-step[hidden] { display: none !important; }
 
 /* Fields section after the divider fills remaining height and spaces items evenly */
 .ew-step-content {
