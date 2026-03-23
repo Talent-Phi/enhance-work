@@ -1276,7 +1276,84 @@
 
   let _confirmingSubmit = false;
 
+  // ── Validation ──────────────────────────────────────────────────────────────
+  function showError(msg) {
+    let el = document.getElementById('ew-validation-msg');
+    if (!el) {
+      el = document.createElement('p');
+      el.id = 'ew-validation-msg';
+      el.style.cssText = 'color:#e05252;font-size:.8rem;margin:0.5rem 0 0;text-align:center;font-weight:500;';
+    }
+    const footer = document.querySelector('.ew-form__footer');
+    if (footer && !footer.contains(el)) footer.prepend(el);
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  function clearError() {
+    const el = document.getElementById('ew-validation-msg');
+    if (el) el.style.display = 'none';
+  }
+
+  function markInvalid(el) {
+    el.style.borderColor = '#e05252';
+    el.addEventListener('input', () => { el.style.borderColor = ''; }, { once: true });
+    el.addEventListener('change', () => { el.style.borderColor = ''; }, { once: true });
+  }
+
+  function validateStep(step) {
+    const f = form;
+    clearError();
+    if (step === 1) {
+      const selected = f.querySelector('input[name="role"]:checked');
+      if (!selected) { showError('Please select a role to continue.'); return false; }
+    }
+    if (step === 2) {
+      const firstName = f.querySelector('[name="first_name"]');
+      const lastName  = f.querySelector('[name="last_name"]');
+      const email     = f.querySelector('[name="email"]');
+      const phone     = f.querySelector('[name="phone"]');
+      const missing = [];
+      if (!firstName?.value.trim()) { markInvalid(firstName); missing.push('First name'); }
+      if (!lastName?.value.trim())  { markInvalid(lastName);  missing.push('Last name'); }
+      if (!email?.value.trim())     { markInvalid(email);     missing.push('Email'); }
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) { markInvalid(email); missing.push('Valid email'); }
+      if (!phone?.value.trim())     { markInvalid(phone);     missing.push('Phone'); }
+      if (missing.length) { showError(`Required: ${missing.join(', ')}.`); return false; }
+    }
+    if (step === 3) {
+      const addr1 = f.querySelector('[name="address1"]');
+      const state = f.querySelector('[name="state"]');
+      const city  = f.querySelector('[name="city"]');
+      const zip   = f.querySelector('[name="zip"]');
+      const missing = [];
+      if (!addr1?.value.trim()) { markInvalid(addr1); missing.push('Address'); }
+      if (!state?.value.trim()) { markInvalid(state); missing.push('State'); }
+      if (!city?.value.trim())  { markInvalid(city);  missing.push('City'); }
+      if (!zip?.value.trim())   { markInvalid(zip);   missing.push('Zip code'); }
+      if (missing.length) { showError(`Required: ${missing.join(', ')}.`); return false; }
+    }
+    if (step === 5) {
+      const yrs = f.querySelector('[name="years_experience"]');
+      const start = f.querySelector('input[name="start_date"]:checked');
+      const missing = [];
+      if (!yrs?.value.trim())  { markInvalid(yrs); missing.push('Years of experience'); }
+      if (!start)              { missing.push('Availability / start date'); }
+      if (missing.length) { showError(`Required: ${missing.join(', ')}.`); return false; }
+    }
+    if (step === 6) {
+      const terms = f.querySelector('input[name="terms"]');
+      if (!terms?.checked) {
+        showError('Please agree to the terms and conditions to submit.');
+        return false;
+      }
+    }
+    return true;
+  }
+  // ──────────────────────────────────────────────────────────────────────────
+
   nextBtn.addEventListener('click', async () => {
+    if (!validateStep(current)) return;
     if (current < total) {
       showStep(current + 1);
       return;
