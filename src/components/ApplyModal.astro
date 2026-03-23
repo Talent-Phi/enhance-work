@@ -37,6 +37,7 @@
         <h2 class="ew-title">What role are you looking for?</h2>
         <p class="ew-subtitle">Select all that apply</p>
         <hr class="ew-divider">
+        <div class="ew-step-content">
         <p class="ew-field-label">Select Position*</p>
         <div class="ew-role-grid">
           <label class="ew-role-card">
@@ -90,6 +91,7 @@
             <span>Medical Assistant</span>
           </label>
         </div>
+        </div><!-- /.ew-step-content -->
       </div>
 
       <!-- ── STEP 2 ── -->
@@ -97,6 +99,7 @@
         <h2 class="ew-title">Help us get in touch with you.</h2>
         <p class="ew-subtitle">Personal information</p>
         <hr class="ew-divider">
+        <div class="ew-step-content">
         <div class="ew-grid-3" style="margin-bottom:1.25rem">
           <div class="ew-field">
             <label>First name<span class="req">*</span></label>
@@ -139,6 +142,7 @@
             <input type="tel" name="phone" placeholder="+000 000 00 00" autocomplete="tel">
           </div>
         </div>
+        </div><!-- /.ew-step-content -->
       </div>
 
       <!-- ── STEP 3 ── -->
@@ -146,6 +150,7 @@
         <h2 class="ew-title">Where are you located?</h2>
         <p class="ew-subtitle">Your address details</p>
         <hr class="ew-divider">
+        <div class="ew-step-content">
         <div class="ew-field" style="margin-bottom:0.6rem">
           <label>Address<span class="req">*</span></label>
           <input type="text" name="address1" placeholder="Line 1" autocomplete="address-line1">
@@ -204,6 +209,7 @@
             <span class="ew-chevron">&#8964;</span>
           </div>
         </div>
+        </div><!-- /.ew-step-content -->
       </div>
 
       <!-- ── STEP 4 ── -->
@@ -211,6 +217,7 @@
         <h2 class="ew-title">Competences</h2>
         <p class="ew-subtitle">Languages and licenses you hold</p>
         <hr class="ew-divider">
+        <div class="ew-step-content">
         <div class="ew-field" style="margin-bottom:0.4rem">
           <label>Languages</label>
         </div>
@@ -258,6 +265,7 @@
         <div id="ew-license-extra" hidden style="margin-top:0.75rem">
           <input type="text" name="license_other" placeholder="Enter license or certification" style="width:100%;max-width:340px">
         </div>
+        </div><!-- /.ew-step-content -->
       </div>
 
       <!-- ── STEP 5 ── -->
@@ -265,6 +273,7 @@
         <h2 class="ew-title">What is your Medical Aesthetics experience?</h2>
         <p class="ew-subtitle">Tell us about your background</p>
         <hr class="ew-divider">
+        <div class="ew-step-content">
 
         <div class="ew-field" style="max-width:200px;margin-bottom:1.25rem">
           <label>Years of experience<span class="req">*</span></label>
@@ -298,6 +307,7 @@
             <label class="ew-radio-opt"><input type="radio" name="employed" value="no"><span class="ew-radio-circle"></span>No</label>
           </div>
         </div>
+        </div><!-- /.ew-step-content -->
       </div>
 
       <!-- ── STEP 6 ── -->
@@ -305,6 +315,7 @@
         <h2 class="ew-title">What are your compensation expectations?</h2>
         <p class="ew-subtitle">Final step almost there</p>
         <hr class="ew-divider">
+        <div class="ew-step-content">
 
         <div class="ew-field" style="margin-bottom:0.4rem">
           <label>Salary expectations<span class="req">*</span></label>
@@ -356,6 +367,7 @@
         </div>
 
         <p class="ew-recaptcha">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms of Service</a> apply.</p>
+        </div><!-- /.ew-step-content -->
       </div>
 
     </div><!-- /.ew-form__body -->
@@ -459,9 +471,28 @@
 
 /* ── Body — scrollable, flex-grows to push footer down ── */
 .ew-form__body {
-  padding: 1.5rem 4rem 1rem;
+  padding: 1.75rem 4rem 1.25rem;
   flex: 1;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Each step fills the body height */
+.ew-step {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Fields section after the divider fills remaining height and spaces items evenly */
+.ew-step-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding-top: 0.25rem;
 }
 
 /* ── Title / subtitle / divider ── */
@@ -491,11 +522,13 @@
 }
 .req { color: inherit; }
 
-/* ── Role grid ── */
+/* ── Role grid — fills remaining step height ── */
 .ew-role-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 0.65rem;
+  gap: 0.75rem;
+  flex: 1;
+  align-content: stretch;
 }
 .ew-role-card {
   display: flex;
@@ -509,11 +542,13 @@
   transition: border-color 0.15s, box-shadow 0.15s;
   user-select: none;
   padding-bottom: 0.6rem;
+  min-height: 0;   /* allow flex shrink */
 }
 .ew-role-card input { display: none; }
 .ew-role-card__img {
   width: 100%;
-  aspect-ratio: 16/10;
+  flex: 1;   /* fill available height within the card */
+  min-height: 80px;
   overflow: hidden;
 }
 .ew-role-card__img img {
@@ -539,9 +574,9 @@
 .ew-role-card:hover { border-color: #2bbcb0; }
 
 /* ── Grids ── */
-.ew-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-.ew-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
-.ew-grid-salary { display: grid; grid-template-columns: 1fr 260px; gap: 1rem; }
+.ew-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+.ew-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; }
+.ew-grid-salary { display: grid; grid-template-columns: 1fr 260px; gap: 1.25rem; }
 
 /* ── Fields & inputs ── */
 .ew-field {
@@ -561,7 +596,7 @@
 .ew-form__card input[type="email"],
 .ew-form__card input[type="tel"],
 .ew-form__card select {
-  padding: 0.6rem 0.85rem;
+  padding: 0.85rem 1rem;
   border: 1.5px solid #e0e0e0;
   border-radius: 8px;
   font-size: 0.88rem;
