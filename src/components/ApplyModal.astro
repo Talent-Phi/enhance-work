@@ -377,6 +377,40 @@
     </div>
 
   </div><!-- /.ew-form__card -->
+
+  <!-- ── Confirmation modal (overlay inside fullscreen) ── -->
+  <div id="ew-confirm-modal" class="ew-confirm" hidden aria-modal="true" role="dialog" aria-label="Confirm submission">
+    <div class="ew-confirm__box">
+      <div class="ew-confirm__icon">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+          <circle cx="22" cy="22" r="22" fill="#e4f7f6"/>
+          <path d="M14 22l6 6 10-12" stroke="#2bbcb0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h3 class="ew-confirm__title">Ready to submit?</h3>
+      <p class="ew-confirm__sub">Please review your information before submitting. Once sent, our team will review your application and reach out to you.</p>
+      <div class="ew-confirm__actions">
+        <button type="button" class="ew-btn ew-btn--cancel" id="ew-confirm-cancel">Go back</button>
+        <button type="button" class="ew-btn ew-btn--continue" id="ew-confirm-submit">Submit application</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Success screen ── -->
+  <div id="ew-success" class="ew-success" hidden>
+    <div class="ew-success__inner">
+      <div class="ew-success__icon">
+        <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+          <circle cx="36" cy="36" r="36" fill="#e4f7f6"/>
+          <path d="M22 36l10 10 18-20" stroke="#2bbcb0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h2 class="ew-success__title">Application submitted!</h2>
+      <p class="ew-success__sub">Thank you for applying to Enhance.work. Our team will review your profile and reach out to you within 2–3 business days.</p>
+      <button type="button" class="ew-btn ew-btn--continue" id="ew-success-close" style="margin-top:0.5rem">Back to home</button>
+    </div>
+  </div>
+
 </div>
 
 <style>
@@ -978,6 +1012,61 @@
 .ew-recaptcha a { color: #2bbcb0; text-decoration: none; }
 .ew-recaptcha a:hover { text-decoration: underline; }
 
+/* ── Confirmation modal ── */
+.ew-confirm {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  backdrop-filter: blur(4px);
+}
+.ew-confirm[hidden] { display: none !important; }
+.ew-confirm__box {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  max-width: 440px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+.ew-confirm__icon { margin-bottom: 0.25rem; }
+.ew-confirm__title { font-family: var(--font-heading, 'Poppins', sans-serif); font-size: 1.4rem; font-weight: 600; color: #1a2a26; margin: 0; }
+.ew-confirm__sub { font-size: 0.875rem; color: #666; line-height: 1.6; margin: 0; }
+.ew-confirm__actions { display: flex; gap: 0.75rem; margin-top: 0.5rem; flex-wrap: wrap; justify-content: center; }
+
+/* ── Success screen ── */
+.ew-success {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 25;
+  border-radius: inherit;
+}
+.ew-success[hidden] { display: none !important; }
+.ew-success__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  text-align: center;
+  padding: 3rem 2rem;
+  max-width: 480px;
+}
+.ew-success__icon { margin-bottom: 0.5rem; }
+.ew-success__title { font-family: var(--font-heading, 'Poppins', sans-serif); font-size: 1.75rem; font-weight: 600; color: #1a2a26; margin: 0; }
+.ew-success__sub { font-size: 0.9rem; color: #666; line-height: 1.65; margin: 0; }
+
 /* ── Footer ── */
 .ew-form__footer {
   display: flex;
@@ -1145,7 +1234,38 @@
   function close() {
     form.hidden = true;
     document.body.style.overflow = '';
+    // Reset success/confirm if shown
+    const confirmModal = document.getElementById('ew-confirm-modal');
+    const successEl = document.getElementById('ew-success');
+    if (confirmModal) confirmModal.hidden = true;
+    if (successEl) successEl.hidden = true;
+    showStep(1);
   }
+
+  function showConfirm() {
+    const confirmModal = document.getElementById('ew-confirm-modal');
+    if (confirmModal) confirmModal.hidden = false;
+  }
+
+  function hideConfirm() {
+    const confirmModal = document.getElementById('ew-confirm-modal');
+    if (confirmModal) confirmModal.hidden = true;
+  }
+
+  function showSuccess() {
+    hideConfirm();
+    const successEl = document.getElementById('ew-success');
+    if (successEl) successEl.hidden = false;
+  }
+
+  // Confirm modal buttons
+  document.getElementById('ew-confirm-cancel')?.addEventListener('click', hideConfirm);
+  document.getElementById('ew-success-close')?.addEventListener('click', close);
+  document.getElementById('ew-confirm-submit')?.addEventListener('click', async () => {
+    hideConfirm();
+    _confirmingSubmit = true;
+    nextBtn?.click();
+  });
 
   // Open on any .apply-btn
   document.addEventListener('click', e => {
@@ -1154,12 +1274,21 @@
 
   cancelBtn.addEventListener('click', close);
 
+  let _confirmingSubmit = false;
+
   nextBtn.addEventListener('click', async () => {
     if (current < total) {
       showStep(current + 1);
-    } else {
-      nextBtn.disabled = true;
-      nextBtn.textContent = 'Sending...';
+      return;
+    }
+    // On last step: first show confirm modal, then submit on confirm
+    if (!_confirmingSubmit) {
+      showConfirm();
+      return;
+    }
+    _confirmingSubmit = false;
+    nextBtn.disabled = true;
+    nextBtn.textContent = 'Sending...';
       try {
         const formData = new FormData();
 
@@ -1202,10 +1331,11 @@
         const result = await resp.json();
 
         if (result.success) {
-          alert('Application submitted successfully!');
-          close();
+          showSuccess();
         } else {
           alert('There was an error submitting your application. Please try again.');
+          nextBtn.disabled = false;
+          nextBtn.textContent = 'Finish';
         }
       } catch (err) {
         console.error('Submit error:', err);
