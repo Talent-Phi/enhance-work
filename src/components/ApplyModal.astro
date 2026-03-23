@@ -382,7 +382,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2.5rem 2.5rem;
+  padding: 2.5rem 4rem;
   overflow-y: auto;
 }
 .ew-form[hidden] { display: none !important; }
@@ -932,18 +932,23 @@
   background: #fff;
   color: #444;
   border: 1.5px solid #ddd;
+  transition: color 0.15s, border-color 0.15s;
 }
-.ew-btn--cancel:hover { border-color: #bbb; }
+.ew-btn--cancel:hover {
+  color: #0f4240;
+  border-color: #0f4240;
+}
 .ew-btn--continue {
   background: #2bbcb0;
   color: #fff;
   border: 1.5px solid #2bbcb0;
+  transition: background 0.15s;
 }
-.ew-btn--continue:hover { background: #22a89d; }
+.ew-btn--continue:hover { background: #27a89e; }
 
 /* ── Mobile ── */
 @media (max-width: 700px) {
-  .ew-form { padding: 1rem 0.75rem; justify-content: flex-start; }
+  .ew-form { padding: 1rem 1.25rem; justify-content: flex-start; }
   .ew-form__logo-wrap { margin-bottom: 1rem; }
   .ew-form__card { border-radius: 10px; }
   .ew-form__progress-row,
