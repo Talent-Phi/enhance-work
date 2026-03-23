@@ -757,13 +757,20 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 0.4rem;
-  border: 1.5px solid #e0e0e0;
+  border: 1.5px dashed #2bbcb0;
   border-radius: 8px;
-  padding: 0.4rem 0.75rem;
-  min-height: 42px;
+  padding: 0.5rem 0.75rem;
+  min-height: 44px;
   cursor: text;
+  background: #fff;
 }
-.ew-skills-row:focus-within { border-color: #2bbcb0; }
+.ew-skills-row:focus-within { border-color: #2bbcb0; border-style: solid; }
+
+/* chip container must be flex so chips go inline */
+#ew-skill-chips {
+  display: contents; /* chips go directly into the flex row */
+}
+
 .ew-skill-add-btn {
   display: flex;
   align-items: center;
@@ -772,6 +779,7 @@
   border: none;
   padding: 0;
   cursor: text;
+  flex-shrink: 0;
 }
 .ew-skill-plus {
   color: #2bbcb0;
@@ -1157,6 +1165,8 @@
   // Skills — badge input
   const skillInput = document.getElementById('ew-skill-input');
   const skillChips = document.getElementById('ew-skill-chips');
+  const skillsRow = document.getElementById('ew-skills-row');
+  const addBtn = document.getElementById('ew-skill-add');
   function addSkill() {
     if (!skillInput || !skillInput.value.trim()) return;
     const val = skillInput.value.trim();
@@ -1164,7 +1174,8 @@
     chip.className = 'ew-skill-tag';
     chip.innerHTML = `<span>${val}</span><button type="button" aria-label="Remove">×</button>`;
     chip.querySelector('button').addEventListener('click', () => chip.remove());
-    skillChips.appendChild(chip);
+    // Insert chip before the + button so it stays at end
+    skillsRow.insertBefore(chip, addBtn);
     skillInput.value = '';
     skillInput.focus();
   }
