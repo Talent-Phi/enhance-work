@@ -15,6 +15,12 @@ import StatCard from '../components/StatCard.astro';
         Now live — 1,200+ professionals in South Florida
       </div>
 
+      <!-- Active professionals badge (randomized 6-20, updates every 30s) -->
+      <div class="hero__active-badge" id="hero-active-badge">
+        <span class="hero__active-dot"></span>
+        <span id="hero-active-count">12</span> professionals active right now
+      </div>
+
       <h1 class="hero__headline">
         Jobs in <em>Aesthetics</em><br>for South Florida.
       </h1>
@@ -139,6 +145,32 @@ import StatCard from '../components/StatCard.astro';
     border-radius: 50%;
     background: var(--color-accent);
     flex-shrink: 0;
+  }
+
+  /* Active professionals badge */
+  .hero__active-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(43,188,176,0.1);
+    border: 1px solid rgba(43,188,176,0.3);
+    border-radius: 100px;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: #0f6b65;
+    width: fit-content;
+  }
+  .hero__active-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #2bbcb0;
+    flex-shrink: 0;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
   }
 
   .hero__headline {
@@ -295,3 +327,16 @@ import StatCard from '../components/StatCard.astro';
     }
   }
 </style>
+
+<script>
+  function randomActive() {
+    return Math.floor(Math.random() * 15) + 6; // 6–20
+  }
+  const countEl = document.getElementById('hero-active-count');
+  if (countEl) {
+    countEl.textContent = randomActive();
+    setInterval(() => {
+      if (countEl) countEl.textContent = randomActive();
+    }, 30000);
+  }
+</script>
