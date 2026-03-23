@@ -119,7 +119,7 @@
                 <option>Non-binary</option>
                 <option>Prefer not to say</option>
               </select>
-              <span class="ew-chevron">&#8964;</span>
+              <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             </div>
           </div>
         </div>
@@ -182,7 +182,7 @@
                 <option>Virginia</option><option>Washington</option><option>West Virginia</option>
                 <option>Wisconsin</option><option>Wyoming</option>
               </select>
-              <span class="ew-chevron">&#8964;</span>
+              <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             </div>
           </div>
           <div class="ew-field">
@@ -198,7 +198,7 @@
                 <option>West Palm Beach</option>
                 <option>Other</option>
               </select>
-              <span class="ew-chevron">&#8964;</span>
+              <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             </div>
           </div>
         </div>
@@ -206,7 +206,7 @@
           <label>Zip code<span class="req">*</span></label>
           <div class="ew-select-wrap">
             <input type="text" name="zip" placeholder="00000000-00" maxlength="10" autocomplete="postal-code" style="padding-right:2rem">
-            <span class="ew-chevron">&#8964;</span>
+            <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </div>
         </div>
         </div><!-- /.ew-step-content -->
@@ -228,7 +228,7 @@
               <option>English</option><option>Spanish</option><option>French</option>
               <option>Portuguese</option><option>Mandarin</option><option>Other</option>
             </select>
-            <span class="ew-chevron">&#8964;</span>
+            <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </div>
           <div class="ew-select-wrap">
             <select name="language_level">
@@ -236,7 +236,7 @@
               <option>Basic</option><option>Conversational</option>
               <option>Fluent</option><option>Native</option>
             </select>
-            <span class="ew-chevron">&#8964;</span>
+            <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </div>
         </div>
         <button type="button" class="ew-link-btn" id="ew-add-lang">
@@ -329,7 +329,7 @@
               <option>Per procedure</option>
               <option>Commission</option>
             </select>
-            <span class="ew-chevron">&#8964;</span>
+            <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </div>
         </div>
 
@@ -488,15 +488,14 @@
 /* CRITICAL: hidden attribute must always win over display:flex */
 .ew-step[hidden] { display: none !important; }
 
-/* Fields section after the divider — distribute with reasonable gap */
+/* Fields section after the divider */
 .ew-step-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  gap: 0.1rem;
-  padding-top: 0.1rem;
-  max-height: 100%;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding-top: 0.25rem;
 }
 
 /* ── Title / subtitle / divider ── */
@@ -510,7 +509,7 @@
   line-height: 1.25;
 }
 .ew-subtitle {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: #8a8a8a;
   text-align: center;
   margin-bottom: 0;
@@ -557,6 +556,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: top center;
   display: block;
 }
 .ew-role-card span {
@@ -629,11 +629,10 @@
 .ew-select-wrap select { padding-right: 2rem; }
 .ew-chevron {
   position: absolute;
-  right: 0.75rem;
-  font-size: 1rem;
-  color: #555;
+  right: 0.85rem;
   pointer-events: none;
-  line-height: 1;
+  display: flex;
+  align-items: center;
 }
 
 /* ── Date of birth ── */
