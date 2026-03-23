@@ -247,7 +247,12 @@
           </button>
         </div>
         <div id="ew-license-extra" hidden>
-          <input type="text" name="license_other" placeholder="Enter license or certification" style="width:100%;max-width:340px">
+          <div class="ew-skill-input-row" style="max-width:340px">
+            <input type="text" name="license_other" id="ew-license-input" placeholder="Enter license or certification">
+            <button type="button" class="ew-skill-confirm" id="ew-license-confirm" title="Confirm" aria-label="Confirm license">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
         </div>
         </div><!-- /.ew-step-content -->
       </div>
@@ -268,10 +273,12 @@
           <label>If you see fit, list some of your skills relevant to Aesthetics</label>
           <div class="ew-skills-row" id="ew-skills-row">
             <div id="ew-skill-chips"></div>
-            <button type="button" class="ew-skill-add-btn" id="ew-skill-add">
-              <span class="ew-skill-plus">+</span>
-              <input type="text" id="ew-skill-input" placeholder="| Skill" autocomplete="off">
-            </button>
+            <div class="ew-skill-input-row">
+              <input type="text" id="ew-skill-input" placeholder="Type a skill…" autocomplete="off">
+              <button type="button" class="ew-skill-confirm" id="ew-skill-add" title="Add skill" aria-label="Add skill">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -360,6 +367,7 @@
     <div class="ew-form__footer">
       <button type="button" class="ew-btn ew-btn--cancel" id="ew-cancel">Cancel</button>
       <button type="button" class="ew-btn ew-btn--continue" id="ew-next">Continue</button>
+      <div class="ew-footer-error" id="ew-footer-error" hidden></div>
     </div>
 
   </div><!-- /.ew-form__card -->
@@ -1066,10 +1074,20 @@
 /* ── Footer ── */
 .ew-form__footer {
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-end;
+  align-items: center;
   gap: 0.75rem;
   padding: 1rem 4rem 1.5rem;
   border-top: 1px solid #f2f2f2;
+}
+.ew-footer-error {
+  width: 100%;
+  order: -1; /* appears above buttons */
+  font-size: 0.8rem;
+  color: #e05252;
+  text-align: right;
+  padding: 0.25rem 0;
 }
 .ew-btn {
   padding: 0.6rem 2rem;
@@ -1098,6 +1116,43 @@
   transition: background 0.15s;
 }
 .ew-btn--continue:hover { background: #27a89e; }
+
+/* Skill / license custom input row */
+.ew-skill-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  padding: 0 0.4rem 0 0.75rem;
+  background: #fff;
+  transition: border-color 0.15s;
+}
+.ew-skill-input-row:focus-within { border-color: #2bbcb0; }
+.ew-skill-input-row input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0.55rem 0;
+  font-size: 0.875rem;
+  font-family: var(--font-body);
+  color: #333;
+  min-width: 0;
+}
+.ew-skill-confirm {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  background: #2bbcb0;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+.ew-skill-confirm:hover { background: #27a89e; }
 
 /* ── Mobile ── */
 @media (max-width: 700px) {
@@ -1151,11 +1206,17 @@
   .ew-grid-3,
   .ew-grid-salary { grid-template-columns: 1fr; gap: 0.75rem; }
 
-  /* DOB row stays 3 cols but smaller */
-  .ew-dob { width: 100%; }
+  /* DOB row stays 3 cols but smaller — prevent overflow */
+  .ew-dob { width: 100%; max-width: 100%; overflow: hidden; }
   .ew-dob input[name="dob_month"],
   .ew-dob input[name="dob_day"],
-  .ew-dob input[name="dob_year"] { flex: 1; width: auto; }
+  .ew-dob input[name="dob_year"] { flex: 1; width: auto; min-width: 0; }
+
+  /* Prevent any field from causing horizontal scroll */
+  .ew-step-content, .ew-step-content * { max-width: 100%; box-sizing: border-box; }
+  .ew-skill-input-row { max-width: 100%; }
+  .ew-form__footer { padding: 0.75rem 1.25rem 1.25rem; flex-wrap: wrap; }
+  .ew-footer-error { font-size: 0.75rem; }
 
   /* Role grid: 2 columns, remove desktop padding */
   .ew-role-grid,
@@ -1264,7 +1325,10 @@
     segs.forEach((seg, i) => seg.classList.toggle('active', i < n));
     stepLabel.textContent = `STEP ${n} / ${total}`;
     backBtn.hidden = n === 1;
+    // Cancel only visible on step 1
+    cancelBtn.style.display = n === 1 ? '' : 'none';
     nextBtn.textContent = n === total ? 'Finish' : 'Continue';
+    clearError();
     current = n;
     form.scrollTop = 0;
   }
@@ -1322,21 +1386,13 @@
 
   // ── Validation ──────────────────────────────────────────────────────────────
   function showError(msg) {
-    let el = document.getElementById('ew-validation-msg');
-    if (!el) {
-      el = document.createElement('p');
-      el.id = 'ew-validation-msg';
-      el.style.cssText = 'color:#e05252;font-size:.8rem;margin:0.5rem 0 0;text-align:center;font-weight:500;';
-    }
-    const footer = document.querySelector('.ew-form__footer');
-    if (footer && !footer.contains(el)) footer.prepend(el);
-    el.textContent = msg;
-    el.style.display = 'block';
+    const el = document.getElementById('ew-footer-error');
+    if (el) { el.textContent = msg; el.hidden = false; }
   }
 
   function clearError() {
-    const el = document.getElementById('ew-validation-msg');
-    if (el) el.style.display = 'none';
+    const el = document.getElementById('ew-footer-error');
+    if (el) { el.textContent = ''; el.hidden = true; }
   }
 
   function markInvalid(el) {
@@ -1498,11 +1554,20 @@
     });
     document.getElementById('ew-skill-add')?.addEventListener('click', e => {
       e.preventDefault();
-      if (skillInput.value.trim()) addSkill();
-      else skillInput.focus();
+      addSkill();
     });
     document.getElementById('ew-skills-row')?.addEventListener('click', () => skillInput.focus());
   }
+
+  // License confirm button (green check)
+  document.getElementById('ew-license-confirm')?.addEventListener('click', () => {
+    const inp = document.getElementById('ew-license-input');
+    if (inp?.value.trim()) {
+      // visual feedback: flash border green
+      inp.style.outline = '2px solid #2bbcb0';
+      setTimeout(() => { inp.style.outline = ''; }, 800);
+    }
+  });
 
   // Clear licenses
   document.getElementById('ew-clear-licenses')?.addEventListener('click', () => {
