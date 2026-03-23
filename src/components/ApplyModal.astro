@@ -1366,7 +1366,7 @@
     _confirmingSubmit = false;
     nextBtn.disabled = true;
     nextBtn.textContent = 'Sending...';
-      try {
+    try {
         const formData = new FormData();
 
         const role = form.querySelector('input[name="role"]:checked');
@@ -1421,7 +1421,6 @@
         nextBtn.disabled = false;
         nextBtn.textContent = 'Finish';
       }
-    }
   });
 
   backBtn.addEventListener('click', () => {
