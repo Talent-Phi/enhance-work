@@ -74,9 +74,9 @@ import StatCard from '../components/StatCard.astro';
     background-color: #e0e0e0;
     background-image: radial-gradient(circle, #c8c8c8 1px, transparent 1px);
     background-size: 20px 20px;
-    padding-top: 68px;
+    padding-top: 0;   /* nav is transparent overlay — hero bg extends behind it */
     position: relative;
-    overflow: hidden;   /* clip ::before/::after pseudo-elements (prevent horizontal scroll) */
+    overflow: hidden;
   }
 
   /* no extra pseudo-element texture needed — bg handles it */
@@ -107,7 +107,7 @@ import StatCard from '../components/StatCard.astro';
   .hero__inner {
     max-width: 1440px;
     margin: 0 auto;
-    padding: 4rem 80px 3rem 141px;
+    padding: calc(68px + 3rem) 80px 3rem 141px;
     display: grid;
     grid-template-columns: 520px 1fr;
     gap: 4rem;
@@ -238,7 +238,7 @@ import StatCard from '../components/StatCard.astro';
   /* ── STATS BAND ── */
   .hero__stats-band {
     background: #f2f2f2;
-    padding: 2rem 141px 2.5rem;
+    padding: 2rem 141px 2.5rem 141px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -267,13 +267,13 @@ import StatCard from '../components/StatCard.astro';
 
   /* Tablet */
   @media (max-width: 1024px) {
-    .hero__inner { grid-template-columns: 480px 1fr; padding: 3.5rem 60px 2.5rem 80px; gap: 3rem; }
+    .hero__inner { grid-template-columns: 480px 1fr; padding: calc(68px + 2.5rem) 60px 2.5rem 80px; gap: 3rem; }
     .hero__stats-band { padding: 2rem 80px; }
   }
 
   /* Mobile: single column, show hero right below text */
   @media (max-width: 768px) {
-    .hero__inner { grid-template-columns: 1fr; padding: 2rem 1.5rem 1rem; gap: 1.5rem; min-height: auto; }
+    .hero__inner { grid-template-columns: 1fr; padding: calc(68px + 1.5rem) 1.5rem 1rem; gap: 1.5rem; min-height: auto; }
     .hero__right { display: flex; justify-content: center; padding-right: 0; }
     .hero__mockup { max-width: 100%; }
     .hero__headline { font-size: 2rem; }
