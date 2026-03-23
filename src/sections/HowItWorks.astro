@@ -78,7 +78,12 @@ const steps = [
     background: #18232c;
   }
 
-  .how__label { color: rgba(223,245,243,0.7); }
+  /* On dark bg: override pill to dark semi-transparent bg with teal text */
+  .how__label {
+    color: #2bbcb0 !important;
+    background: rgba(43,188,176,0.15) !important;
+    border: 1px solid rgba(43,188,176,0.3);
+  }
   .how__h2 { color: #dff5f3; }
 
   .how__header {
