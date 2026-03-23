@@ -983,19 +983,93 @@
 
 /* ── Mobile ── */
 @media (max-width: 700px) {
-  .ew-form { padding: 1rem 1.25rem; justify-content: flex-start; }
-  .ew-form__logo-wrap { margin-bottom: 1rem; }
-  .ew-form__card { border-radius: 10px; }
-  .ew-form__progress-row,
-  .ew-form__body,
-  .ew-form__footer { padding-left: 1.25rem; padding-right: 1.25rem; }
-  .ew-title { font-size: 1.25rem; }
-  .ew-role-grid { grid-template-columns: repeat(2, 1fr); }
-  .ew-grid-2, .ew-grid-3, .ew-grid-salary { grid-template-columns: 1fr; }
-  .ew-dob { grid-template-columns: 1fr 1fr 1fr; }
+  /* ── Container & card ── */
+  .ew-form {
+    padding: 0;               /* edge-to-edge background */
+    justify-content: flex-start;
+    align-items: stretch;
+  }
+
+  /* Logo + back arrow row outside card */
+  .ew-form__logo-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 1rem 1.25rem 0.75rem;
+    margin-bottom: 0;
+  }
+  .ew-form__logo-img {
+    height: 26px;
+  }
+
+  /* Card: auto height, no fixed height, rounded corners, slight margin */
+  .ew-form__card {
+    border-radius: 16px;
+    height: auto;
+    min-height: 0;
+    margin: 0 0.75rem 1rem;
+  }
+
+  /* Inner padding */
+  .ew-form__progress-row { padding: 1rem 1.25rem 0; }
+  .ew-form__body         { padding: 1.25rem 1.25rem 0.75rem; }
+  .ew-form__footer       { padding: 0.75rem 1.25rem 1.25rem; }
+
+  /* Step: don't force flex fill on mobile — auto height */
+  .ew-step { flex: none; }
+  .ew-step-content { justify-content: flex-start; gap: 1rem; }
+
+  /* Typography */
+  .ew-title { font-size: 1.2rem; text-align: left; }
+  .ew-subtitle { text-align: left; }
+
+  /* Grids → single column */
+  .ew-grid-2,
+  .ew-grid-3,
+  .ew-grid-salary { grid-template-columns: 1fr; gap: 0.75rem; }
+
+  /* DOB row stays 3 cols but smaller */
+  .ew-dob { grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; }
+
+  /* Role grid: 2 columns */
+  .ew-role-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem;
+    flex: none;
+  }
+  .ew-role-card__img { min-height: 90px; }
+
+  /* License grid: 2 cols */
   .ew-license-grid { grid-template-columns: 1fr 1fr; }
-  .ew-start-opts { flex-direction: column; }
-  .ew-checkbox-row { flex-direction: column; gap: 0.75rem; }
+
+  /* Start date: ASAP + 2-4W side by side, Over 4W full width below */
+  .ew-start-opts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  .ew-start-opts .ew-start-opt:last-child {
+    grid-column: 1 / -1;   /* Over 4 Weeks spans full width */
+  }
+
+  /* Checkboxes: vertical */
+  .ew-checkbox-row { flex-direction: column; gap: 0.75rem; align-items: flex-start; }
+
+  /* Footer buttons: centered side-by-side */
+  .ew-form__footer {
+    justify-content: center;
+    border-top: 1px solid #f2f2f2;
+  }
+  .ew-btn {
+    flex: 1;
+    max-width: 160px;
+    text-align: center;
+    justify-content: center;
+  }
+
+  /* Message box toggle: use chevron style */
+  .ew-msg-box { cursor: pointer; }
 }
 </style>
 
