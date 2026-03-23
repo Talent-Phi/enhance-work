@@ -5,9 +5,9 @@
 
 <div id="apply-modal" class="ew-form" role="dialog" aria-modal="true" aria-label="Apply to Enhance.work" hidden>
 
-  <!-- Logo above card -->
+  <!-- Logo above card (same as navbar) -->
   <div class="ew-form__logo-wrap">
-    <span class="ew-logo-text">Enhance</span><span class="ew-logo-badge">.work</span>
+    <img src="/images/logo.png" alt="enhance.work" class="ew-form__logo-img">
   </div>
 
   <!-- Card -->
@@ -390,26 +390,12 @@
 
 /* ── Logo above card ── */
 .ew-form__logo-wrap {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  margin-bottom: 1.5rem;
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 700;
-  line-height: 1;
+  margin-bottom: 1.25rem;
 }
-.ew-logo-text {
-  color: #1a1c1b;
-}
-.ew-logo-badge {
-  background: #2bbcb0;
-  color: #fff;
-  padding: 0.18em 0.55em;
-  border-radius: 20px;
-  font-size: 0.95em;
-  font-weight: 700;
-  margin-left: 1px;
+.ew-form__logo-img {
+  height: 32px;
+  width: auto;
+  display: block;
 }
 
 /* ── Card ── */
@@ -417,7 +403,7 @@
   background: #fff;
   border-radius: 20px;
   width: 100%;
-  max-width: 900px;
+  max-width: 1100px;
   box-shadow: 0 4px 32px rgba(0,0,0,0.10);
   overflow: hidden;
 }
