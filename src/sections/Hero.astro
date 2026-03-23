@@ -34,15 +34,14 @@ import StatCard from '../components/StatCard.astro';
           <span class="hero__av" style="background:#7BAFD4">TP</span>
         </div>
         <div class="hero__social-text">
-          <strong>Join 1,200+ professionals</strong>
-          <span>already building their career on Enhance</span>
+          <strong>Join 2,500+ aesthetic professionals</strong>
+          <span>already here</span>
         </div>
       </div>
 
-      <!-- CTAs — side by side -->
+      <!-- CTA — single pill button -->
       <div class="hero__actions">
-        <button type="button" class="btn btn-primary">Create your profile</button>
-        <a href="#roles" class="btn btn-secondary">Browse opportunities</a>
+        <button type="button" class="btn btn-primary apply-btn hero__join-btn">Join for free</button>
       </div>
 
     </div>
@@ -249,6 +248,20 @@ import StatCard from '../components/StatCard.astro';
     gap: 1rem;
     align-items: center;
     flex-wrap: nowrap;
+  }
+
+  .hero__join-btn {
+    padding: 1rem 3rem;
+    font-size: 1.1rem;
+    border-radius: 100px;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  @media (max-width: 768px) {
+    .hero__join-btn {
+      max-width: 100%;
+    }
   }
 
   /* ── RIGHT ── */
