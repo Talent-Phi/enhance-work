@@ -77,13 +77,37 @@ a { color: inherit; text-decoration: none; }
   border-radius: 50%;
 }
 
+/* ── Section divider label (Frame 3544: thin line + centered teal pill) ── */
+.label-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  margin-bottom: 2rem;
+}
+.label-divider::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: 1px;
+  background: rgba(0,0,0,0.1);
+}
+.label-divider--dark::before { background: rgba(255,255,255,0.15) !important; }
+
 .label {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
   font-family: var(--font-body);
-  font-size: .75rem;
+  font-size: .7rem;
   font-weight: 600;
   letter-spacing: .1em;
   text-transform: uppercase;
   color: var(--color-accent);
+  background: #e4f7f6;
+  border-radius: 100px;
+  padding: .3rem .9rem;
 }
 
 .btn {
