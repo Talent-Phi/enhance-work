@@ -295,7 +295,7 @@
         <div class="ew-step-content">
 
         <div class="ew-field" style="max-width:200px;margin-bottom:1.25rem">
-          <label>Years of experience in aesthetics<span class="req">*</span></label>
+          <label style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Years of experience in aesthetics<span class="req">*</span></label>
           <input type="number" name="years_experience" placeholder="Years" min="0" max="60" inputmode="numeric">
         </div>
 
@@ -1299,7 +1299,7 @@
   /* Grids → single column */
   .ew-grid-2,
   .ew-grid-3,
-  .ew-grid-salary { grid-template-columns: 1fr; gap: 0.75rem; }
+  .ew-grid-salary { grid-template-columns: 1fr auto; gap: 0.5rem; }
 
   /* DOB row stays 3 cols but smaller — prevent overflow */
   .ew-dob { width: 100%; max-width: 100%; overflow: hidden; }
