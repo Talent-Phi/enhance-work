@@ -1607,7 +1607,7 @@
         // Collect dynamic additional languages (language_2..language_5)
         for (let i = 2; i <= 5; i++) {
           const lang = form.querySelector(`[name="language_${i}"]`);
-          const lvl  = form.querySelector(`[name="language_${i}_level"]`);
+          const lvl  = form.querySelector(`[name="language_level_${i}"]`);
           if (lang && lang.value) {
             formData.append(`language_${i}`, lang.value);
             if (lvl && lvl.value) formData.append(`language_${i}_level`, lvl.value);
@@ -1731,7 +1731,7 @@
   function buildLangRow(n) {
     const chevron = `<span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;
     const langSelect = `<div class="ew-select-wrap"><select name="language_${n}"><option value="">Select</option>${langOpts.map(o=>`<option>${o}</option>`).join('')}</select>${chevron}</div>`;
-    const levelSelect = `<div class="ew-select-wrap"><select name="language_${n}_level"><option value="">Level</option>${levelOpts.map(o=>`<option>${o}</option>`).join('')}</select>${chevron}</div>`;
+    const levelSelect = `<div class="ew-select-wrap"><select name="language_level_${n}"><option value="">Level</option>${levelOpts.map(o=>`<option>${o}</option>`).join('')}</select>${chevron}</div>`;
     const row = document.createElement('div');
     row.className = 'ew-grid-2';
     row.style.marginBottom = '0.5rem';
