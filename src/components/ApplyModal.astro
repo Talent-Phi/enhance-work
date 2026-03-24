@@ -420,7 +420,7 @@
   align-items: center;
   justify-content: center;
   padding: 2.5rem 4rem;
-  overflow-y: auto;
+  overflow: hidden;
 }
 .ew-form[hidden] { display: none !important; }
 
@@ -1329,6 +1329,7 @@
   // ──────────────────────────────────────────────────────────────────────────
 
   const form    = document.getElementById('apply-modal');
+  const formBody = form.querySelector('.ew-form__body');
   const steps   = Array.from(document.querySelectorAll('.ew-step'));
   const segs    = Array.from(document.querySelectorAll('.ew-seg'));
   const nextBtn = document.getElementById('ew-next');
@@ -1348,7 +1349,7 @@
     nextBtn.textContent = n === total ? 'Finish' : 'Continue';
     clearError();
     current = n;
-    form.scrollTop = 0;
+    if (formBody) formBody.scrollTop = 0;
   }
 
   function open() {
