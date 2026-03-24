@@ -1682,8 +1682,9 @@
         const phoneCountryEl = form.querySelector('[name="phone_country_code"]');
         const phoneEl = form.querySelector('[name="phone"]');
         const phoneCountry = phoneCountryEl ? phoneCountryEl.value : '+1';
-        const phoneNumber = phoneEl ? phoneEl.value.trim() : '';
-        const fullPhone = phoneNumber ? `${phoneCountry}${phoneNumber.replace(/^\+/, '')}` : '';
+        const phoneRaw = phoneEl ? phoneEl.value.trim() : '';
+        const phoneDigits = phoneRaw.replace(/[^\d]/g, '');
+        const fullPhone = phoneDigits ? `${phoneCountry} ${phoneDigits}` : '';
         formData.append('phone', fullPhone);
 
         ['first_name','last_name','gender','dob_month','dob_day','dob_year',

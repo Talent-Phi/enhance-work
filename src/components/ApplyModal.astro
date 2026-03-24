@@ -1577,8 +1577,16 @@
         const role = form.querySelector('input[name="role"]:checked');
         formData.append('role', role ? role.value : '');
 
+        const phoneCountryEl = form.querySelector('[name="phone_country_code"]');
+        const phoneEl = form.querySelector('[name="phone"]');
+        const phoneCountry = phoneCountryEl ? phoneCountryEl.value : '+1';
+        const phoneRaw = phoneEl ? phoneEl.value.trim() : '';
+        const phoneDigits = phoneRaw.replace(/[^\d]/g, '');
+        const fullPhone = phoneDigits ? `${phoneCountry} ${phoneDigits}` : '';
+        formData.append('phone', fullPhone);
+
         ['first_name','last_name','gender','dob_month','dob_day','dob_year',
-         'email','phone','address1','address2','state','city','zip',
+         'email','address1','address2','state','city','zip',
          'language','language_level','language_other','license_other',
          'years_experience','salary','pay_type'].forEach(name => {
           const el = form.querySelector(`[name="${name}"]`);
