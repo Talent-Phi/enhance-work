@@ -282,19 +282,22 @@ import StatCard from '../components/StatCard.astro';
   /* Mockup wrap — positions cards over the composite photo */
   .hero__mockup-wrap {
     position: relative;
-    display: inline-block;
+    display: block;
     width: 100%;
     max-width: 580px;
+    /* Space for the card that overhangs the photo bottom */
+    padding-bottom: 8%;
   }
   .hero__mockup {
     width: 100%;
     height: auto;
     display: block;
+    border-radius: 20px;
   }
   /* Top hiring areas card — centered, overlapping bottom edge of photo */
   .hero__hiring-card {
     position: absolute;
-    bottom: -10%;
+    bottom: 0;
     left: 50%;
     transform: translateX(-50%);
     width: 68%;
