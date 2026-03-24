@@ -1,10 +1,9 @@
 import { google } from 'googleapis';
 
 let sheetsClient = null;
-let driveClient = null;
-let spreadsheetId = null;
 
-const SPREADSHEET_TITLE = 'enhance work candidate registration';
+const SPREADSHEET_ID = '1IZfyGQ196Guw-vh7aHZwG-v1zV889tVaRwV72gQjXlY';
+const SHEET_NAME = 'Sheet1';
 
 const HEADERS = [
   'Application ID', 'Submitted At',
@@ -23,99 +22,53 @@ const HEADERS = [
   'Resume Filename'
 ];
 
-function getAuth() {
+function getSheetsClient() {
+  if (sheetsClient) return sheetsClient;
   const creds = JSON.parse(process.env.GOOGLE_SHEETS_CREDENTIALS);
-  return new google.auth.GoogleAuth({
+  const auth = new google.auth.GoogleAuth({
     credentials: creds,
-    scopes: [
-      'https://www.googleapis.com/auth/spreadsheets',
-      'https://www.googleapis.com/auth/drive'
-    ]
+    scopes: ['https://www.googleapis.com/auth/spreadsheets']
   });
-}
-
-async function getClients() {
-  if (sheetsClient && driveClient) return { sheets: sheetsClient, drive: driveClient };
-  const auth = getAuth();
   sheetsClient = google.sheets({ version: 'v4', auth });
-  driveClient = google.drive({ version: 'v3', auth });
-  return { sheets: sheetsClient, drive: driveClient };
+  return sheetsClient;
 }
 
-async function findOrCreateSpreadsheet() {
-  if (spreadsheetId) return spreadsheetId;
+export async function initGoogleSheets() {
+  try {
+    if (!process.env.GOOGLE_SHEETS_CREDENTIALS) {
+      console.log('[Google Sheets] No credentials found, skipping initialization');
+      return false;
+    }
 
-  const { sheets, drive } = await getClients();
+    const sheets = getSheetsClient();
 
-  const searchRes = await drive.files.list({
-    q: `name='${SPREADSHEET_TITLE}' and mimeType='application/vnd.google-apps.spreadsheet' and trashed=false`,
-    fields: 'files(id, name)',
-    spaces: 'drive'
-  });
-
-  if (searchRes.data.files && searchRes.data.files.length > 0) {
-    spreadsheetId = searchRes.data.files[0].id;
-    console.log(`[Google Sheets] Found existing spreadsheet: ${spreadsheetId}`);
-  } else {
-    const createRes = await sheets.spreadsheets.create({
-      requestBody: {
-        properties: { title: SPREADSHEET_TITLE },
-        sheets: [{
-          properties: { title: 'Applications', index: 0 }
-        }]
-      }
-    });
-    spreadsheetId = createRes.data.spreadsheetId;
-    console.log(`[Google Sheets] Created new spreadsheet: ${spreadsheetId}`);
-
-    await drive.permissions.create({
-      fileId: spreadsheetId,
-      requestBody: {
-        role: 'writer',
-        type: 'anyone'
-      }
-    });
-    console.log(`[Google Sheets] Set spreadsheet to publicly accessible (anyone with link can edit)`);
-
-    await sheets.spreadsheets.values.update({
-      spreadsheetId,
-      range: 'Applications!A1',
-      valueInputOption: 'RAW',
-      requestBody: { values: [HEADERS] }
+    const existing = await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `${SHEET_NAME}!A1:AG1`
     });
 
-    await sheets.spreadsheets.batchUpdate({
-      spreadsheetId,
-      requestBody: {
-        requests: [{
-          repeatCell: {
-            range: { sheetId: 0, startRowIndex: 0, endRowIndex: 1 },
-            cell: {
-              userEnteredFormat: {
-                textFormat: { bold: true },
-                backgroundColor: { red: 0.9, green: 0.95, blue: 0.9 }
-              }
-            },
-            fields: 'userEnteredFormat(textFormat,backgroundColor)'
-          }
-        }, {
-          updateSheetProperties: {
-            properties: { sheetId: 0, gridProperties: { frozenRowCount: 1 } },
-            fields: 'gridProperties.frozenRowCount'
-          }
-        }]
-      }
-    });
-    console.log(`[Google Sheets] Headers and formatting applied`);
+    const firstRow = existing.data.values?.[0] || [];
+    if (firstRow.length === 0 || firstRow[0] !== HEADERS[0]) {
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: SPREADSHEET_ID,
+        range: `${SHEET_NAME}!A1`,
+        valueInputOption: 'RAW',
+        requestBody: { values: [HEADERS] }
+      });
+      console.log('[Google Sheets] Headers written');
+    }
+
+    console.log(`[Google Sheets] Ready! URL: https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}`);
+    return true;
+  } catch (err) {
+    console.error('[Google Sheets] Initialization error:', err.message);
+    return false;
   }
-
-  return spreadsheetId;
 }
 
 export async function appendApplicationRow(data) {
   try {
-    const { sheets } = await getClients();
-    const ssId = await findOrCreateSpreadsheet();
+    const sheets = getSheetsClient();
 
     const row = [
       data.appId || '',
@@ -154,8 +107,8 @@ export async function appendApplicationRow(data) {
     ];
 
     await sheets.spreadsheets.values.append({
-      spreadsheetId: ssId,
-      range: 'Applications!A:AG',
+      spreadsheetId: SPREADSHEET_ID,
+      range: `${SHEET_NAME}!A:AG`,
       valueInputOption: 'RAW',
       insertDataOption: 'INSERT_ROWS',
       requestBody: { values: [row] }
@@ -170,27 +123,5 @@ export async function appendApplicationRow(data) {
 }
 
 export async function getSpreadsheetUrl() {
-  try {
-    const ssId = await findOrCreateSpreadsheet();
-    return `https://docs.google.com/spreadsheets/d/${ssId}`;
-  } catch (err) {
-    console.error('[Google Sheets] Error getting URL:', err.message);
-    return null;
-  }
-}
-
-export async function initGoogleSheets() {
-  try {
-    if (!process.env.GOOGLE_SHEETS_CREDENTIALS) {
-      console.log('[Google Sheets] No credentials found, skipping initialization');
-      return false;
-    }
-    const ssId = await findOrCreateSpreadsheet();
-    const url = `https://docs.google.com/spreadsheets/d/${ssId}`;
-    console.log(`[Google Sheets] Ready! Spreadsheet URL: ${url}`);
-    return true;
-  } catch (err) {
-    console.error('[Google Sheets] Initialization error:', err.message);
-    return false;
-  }
+  return `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}`;
 }

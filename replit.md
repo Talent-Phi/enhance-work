@@ -26,10 +26,19 @@ Astro 6 site for Enhance.work — a platform connecting aesthetic professionals 
 PostgreSQL table `applications` stores form submissions with fields:
 - Personal info: role, name, gender, DOB, email, phone
 - Location: address, state, city, zip
-- Competences: languages, licenses
+- Competences: language (1-5) + levels, licenses
 - Experience: years, skills, start date, employment status
 - Compensation: salary, pay type
 - Meta: terms agreed, injector message read, resume filename
+
+## Google Sheets Integration
+
+- Module: `googleSheets.js` — uses Google Service Account to append rows
+- Spreadsheet ID: `1IZfyGQ196Guw-vh7aHZwG-v1zV889tVaRwV72gQjXlY`
+- Service account email: `enhance-work-sheets@gen-lang-client-0217514915.iam.gserviceaccount.com`
+- Credentials stored in `GOOGLE_SHEETS_CREDENTIALS` env var (JSON)
+- Each form submission appends a row to Sheet1 with all application fields
+- Headers auto-written on first init if missing
 
 ## Development
 
