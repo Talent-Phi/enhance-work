@@ -252,10 +252,10 @@
             <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </div>
         </div>
+        <div id="ew-extra-lang"></div>
         <button type="button" class="ew-link-btn" id="ew-add-lang">
           <span style="font-size:1.1rem;line-height:1">+</span> Add another language
         </button>
-        <div id="ew-extra-lang"></div>
 
         <div class="ew-licenses-header">
           <label class="ew-field-label">Licenses you hold</label>
@@ -1730,13 +1730,10 @@
   const levelOpts = ['Basic','Conversational','Fluent','Native'];
   function buildLangRow(n) {
     const chevron = `<span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;
-    const langSelect = `<div class="ew-select-wrap" style="width:100%"><select name="language_${n}" style="width:100%"><option value="">Select</option>${langOpts.map(o=>`<option>${o}</option>`).join('')}</select>${chevron}</div>`;
-    const levelSelect = `<div class="ew-select-wrap" style="width:100%"><select name="language_level_${n}" style="width:100%"><option value="">Level</option>${levelOpts.map(o=>`<option>${o}</option>`).join('')}</select>${chevron}</div>`;
-    const row = document.createElement('div');
-    row.className = 'ew-grid-2';
-    row.style.cssText = 'margin-bottom:0.5rem;width:100%';
-    row.innerHTML = langSelect + levelSelect;
-    return row;
+    const langWrap = document.createElement('div');
+    langWrap.className = 'ew-field';
+    langWrap.innerHTML = `<div class="ew-grid-2" style="margin-bottom:0"><div class="ew-select-wrap"><select name="language_${n}"><option value="">Select</option>${langOpts.map(o=>`<option>${o}</option>`).join('')}</select>${chevron}</div><div class="ew-select-wrap"><select name="language_level_${n}"><option value="">Level</option>${levelOpts.map(o=>`<option>${o}</option>`).join('')}</select>${chevron}</div></div>`;
+    return langWrap;
   }
   document.getElementById('ew-add-lang')?.addEventListener('click', () => {
     if (langCount >= maxLangs) return;
