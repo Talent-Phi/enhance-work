@@ -253,10 +253,27 @@
           </div>
         </div>
         <button type="button" class="ew-link-btn" id="ew-add-lang">
-          <span style="font-size:1.1rem;line-height:1">+</span> Add something else.
+          <span style="font-size:1.1rem;line-height:1">+</span> Add another language
         </button>
         <div id="ew-extra-lang" hidden style="margin:0.5rem 0 0.75rem">
-          <input type="text" name="language_other" placeholder="Add another language" style="width:100%;max-width:340px">
+          <div class="ew-grid-2">
+            <div class="ew-select-wrap">
+              <select name="language_other">
+                <option value="">Select</option>
+                <option>English</option><option>Spanish</option><option>French</option>
+                <option>Portuguese</option><option>Mandarin</option><option>Other</option>
+              </select>
+              <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </div>
+            <div class="ew-select-wrap">
+              <select name="language_other_level">
+                <option value="">Level</option>
+                <option>Basic</option><option>Conversational</option>
+                <option>Fluent</option><option>Native</option>
+              </select>
+              <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </div>
+          </div>
         </div>
 
         <div class="ew-licenses-header">
@@ -1590,7 +1607,7 @@
 
         ['first_name','last_name','gender','dob_month','dob_day','dob_year',
          'email','address1','address2','state','city','zip',
-         'language','language_level','language_other','license_other',
+         'language','language_level','language_other','language_other_level','license_other',
          'years_experience','salary','pay_type'].forEach(name => {
           const el = form.querySelector(`[name="${name}"]`);
           if (el) formData.append(name, el.value);
