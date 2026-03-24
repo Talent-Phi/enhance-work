@@ -1801,7 +1801,7 @@
   // iOS keyboard gap fix:
   // When keyboard closes, iOS doesn't restore window scroll → leaves dead space below.
   // Fix: track window scroll before keyboard opens, restore it after.
-  const formBody = document.querySelector('.ew-form__body');
+  // formBody already declared above (form.querySelector('.ew-form__body'))
   let savedScrollY = 0;
 
   document.querySelectorAll('.ew-form input, .ew-form select, .ew-form textarea').forEach(el => {
