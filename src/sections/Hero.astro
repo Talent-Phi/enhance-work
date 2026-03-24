@@ -56,12 +56,7 @@ import StatCard from '../components/StatCard.astro';
         />
         <!-- Hides only the "New profiles 0 / +0%" card in top-left of the PNG -->
         <div class="hero__cover-newprofiles"></div>
-        <!-- "Top hiring areas" card extracted from Figma group 3118 -->
-        <img
-          src="/images/hero/top-hiring-card.png"
-          alt="Top hiring areas"
-          class="hero__hiring-card"
-        />
+
       </div>
     </div>
   </div>
@@ -294,25 +289,16 @@ import StatCard from '../components/StatCard.astro';
     height: auto;
     display: block;
   }
-  /* Covers the "New profiles 0 / +0%" card (top-left ~30% of the PNG) */
+  /* Covers ONLY the "New profiles 0 / +0%" card painted at bottom-left of the PNG
+     (the "Top hiring areas" card stays visible — it's below this cover zone) */
   .hero__cover-newprofiles {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 32%;
-    height: 22%;
+    bottom: 26%;
+    left: -1%;
+    width: 44%;
+    height: 18%;
     background: #e0e0e0;
     border-radius: 14px;
-  }
-  /* "Top hiring areas" card from Figma group 3118 — overlaid bottom-left */
-  .hero__hiring-card {
-    position: absolute;
-    bottom: 6%;
-    left: -2%;
-    width: 62%;
-    height: auto;
-    border-radius: 12px;
-    box-shadow: 0 8px 28px rgba(0,0,0,0.14);
   }
 
   /* ── STATS BAND ── */
