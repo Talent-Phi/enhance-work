@@ -340,16 +340,16 @@
 
         <div class="ew-field">
           <label>Salary expectations<span class="req">*</span></label>
-        </div>
-        <div class="ew-grid-salary">
-          <input type="number" name="salary" placeholder="0" min="0" inputmode="numeric">
-          <div class="ew-select-wrap">
-            <select name="pay_type">
-              <option>Hourly</option>
-              <option>Monthly</option>
-              <option>Yearly</option>
-            </select>
-            <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <div class="ew-salary-row">
+            <input type="number" name="salary" placeholder="0" min="0" inputmode="numeric" class="ew-salary-input">
+            <div class="ew-select-wrap ew-salary-type-wrap">
+              <select name="pay_type">
+                <option>Hourly</option>
+                <option>Monthly</option>
+                <option>Yearly</option>
+              </select>
+              <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </div>
           </div>
         </div>
 
@@ -661,6 +661,19 @@
 .ew-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
 .ew-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; }
 .ew-grid-salary { display: grid; grid-template-columns: 1fr 260px; gap: 1.25rem; }
+.ew-salary-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+.ew-salary-input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.ew-salary-type-wrap {
+  flex: 0 0 auto;
+  width: 120px;
+}
 
 /* ── Fields & inputs ── */
 .ew-field {
