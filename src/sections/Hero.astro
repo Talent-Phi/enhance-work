@@ -46,17 +46,19 @@ import StatCard from '../components/StatCard.astro';
 
     </div>
 
-    <!-- RIGHT: professional photo + Top hiring areas card (from Figma group 3118) -->
+    <!-- RIGHT: photo (Figma 825:3437) + Top hiring areas card (Figma 825:3666 / group 3118) -->
     <div class="hero__right">
       <div class="hero__mockup-wrap">
         <img
-          src="/images/mockups/hero-right-mockup.png"
-          alt="Aesthetic professional — top hiring areas in South Florida"
+          src="/images/hero/hero-photo.png"
+          alt="Aesthetic professional performing treatment"
           class="hero__mockup"
         />
-        <!-- Hides only the "New profiles 0 / +0%" card in top-left of the PNG -->
-        <div class="hero__cover-newprofiles"></div>
-
+        <img
+          src="/images/hero/top-hiring-card.png"
+          alt="Top hiring areas — Miami, Doral, Brickell, Coral Gables"
+          class="hero__hiring-card"
+        />
       </div>
     </div>
   </div>
@@ -289,16 +291,15 @@ import StatCard from '../components/StatCard.astro';
     height: auto;
     display: block;
   }
-  /* Covers ONLY the "New profiles 0 / +0%" card painted at bottom-left of the PNG
-     (the "Top hiring areas" card stays visible — it's below this cover zone) */
-  .hero__cover-newprofiles {
+  /* Top hiring areas card — overlaid at bottom-left of the photo, slightly overflowing */
+  .hero__hiring-card {
     position: absolute;
-    bottom: 26%;
-    left: -1%;
-    width: 44%;
-    height: 18%;
-    background: #e0e0e0;
-    border-radius: 14px;
+    bottom: -4%;
+    left: -8%;
+    width: 70%;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
   }
 
   /* ── STATS BAND ── */
