@@ -1390,6 +1390,55 @@
 }
 </style>
 
+<style is:global>
+#ew-extra-lang .ew-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+#ew-extra-lang .ew-select-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+#ew-extra-lang .ew-select-wrap select {
+  width: 100%;
+  padding: 0.72rem 2rem 0.72rem 0.9rem;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 10px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.92rem;
+  color: #bbb;
+  font-weight: 400;
+  background: #fff;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color 0.15s;
+}
+#ew-extra-lang .ew-select-wrap select:focus {
+  border-color: #2bbcb0;
+}
+#ew-extra-lang .ew-select-wrap select:not(:has(option[value=""]:checked)) {
+  color: #2a2a2a;
+  font-weight: 600;
+}
+#ew-extra-lang .ew-chevron {
+  position: absolute;
+  right: 0.85rem;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+@media (max-width: 700px) {
+  #ew-extra-lang .ew-grid-2 {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}
+</style>
+
 <script>
 (function() {
 
