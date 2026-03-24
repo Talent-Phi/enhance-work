@@ -467,6 +467,9 @@
   max-height: 100dvh;
   overflow: hidden;
   padding: 2.5rem 1.5rem;
+  /* iOS safe area (notch + home bar) */
+  padding-bottom: max(2.5rem, env(safe-area-inset-bottom));
+  overscroll-behavior: none;
 }
 
 /* ── Logo above card ── */
@@ -1264,12 +1267,14 @@
     overflow: hidden; /* no page scroll at all */
     height: 100dvh;
     max-height: 100dvh;
+    overscroll-behavior: none;
   }
   .ew-form--page {
     height: 100dvh;
     max-height: 100dvh;
     overflow: hidden;
     padding: 0;
+    overscroll-behavior: none;
   }
 
   /* Logo + back arrow row outside card */
@@ -1291,6 +1296,8 @@
     height: calc(100dvh - 6rem); /* full viewport minus logo bar */
     min-height: 0;
     margin: 0 0.75rem 0.75rem;
+    /* Account for iPhone home bar */
+    margin-bottom: max(0.75rem, env(safe-area-inset-bottom));
     width: calc(100% - 1.5rem);
     max-width: 100%;
     box-sizing: border-box;
@@ -1878,36 +1885,65 @@
     });
   }
 
-  // iOS keyboard gap fix:
-  // When keyboard closes, iOS doesn't restore window scroll → leaves dead space below.
-  // Fix: track window scroll before keyboard opens, restore it after.
-  // formBody already declared above (form.querySelector('.ew-form__body'))
+  // ── iOS Safari keyboard gap fix ──────────────────────────────────────────
+  // Safari pushes the page up when keyboard opens, leaving a gap when it closes.
+  // Strategy: use visualViewport to resize the form container in real time,
+  // and restore window scroll on blur so the gap disappears.
+  const formRoot = document.getElementById('apply-modal');
   let savedScrollY = 0;
+  let keyboardOpen = false;
 
-  document.querySelectorAll('.ew-form input, .ew-form select, .ew-form textarea').forEach(el => {
-    el.addEventListener('focus', () => {
-      savedScrollY = window.scrollY;
-    });
-    el.addEventListener('blur', () => {
-      setTimeout(() => {
-        window.scrollTo({ top: savedScrollY, behavior: 'instant' });
-      }, 150);
-    });
-  });
+  function applyViewportHeight(h) {
+    // Clamp: never taller than 100dvh (avoids layout flash on desktop)
+    formRoot.style.height = h + 'px';
+    formRoot.style.maxHeight = h + 'px';
+  }
 
-  // Also catch keyboard dismiss via visualViewport resize (most reliable on iOS)
   if (window.visualViewport) {
-    let prevHeight = window.visualViewport.height;
-    window.visualViewport.addEventListener('resize', () => {
-      const newHeight = window.visualViewport.height;
-      // Keyboard closed: viewport grew back
-      if (newHeight > prevHeight + 100) {
-        setTimeout(() => {
-          window.scrollTo({ top: savedScrollY, behavior: 'instant' });
-        }, 100);
+    const vv = window.visualViewport;
+
+    function onVVResize() {
+      const vvH = vv.height;
+      const winH = window.innerHeight;
+      const diff = winH - vvH;
+
+      if (diff > 100) {
+        // Keyboard is open
+        keyboardOpen = true;
+        applyViewportHeight(vvH);
+        // Scroll active element into view inside formBody
+        const active = document.activeElement;
+        if (active && formBody && formBody.contains(active)) {
+          setTimeout(() => active.scrollIntoView({ block: 'center', behavior: 'smooth' }), 100);
+        }
+      } else {
+        // Keyboard closed
+        if (keyboardOpen) {
+          keyboardOpen = false;
+          formRoot.style.height = '';
+          formRoot.style.maxHeight = '';
+          setTimeout(() => {
+            window.scrollTo({ top: 0, behavior: 'instant' });
+          }, 50);
+        }
       }
-      prevHeight = newHeight;
+    }
+
+    vv.addEventListener('resize', onVVResize);
+    vv.addEventListener('scroll', () => {
+      // Prevent Safari from scrolling the page behind the form
+      window.scrollTo({ top: 0, behavior: 'instant' });
     });
   }
+
+  // Fallback: restore scroll on blur for older Safari
+  document.querySelectorAll('.ew-form input, .ew-form select, .ew-form textarea').forEach(el => {
+    el.addEventListener('focus', () => { savedScrollY = window.scrollY; });
+    el.addEventListener('blur', () => {
+      if (!window.visualViewport) {
+        setTimeout(() => window.scrollTo({ top: savedScrollY, behavior: 'instant' }), 150);
+      }
+    });
+  });
 })();
 </script>
