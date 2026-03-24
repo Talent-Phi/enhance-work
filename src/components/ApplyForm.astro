@@ -1821,7 +1821,7 @@
     wrap.innerHTML = `
       <div class="ew-grid-2">
         <div class="ew-field" style="gap:0.3rem">
-          <label style="font-size:0.75rem;color:#aaa;font-weight:400">Language</label>
+          <label style="font-size:0.75rem;color:#aaa;font-weight:400;padding-right:1.5rem;display:block">Language</label>
           <div class="ew-select-wrap"><select name="language_${n}"><option value="">Select language</option>${langOpts.map(o=>`<option>${o}</option>`).join('')}</select>${chevron}</div>
         </div>
         <div class="ew-field" style="gap:0.3rem">
@@ -1829,7 +1829,7 @@
           <div class="ew-select-wrap"><select name="language_level_${n}"><option value="">Select level</option>${levelOpts.map(o=>`<option>${o}</option>`).join('')}</select>${chevron}</div>
         </div>
       </div>
-      <button type="button" class="ew-lang-remove" aria-label="Remove language" style="position:absolute;top:0;right:0;background:none;border:none;cursor:pointer;font-size:1rem;color:#aaa;line-height:1;padding:0.2rem">✕</button>
+      <button type="button" class="ew-lang-remove" aria-label="Remove language" style="position:absolute;top:-0.1rem;right:0;background:none;border:none;cursor:pointer;font-size:0.85rem;color:#bbb;line-height:1;padding:0.35rem 0.35rem 0.35rem 0.75rem">✕</button>
     `;
     wrap.querySelector('.ew-lang-remove').addEventListener('click', () => {
       wrap.remove();
