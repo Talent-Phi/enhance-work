@@ -659,16 +659,20 @@
 .ew-country-select-wrap {
   flex-shrink: 0;
   width: auto;
+  min-width: 0;
 }
 .ew-country-select {
   font-size: 0.85rem;
-  padding-right: 1.5rem !important;
+  padding-right: 2rem !important;
   white-space: nowrap;
-  min-width: 90px;
+  width: auto !important;
+  min-width: 95px;
+  max-width: 110px;
 }
 .ew-phone-input {
   flex: 1;
   min-width: 0;
+  width: 100% !important;
 }
 
 .ew-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
@@ -725,6 +729,18 @@
   align-items: center;
 }
 .ew-select-wrap select { padding-right: 2rem; }
+
+/* Selects con opción vacía seleccionada → gris (como placeholder) */
+.ew-form__card select:has(option[value=""]:checked),
+.ew-form__card select option[value=""] {
+  color: #bbb;
+  font-weight: 400;
+}
+/* Selects con valor real seleccionado → oscuro + negrilla */
+.ew-form__card select:not(:has(option[value=""]:checked)) {
+  color: #2a2a2a;
+  font-weight: 600;
+}
 .ew-chevron {
   position: absolute;
   right: 0.85rem;
