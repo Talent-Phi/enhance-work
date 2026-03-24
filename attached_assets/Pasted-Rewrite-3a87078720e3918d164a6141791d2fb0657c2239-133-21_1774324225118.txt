@@ -1,0 +1,52 @@
+Rewrite 3a87078720e3918d164a6141791d2fb0657c2239 (133/214) (4 seconds passed, remainRewrite ee10bb10797c5f6e385e830ab218be0cc8a7b791 (133/214) (4 seconds passed, remainRewrite a913906cff22e1fa8f9fc904bac7fc358326e971 (133/214) (4 seconds passed, remainRewrite 6b940819e821a19a3ed8de08566ee2acf371ef11 (133/214) (4 seconds passed, remainRewrite 0d4632207dca75b2eb37fb6f70a1a29d34d0972b (133/214) (4 seconds passed, remainRewrite 50713a36b4e3a4017db1d91229814412b89919f4 (133/214) (4 seconds passed, remainRewrite b9036022db25f0fa556e26bce54ce10b75754c6f (133/214) (4 seconds passed, remainRewrite 5dc60efe2e7701a910b6c5c09191ed9ce3f62ad0 (133/214) (4 seconds passed, remainRewrite 8337989651241169813c00ec6442a7db45855014 (133/214) (4 seconds passed, remainRewrite db86d372ad593ceac1f462797b78fc1d11f12bcd (133/214) (4 seconds passed, remainRewrite 0cc877efd891e3d4ae3e1f50b57286b053c13166 (133/214) (4 seconds passed, remainRewrite 26e4156cda3cc0b4593cfbc6731143e450b0a673 (133/214) (4 seconds passed, remainRewrite 89cc970ae075955196619ffb4976594cbea2d82f (133/214) (4 seconds passed, remainRewrite a2d43d8c3027f9123b3f39a698c8b87e64deddd9 (133/214) (4 seconds passed, remainRewrite 8b9c1f6f322d808e0df762a448451214877e8529 (133/214) (4 seconds passed, remainRewrite cfae98f5c44ddac508682762e89d4982472e1b84 (167/214) (6 seconds passed, remainRewrite aefba3bd284b4d080a37966ae923ad1cd5d3d6de (167/214) (6 seconds passed, remainRewrite 05286f762e3bf94deca73d379f630fe194ba4713 (167/214) (6 seconds passed, remainRewrite 324cdcce06b9bced268acd5cbeb1c3eaf224ecbf (167/214) (6 seconds passed, remainRewrite feb49293e4d28250b11c476973e96e563ced321e (167/214) (6 seconds passed, remainRewrite b4cefff0068134befc198da277a30251f146b39e (167/214) (6 seconds passed, remainRewrite 1293c3b12ec564b57e5bb46851b65aa203c765dd (167/214) (6 seconds passed, remainRewrite bb2d65d244c233882a3247380c3ef3656fa81577 (167/214) (6 seconds passed, remainRewrite b731451dc88aef7bba900c861f7b2e38d5a25453 (167/214) (6 seconds passed, remainRewrite 3fb72800f1ef7d389d4261920b966e1e255c8610 (167/214) (6 seconds passed, remainRewrite e3be8c0dc3cfcec75cd192808c6acd7b324bd1b5 (167/214) (6 seconds passed, remainRewrite ae7c29d6f969582157399ec09ae7ca70b174f879 (167/214) (6 seconds passed, remainRewrite bf22052c89d30f77de15e49f6e5c7c880971551c (167/214) (6 seconds passed, remainRewrite 54b661c749bd86b517e369056ab96d8aae4c75a8 (167/214) (6 seconds passed, remainRewrite 39130fe4d7a716a16e2fa59db8a4e39d5bd288e7 (167/214) (6 seconds passed, remainRewrite c95cc7b4ea5f876f75813d625227e07a706a0230 (167/214) (6 seconds passed, remainRewrite 4f5e26cdcf38b6cfcdf5d7d9bf708306f8eac29d (167/214) (6 seconds passed, remainRewrite 65ca3ca4ee4d59138741b6f5e78f884902f2b100 (167/214) (6 seconds passed, remainRewrite 47e680b609bc7f7ce69c83df9747670899ac58a3 (167/214) (6 seconds passed, remainRewrite 5a3f34254efb94ec83cac50d8b8c735fd1511284 (167/214) (6 seconds passed, remainRewrite 408fd99780b62db95562b5bde0145da7b9866db7 (167/214) (6 seconds passed, remainRewrite ad4c9dc86304dd7868b8667fc9e5882f8edf57e8 (167/214) (6 seconds passed, remainRewrite 4570b02d50386b69a77d263454bc73be53087c6e (167/214) (6 seconds passed, remainRewrite ce4a412decafac63b8063d2c632eadda1c56de53 (167/214) (6 seconds passed, remainRewrite 4b44e7b036901484e46f22b7b8c7bbce3703f8dc (167/214) (6 seconds passed, remainRewrite 2d17a23f0fcac1846f8362d7f89251a44e1b08d1 (167/214) (6 seconds passed, remainRewrite 3072af3dd9b7f1b7b32faaf420ba7b9a477a7f3d (167/214) (6 seconds passed, remainRewrite df2323f861baaac7c4441f0d1bf3f8aaf603d94c (167/214) (6 seconds passed, remainRewrite 2d3ff9b6a5a33e721ba190ef90e01347683c6345 (195/214) (7 seconds passed, remainRewrite e782b9ed89a276093828dac6eff45d0ab0257d53 (195/214) (7 seconds passed, remainRewrite 7344ba23056a66fd29da5e00ec49e6bb3c632b89 (195/214) (7 seconds passed, remainRewrite 5f988aef6494bc363b591ad83e96f0c22be9f916 (195/214) (7 seconds passed, remainRewrite 5d49c28ebb5b04b083a410be7c378b0f7c20e834 (195/214) (7 seconds passed, remainRewrite fa9b58d0a215c01d7021dbb4f82337be1cde7e0c (195/214) (7 seconds passed, remainRewrite 506a7ac777604ee33715f0684e919916fe6688e5 (195/214) (7 seconds passed, remainRewrite 16cadf6db477cfd1294e3ae5dda7a458de267c02 (195/214) (7 seconds passed, remainRewrite 303cc426e0165d0b49e54859cb7d13aed176a5c0 (195/214) (7 seconds passed, remainRewrite 6badb4c99f6b0425506240fda8aca36b5086f9cf (195/214) (7 seconds passed, remainRewrite 14781024c7cd0b6bc99b593be387c8b4099ac996 (195/214) (7 seconds passed, remaining 0 predicted)    rm 'attached_assets/Pasted--type-service-account-project-id-gen-lang-client-021751_1774322557527.txt'
+Rewrite d40f82ae57575cbd31f0702e35960a904ca631ba (195/214) (7 seconds passed, remaining 0 predicted)    rm 'attached_assets/Pasted--type-service-account-project-id-gen-lang-client-021751_1774322557527.txt'
+Rewrite 61688e090faf1a31c2034df0f83d1d1b684d5478 (195/214) (7 seconds passed, remaining 0 predicted)    rm 'attached_assets/Pasted--type-service-account-project-id-gen-lang-client-021751_1774322557527.txt'
+Rewrite 5f05f2d250bdd78e186a21bb4d34d28aff6c394d (195/214) (7 seconds passed, remaining 0 predicted)    rm 'attached_assets/Pasted--type-service-account-project-id-gen-lang-client-021751_1774322557527.txt'
+Rewrite 1f5761d4374273e0c13c05065a0f2e9e4f02dfc5 (195/214) (7 seconds passed, remaining 0 predicted)    rm 'attached_assets/Pasted--type-service-account-project-id-gen-lang-client-021751_1774322557527.txt'
+Rewrite 442b357be35deae27e65996e7504bb7dc958f64b (195/214) (7 seconds passed, remaining 0 predicted)    rm 'attached_assets/Pasted--type-service-account-project-id-gen-lang-client-021751_1774322557527.txt'
+Rewrite 35c1c0afb880f02ca2ad412d11a67167322ed029 (195/214) (7 seconds passed, remaining 0 predicted)    rm 'attached_assets/Pasted--type-service-account-project-id-gen-lang-client-021751_1774322557527.txt'
+Rewrite 21d1d7ee090e4f8882590ea14d70c02335e30eb8 (195/214) (7 seconds passed, remaining 0 predicted)    rm 'attached_assets/Pasted--type-service-account-project-id-gen-lang-client-021751_1774322557527.txt'
+Rewrite bb1f6491a236ec08d4da2cb7ffd8f864f1e8531e (195/214) (7 seconds passed, remainRewrite 609efcc6957a4026cb18149c41f1d3b891b4e663 (195/214) (7 seconds passed, remaining 0 predicted)    
+Ref 'refs/heads/main' was rewritten
+Ref 'refs/heads/replit-agent' was rewritten
+Ref 'refs/remotes/gitsafe-backup/main' was rewritten
+Ref 'refs/remotes/origin/main' was rewritten
+Ref 'refs/remotes/origin/develop-super-tina' was rewritten
+WARNING: Ref 'refs/remotes/origin/main' is unchanged
+Ref 'refs/replit/agent-ledger' was rewritten
+~/workspace$ 
+~/workspace$ git push origin main --force
+Enumerating objects: 965, done.
+Counting objects: 100% (932/932), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (865/865), done.
+Writing objects: 100% (877/877), 3.10 MiB | 7.29 MiB/s, done.
+Total 877 (delta 562), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (562/562), completed with 33 local objects.
+remote: error: GH013: Repository rule violations found for refs/heads/main.
+remote: 
+remote: - GITHUB PUSH PROTECTION
+remote:   —————————————————————————————————————————
+remote:     Resolve the following violations before pushing again
+remote: 
+remote:     - Push cannot contain secrets
+remote: 
+remote:     
+remote:      (?) Learn how to resolve a blocked push
+remote:      https://docs.github.com/code-security/secret-scanning/working-with-secret-scanning-and-push-protection/working-with-push-protection-from-the-command-line#resolving-a-blocked-push
+remote:     
+remote:     
+remote:       —— Google Cloud Service Account Credentials ——————————
+remote:        locations:
+remote:          - commit: acd27e5a195e81c348aecf3baf40185b88a2e063
+remote:            path: .replit:57
+remote:     
+remote:        (?) To push, remove secret from commit(s) or follow this URL to allow the secret.
+remote:        https://github.com/Talent-Phi/enhance-work/security/secret-scanning/unblock-secret/3BNJ7du59UksCLdUzy47T7iXxMn
+remote:     
+remote: 
+remote: 
+To https://github.com/Talent-Phi/enhance-work
+ ! [remote rejected] main -> main (push declined due to repository rule violations)
+error: failed to push some refs to 'https://github.com/Talent-Phi/enhance-work'
+~/workspace$ 
