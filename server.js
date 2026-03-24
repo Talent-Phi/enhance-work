@@ -295,7 +295,8 @@ const distDir = path.join(__dirname, 'dist');
 if (fs.existsSync(distDir)) {
   app.use(express.static(distDir));
   app.get('/{*splat}', (req, res) => {
-    const reqPath = req.params.splat || '';
+    const splatParam = req.params.splat;
+    const reqPath = Array.isArray(splatParam) ? splatParam.join('/') : (splatParam || '');
     const htmlFile = path.join(distDir, reqPath, 'index.html');
     if (fs.existsSync(htmlFile)) {
       return res.sendFile(htmlFile);
