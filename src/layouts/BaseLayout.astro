@@ -68,6 +68,7 @@ const {
       fbq('init', PIXEL_ID);
 
       var pvId = genEventId();
+      console.log('[MetaPixel Browser] PageView eventID:', pvId);
       fbq('track', 'PageView', {}, { eventID: pvId });
       sendCAPIviaServer('PageView', pvId, {});
 
