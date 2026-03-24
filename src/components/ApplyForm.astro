@@ -235,21 +235,27 @@
           <label>Languages</label>
         </div>
         <div class="ew-grid-2">
-          <div class="ew-select-wrap">
-            <select name="language">
-              <option value="">Select</option>
-              <option>English</option><option>Spanish</option><option>French</option>
-              <option>Portuguese</option><option>Mandarin</option><option>Other</option>
-            </select>
-            <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <div class="ew-field" style="gap:0.3rem">
+            <label style="font-size:0.75rem;color:#aaa;font-weight:400">Language</label>
+            <div class="ew-select-wrap">
+              <select name="language">
+                <option value="">Select language</option>
+                <option>English</option><option>Spanish</option><option>French</option>
+                <option>Portuguese</option><option>Mandarin</option><option>Other</option>
+              </select>
+              <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </div>
           </div>
-          <div class="ew-select-wrap">
-            <select name="language_level">
-              <option value="">Level</option>
-              <option>Basic</option><option>Conversational</option>
-              <option>Fluent</option><option>Native</option>
-            </select>
-            <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <div class="ew-field" style="gap:0.3rem">
+            <label style="font-size:0.75rem;color:#aaa;font-weight:400">Proficiency level</label>
+            <div class="ew-select-wrap">
+              <select name="language_level">
+                <option value="">Select level</option>
+                <option>Basic</option><option>Conversational</option>
+                <option>Fluent</option><option>Native</option>
+              </select>
+              <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </div>
           </div>
         </div>
         <div id="ew-extra-lang"></div>
@@ -1779,10 +1785,28 @@
   const levelOpts = ['Basic','Conversational','Fluent','Native'];
   function buildLangRow(n) {
     const chevron = `<span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;
-    const langWrap = document.createElement('div');
-    langWrap.className = 'ew-field';
-    langWrap.innerHTML = `<div class="ew-grid-2" style="margin-bottom:0"><div class="ew-select-wrap"><select name="language_${n}"><option value="">Select</option>${langOpts.map(o=>`<option>${o}</option>`).join('')}</select>${chevron}</div><div class="ew-select-wrap"><select name="language_level_${n}"><option value="">Level</option>${levelOpts.map(o=>`<option>${o}</option>`).join('')}</select>${chevron}</div></div>`;
-    return langWrap;
+    const wrap = document.createElement('div');
+    wrap.className = 'ew-extra-lang-row';
+    wrap.style.cssText = 'position:relative;margin-bottom:0.5rem';
+    wrap.innerHTML = `
+      <div class="ew-grid-2">
+        <div class="ew-field" style="gap:0.3rem">
+          <label style="font-size:0.75rem;color:#aaa;font-weight:400">Language</label>
+          <div class="ew-select-wrap"><select name="language_${n}"><option value="">Select language</option>${langOpts.map(o=>`<option>${o}</option>`).join('')}</select>${chevron}</div>
+        </div>
+        <div class="ew-field" style="gap:0.3rem">
+          <label style="font-size:0.75rem;color:#aaa;font-weight:400">Proficiency level</label>
+          <div class="ew-select-wrap"><select name="language_level_${n}"><option value="">Select level</option>${levelOpts.map(o=>`<option>${o}</option>`).join('')}</select>${chevron}</div>
+        </div>
+      </div>
+      <button type="button" class="ew-lang-remove" aria-label="Remove language" style="position:absolute;top:0;right:0;background:none;border:none;cursor:pointer;font-size:1rem;color:#aaa;line-height:1;padding:0.2rem">✕</button>
+    `;
+    wrap.querySelector('.ew-lang-remove').addEventListener('click', () => {
+      wrap.remove();
+      langCount--;
+      document.getElementById('ew-add-lang').style.display = '';
+    });
+    return wrap;
   }
   document.getElementById('ew-add-lang')?.addEventListener('click', () => {
     if (langCount >= maxLangs) return;
