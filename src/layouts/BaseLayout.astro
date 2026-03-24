@@ -29,61 +29,33 @@ const {
     <!-- Meta CAPI + Pixel with Deduplication -->
     <script is:inline>
     (function() {
-      var PIXEL_ID   = '322421330936674';
-      var CAPI_TOKEN = 'EAALEAH8OJZCMBPGmzaGr2zdjJepi4PjX9rzmt6vgNZB6gekjG0XNqEBZAihdxCMH4x993DbCsQVjVRqvY2VuSFqok2BiARwOPWkdeZBcAaqqsFM9JXwdCCPJIzCZBTyfLdgj6C8BnpJWPJ5OZBZAXImC3tz30LHDWE4Kxx6muo29EuUui26Da8smT7Pm1cHpgZDZD';
-      var TEST_CODE  = 'TEST18883';
+      var PIXEL_ID = '322421330936674';
 
       function genEventId() {
         return 'ev_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
       }
 
-      async function sha256(str) {
-        if (!str) return null;
-        var clean = str.trim().toLowerCase();
-        var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(clean));
-        return Array.from(new Uint8Array(buf)).map(function(b) { return b.toString(16).padStart(2,'0'); }).join('');
-      }
-
-      async function sendCAPI(eventName, eventId, userData) {
-        var userDataHashed = {
-          client_user_agent: navigator.userAgent
-        };
-
+      function sendCAPIviaServer(eventName, eventId, userData) {
         var cookies = document.cookie.split(';').reduce(function(acc, c) {
           var p = c.trim().split('='); acc[p[0]] = p[1]; return acc;
         }, {});
-        if (cookies['_fbp']) userDataHashed['fbp'] = cookies['_fbp'];
-        if (cookies['_fbc']) userDataHashed['fbc'] = cookies['_fbc'];
-
-        if (userData.email)      userDataHashed['em'] = await sha256(userData.email);
-        if (userData.phone)      userDataHashed['ph'] = await sha256(userData.phone.replace(/\D/g,''));
-        if (userData.first_name) userDataHashed['fn'] = await sha256(userData.first_name);
-        if (userData.last_name)  userDataHashed['ln'] = await sha256(userData.last_name);
-        if (userData.dob)        userDataHashed['db'] = await sha256(userData.dob.replace(/\D/g,''));
-
-        Object.keys(userDataHashed).forEach(function(k) {
-          if (!userDataHashed[k]) delete userDataHashed[k];
-        });
 
         var payload = {
-          data: [{
-            event_name:       eventName,
-            event_time:       Math.floor(Date.now() / 1000),
-            event_id:         eventId,
-            event_source_url: window.location.href,
-            action_source:    'website',
-            user_data:        userDataHashed
-          }]
+          event_name: eventName,
+          event_id: eventId,
+          event_source_url: window.location.href,
+          user_data: Object.assign({}, userData || {})
         };
-        if (TEST_CODE) payload.test_event_code = TEST_CODE;
+        if (cookies['_fbp']) payload.user_data.fbp = cookies['_fbp'];
+        if (cookies['_fbc']) payload.user_data.fbc = cookies['_fbc'];
 
-        fetch('https://graph.facebook.com/v19.0/' + PIXEL_ID + '/events?access_token=' + CAPI_TOKEN, {
-          method:  'POST',
+        fetch('/api/meta-capi', {
+          method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify(payload)
+          body: JSON.stringify(payload)
         })
         .then(function(r) { return r.json(); })
-        .then(function(d) { console.log('[MetaCAPI]', eventName, d); })
+        .then(function(d) { console.log('[MetaCAPI Server]', eventName, d); })
         .catch(function(e) { console.warn('[MetaCAPI] Error:', e); });
       }
 
@@ -96,15 +68,13 @@ const {
       fbq('init', PIXEL_ID);
 
       var pvId = genEventId();
-      localStorage.setItem('fb_ev_pageview', pvId);
       fbq('track', 'PageView', {}, { eventID: pvId });
-      sendCAPI('PageView', pvId, {});
+      sendCAPIviaServer('PageView', pvId, {});
 
       window.fbTrackCompleteRegistration = function(userData) {
         var evId = genEventId();
-        localStorage.setItem('fb_ev_complete_reg', evId);
         fbq('track', 'CompleteRegistration', { status: true }, { eventID: evId });
-        sendCAPI('CompleteRegistration', evId, userData || {});
+        sendCAPIviaServer('CompleteRegistration', evId, userData || {});
       };
     })();
     </script>

@@ -77,6 +77,66 @@ async function initDatabase() {
   console.log('Database initialized');
 }
 
+// ── Meta Conversions API (server-side) ──────────────────────────────────────
+const META_PIXEL_ID   = '322421330936674';
+const META_CAPI_TOKEN = 'EAALEAH8OJZCMBPGmzaGr2zdjJepi4PjX9rzmt6vgNZB6gekjG0XNqEBZAihdxCMH4x993DbCsQVjVRqvY2VuSFqok2BiARwOPWkdeZBcAaqqsFM9JXwdCCPJIzCZBTyfLdgj6C8BnpJWPJ5OZBZAXImC3tz30LHDWE4Kxx6muo29EuUui26Da8smT7Pm1cHpgZDZD';
+const META_TEST_CODE  = 'TEST18883';
+
+async function sha256(str) {
+  if (!str) return null;
+  const { createHash } = await import('crypto');
+  return createHash('sha256').update(str.trim().toLowerCase()).digest('hex');
+}
+
+app.post('/api/meta-capi', async (req, res) => {
+  try {
+    const { event_name, event_id, event_source_url, user_data } = req.body;
+    if (!event_name || !event_id) {
+      return res.status(400).json({ error: 'Missing event_name or event_id' });
+    }
+
+    const hashedUserData = {
+      client_ip_address: req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip,
+      client_user_agent: req.headers['user-agent'] || ''
+    };
+
+    if (user_data) {
+      if (user_data.fbp) hashedUserData.fbp = user_data.fbp;
+      if (user_data.fbc) hashedUserData.fbc = user_data.fbc;
+      if (user_data.email)      hashedUserData.em = await sha256(user_data.email);
+      if (user_data.phone)      hashedUserData.ph = await sha256(user_data.phone.replace(/\D/g, ''));
+      if (user_data.first_name) hashedUserData.fn = await sha256(user_data.first_name);
+      if (user_data.last_name)  hashedUserData.ln = await sha256(user_data.last_name);
+      if (user_data.dob)        hashedUserData.db = await sha256(user_data.dob.replace(/\D/g, ''));
+    }
+
+    const payload = {
+      data: [{
+        event_name,
+        event_time: Math.floor(Date.now() / 1000),
+        event_id,
+        event_source_url: event_source_url || '',
+        action_source: 'website',
+        user_data: hashedUserData
+      }]
+    };
+    if (META_TEST_CODE) payload.test_event_code = META_TEST_CODE;
+
+    const url = `https://graph.facebook.com/v19.0/${META_PIXEL_ID}/events?access_token=${META_CAPI_TOKEN}`;
+    const metaRes = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const metaData = await metaRes.json();
+    console.log('[MetaCAPI Server]', event_name, metaData);
+    res.json({ success: true, meta: metaData });
+  } catch (err) {
+    console.error('[MetaCAPI Server] Error:', err);
+    res.status(500).json({ error: 'CAPI error' });
+  }
+});
+
 app.post('/api/apply', upload.single('resume'), async (req, res) => {
   try {
     const data = req.body;
