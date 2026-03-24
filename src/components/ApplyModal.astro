@@ -697,23 +697,26 @@
   border: 1.5px solid #e0e0e0;
   border-radius: 8px;
   font-size: 0.88rem;
-  color: #bbb;
+  color: #2a2a2a;
+  font-weight: 600;
   font-family: var(--font-body);
   background: #fff;
   outline: none;
-  transition: border-color 0.15s, color 0.15s;
+  transition: border-color 0.15s;
   width: 100%;
   box-sizing: border-box;
   appearance: none;
   -webkit-appearance: none;
 }
-.ew-form__card input::placeholder { color: #bbb; }
+.ew-form__card input::placeholder { color: #bbb; font-weight: 400; }
 .ew-form__card input:focus,
 .ew-form__card select:focus {
   border-color: #2bbcb0;
-  color: #333;
 }
-.ew-form__card input:not(:placeholder-shown) { color: #333; }
+.ew-form__card input:not(:placeholder-shown) {
+  color: #2a2a2a;
+  font-weight: 600;
+}
 
 /* ── Select wrapper (custom chevron) ── */
 .ew-select-wrap {
@@ -1266,6 +1269,17 @@
   .ew-form__progress-row { padding: 1rem 1.25rem 0; }
   .ew-step { flex: 1; min-height: 0; }
   .ew-step-content { justify-content: flex-start; gap: 1rem; }
+
+  /* Prevent iOS zoom on focus (requires font-size >= 16px) */
+  .ew-field input,
+  .ew-field select,
+  .ew-form__card input[type="text"],
+  .ew-form__card input[type="email"],
+  .ew-form__card input[type="tel"],
+  .ew-form__card select,
+  .ew-country-select {
+    font-size: 16px !important;
+  }
 
   /* Typography */
   .ew-title { font-size: 1.2rem; text-align: left; }
