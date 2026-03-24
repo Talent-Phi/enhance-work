@@ -291,12 +291,13 @@ import StatCard from '../components/StatCard.astro';
     height: auto;
     display: block;
   }
-  /* Top hiring areas card — overlaid at bottom-left of the photo, slightly overflowing */
+  /* Top hiring areas card — centered horizontally, bottom of the photo */
   .hero__hiring-card {
     position: absolute;
     bottom: -4%;
-    left: -8%;
-    width: 70%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
     height: auto;
     border-radius: 16px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.12);
