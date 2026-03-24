@@ -47,13 +47,16 @@ import StatCard from '../components/StatCard.astro';
     </div>
 
     <!-- RIGHT: composite mockup (photo + New profiles card + Top hiring areas card) -->
-    <!-- hidden temporarily — showing 0s, will re-enable when data is live -->
-    <div class="hero__right" style="display:none">
-      <img
-        src="/images/mockups/hero-right-mockup.png"
-        alt="Aesthetic professional — top hiring areas in South Florida"
-        class="hero__mockup"
-      />
+    <div class="hero__right">
+      <div class="hero__mockup-wrap">
+        <img
+          src="/images/mockups/hero-right-mockup.png"
+          alt="Aesthetic professional — top hiring areas in South Florida"
+          class="hero__mockup"
+        />
+        <!-- Hides the "New profiles" card painted in the PNG (top-left area of mockup) -->
+        <div class="hero__mockup-cover"></div>
+      </div>
     </div>
   </div>
 
@@ -274,11 +277,26 @@ import StatCard from '../components/StatCard.astro';
   }
 
   /* Single composite mockup PNG (photo + New profiles card + Top hiring areas card) */
-  .hero__mockup {
+  .hero__mockup-wrap {
+    position: relative;
+    display: inline-block;
     width: 100%;
     max-width: 580px;
+  }
+  .hero__mockup {
+    width: 100%;
     height: auto;
     display: block;
+  }
+  /* Covers the "New profiles 0 / +0%" card painted in the top-left of the PNG */
+  .hero__mockup-cover {
+    position: absolute;
+    top: 3%;
+    left: 0%;
+    width: 35%;
+    height: 18%;
+    background: #e0e0e0;
+    border-radius: 12px;
   }
 
   /* ── STATS BAND ── */
