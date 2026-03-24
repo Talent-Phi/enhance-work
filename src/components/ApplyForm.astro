@@ -459,7 +459,7 @@
   position: relative;
   inset: auto;
   z-index: auto;
-  min-height: 100vh;
+  min-height: 100dvh;
   padding: 2.5rem 1.5rem;
 }
 
@@ -1772,5 +1772,18 @@
       }
     });
   }
+
+  // iOS keyboard: when focus leaves an input, scroll body back to top of form
+  // to prevent the "stuck gap" after keyboard closes
+  const formBody = document.querySelector('.ew-form__body');
+  document.querySelectorAll('.ew-form input, .ew-form select, .ew-form textarea').forEach(el => {
+    el.addEventListener('blur', () => {
+      // Small delay to let iOS finish animating the keyboard down
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        if (formBody) formBody.scrollTop = formBody.scrollTop; // keep inner scroll position
+      }, 100);
+    });
+  });
 })();
 </script>
