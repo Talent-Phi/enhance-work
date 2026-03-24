@@ -457,7 +457,9 @@
   position: relative;
   inset: auto;
   z-index: auto;
-  min-height: 100dvh;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
   padding: 2.5rem 1.5rem;
 }
 
@@ -1253,7 +1255,15 @@
     padding: 0;
     justify-content: flex-start;
     align-items: stretch;
-    overflow-x: hidden;
+    overflow: hidden; /* no page scroll at all */
+    height: 100dvh;
+    max-height: 100dvh;
+  }
+  .ew-form--page {
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+    padding: 0;
   }
 
   /* Logo + back arrow row outside card */
