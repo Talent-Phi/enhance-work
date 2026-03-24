@@ -1,0 +1,210 @@
+Prompt: Implementación de Meta CAPI + Pixel con Deduplicación y Hashing
+Objetivo: Crear/Actualizar un plugin de WordPress que envíe eventos PageView y CompleteRegistration de forma dual (Navegador vía Pixel y Servidor vía Conversions API) utilizando un mismo eventID para la deduplicación, incluyendo el rastreo de Microsoft Clarity.
+1. Información de Conexión y Credenciales
+
+Facebook Pixel ID: 322421330936674
+Meta API Token: EAALEAH8OJZCMBPGmzaGr2zdjJepi4PjX9rzmt6vgNZB6gekjG0XNqEBZAihdxCMH4x993DbCsQVjVRqvY2VuSFqok2BiARwOPWkdeZBcAaqqsFM9JXwdCCPJIzCZBTyfLdgj6C8BnpJWPJ5OZBZAXImC3tz30LHDWE4Kxx6muo29EuUui26Da8smT7Pm1cHpgZDZD
+Código de Prueba (Test Event Code): TEST18883
+Microsoft Clarity ID: svywuv9yv3
+2. Requerimientos Técnicos del Frontend (JS)
+
+Generación de Event ID: Cada evento debe generar un ID único (ej: ev_timestamp_random). Este ID debe guardarse temporalmente en localStorage para asegurar que el trigger de JS y la llamada al servidor usen exactamente el mismo código.
+Evento PageView: Debe dispararse automáticamente al cargar la página.
+Evento CompleteRegistration: Debe capturar los datos del formulario (Nombre, Apellido, Email, Teléfono, Edad).
+Envío al Backend: Tras disparar el evento en el Pixel, se debe realizar un fetch POST a /fb-capi-endpoint/ enviando el event_name, el event_id y los datos del usuario.
+3. Requerimientos Técnicos del Backend (PHP)
+
+Endpoint de Recepción: Procesar las peticiones en el hook template_redirect filtrando por la variable de consulta fb_capi.
+Seguridad y Hashing (CRÍTICO): * Meta no acepta datos en texto plano. Todos los campos de usuario (em, ph, fn, ln) deben ser procesados: 1. Eliminar espacios en blanco y convertir a minúsculas. 2. Aplicar algoritmo SHA-256.
+Datos Adicionales: El servidor debe capturar automáticamente el client_user_agent, la client_ip_address (compatible con IPv6 y Cloudflare), y las cookies _fbp / _fbc.
+Deduplicación: El event_id recibido del frontend debe enviarse en el payload de la API de Meta exactamente igual.
+4. Flujo de Trabajo Esperado
+
+Inyectar el script de Clarity en el header.
+Configurar la página de ajustes en el admin de WordPress para gestionar el Token y el Pixel ID.
+Implementar la lógica de hashing en una función helper de PHP.
+Asegurar que el servidor responda con el JSON de éxito/error proveniente de la Graph API de Meta para monitoreo.
+Tina Loaiza  [12:41 PM]
+El plugin es PHP puro (no REST API de WP), así que voy directo a construirlo. Todo el spec está claro — empiezo.
+[12:41 PM]El plugin va standalone, lo creo aquí:
+[12:41 PM]Ahora creo el README de instalación:
+[12:41 PM]Listo. Aquí el resumen de lo que entregué:
+
+───
+
+:white_check_mark: Plugin creado: meta-capi-pixel.php
+
+4 módulos implementados:
+
+1. Settings Page (/wp-admin/options-general.php?page=meta-capi-settings)
+→ Pixel ID, CAPI Token (campo password), Test Event Code, Clarity ID — todo configurable sin tocar código
+
+2. Microsoft Clarity → inyectado en <head> con ID svywuv9yv3
+
+3. Frontend JS (Pixel)
+
+• PageView → se dispara automáticamente al cargar, genera ev_timestamp_random, guarda en localStorage
+• window.fbTrackCompleteRegistration(userData) → para llamar desde el formulario con { first_name, last_name, email, phone, dob }
+
+4. Backend PHP (CAPI)
+
+• Endpoint /?fb_capi=1 via template_redirect
+• Hashing SHA-256: em, ph, fn, ln, db → trim + lowercase + hash
+• IP via Cloudflare (CF-Connecting-IP) o fallback
+• Cookies _fbp / _fbc automáticas
+• Mismo event_id → Meta deduplica automáticamente
+• Responde el JSON de Graph API para monitoreo
+
+───
+
+Para instalar:
+
+1. Copiar meta-capi-pixel.php a wp-content/plugins/meta-capi-pixel/
+2. Activar el plugin
+3. Settings → Meta CAPI → pegar el token
+
+El plugin está en /root/.openclaw/workspace-tina-loaiza/projects/meta-capi-plugin/. ¿Lo subo a algún repo o te lo paso directo?
+Santiago Loaiza  [12:42 PM]
+ara instalar:
+
+1. Copiar meta-capi-pixel.php a wp-content/plugins/meta-capi-pixel/
+2. Activar el plugin
+3. Settings → Meta CAPI → pegar el token
+
+El plugin está en /root/.openclaw/workspace-tina-loaiza/projects/meta-capi-plugin/. ¿Lo subo a algún repo o te lo paso directo? dme que tengo que hacer y yo lo hagao requeiro el plugin en js no en php
+Tina Loaiza  [12:43 PM]
+Entendido — versión JS pura. Te explico qué hacer y te doy el archivo:
+
+───
+
+Opción JS (sin PHP)
+
+Para CAPI en JS puro, el hashing SHA-256 se hace con la Web Crypto API del browser y el fetch va directo a Meta. El único trade-off es que el token queda visible en el JS del browser — para mitigarlo se puede restringir el token solo a send_events en Meta App settings.
+
+Cómo instalarlo en WordPress:
+
+1. Instalar el plugin gratuito "WPCode" (o "Insert Headers and Footers")
+2. Ir a Code Snippets → Header
+3. Pegar el script de abajo
+4. Guardar — listo, sin tocar PHP ni activar nada
+
+───
+
+Aquí el script completo:
+
+<!-- Meta CAPI + Pixel (JS puro) + Clarity -->
+<script>[12:43 PM](function() {
+  var PIXEL_ID   = '322421330936674';
+  var CAPI_TOKEN = 'EAALEAH8OJZCMBPGmzaGr2zdjJepi4PjX9rzmt6vgNZB6gekjG0XNqEBZAihdxCMH4x993DbCsQVjVRqvY2VuSFqok2BiARwOPWkdeZBcAaqqsFM9JXwdCCPJIzCZBTyfLdgj6C8BnpJWPJ5OZBZAXImC3tz30LHDWE4Kxx6muo29EuUui26Da8smT7Pm1cHpgZDZD';
+  var TEST_CODE  = 'TEST18883'; // ← vaciar en producción
+
+  // ── Generar Event ID único
+  function genEventId() {
+    return 'ev_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+  }
+
+  // ── SHA-256 con Web Crypto API
+  async function sha256(str) {
+    if (!str) return null;
+    var clean = str.trim().toLowerCase();
+    var buf   = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(clean));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  }
+
+  // ── Enviar evento a Meta CAPI
+  async function sendCAPI(eventName, eventId, userData) {
+    var userDataHashed = {
+      client_user_agent: navigator.userAgent,
+      client_ip_address: '' // no disponible en browser
+    };
+
+    // fbp / fbc desde cookies
+    var cookies = document.cookie.split(';').reduce(function(acc, c) {
+      var p = c.trim().split('='); acc[p[0]] = p[1]; return acc;
+    }, {});
+    if (cookies['_fbp']) userDataHashed['fbp'] = cookies['_fbp'];
+    if (cookies['_fbc']) userDataHashed['fbc'] = cookies['_fbc'];
+
+    // Hashear PII
+    if (userData.email)      userDataHashed['em'] = await sha256(userData.email);
+    if (userData.phone)      userDataHashed['ph'] = await sha256(userData.phone.replace(/\D/g,''));
+    if (userData.first_name) userDataHashed['fn'] = await sha256(userData.first_name);
+    if (userData.last_name)  userDataHashed['ln'] = await sha256(userData.last_name);
+    if (userData.dob)        userDataHashed['db'] = await sha256(userData.dob.replace(/\D/g,''));
+
+    // Limpiar nulls
+    Object.keys(userDataHashed).forEach(function(k) {
+      if (!userDataHashed[k]) delete userDataHashed[k];
+    });
+
+    var payload = {
+      data: [{
+        event_name:       eventName,
+        event_time:       Math.floor(Date.now() / 1000),
+        event_id:         eventId,
+        event_source_url: window.location.href,
+        action_source:    'website',
+        user_data:        userDataHashed
+      }]
+    };
+    if (TEST_CODE) payload.test_event_code = TEST_CODE;
+
+    fetch('https://graph.facebook.com/v19.0/' + PIXEL_ID + '/events?access_token=' + CAPI_TOKEN, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload)
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(d) { console.log('[MetaCAPI]', eventName, d); })
+    .catch(function(e) { console.warn('[MetaCAPI] Error:', e); });
+  }
+
+  // ── Init Meta Pixel
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+  (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+  fbq('init', PIXEL_ID);
+
+  // ── PageView
+  var pvId = genEventId();
+  localStorage.setItem('fb_ev_pageview', pvId);
+  fbq('track', 'PageView', {}, { eventID: pvId });
+  sendCAPI('PageView', pvId, {});
+
+  // ── CompleteRegistration (llamar desde el form)
+  window.fbTrackCompleteRegistration = function(userData) {
+    var evId = genEventId();
+    localStorage.setItem('fb_ev_complete_reg', evId);
+    fbq('track', 'CompleteRegistration', { status: true }, { eventID: evId });
+    sendCAPI('CompleteRegistration', evId, userData || {});
+  };
+
+})();
+</script>
+<noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=322421330936674&ev=PageView&noscript=1"/></noscript>
+
+<!-- Microsoft Clarity -->
+<script type="text/javascript">[12:43 PM](function(c,l,a,r,i,t,y){
+  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window,document,"clarity","script","svywuv9yv3");
+</script>
+───
+
+Cuando alguien complete el formulario de registro, llamas:
+
+window.fbTrackCompleteRegistration({
+  first_name: 'John',
+  last_name:  'Doe',
+  email:      'john@example.com',
+  phone:      '+13055551234',
+  dob:        '19900115'
+});
+Para producción: vaciar TEST_CODE = '' y listo.
+
+¿Quieres que guarde este script en el repo de perfectb o en algún otro lugar?

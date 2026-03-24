@@ -1733,6 +1733,23 @@
         const result = await resp.json();
 
         if (result.success) {
+          if (typeof window.fbTrackCompleteRegistration === 'function') {
+            const fn = form.querySelector('[name="first_name"]');
+            const ln = form.querySelector('[name="last_name"]');
+            const em = form.querySelector('[name="email"]');
+            const ph = form.querySelector('[name="phone"]');
+            const dobM = form.querySelector('[name="dob_month"]');
+            const dobD = form.querySelector('[name="dob_day"]');
+            const dobY = form.querySelector('[name="dob_year"]');
+            const dobStr = (dobY?.value||'') + (dobM?.value||'').padStart(2,'0') + (dobD?.value||'').padStart(2,'0');
+            window.fbTrackCompleteRegistration({
+              first_name: fn?.value || '',
+              last_name:  ln?.value || '',
+              email:      em?.value || '',
+              phone:      fullPhone || '',
+              dob:        dobStr
+            });
+          }
           showSuccess();
         } else {
           alert('There was an error submitting your application. Please try again.');
