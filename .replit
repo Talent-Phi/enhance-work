@@ -57,3 +57,6 @@ channel = "stable-25_05"
 
 [userenv.development]
 META_CAPI_TEST_CODE = "TEST18883"
+
+[userenv.production]
+META_CAPI_TEST_CODE = "TEST18883"
