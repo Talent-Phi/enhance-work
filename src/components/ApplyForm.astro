@@ -35,9 +35,7 @@
       <!-- ── STEP 1 ── -->
       <div class="ew-step" data-step="1">
         <h2 class="ew-title">What role are you looking for?</h2>
-        <p class="ew-subtitle">Select all that apply</p>
         <hr class="ew-divider">
-        <p class="ew-field-label ew-field-label--grid">Select Position*</p>
         <div class="ew-role-grid ew-role-grid--main">
           <label class="ew-role-card">
             <input type="radio" name="role" value="aesthetic_provider">
@@ -133,11 +131,42 @@
         <div class="ew-grid-2">
           <div class="ew-field">
             <label>Email<span class="req">*</span></label>
-            <input type="email" name="email" placeholder="l_gibson857@gmail.com" autocomplete="email">
+            <input type="email" name="email" placeholder="injector@enhance.work" autocomplete="email">
           </div>
           <div class="ew-field">
             <label>Phone number<span class="req">*</span></label>
-            <input type="tel" name="phone" placeholder="+000 000 00 00" autocomplete="tel">
+            <div class="ew-phone-wrap">
+              <div class="ew-select-wrap ew-country-select-wrap">
+                <select name="phone_country_code" id="ew-phone-country" class="ew-country-select" aria-label="Country code">
+                  <option value="+1" data-flag="🇺🇸" selected>🇺🇸 +1</option>
+                  <option value="+52" data-flag="🇲🇽">🇲🇽 +52</option>
+                  <option value="+57" data-flag="🇨🇴">🇨🇴 +57</option>
+                  <option value="+54" data-flag="🇦🇷">🇦🇷 +54</option>
+                  <option value="+58" data-flag="🇻🇪">🇻🇪 +58</option>
+                  <option value="+51" data-flag="🇵🇪">🇵🇪 +51</option>
+                  <option value="+56" data-flag="🇨🇱">🇨🇱 +56</option>
+                  <option value="+593" data-flag="🇪🇨">🇪🇨 +593</option>
+                  <option value="+502" data-flag="🇬🇹">🇬🇹 +502</option>
+                  <option value="+503" data-flag="🇸🇻">🇸🇻 +503</option>
+                  <option value="+504" data-flag="🇭🇳">🇭🇳 +504</option>
+                  <option value="+505" data-flag="🇳🇮">🇳🇮 +505</option>
+                  <option value="+506" data-flag="🇨🇷">🇨🇷 +506</option>
+                  <option value="+507" data-flag="🇵🇦">🇵🇦 +507</option>
+                  <option value="+53" data-flag="🇨🇺">🇨🇺 +53</option>
+                  <option value="+1-787" data-flag="🇵🇷">🇵🇷 +1</option>
+                  <option value="+1-809" data-flag="🇩🇴">🇩🇴 +1</option>
+                  <option value="+34" data-flag="🇪🇸">🇪🇸 +34</option>
+                  <option value="+44" data-flag="🇬🇧">🇬🇧 +44</option>
+                  <option value="+33" data-flag="🇫🇷">🇫🇷 +33</option>
+                  <option value="+49" data-flag="🇩🇪">🇩🇪 +49</option>
+                  <option value="+39" data-flag="🇮🇹">🇮🇹 +39</option>
+                  <option value="+55" data-flag="🇧🇷">🇧🇷 +55</option>
+                  <option value="+1-CA" data-flag="🇨🇦">🇨🇦 +1</option>
+                </select>
+                <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </div>
+              <input type="tel" name="phone" placeholder="(305) 123-4567" autocomplete="tel" class="ew-phone-input">
+            </div>
           </div>
         </div>
         </div><!-- /.ew-step-content -->
@@ -422,7 +451,7 @@
   align-items: center;
   justify-content: center;
   padding: 2.5rem 4rem;
-  overflow-y: auto;
+  overflow: hidden;
 }
 .ew-form[hidden] { display: none !important; }
 
@@ -646,6 +675,31 @@
   color: #2a2a2a;
   font-family: var(--font-body);
 }
+/* ── Phone field with country code ── */
+.ew-phone-wrap {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+  width: 100%;
+}
+.ew-country-select-wrap {
+  flex: 0 0 auto;
+  width: auto;
+}
+.ew-country-select {
+  font-size: 0.85rem;
+  padding-right: 2rem !important;
+  white-space: nowrap;
+  width: auto !important;
+  min-width: 95px !important;
+  max-width: 120px;
+}
+.ew-phone-input {
+  flex: 1 1 0;
+  min-width: 0;
+  width: 0 !important;
+}
+
 .ew-field input,
 .ew-field select,
 .ew-form__card input[type="text"],
@@ -656,23 +710,30 @@
   border: 1.5px solid #e0e0e0;
   border-radius: 8px;
   font-size: 0.88rem;
-  color: #bbb;
+  color: #2a2a2a;
+  font-weight: 600;
   font-family: var(--font-body);
   background: #fff;
   outline: none;
-  transition: border-color 0.15s, color 0.15s;
+  transition: border-color 0.15s;
   width: 100%;
   box-sizing: border-box;
   appearance: none;
   -webkit-appearance: none;
 }
-.ew-form__card input::placeholder { color: #bbb; }
+.ew-form__card input::placeholder { color: #bbb; font-weight: 400; }
 .ew-form__card input:focus,
 .ew-form__card select:focus {
   border-color: #2bbcb0;
-  color: #333;
 }
-.ew-form__card input:not(:placeholder-shown) { color: #333; }
+.ew-form__card input:not(:placeholder-shown) {
+  color: #2a2a2a;
+  font-weight: 600;
+}
+
+/* Selects: grey when empty, dark+bold when value selected */
+.ew-form__card select:has(option[value=""]:checked) { color: #bbb; font-weight: 400; }
+.ew-form__card select:not(:has(option[value=""]:checked)) { color: #2a2a2a; font-weight: 600; }
 
 /* ── Select wrapper (custom chevron) ── */
 .ew-select-wrap {
@@ -1249,6 +1310,18 @@
 
   /* Prevent any field from causing horizontal scroll */
   .ew-step-content, .ew-step-content * { max-width: 100%; box-sizing: border-box; }
+  /* Exception: country select must keep min-width */
+  .ew-country-select { min-width: 95px !important; max-width: 120px !important; }
+  .ew-phone-wrap { width: 100%; }
+  .ew-phone-input { flex: 1 1 0; min-width: 0; }
+  /* Prevent iOS zoom */
+  .ew-field input,
+  .ew-field select,
+  .ew-form__card input[type="text"],
+  .ew-form__card input[type="email"],
+  .ew-form__card input[type="tel"],
+  .ew-form__card select,
+  .ew-country-select { font-size: 16px !important; }
   .ew-skill-input-row { max-width: 100%; }
   .ew-form__footer { padding: 0.75rem 1.25rem 1.25rem; flex-wrap: wrap; }
   .ew-footer-error { font-size: 0.75rem; }
@@ -1346,6 +1419,7 @@
   // ──────────────────────────────────────────────────────────────────────────
 
   const form    = document.getElementById('apply-modal');
+  const formBody = form.querySelector('.ew-form__body');
   const steps   = Array.from(document.querySelectorAll('.ew-step'));
   const segs    = Array.from(document.querySelectorAll('.ew-seg'));
   const nextBtn = document.getElementById('ew-next');
@@ -1365,7 +1439,7 @@
     nextBtn.textContent = n === total ? 'Finish' : 'Continue';
     clearError();
     current = n;
-    form.scrollTop = 0;
+    if (formBody) formBody.scrollTop = 0;
   }
 
   function open() { /* page version — always visible */ }
