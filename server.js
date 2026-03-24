@@ -79,8 +79,8 @@ async function initDatabase() {
 
 // ── Meta Conversions API (server-side) ──────────────────────────────────────
 const META_PIXEL_ID   = '322421330936674';
-const META_CAPI_TOKEN = 'EAALEAH8OJZCMBPGmzaGr2zdjJepi4PjX9rzmt6vgNZB6gekjG0XNqEBZAihdxCMH4x993DbCsQVjVRqvY2VuSFqok2BiARwOPWkdeZBcAaqqsFM9JXwdCCPJIzCZBTyfLdgj6C8BnpJWPJ5OZBZAXImC3tz30LHDWE4Kxx6muo29EuUui26Da8smT7Pm1cHpgZDZD';
-const META_TEST_CODE  = 'TEST18883';
+const META_CAPI_TOKEN = process.env.META_CAPI_TOKEN || '';
+const META_TEST_CODE  = process.env.META_CAPI_TEST_CODE || '';
 
 async function sha256(str) {
   if (!str) return null;
