@@ -67,10 +67,14 @@ const {
 
       fbq('init', PIXEL_ID);
 
-      var pvId = genEventId();
-      console.log('[MetaPixel Browser] PageView eventID:', pvId);
-      fbq('track', 'PageView', {}, { eventID: pvId });
-      sendCAPIviaServer('PageView', pvId, {});
+      // Guard: fire PageView only once per page load (prevents double-fire on Astro client routing)
+      if (!window._fbPageViewFired) {
+        window._fbPageViewFired = true;
+        var pvId = genEventId();
+        console.log('[MetaPixel Browser] PageView eventID:', pvId);
+        fbq('track', 'PageView', {}, { eventID: pvId });
+        sendCAPIviaServer('PageView', pvId, {});
+      }
 
       window.fbTrackCompleteRegistration = function(userData) {
         var evId = genEventId();
