@@ -1,0 +1,189 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../sections/Footer.astro';
+
+// Blog posts registry — same source of truth as index.astro
+// Super Tina will add posts here as { slug, title, date, excerpt, category, image, readTime, content }
+const posts: {
+  slug: string;
+  title: string;
+  date: string;
+  excerpt: string;
+  category: string;
+  image?: string;
+  readTime: string;
+  content: string; // HTML string
+}[] = [
+  // Posts added by Super Tina
+];
+
+export async function getStaticPaths() {
+  const posts: { slug: string }[] = [];
+  return posts.map(p => ({ params: { slug: p.slug } }));
+}
+
+const { slug } = Astro.params;
+const post = posts.find(p => p.slug === slug);
+
+if (!post) {
+  return Astro.redirect('/blog');
+}
+---
+
+<BaseLayout title={`${post.title} — enhance.work Blog`} description={post.excerpt}>
+  <Nav />
+
+  <main class="post-page">
+    <!-- Hero -->
+    <section class="post-hero">
+      {post.image && (
+        <div class="post-hero__img-wrap">
+          <img src={post.image} alt={post.title} class="post-hero__img" />
+        </div>
+      )}
+      <div class="post-hero__inner">
+        <a href="/blog" class="post-back">← Back to Blog</a>
+        <span class="post-category">{post.category}</span>
+        <h1 class="post-title">{post.title}</h1>
+        <div class="post-meta">
+          <span>{post.date}</span>
+          <span>·</span>
+          <span>{post.readTime} read</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Content -->
+    <section class="post-body">
+      <div class="post-body__inner" set:html={post.content} />
+    </section>
+
+    <!-- Back link -->
+    <div class="post-footer-link">
+      <a href="/blog" class="post-back">← Back to Blog</a>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .post-page {
+    padding-top: 68px;
+    min-height: 100vh;
+    background: #fafafa;
+  }
+
+  /* ── Hero ── */
+  .post-hero {
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .post-hero__img-wrap {
+    width: 100%;
+    max-height: 420px;
+    overflow: hidden;
+  }
+  .post-hero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .post-hero__inner {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 2rem;
+  }
+  .post-back {
+    font-size: 0.85rem;
+    color: #2bbcb0;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+  .post-back:hover { text-decoration: underline; }
+  .post-category {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #2bbcb0;
+    margin-bottom: 0.6rem;
+  }
+  .post-title {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #1a1a1a;
+    line-height: 1.2;
+    margin: 0 0 1rem;
+  }
+  .post-meta {
+    display: flex;
+    gap: 0.4rem;
+    font-size: 0.82rem;
+    color: #aaa;
+  }
+
+  /* ── Body ── */
+  .post-body {
+    padding: 3rem 2rem 4rem;
+  }
+  .post-body__inner {
+    max-width: 760px;
+    margin: 0 auto;
+    font-size: 1.02rem;
+    line-height: 1.75;
+    color: #333;
+  }
+  .post-body__inner h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 2rem 0 0.75rem;
+  }
+  .post-body__inner h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 1.5rem 0 0.5rem;
+  }
+  .post-body__inner p { margin: 0 0 1.2rem; }
+  .post-body__inner ul, .post-body__inner ol {
+    margin: 0 0 1.2rem;
+    padding-left: 1.5rem;
+  }
+  .post-body__inner li { margin-bottom: 0.4rem; }
+  .post-body__inner strong { color: #1a1a1a; }
+  .post-body__inner a { color: #2bbcb0; text-decoration: underline; }
+  .post-body__inner blockquote {
+    border-left: 3px solid #2bbcb0;
+    margin: 1.5rem 0;
+    padding: 0.75rem 1.25rem;
+    background: #f0fffe;
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    color: #555;
+  }
+  .post-body__inner img {
+    width: 100%;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+  }
+
+  /* ── Footer link ── */
+  .post-footer-link {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 2rem 3rem;
+  }
+
+  @media (max-width: 560px) {
+    .post-hero__inner { padding: 1.75rem 1.25rem 1.5rem; }
+    .post-body { padding: 2rem 1.25rem 3rem; }
+    .post-footer-link { padding: 0 1.25rem 2.5rem; }
+  }
+</style>

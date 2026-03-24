@@ -1,0 +1,240 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../sections/Footer.astro';
+
+// Blog posts will be added here as objects or imported from a content collection.
+// Format: { slug, title, date, excerpt, category, image, readTime }
+const posts: {
+  slug: string;
+  title: string;
+  date: string;
+  excerpt: string;
+  category: string;
+  image?: string;
+  readTime: string;
+}[] = [
+  // Posts will be added by Super Tina here
+];
+
+const categories = [...new Set(posts.map(p => p.category))];
+---
+
+<BaseLayout title="Blog — enhance.work" description="Insights, guides and resources for aesthetic injectors and medical spa professionals.">
+  <Nav />
+
+  <main class="blog-page">
+    <!-- Hero -->
+    <section class="blog-hero">
+      <div class="blog-hero__inner">
+        <p class="blog-hero__eyebrow">Resources & Insights</p>
+        <h1 class="blog-hero__title">The enhance.work Blog</h1>
+        <p class="blog-hero__sub">Career tips, industry news, and everything you need to succeed in medical aesthetics.</p>
+      </div>
+    </section>
+
+    <!-- Posts grid -->
+    <section class="blog-main">
+      <div class="blog-main__inner">
+        {posts.length === 0 ? (
+          <div class="blog-empty">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" fill="#d0d0d0"/>
+            </svg>
+            <h2>Coming soon</h2>
+            <p>We're working on something great. Check back soon for articles, guides, and career resources.</p>
+          </div>
+        ) : (
+          <div class="blog-grid">
+            {posts.map(post => (
+              <a href={`/blog/${post.slug}`} class="blog-card">
+                {post.image && (
+                  <div class="blog-card__img-wrap">
+                    <img src={post.image} alt={post.title} class="blog-card__img" loading="lazy" />
+                  </div>
+                )}
+                {!post.image && (
+                  <div class="blog-card__img-wrap blog-card__img-placeholder"></div>
+                )}
+                <div class="blog-card__body">
+                  <span class="blog-card__category">{post.category}</span>
+                  <h2 class="blog-card__title">{post.title}</h2>
+                  <p class="blog-card__excerpt">{post.excerpt}</p>
+                  <div class="blog-card__meta">
+                    <span>{post.date}</span>
+                    <span>·</span>
+                    <span>{post.readTime}</span>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  /* ── Page base ── */
+  .blog-page {
+    padding-top: 68px; /* nav height */
+    min-height: 100vh;
+    background: #fafafa;
+  }
+
+  /* ── Hero ── */
+  .blog-hero {
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+  }
+  .blog-hero__inner {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  .blog-hero__eyebrow {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #2bbcb0;
+    margin: 0 0 1rem;
+  }
+  .blog-hero__title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #1a1a1a;
+    line-height: 1.1;
+    margin: 0 0 1rem;
+  }
+  .blog-hero__sub {
+    font-size: 1.05rem;
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ── Main section ── */
+  .blog-main {
+    padding: 3.5rem 2rem 5rem;
+  }
+  .blog-main__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ── Empty state ── */
+  .blog-empty {
+    text-align: center;
+    padding: 5rem 1rem;
+    color: #999;
+  }
+  .blog-empty svg { margin-bottom: 1.5rem; }
+  .blog-empty h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 0.75rem;
+  }
+  .blog-empty p {
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  /* ── Grid ── */
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  /* ── Card ── */
+  .blog-card {
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+  }
+  .blog-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+  }
+  .blog-card__img-wrap {
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    background: #f0f0f0;
+  }
+  .blog-card__img-placeholder {
+    background: linear-gradient(135deg, #e8f8f7 0%, #d0f0ee 100%);
+  }
+  .blog-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  .blog-card:hover .blog-card__img {
+    transform: scale(1.03);
+  }
+  .blog-card__body {
+    padding: 1.25rem 1.5rem 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .blog-card__category {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #2bbcb0;
+  }
+  .blog-card__title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1.35;
+    margin: 0;
+  }
+  .blog-card__excerpt {
+    font-size: 0.88rem;
+    color: #666;
+    line-height: 1.55;
+    margin: 0;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .blog-card__meta {
+    display: flex;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    color: #aaa;
+    margin-top: 0.25rem;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .blog-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .blog-hero { padding: 3.5rem 1.25rem 3rem; }
+    .blog-main { padding: 2rem 1.25rem 4rem; }
+    .blog-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+  }
+</style>
