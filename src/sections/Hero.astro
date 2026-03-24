@@ -46,23 +46,22 @@ import StatCard from '../components/StatCard.astro';
 
     </div>
 
-    <!-- RIGHT: two separate professional photos from Figma frame 3544 -->
+    <!-- RIGHT: professional photo + Top hiring areas card (from Figma group 3118) -->
     <div class="hero__right">
-      <div class="hero__photos">
-        <div class="hero__photo-large">
-          <img
-            src="/images/hero/pro-large.png"
-            alt="Aesthetic professional performing treatment"
-            class="hero__photo-img"
-          />
-        </div>
-        <div class="hero__photo-small">
-          <img
-            src="/images/hero/pro-small.png"
-            alt="Aesthetic professional"
-            class="hero__photo-img"
-          />
-        </div>
+      <div class="hero__mockup-wrap">
+        <img
+          src="/images/mockups/hero-right-mockup.png"
+          alt="Aesthetic professional — top hiring areas in South Florida"
+          class="hero__mockup"
+        />
+        <!-- Hides only the "New profiles 0 / +0%" card in top-left of the PNG -->
+        <div class="hero__cover-newprofiles"></div>
+        <!-- "Top hiring areas" card extracted from Figma group 3118 -->
+        <img
+          src="/images/hero/top-hiring-card.png"
+          alt="Top hiring areas"
+          class="hero__hiring-card"
+        />
       </div>
     </div>
   </div>
@@ -283,33 +282,37 @@ import StatCard from '../components/StatCard.astro';
     padding-right: 20px;
   }
 
-  /* Two separate professional photos side by side */
-  .hero__photos {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-end;
-    height: 100%;
-    max-height: 480px;
-  }
-  .hero__photo-large {
-    flex: 0 0 58%;
-    border-radius: 20px;
-    overflow: hidden;
-    height: 100%;
-  }
-  .hero__photo-small {
-    flex: 0 0 38%;
-    border-radius: 20px;
-    overflow: hidden;
-    height: 86%;
-    margin-bottom: 0;
-    align-self: flex-end;
-  }
-  .hero__photo-img {
+  /* Mockup wrap — positions cards over the composite photo */
+  .hero__mockup-wrap {
+    position: relative;
+    display: inline-block;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    max-width: 580px;
+  }
+  .hero__mockup {
+    width: 100%;
+    height: auto;
     display: block;
+  }
+  /* Covers the "New profiles 0 / +0%" card (top-left ~30% of the PNG) */
+  .hero__cover-newprofiles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 32%;
+    height: 22%;
+    background: #e0e0e0;
+    border-radius: 14px;
+  }
+  /* "Top hiring areas" card from Figma group 3118 — overlaid bottom-left */
+  .hero__hiring-card {
+    position: absolute;
+    bottom: 6%;
+    left: -2%;
+    width: 62%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.14);
   }
 
   /* ── STATS BAND ── */
