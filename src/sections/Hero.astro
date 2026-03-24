@@ -46,16 +46,23 @@ import StatCard from '../components/StatCard.astro';
 
     </div>
 
-    <!-- RIGHT: composite mockup (photo + New profiles card + Top hiring areas card) -->
+    <!-- RIGHT: two separate professional photos from Figma frame 3544 -->
     <div class="hero__right">
-      <div class="hero__mockup-wrap">
-        <img
-          src="/images/mockups/hero-right-mockup.png"
-          alt="Aesthetic professional — top hiring areas in South Florida"
-          class="hero__mockup"
-        />
-        <!-- Hides the "New profiles" card painted in the PNG (top-left area of mockup) -->
-        <div class="hero__mockup-cover"></div>
+      <div class="hero__photos">
+        <div class="hero__photo-large">
+          <img
+            src="/images/hero/pro-large.png"
+            alt="Aesthetic professional performing treatment"
+            class="hero__photo-img"
+          />
+        </div>
+        <div class="hero__photo-small">
+          <img
+            src="/images/hero/pro-small.png"
+            alt="Aesthetic professional"
+            class="hero__photo-img"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -276,27 +283,33 @@ import StatCard from '../components/StatCard.astro';
     padding-right: 20px;
   }
 
-  /* Single composite mockup PNG (photo + New profiles card + Top hiring areas card) */
-  .hero__mockup-wrap {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    max-width: 580px;
+  /* Two separate professional photos side by side */
+  .hero__photos {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+    height: 100%;
+    max-height: 480px;
   }
-  .hero__mockup {
+  .hero__photo-large {
+    flex: 0 0 58%;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 100%;
+  }
+  .hero__photo-small {
+    flex: 0 0 38%;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 86%;
+    margin-bottom: 0;
+    align-self: flex-end;
+  }
+  .hero__photo-img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
     display: block;
-  }
-  /* Covers the "New profiles 0 / +0%" card painted in the top-left of the PNG */
-  .hero__mockup-cover {
-    position: absolute;
-    top: 3%;
-    left: 0%;
-    width: 35%;
-    height: 18%;
-    background: #e0e0e0;
-    border-radius: 12px;
   }
 
   /* ── STATS BAND ── */
