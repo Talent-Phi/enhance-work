@@ -4,6 +4,7 @@ import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
+import { initGoogleSheets, appendApplicationRow, getSpreadsheetUrl } from './googleSheets.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -217,6 +218,42 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
       body: JSON.stringify(zapPayload),
     }).catch(err => console.error('[Zapier] Webhook error:', err.message));
 
+    appendApplicationRow({
+      appId,
+      submittedAt: new Date().toISOString(),
+      first_name: data.first_name,
+      last_name: data.last_name,
+      email: data.email,
+      phone: data.phone || '',
+      gender: data.gender || '',
+      dob: dob || '',
+      role: data.role,
+      address1: data.address1 || '',
+      address2: data.address2 || '',
+      city: data.city || '',
+      state: data.state || '',
+      zip: data.zip || '',
+      language: data.language || '',
+      language_level: data.language_level || '',
+      language_2: data.language_2 || '',
+      language_level_2: data.language_level_2 || '',
+      language_3: data.language_3 || '',
+      language_level_3: data.language_level_3 || '',
+      language_4: data.language_4 || '',
+      language_level_4: data.language_level_4 || '',
+      language_5: data.language_5 || '',
+      language_level_5: data.language_level_5 || '',
+      licenses: licenses.join(', '),
+      license_other: data.license_other || '',
+      years_experience: data.years_experience || '',
+      skills: skills.join(', '),
+      start_date: data.start_date || '',
+      employed: data.employed || '',
+      salary: data.salary || '',
+      pay_type: data.pay_type || '',
+      resume_filename: resumeFilename || ''
+    }).catch(() => {});
+
     res.json({ success: true, id: appId });
   } catch (err) {
     console.error('Error saving application:', err);
@@ -273,7 +310,8 @@ if (fs.existsSync(distDir)) {
 
 const PORT = process.env.PORT || 3000;
 
-initDatabase().then(() => {
+initDatabase().then(async () => {
+  await initGoogleSheets();
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`API server running on port ${PORT}`);
   });
