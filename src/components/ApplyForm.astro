@@ -295,8 +295,8 @@
         <div class="ew-step-content">
 
         <div class="ew-field" style="max-width:200px;margin-bottom:1.25rem">
-          <label>Years of experience<span class="req">*</span></label>
-          <input type="text" name="years_experience" placeholder="Years">
+          <label>Years of experience in aesthetics<span class="req">*</span></label>
+          <input type="number" name="years_experience" placeholder="Years" min="0" max="60" inputmode="numeric">
         </div>
 
         <div class="ew-field">
@@ -342,13 +342,12 @@
           <label>Salary expectations<span class="req">*</span></label>
         </div>
         <div class="ew-grid-salary">
-          <input type="text" name="salary" placeholder="$0.00 USD">
+          <input type="number" name="salary" placeholder="0" min="0" inputmode="numeric">
           <div class="ew-select-wrap">
             <select name="pay_type">
               <option>Hourly</option>
-              <option>Annual</option>
-              <option>Per procedure</option>
-              <option>Commission</option>
+              <option>Monthly</option>
+              <option>Yearly</option>
             </select>
             <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </div>
