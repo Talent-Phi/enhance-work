@@ -1659,7 +1659,7 @@
           const lvl  = form.querySelector(`[name="language_level_${i}"]`);
           if (lang && lang.value) {
             formData.append(`language_${i}`, lang.value);
-            if (lvl && lvl.value) formData.append(`language_${i}_level`, lvl.value);
+            if (lvl && lvl.value) formData.append(`language_level_${i}`, lvl.value);
           }
         }
 
