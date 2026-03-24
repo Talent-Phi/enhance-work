@@ -234,6 +234,15 @@ const distDir = path.join(__dirname, 'dist');
 if (fs.existsSync(distDir)) {
   app.use(express.static(distDir));
   app.get('/{*splat}', (req, res) => {
+    const reqPath = req.params.splat || '';
+    const htmlFile = path.join(distDir, reqPath, 'index.html');
+    if (fs.existsSync(htmlFile)) {
+      return res.sendFile(htmlFile);
+    }
+    const directFile = path.join(distDir, reqPath + '.html');
+    if (fs.existsSync(directFile)) {
+      return res.sendFile(directFile);
+    }
     res.sendFile(path.join(distDir, 'index.html'));
   });
 }
