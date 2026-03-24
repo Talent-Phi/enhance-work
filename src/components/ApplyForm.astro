@@ -357,15 +357,38 @@
           </div>
         </div>
 
-        <!-- Important message box -->
-        <div class="ew-msg-box">
+        <!-- Important message box → opens modal -->
+        <div class="ew-msg-box" id="ew-toggle-msg" role="button" tabindex="0" style="cursor:pointer">
           <div class="ew-msg-box__row">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex-shrink:0"><circle cx="12" cy="12" r="10" stroke="#2bbcb0" stroke-width="1.5"/><path d="M12 8v4M12 16h.01" stroke="#2bbcb0" stroke-width="2" stroke-linecap="round"/></svg>
             <span class="ew-msg-box__title">Important message to New Injectors</span>
-            <button type="button" class="ew-clear-btn" id="ew-toggle-msg">Click to read</button>
+            <span class="ew-clear-btn" style="pointer-events:none">Click to read</span>
           </div>
-          <div id="ew-msg-content" hidden style="padding:0.6rem 0 0 1.5rem;font-size:0.82rem;color:#666;line-height:1.5">
-            Before joining the platform, new injectors must provide proof of supervision or collaborative agreement with a licensed Medical Director. Make sure to upload your documentation or note it in your resume.
+        </div>
+
+        <!-- Injector message modal -->
+        <div id="ew-injector-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;padding:1rem">
+          <div style="background:#fff;border-radius:16px;max-width:560px;width:100%;max-height:90dvh;overflow-y:auto;padding:2rem 1.75rem 1.75rem;position:relative">
+            <!-- handle bar -->
+            <div style="width:40px;height:4px;background:#ddd;border-radius:2px;margin:0 auto 1.25rem"></div>
+            <!-- close X -->
+            <button type="button" id="ew-injector-close" style="position:absolute;top:1rem;right:1rem;background:none;border:none;cursor:pointer;font-size:1.25rem;color:#888;line-height:1">✕</button>
+            <h3 style="text-align:center;font-size:1.25rem;font-weight:700;color:#1a1a1a;margin:0 0 1.25rem">Important message to New Injectors</h3>
+            <p style="font-size:0.92rem;color:#444;line-height:1.6;margin:0 0 1rem">
+              We often see nurse practitioners and physician associates trying to break into aesthetics right after postgraduate school or working in traditional healthcare. <strong>They usually have high salary expectations</strong> without realizing that their previous experience doesn't necessarily translate to aesthetics.
+            </p>
+            <p style="font-size:0.92rem;color:#444;line-height:1.6;margin:0 0 1rem">
+              To succeed in aesthetics, you need specific skills and experience that add value to the business. <strong>Training for these skills costs thousands of dollars</strong> and isn't covered in medical or nursing school.
+            </p>
+            <p style="font-size:0.92rem;color:#444;line-height:1.6;margin:0 0 1rem">
+              Be realistic about your salary expectations. You can finance your own private training and then apply for higher salaries, or accept lower, reasonable salaries while gaining valuable training in medical aesthetics. <strong>The business is essentially paying you with training</strong>, which has great monetary value and is a significant non-cash compensation.
+            </p>
+            <p style="font-size:0.92rem;color:#444;line-height:1.6;margin:0 0 1.5rem">
+              Eventually, you will generate the financial gains you are looking for through experience. <strong>This approach will help you avoid unrealistic expectations and successfully break into the industry</strong>
+            </p>
+            <div style="text-align:center">
+              <button type="button" id="ew-injector-confirm" style="background:#2bbcb0;color:#fff;border:none;border-radius:25px;padding:0.85rem 2.5rem;font-size:1rem;font-weight:600;cursor:pointer">Yes, I Understand</button>
+            </div>
           </div>
         </div>
 
@@ -1823,11 +1846,27 @@
     if (langCount >= maxLangs) document.getElementById('ew-add-lang').style.display = 'none';
   });
 
-  // Toggle injector message
-  document.getElementById('ew-toggle-msg')?.addEventListener('click', function() {
-    const c = document.getElementById('ew-msg-content');
-    if (c) { c.hidden = !c.hidden; this.textContent = c.hidden ? 'Click to read' : 'Hide'; }
+  // Injector message modal
+  const injectorModal = document.getElementById('ew-injector-modal');
+  function openInjectorModal() {
+    injectorModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  function closeInjectorModal() {
+    injectorModal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  document.getElementById('ew-toggle-msg')?.addEventListener('click', openInjectorModal);
+  document.getElementById('ew-toggle-msg')?.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openInjectorModal(); });
+  document.getElementById('ew-injector-close')?.addEventListener('click', closeInjectorModal);
+  document.getElementById('ew-injector-confirm')?.addEventListener('click', () => {
+    // Check the "I've read" checkbox
+    const cb = form.querySelector('input[name="injector_msg"]');
+    if (cb) cb.checked = true;
+    closeInjectorModal();
   });
+  // Close on backdrop click
+  injectorModal?.addEventListener('click', e => { if (e.target === injectorModal) closeInjectorModal(); });
 
   // Resume label
   const resumeFile = document.getElementById('ew-resume-file');
