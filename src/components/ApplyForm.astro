@@ -255,26 +255,7 @@
         <button type="button" class="ew-link-btn" id="ew-add-lang">
           <span style="font-size:1.1rem;line-height:1">+</span> Add another language
         </button>
-        <div id="ew-extra-lang" hidden style="margin:0.5rem 0 0.75rem">
-          <div class="ew-grid-2">
-            <div class="ew-select-wrap">
-              <select name="language_other">
-                <option value="">Select</option>
-                <option>English</option><option>Spanish</option><option>French</option>
-                <option>Portuguese</option><option>Mandarin</option><option>Other</option>
-              </select>
-              <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            </div>
-            <div class="ew-select-wrap">
-              <select name="language_other_level">
-                <option value="">Level</option>
-                <option>Basic</option><option>Conversational</option>
-                <option>Fluent</option><option>Native</option>
-              </select>
-              <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            </div>
-          </div>
-        </div>
+        <div id="ew-extra-lang"></div>
 
         <div class="ew-licenses-header">
           <label class="ew-field-label">Licenses you hold</label>
@@ -1607,11 +1588,21 @@
 
         ['first_name','last_name','gender','dob_month','dob_day','dob_year',
          'email','address1','address2','state','city','zip',
-         'language','language_level','language_other','language_other_level','license_other',
+         'language','language_level','license_other',
          'years_experience','salary','pay_type'].forEach(name => {
           const el = form.querySelector(`[name="${name}"]`);
           if (el) formData.append(name, el.value);
         });
+
+        // Collect dynamic additional languages (language_2..language_5)
+        for (let i = 2; i <= 5; i++) {
+          const lang = form.querySelector(`[name="language_${i}"]`);
+          const lvl  = form.querySelector(`[name="language_${i}_level"]`);
+          if (lang && lang.value) {
+            formData.append(`language_${i}`, lang.value);
+            if (lvl && lvl.value) formData.append(`language_${i}_level`, lvl.value);
+          }
+        }
 
         form.querySelectorAll('input[name="license"]:checked').forEach(cb => {
           formData.append('licenses', cb.value);
@@ -1722,10 +1713,27 @@
     if (extra) { extra.hidden = !extra.hidden; if (!extra.hidden) extra.querySelector('input').focus(); }
   });
 
-  // Add language toggle
+  // Add language — dynamic rows (language_2, language_2_level, language_3, ...)
+  let langCount = 1;
+  const maxLangs = 5;
+  const langOpts = ['English','Spanish','French','Portuguese','Mandarin','Other'];
+  const levelOpts = ['Basic','Conversational','Fluent','Native'];
+  function buildLangRow(n) {
+    const chevron = `<span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;
+    const langSelect = `<div class="ew-select-wrap"><select name="language_${n}"><option value="">Select</option>${langOpts.map(o=>`<option>${o}</option>`).join('')}</select>${chevron}</div>`;
+    const levelSelect = `<div class="ew-select-wrap"><select name="language_${n}_level"><option value="">Level</option>${levelOpts.map(o=>`<option>${o}</option>`).join('')}</select>${chevron}</div>`;
+    const row = document.createElement('div');
+    row.className = 'ew-grid-2';
+    row.style.marginBottom = '0.5rem';
+    row.innerHTML = langSelect + levelSelect;
+    return row;
+  }
   document.getElementById('ew-add-lang')?.addEventListener('click', () => {
-    const extra = document.getElementById('ew-extra-lang');
-    if (extra) { extra.hidden = !extra.hidden; if (!extra.hidden) extra.querySelector('input').focus(); }
+    if (langCount >= maxLangs) return;
+    langCount++;
+    const container = document.getElementById('ew-extra-lang');
+    if (container) container.appendChild(buildLangRow(langCount));
+    if (langCount >= maxLangs) document.getElementById('ew-add-lang').style.display = 'none';
   });
 
   // Toggle injector message
