@@ -1773,17 +1773,36 @@
     });
   }
 
-  // iOS keyboard: when focus leaves an input, scroll body back to top of form
-  // to prevent the "stuck gap" after keyboard closes
+  // iOS keyboard gap fix:
+  // When keyboard closes, iOS doesn't restore window scroll → leaves dead space below.
+  // Fix: track window scroll before keyboard opens, restore it after.
   const formBody = document.querySelector('.ew-form__body');
+  let savedScrollY = 0;
+
   document.querySelectorAll('.ew-form input, .ew-form select, .ew-form textarea').forEach(el => {
+    el.addEventListener('focus', () => {
+      savedScrollY = window.scrollY;
+    });
     el.addEventListener('blur', () => {
-      // Small delay to let iOS finish animating the keyboard down
       setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'instant' });
-        if (formBody) formBody.scrollTop = formBody.scrollTop; // keep inner scroll position
-      }, 100);
+        window.scrollTo({ top: savedScrollY, behavior: 'instant' });
+      }, 150);
     });
   });
+
+  // Also catch keyboard dismiss via visualViewport resize (most reliable on iOS)
+  if (window.visualViewport) {
+    let prevHeight = window.visualViewport.height;
+    window.visualViewport.addEventListener('resize', () => {
+      const newHeight = window.visualViewport.height;
+      // Keyboard closed: viewport grew back
+      if (newHeight > prevHeight + 100) {
+        setTimeout(() => {
+          window.scrollTo({ top: savedScrollY, behavior: 'instant' });
+        }, 100);
+      }
+      prevHeight = newHeight;
+    });
+  }
 })();
 </script>
