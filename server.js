@@ -160,7 +160,9 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
       }
     }
 
-    const resumeFilename = req.file ? req.file.filename : null;
+    const resumeFilename = req.file
+      ? `https://enhance.work/uploads/${req.file.filename}`
+      : null;
 
     const result = await pool.query(
       `INSERT INTO applications (
@@ -350,6 +352,8 @@ app.get('/api/zip/:code', async (req, res) => {
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const distDir = path.join(__dirname, 'dist');
 if (fs.existsSync(distDir)) {
