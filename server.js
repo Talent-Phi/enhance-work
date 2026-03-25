@@ -5,7 +5,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 import { initGoogleSheets, appendApplicationRow, getSpreadsheetUrl } from './googleSheets.js';
-import { initGoogleDrive, uploadResumeToDrive } from './googleDrive.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -72,6 +71,16 @@ async function initDatabase() {
       injector_msg_read BOOLEAN DEFAULT FALSE,
       terms_agreed BOOLEAN DEFAULT FALSE,
       resume_filename VARCHAR(255),
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `);
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS resumes (
+      id SERIAL PRIMARY KEY,
+      application_id INTEGER REFERENCES applications(id),
+      original_name VARCHAR(255),
+      content_type VARCHAR(100),
+      file_data BYTEA,
       created_at TIMESTAMP DEFAULT NOW()
     )
   `);
@@ -162,9 +171,11 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
     }
 
     let resumeFilename = null;
+    let resumeFileData = null;
     if (req.file) {
-      const driveLink = await uploadResumeToDrive(req.file.path, req.file.originalname);
-      resumeFilename = driveLink || req.file.filename;
+      resumeFilename = req.file.originalname;
+      resumeFileData = fs.readFileSync(req.file.path);
+      fs.unlink(req.file.path, () => {});
     }
 
     const result = await pool.query(
@@ -227,8 +238,23 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
 
     const appId = result.rows[0].id;
 
-    // Fire-and-forget: send to Zapier webhook (non-blocking, won't fail the response)
-    // Field names match what Monday.com / Zapier mapping expects (Title Case)
+    let resumeLink = '';
+    if (resumeFileData && resumeFilename) {
+      const mimeTypes = {
+        '.pdf': 'application/pdf',
+        '.doc': 'application/msword',
+        '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      };
+      const ext = path.extname(resumeFilename).toLowerCase();
+      const contentType = mimeTypes[ext] || 'application/octet-stream';
+      const resumeResult = await pool.query(
+        `INSERT INTO resumes (application_id, original_name, content_type, file_data) VALUES ($1, $2, $3, $4) RETURNING id`,
+        [appId, resumeFilename, contentType, resumeFileData]
+      );
+      resumeLink = `https://enhance.work/api/resume/${resumeResult.rows[0].id}`;
+      await pool.query(`UPDATE applications SET resume_filename = $1 WHERE id = $2`, [resumeLink, appId]);
+    }
+
     const zapPayload = {
       // --- Item Name (required by Monday.com) ---
       'Item Name':            `${data.first_name} ${data.last_name}`,
@@ -269,7 +295,7 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
       // --- Salary / Resume ---
       'Salary Expectations':  data.salary || '',
       'Salary Type':          data.pay_type || '',
-      'Resume Filename':      resumeFilename || '',
+      'Resume Filename':      resumeLink || '',
       // --- Meta ---
       'Application ID':       appId,
       'Submitted At':         new Date().toISOString(),
@@ -316,7 +342,7 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
       employed: data.employed || '',
       salary: data.salary || '',
       pay_type: data.pay_type || '',
-      resume_filename: resumeFilename || ''
+      resume_filename: resumeLink || ''
     }).catch(() => {});
 
     res.json({ success: true, id: appId });
@@ -352,6 +378,26 @@ app.get('/api/zip/:code', async (req, res) => {
   }
 });
 
+app.get('/api/resume/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await pool.query(
+      `SELECT original_name, content_type, file_data FROM resumes WHERE id = $1`,
+      [id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Resume not found' });
+    }
+    const { original_name, content_type, file_data } = result.rows[0];
+    res.setHeader('Content-Type', content_type);
+    res.setHeader('Content-Disposition', `inline; filename="${original_name}"`);
+    res.send(file_data);
+  } catch (err) {
+    console.error('Resume fetch error:', err);
+    res.status(500).json({ error: 'Failed to fetch resume' });
+  }
+});
+
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
@@ -378,7 +424,6 @@ const PORT = process.env.PORT || 3000;
 
 initDatabase().then(async () => {
   await initGoogleSheets();
-  await initGoogleDrive();
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`API server running on port ${PORT}`);
   });
