@@ -103,13 +103,15 @@ export async function appendApplicationRow(data) {
       data.employed || '',
       data.salary || '',
       data.pay_type || '',
-      data.resume_filename || ''
+      data.resume_filename
+        ? `=HYPERLINK("${data.resume_filename}","View Resume")`
+        : ''
     ];
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
       range: `${SHEET_NAME}!A:AG`,
-      valueInputOption: 'RAW',
+      valueInputOption: 'USER_ENTERED',
       insertDataOption: 'INSERT_ROWS',
       requestBody: { values: [row] }
     });
