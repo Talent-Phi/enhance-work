@@ -27,7 +27,7 @@ function getSheetsClient() {
   const creds = JSON.parse(process.env.GOOGLE_SHEETS_CREDENTIALS);
   const auth = new google.auth.GoogleAuth({
     credentials: creds,
-    scopes: ['https://www.googleapis.com/auth/spreadsheets']
+    scopes: ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive.file']
   });
   sheetsClient = google.sheets({ version: 'v4', auth });
   return sheetsClient;

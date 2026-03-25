@@ -5,6 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 import { initGoogleSheets, appendApplicationRow, getSpreadsheetUrl } from './googleSheets.js';
+import { initGoogleDrive, uploadResumeToDrive } from './googleDrive.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -160,9 +161,11 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
       }
     }
 
-    const resumeFilename = req.file
-      ? `https://enhance.work/uploads/${req.file.filename}`
-      : null;
+    let resumeFilename = null;
+    if (req.file) {
+      const driveLink = await uploadResumeToDrive(req.file.path, req.file.originalname);
+      resumeFilename = driveLink || req.file.filename;
+    }
 
     const result = await pool.query(
       `INSERT INTO applications (
@@ -353,8 +356,6 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
 const distDir = path.join(__dirname, 'dist');
 if (fs.existsSync(distDir)) {
   app.use(express.static(distDir));
@@ -377,6 +378,7 @@ const PORT = process.env.PORT || 3000;
 
 initDatabase().then(async () => {
   await initGoogleSheets();
+  await initGoogleDrive();
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`API server running on port ${PORT}`);
   });
