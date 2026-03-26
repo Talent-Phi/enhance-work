@@ -25,7 +25,7 @@ const upload = multer({
   }),
   limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    const allowed = ['.pdf', '.doc', '.docx'];
+    const allowed = ['.pdf', '.doc', '.docx', '.png', '.jpg', '.jpeg', '.gif', '.bmp', '.webp', '.tiff', '.heic', '.svg', '.odt', '.rtf', '.txt'];
     const ext = path.extname(file.originalname).toLowerCase();
     cb(null, allowed.includes(ext));
   }
@@ -243,7 +243,19 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
       const mimeTypes = {
         '.pdf': 'application/pdf',
         '.doc': 'application/msword',
-        '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        '.png': 'image/png',
+        '.jpg': 'image/jpeg',
+        '.jpeg': 'image/jpeg',
+        '.gif': 'image/gif',
+        '.bmp': 'image/bmp',
+        '.webp': 'image/webp',
+        '.tiff': 'image/tiff',
+        '.heic': 'image/heic',
+        '.svg': 'image/svg+xml',
+        '.odt': 'application/vnd.oasis.opendocument.text',
+        '.rtf': 'application/rtf',
+        '.txt': 'text/plain'
       };
       const ext = path.extname(resumeFilename).toLowerCase();
       const contentType = mimeTypes[ext] || 'application/octet-stream';
