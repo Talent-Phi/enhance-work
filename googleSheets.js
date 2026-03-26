@@ -76,7 +76,7 @@ export async function appendApplicationRow(data) {
       data.first_name || '',
       data.last_name || '',
       data.email || '',
-      data.phone || '',
+      data.phone ? `'${data.phone}` : '',
       data.gender || '',
       data.dob || '',
       data.role || '',
