@@ -34,7 +34,7 @@ const faqs = [
   },
   {
     q: '9. How to become a nurse injector?',
-    a: 'You typically need an RN, NP, or PA license plus hands-on training in neurotoxins and fillers. Many candidates on Enhance.work have completed specialized aesthetic training programs. Clinics here often mention their training requirements directly.',
+    a: 'You typically need an RN, NP, or PA license plus hands-on training in neurotoxins and fillers. Many candidates on Enhance.work have completed specialized aesthetic training programs.',
   },
   {
     q: '10. How do I get started?',
@@ -50,16 +50,20 @@ const faqs = [
       <h2 class="h2 faq__title">Aesthetic Medicine Jobs<br />in South Florida.</h2>
     </div>
 
-    <div class="faq__list" id="faq-list">
+    <div class="faq__list">
       {faqs.map((item, i) => (
         <div class="faq__item" data-index={i}>
           <button class="faq__question" aria-expanded="false">
-            <span>{item.q}</span>
-            <svg class="faq__chevron" width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <span class="faq__q-text">{item.q}</span>
+            <!-- Teal + icon (matches Figma Component 146) -->
+            <span class="faq__icon" aria-hidden="true">
+              <svg class="faq__icon-plus" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <line x1="10" y1="4" x2="10" y2="16" stroke="#2bbcb0" stroke-width="2" stroke-linecap="round"/>
+                <line x1="4" y1="10" x2="16" y2="10" stroke="#2bbcb0" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </span>
           </button>
-          <div class="faq__answer">
+          <div class="faq__answer" role="region">
             <p>{item.a}</p>
           </div>
         </div>
@@ -90,16 +94,16 @@ const faqs = [
 <style>
   .faq {
     padding: var(--section-padding);
-    background: var(--color-bg);
+    background: var(--color-bg); /* #f2f2f2 */
   }
 
   .faq__header {
     max-width: 640px;
-    margin: 0 auto 3rem;
+    margin: 0 auto 2.5rem;
     text-align: center;
     display: flex;
     flex-direction: column;
-    gap: .6rem;
+    gap: .5rem;
   }
 
   .faq__label {
@@ -115,75 +119,81 @@ const faqs = [
     margin: 0;
   }
 
+  /* List of independent cards — not connected */
   .faq__list {
-    max-width: 780px;
+    max-width: 1012px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 0;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    gap: .75rem;   /* gap between separate cards */
   }
 
+  /* Each FAQ = its own card (Figma: r=15, fill=#fbf9fd, h=82px) */
   .faq__item {
-    background: #ffffff;
-    border-bottom: 1px solid #ebebeb;
+    background: #fbf9fd;  /* rgba(251,249,253,1) — Figma exact */
+    border-radius: 15px;
+    overflow: hidden;
+    transition: box-shadow .2s ease;
   }
 
-  .faq__item:last-child {
-    border-bottom: none;
+  .faq__item.open {
+    box-shadow: 0 4px 20px rgba(43,188,176,0.1);
   }
 
+  /* Question row */
   .faq__question {
     width: 100%;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 1.25rem 1.5rem;
+    /* Figma: 82px tall, horizontal padding ~30px each side */
+    min-height: 82px;
+    padding: 0 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
     text-align: left;
+  }
+
+  .faq__q-text {
     font-family: var(--font-heading);
-    font-size: .95rem;
+    font-size: 1.125rem;   /* 18px */
     font-weight: 500;
-    color: #1e2b38;
-    transition: background .2s ease, color .2s ease;
+    color: #403e3e;        /* rgba(64,62,62,1) — Figma exact */
+    line-height: 1.4;
   }
 
-  .faq__question:hover {
-    background: #f7fffe;
-    color: var(--color-accent);
-  }
-
-  .faq__item.open .faq__question {
-    color: var(--color-accent);
-    background: #f0fffe;
-  }
-
-  .faq__chevron {
+  /* Teal + icon */
+  .faq__icon {
     flex-shrink: 0;
-    color: #9aa5b1;
-    transition: transform .3s cubic-bezier(0.4, 0, 0.2, 1), color .2s ease;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .faq__item.open .faq__chevron {
-    transform: rotate(180deg);
-    color: var(--color-accent);
+  .faq__icon-plus {
+    transition: transform .3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
+  /* When open: rotate + to × */
+  .faq__item.open .faq__icon-plus {
+    transform: rotate(45deg);
+  }
+
+  /* Answer — hidden by default */
   .faq__answer {
     max-height: 0;
     overflow: hidden;
-    transition: max-height .4s cubic-bezier(0.4, 0, 0.2, 1), padding .3s ease;
-    padding: 0 1.5rem;
+    transition: max-height .4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0 2rem;
   }
 
   .faq__item.open .faq__answer {
     max-height: 300px;
-    padding: 0 1.5rem 1.25rem;
+    padding: 0 2rem 1.25rem;
   }
 
   .faq__answer p {
@@ -195,7 +205,8 @@ const faqs = [
 
   @media (max-width: 768px) {
     .faq__header { text-align: left; margin: 0 0 1.5rem; }
-    .faq__question { font-size: .88rem; padding: 1rem 1.25rem; }
+    .faq__question { padding: 0 1.25rem; min-height: 68px; }
+    .faq__q-text { font-size: 1rem; }
     .faq__answer { padding: 0 1.25rem; }
     .faq__item.open .faq__answer { padding: 0 1.25rem 1rem; }
   }
