@@ -41,7 +41,7 @@
           </div>
           <div class="gateway__stat-card">
             <p class="gateway__stat-label">Irrelevant job offers</p>
-            <p class="gateway__stat-value">0</p>
+            <p class="gateway__stat-value red">0</p>
             <span class="gateway__stat-badge red">↓ -2%</span>
             <div class="gateway__stat-bar"><div class="gateway__stat-bar-fill neutral" style="width:0%"></div></div>
           </div>
@@ -209,6 +209,7 @@
   }
 
   .gateway__stat-value.green { color: #1a716a; }
+  .gateway__stat-value.red { color: #c0392b; }
 
   .gateway__stat-badge {
     display: inline-block;
@@ -327,7 +328,7 @@
   @media (max-width: 768px) {
     .gateway__layout { gap: 2rem; }
     .gateway__left { padding: 0; }
-    .gateway__title { font-size: 1.75rem; text-align: left; }
+    .gateway__title { font-size: 1.75rem; text-align: center; }
     .gateway__sub { font-size: 0.95rem; }
     .gateway__testimonial { padding: 1.25rem; }
     /* Stat cards: full-width stacked on mobile */
