@@ -64,7 +64,7 @@ const faqs = [
             </span>
           </button>
           <div class="faq__answer" role="region">
-            <p>{item.a}</p>
+            <div class="faq__answer-inner"><p>{item.a}</p></div>
           </div>
         </div>
       ))}
@@ -183,17 +183,22 @@ const faqs = [
     transform: rotate(45deg);
   }
 
-  /* Answer — hidden by default */
+  /* Answer — hidden by default using grid trick (instant both ways) */
   .faq__answer {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height .22s ease-out;
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .2s ease;
     padding: 0 2rem;
   }
 
+  .faq__answer-inner {
+    overflow: hidden;
+    min-height: 0;
+  }
+
   .faq__item.open .faq__answer {
-    max-height: 300px;
-    padding: 0 2rem 1.25rem;
+    grid-template-rows: 1fr;
+    padding-bottom: 1.25rem;
   }
 
   .faq__answer p {
@@ -201,6 +206,7 @@ const faqs = [
     color: #5c6b7a;
     line-height: 1.7;
     margin: 0;
+    padding-top: 2px;
   }
 
   @media (max-width: 768px) {
@@ -208,6 +214,6 @@ const faqs = [
     .faq__question { padding: 0 1.25rem; min-height: 68px; }
     .faq__q-text { font-size: 1rem; }
     .faq__answer { padding: 0 1.25rem; }
-    .faq__item.open .faq__answer { padding: 0 1.25rem 1rem; }
+    .faq__item.open .faq__answer { padding-bottom: 1rem; }
   }
 </style>
