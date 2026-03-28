@@ -83,12 +83,12 @@ const steps = [
     overflow: hidden;
   }
 
-  /* Background image from Figma */
+  /* Background image from Figma (Rectangle 1438 — photo fill, 1440x904) */
   .how__bg {
     position: absolute;
     inset: 0;
-    background: url('/images/hiw-bg.png') center center / cover no-repeat;
-    opacity: 0.22;
+    background: url('/images/hiw-bg-photo.png') center center / cover no-repeat;
+    opacity: 0.28;
     pointer-events: none;
     z-index: 0;
   }
@@ -206,22 +206,13 @@ const steps = [
   .how__desc {
     font-size: .8rem;
     font-weight: 400;
-    color: rgba(255,255,255,0.6);
+    color: rgba(255,255,255,0.65);
     line-height: 1.6;
-    margin: 0;
-    /* Hidden when not active — collapses via grid trick */
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows .35s ease;
+    margin: .5rem 0 0;
   }
 
   .how__desc-inner {
-    overflow: hidden;
-    min-height: 0;
-  }
-
-  .how__card.active .how__desc {
-    grid-template-rows: 1fr;
+    display: block;
   }
 
   /* Mockup area — always rendered at bottom, clipped by card overflow:hidden */
