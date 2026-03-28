@@ -38,7 +38,7 @@ const steps = [
     <!-- 3 equal glassmorphism cards — all content always visible -->
     <div class="how__row">
       {steps.map((step, i) => (
-        <div class="how__card" data-index={i}>
+        <div class="how__card" data-index={i} tabindex="0" role="button">
           <!-- STEP number: gradient purple→lavender -->
           <span class="how__num">{step.number}</span>
           <h3 class="how__title">{step.title}</h3>
@@ -54,12 +54,21 @@ const steps = [
 </section>
 
 <script>
-  const cards = Array.from(document.querySelectorAll('.how__card'));
-  cards.forEach(card => {
-    card.addEventListener('click', () => {
-      const isActive = card.classList.contains('active');
-      cards.forEach(c => c.classList.remove('active'));
-      if (!isActive) card.classList.add('active');
+  document.addEventListener('DOMContentLoaded', () => {
+    const cards = Array.from(document.querySelectorAll('.how__card'));
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        const isActive = card.classList.contains('active');
+        cards.forEach(c => c.classList.remove('active'));
+        if (!isActive) card.classList.add('active');
+      });
+      // Keyboard support
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          card.click();
+        }
+      });
     });
   });
 </script>
