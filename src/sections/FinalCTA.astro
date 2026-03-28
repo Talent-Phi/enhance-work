@@ -1,0 +1,142 @@
+---
+---
+
+<section class="finalcta" id="final-cta">
+  <div class="finalcta__inner">
+
+    <!-- Left: form montage image -->
+    <div class="finalcta__visual">
+      <img
+        src="/images/form-montage.png"
+        alt="Enhance.work application form — multi-step registration"
+        class="finalcta__img"
+      />
+    </div>
+
+    <!-- Right: CTA content -->
+    <div class="finalcta__content">
+      <h2 class="finalcta__title">
+        <em class="finalcta__accent">Ready to grow</em> your<br />career in aesthetics?
+      </h2>
+      <p class="finalcta__sub">
+        Start getting discovered by top clinics in South Florida.
+        Create your profile in minutes and connect with real opportunities.
+      </p>
+      <ul class="finalcta__checklist">
+        <li>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path d="M4 9l3.5 3.5L14 5.5" stroke="#2bbcb0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          No spam
+        </li>
+        <li>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path d="M4 9l3.5 3.5L14 5.5" stroke="#2bbcb0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Only real clinics
+        </li>
+        <li>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path d="M4 9l3.5 3.5L14 5.5" stroke="#2bbcb0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Opportunities tailored to your skills
+        </li>
+      </ul>
+      <a href="/candidate/registration/" class="btn btn-primary finalcta__btn apply-btn">
+        Join for free
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .finalcta {
+    background: #f5f5f5;
+    border-top: 1px solid #e8e8e8;
+  }
+
+  .finalcta__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  /* Left: app screenshot montage */
+  .finalcta__visual {
+    display: flex;
+    justify-content: center;
+  }
+
+  .finalcta__img {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.12));
+  }
+
+  /* Right: copy */
+  .finalcta__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .finalcta__title {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .finalcta__accent {
+    font-style: italic;
+    color: var(--color-accent);
+  }
+
+  .finalcta__sub {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .finalcta__checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+  }
+
+  .finalcta__checklist li {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    font-size: .95rem;
+    color: #333;
+  }
+
+  .finalcta__btn {
+    align-self: flex-start;
+    padding: .9rem 2.5rem;
+    font-size: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .finalcta__inner {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    .finalcta__title { font-size: 1.85rem; }
+    .finalcta__btn { align-self: center; }
+  }
+</style>
