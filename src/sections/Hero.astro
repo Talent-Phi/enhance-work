@@ -81,11 +81,14 @@ import StatCard from '../components/StatCard.astro';
 
   <!-- Stats band below hero -->
   <div class="hero__stats-band">
-    <StatCard value="1.2k" suffix="+" label="Aesthetic practices" />
-    <div class="hero__divider"></div>
-    <StatCard value="308"  suffix="+" label="Practices hiring" />
-    <div class="hero__divider"></div>
-    <StatCard value="100%" suffix="" label="South FL focused" />
+    <div class="hero__stats-row">
+      <StatCard value="1.2k" suffix="+" label="Aesthetic practices" />
+      <div class="hero__divider"></div>
+      <StatCard value="308"  suffix="+" label="Practices hiring" />
+      <div class="hero__divider"></div>
+      <StatCard value="100%" suffix="" label="South FL focused" />
+    </div>
+    <p class="hero__tagline">#1 <em><u>aesthetic job platform</u></em> in South Florida</p>
   </div>
 
 </section>
@@ -417,14 +420,34 @@ import StatCard from '../components/StatCard.astro';
   /* ── STATS BAND ── */
   .hero__stats-band {
     background: #f2f2f2;
-    padding: 2rem 141px 2.5rem 141px;
+    padding: 2.5rem 141px 2.5rem 141px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    position: relative;
+    z-index: 3;
+    margin-top: -2px;
+  }
+
+  .hero__stats-row {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 3.5rem;
-    position: relative;
-    z-index: 3;   /* above hero ::after curve, no gap */
-    margin-top: -2px;
+  }
+
+  .hero__tagline {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    color: #444;
+    margin: 0;
+    font-style: italic;
+  }
+
+  .hero__tagline u {
+    text-underline-offset: 2px;
   }
 
   .hero__divider {
