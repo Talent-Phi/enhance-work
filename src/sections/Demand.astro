@@ -4,9 +4,9 @@
 <section class="demand" id="demand">
   <div class="container">
     <div class="demand__header">
-      <h2 class="h2">A growing demand for<br />aesthetic professionals<br />in <em class="accent">South Florida.</em></h2>
+      <h2 class="demand__title">A growing demand for aesthetic<br />professionals in <em class="accent">South Florida.</em></h2>
       <p class="demand__sub">
-        Clinics across Miami, Doral, and Broward County are actively hiring qualified aesthetic professionals.
+        Clinics across Miami, Doral, and Broward County are actively hiring<br />qualified aesthetic professionals
       </p>
     </div>
 
@@ -17,14 +17,6 @@
           <img src="/images/demand-chart.png" alt="Demand for aesthetic professional — U.S. Jobs growth chart" class="demand__chart-img" />
         </div>
         <p class="demand__card-label"><strong><em>Demand for Aesthetic Professionals Is Accelerating</em></strong></p>
-        <!-- Data sources under left card -->
-        <div class="demand__sources">
-          <span class="demand__sources-label">Data sources:</span>
-          <ul class="demand__sources-list">
-            <li><a href="https://www.bls.gov/ooh/personal-care-and-service/skincare-specialists.htm" target="_blank" rel="noopener">Skincare specialists provide ↗</a></li>
-            <li><a href="https://www.bls.gov/ooh/healthcare/nurse-anesthetists-nurse-midwives-and-nurse-practitioners.htm" target="_blank" rel="noopener">Healthcare nurse practitioners ↗</a></li>
-          </ul>
-        </div>
       </div>
 
       <!-- Chart 2: Bar chart -->
@@ -34,6 +26,14 @@
         </div>
         <p class="demand__card-label">10-year projected growth</p>
       </div>
+    </div>
+
+    <div class="demand__sources">
+      <span class="demand__sources-label">Data sources:</span>
+      <ul class="demand__sources-list">
+        <li><span class="demand__source-dot" aria-hidden="true"></span><a href="https://www.bls.gov/ooh/personal-care-and-service/skincare-specialists.htm" target="_blank" rel="noopener">Skincare specialists provide ↗</a></li>
+        <li><span class="demand__source-dot" aria-hidden="true"></span><a href="https://www.bls.gov/ooh/healthcare/nurse-anesthetists-nurse-midwives-and-nurse-practitioners.htm" target="_blank" rel="noopener">Healthcare nurse practitioners ↗</a></li>
+      </ul>
     </div>
   </div>
 </section>
@@ -48,19 +48,28 @@
     text-align: center;
     margin-left: auto;
     margin-right: auto;
-    max-width: 900px;
-    margin-bottom: 3rem;
+    max-width: 960px;
+    margin-bottom: 3.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 1.25rem;
+  }
+
+  .demand__title {
+    font-family: var(--font-heading, 'Poppins', sans-serif);
+    font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+    font-weight: 600;
+    color: #1a2a26;
+    line-height: 1.2;
+    margin: 0;
   }
 
   .accent { font-style: normal; color: var(--color-accent); }
 
   .demand__sub {
     color: #606362;
-    font-size: 1rem;
+    font-size: 1.05rem;
     line-height: 1.65;
     max-width: 640px;
     text-align: center;
@@ -79,11 +88,11 @@
     gap: .75rem;
   }
 
-  /* White card box — chart image with padding so it doesn't bleed edge-to-edge */
   .demand__card-img-box {
     background: #ffffff;
     border-radius: 16px;
-    padding: 1.25rem;
+    padding: 0;
+    overflow: hidden;
     box-shadow: 0 4px 24px rgba(0,0,0,0.07);
   }
 
@@ -95,12 +104,13 @@
     margin: 0;
   }
 
-  /* Data sources — left-aligned under left card */
   .demand__sources {
     display: flex;
-    flex-direction: column;
-    gap: .35rem;
-    margin-top: .25rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin-top: 2rem;
   }
 
   .demand__sources-label {
@@ -110,12 +120,11 @@
   }
 
   .demand__sources-list {
-    list-style: disc;
-    padding-left: 1.2rem;
+    list-style: none;
+    padding-left: 0;
     margin: 0;
     display: flex;
-    flex-direction: column;
-    gap: .2rem;
+    gap: 1.5rem;
   }
 
   .demand__sources-list a {
@@ -123,6 +132,20 @@
     color: var(--color-accent);
     text-decoration: underline;
     text-underline-offset: 2px;
+  }
+
+  .demand__sources-list li {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+  }
+
+  .demand__source-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    flex-shrink: 0;
   }
 
   .demand__sources-list a:hover {
@@ -199,7 +222,7 @@
     width: 100%;
     height: auto;
     display: block;
-    border-radius: 8px;
+    border-radius: 0;
   }
 
   /* Bar chart */
@@ -254,5 +277,7 @@
   @media (max-width: 768px) {
     .demand__cards { grid-template-columns: 1fr; }
     .demand__bar-row { grid-template-columns: 110px 1fr; }
+    .demand__sources { flex-direction: column; }
+    .demand__sources-list { flex-direction: column; gap: .5rem; }
   }
 </style>
