@@ -54,21 +54,13 @@ const steps = [
 </section>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const cards = Array.from(document.querySelectorAll('.how__card'));
-    cards.forEach(card => {
-      card.addEventListener('click', () => {
-        const isActive = card.classList.contains('active');
-        cards.forEach(c => c.classList.remove('active'));
-        if (!isActive) card.classList.add('active');
-      });
-      // Keyboard support
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          card.click();
-        }
-      });
+  // In Astro, component scripts run after DOM is ready — no DOMContentLoaded needed
+  const howCards = document.querySelectorAll('.how__card');
+  howCards.forEach(card => {
+    card.addEventListener('click', () => {
+      const isActive = card.classList.contains('active');
+      howCards.forEach(c => c.classList.remove('active'));
+      if (!isActive) card.classList.add('active');
     });
   });
 </script>
