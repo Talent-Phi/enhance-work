@@ -75,13 +75,23 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
-    align-items: start; /* allow each col to define its own height */
+    align-items: stretch;
   }
 
   .demand__card-wrap {
     display: flex;
     flex-direction: column;
     gap: .75rem;
+  }
+
+  /* Force both chart images to the same height */
+  .demand__chart-img {
+    width: 100%;
+    height: 340px;
+    object-fit: cover;
+    object-position: top;
+    display: block;
+    border-radius: 12px;
   }
 
   .demand__card-label {
@@ -98,7 +108,7 @@
     justify-content: center;
     flex-wrap: wrap;
     gap: .5rem;
-    margin-top: 2rem;
+    margin-top: 3rem;
   }
 
   .demand__sources-label {
@@ -204,13 +214,6 @@
     width: 100%;
     border-radius: 8px;
     overflow: hidden;
-  }
-
-  .demand__chart-img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 0;
   }
 
   /* Bar chart */
