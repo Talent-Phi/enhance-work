@@ -56,17 +56,14 @@
     position: absolute;
     inset: 0;
     background: url('/images/gateway-bg.png') center center / cover no-repeat;
-    opacity: 0.35;
     z-index: 0;
   }
 
-  .footer::before {
+  .footer__bg::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(27,41,54,0.6) 0%, rgba(27,41,54,0.85) 100%);
-    pointer-events: none;
-    z-index: 1;
+    background: rgba(27, 41, 54, 0.55);
   }
 
   .footer__content {
