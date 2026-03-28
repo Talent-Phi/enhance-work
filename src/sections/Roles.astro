@@ -19,11 +19,7 @@ const roles = [
     <div class="roles__grid">
       {roles.map((role) => (
         <div class="roles__card">
-          <img src={role.image} alt="" class="roles__img" />
-          <div class="roles__overlay"></div>
-          <div class="roles__info">
-            <span class="roles__title">{role.title}</span>
-          </div>
+          <img src={role.image} alt={role.title} class="roles__img" />
         </div>
       ))}
     </div>
