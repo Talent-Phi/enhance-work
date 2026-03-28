@@ -46,8 +46,7 @@ const faqs = [
 <section class="faq" id="faq">
   <div class="container">
     <div class="faq__header">
-      <p class="faq__label">What most people ask for:</p>
-      <h2 class="h2 faq__title">Aesthetic Medicine Jobs<br />in South Florida.</h2>
+      <h2 class="h2 faq__title">What most people <em class="faq__accent">ask for:</em></h2>
     </div>
 
     <div class="faq__list">
@@ -117,6 +116,11 @@ const faqs = [
 
   .faq__title {
     margin: 0;
+  }
+
+  .faq__accent {
+    font-style: italic;
+    color: var(--color-accent);
   }
 
   /* List of independent cards — not connected */
