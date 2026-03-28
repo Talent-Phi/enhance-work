@@ -3,13 +3,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav        from '../components/Nav.astro';
 import Hero       from '../sections/Hero.astro';
 import Demand     from '../sections/Demand.astro';
+import WhyChoose  from '../sections/WhyChoose.astro';
 import Gateway    from '../sections/Gateway.astro';
 import HowItWorks from '../sections/HowItWorks.astro';
 import Roles      from '../sections/Roles.astro';
-import WhyJoin    from '../sections/WhyJoin.astro';
-import FAQ        from '../sections/FAQ.astro';
-// import TrustedBy  from '../sections/TrustedBy.astro'; // hidden temporarily
 import CTA        from '../sections/CTA.astro';
+import FAQ        from '../sections/FAQ.astro';
+import SeoContent from '../sections/SeoContent.astro';
+import FinalCTA   from '../sections/FinalCTA.astro';
+// import TrustedBy  from '../sections/TrustedBy.astro'; // hidden temporarily
 import Footer     from '../sections/Footer.astro';
 import ApplyModal from '../components/ApplyModal.astro';
 ---
@@ -46,13 +48,15 @@ import ApplyModal from '../components/ApplyModal.astro';
   <main>
     <Hero />
     <Demand />
+    <WhyChoose />
     <Gateway />
     <HowItWorks />
     <Roles />
-    <WhyJoin />
-    <FAQ />
-    {/* <TrustedBy /> */}
     <CTA />
+    <FAQ />
+    <SeoContent />
+    <FinalCTA />
+    {/* <TrustedBy /> */}
   </main>
   <Footer />
   <ApplyModal />

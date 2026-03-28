@@ -7,12 +7,13 @@ interface Props {
   suffix?: string;
   label: string;
   dark?: boolean;
+  slash?: boolean;
 }
-const { value, suffix = '', label, dark = false } = Astro.props;
+const { value, suffix = '', label, dark = false, slash = false } = Astro.props;
 ---
 
 <div class:list={['stat', { 'stat--dark': dark }]}>
-  <p class="stat__value">{value}<span class="stat__suffix"> {suffix}</span></p>
+  <p class="stat__value">{value}{slash && <span class="stat__slash" aria-hidden="true">/</span>}<span class="stat__suffix">{suffix}</span></p>
   <p class="stat__label">{label}</p>
 </div>
 
@@ -29,6 +30,11 @@ const { value, suffix = '', label, dark = false } = Astro.props;
   }
 
   .stat__suffix {
+    color: #7b6bb5;
+    font-weight: 600;
+  }
+
+  .stat__slash {
     color: #7b6bb5;
     font-weight: 600;
   }

@@ -5,19 +5,23 @@
   <!-- Dark clinic photo bg with gradient overlay (Figma exact) -->
   <div class="gateway__bg"></div>
   <div class="container">
-    <div class="label-divider"><span class="label">gateway</span></div>
+    <div class="label-divider"><span class="label">For Professionals</span></div>
+    <!-- Title: full-width, centered above the 2-col grid -->
+    <h2 class="h2 gateway__title">Find your next job in<br />aesthetic medicine</h2>
+
     <div class="gateway__layout">
 
       <!-- Left: testimonial + stats -->
       <div class="gateway__left">
-        <h2 class="h2 gateway__title">Your gateway to a thriving<br />aesthetic career<br />in South Florida.</h2>
 
         <!-- Testimonial card -->
         <div class="gateway__testimonial">
           <span class="gateway__quote">"</span>
           <p class="gateway__quote-text">
-            Enhance helped me connect with a clinic that perfectly matched my skills and schedule.
-            I got hired within two weeks of creating my profile.
+            I'd been on Indeed for months with zero responses. Signed up on Enhance and
+            had two clinics reach out within a week. Ended up at a practice in Doral that
+            was exactly what I was looking for: better hours, better pay, and they
+            actually knew what APRN-C mean.
           </p>
           <div class="gateway__stars">★★★★★</div>
           <div class="gateway__author">
@@ -39,25 +43,10 @@
           </div>
           <div class="gateway__stat-card">
             <p class="gateway__stat-label">Irrelevant job offers</p>
-            <p class="gateway__stat-value">0</p>
-            <span class="gateway__stat-badge red">↓ -2%</span>
-            <div class="gateway__stat-bar"><div class="gateway__stat-bar-fill neutral" style="width:0%"></div></div>
+            <p class="gateway__stat-value red">0</p>
           </div>
         </div>
 
-        <!-- Top hiring areas -->
-        <div class="gateway__map-card">
-          <p class="gateway__map-title">Top hiring areas</p>
-          <div class="gateway__map-layout">
-            <img src="/images/map-top-hiring-areas.png" alt="Top hiring areas map — South Florida" class="gateway__map-img" />
-            <ol class="gateway__map-list">
-              <li>Coral Gables</li>
-              <li>Miramar</li>
-              <li>Aventura</li>
-              <li>Boca Raton</li>
-            </ol>
-          </div>
-        </div>
       </div>
 
       <!-- Right: Frame 22 — Megan Roberts profile + Job Matches UI -->
@@ -111,7 +100,9 @@
   }
 
   .gateway__title {
-    margin: 0;
+    text-align: center;
+    margin: 0 auto 2.5rem;
+    max-width: 700px;
   }
 
   /* Testimonial card */
@@ -165,7 +156,7 @@
     align-items: center;
     justify-content: center;
     color: #fff;
-    font-weight: 700;
+    font-weight: 600;
     font-size: .9rem;
     flex-shrink: 0;
   }
@@ -219,6 +210,7 @@
   }
 
   .gateway__stat-value.green { color: #1a716a; }
+  .gateway__stat-value.red { color: #c0392b; }
 
   .gateway__stat-badge {
     display: inline-block;
@@ -291,7 +283,7 @@
   .gateway__map-list li::before {
     content: counter(maplist) ".";
     font-family: var(--font-heading);
-    font-weight: 700;
+    font-weight: 600;
     color: var(--color-accent);
     font-size: .8rem;
     min-width: 16px;
@@ -330,7 +322,23 @@
   }
 
   @media (max-width: 960px) {
-    .gateway__layout { grid-template-columns: 1fr; }
-    .gateway__right { display: none; }
+    .gateway__layout { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
+  @media (max-width: 768px) {
+    .gateway__left { padding: 0; }
+    .gateway__title { font-size: 1.75rem; text-align: left; }
+    .gateway__testimonial { padding: 1.25rem; }
+    .gateway__stats { grid-template-columns: 1fr 1fr; gap: .75rem; }
+    .gateway__stat-card { padding: 1rem .85rem; }
+    .gateway__map-img { width: 45%; }
+    .gateway__right {
+      display: flex;
+      justify-content: center;
+    }
+    .gateway__right img {
+      width: 100%;
+      max-width: 380px;
+    }
   }
 </style>

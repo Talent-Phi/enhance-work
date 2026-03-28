@@ -13,17 +13,13 @@ const roles = [
   <div class="container">
     <div class="roles__header">
       <div class="label-divider"><span class="label">Roles on the platform</span></div>
-      <h2 class="h2">Aesthetic professionals<br />across South Florida</h2>
+      <h2 class="h2">Aesthetic professionals across South Florida</h2>
     </div>
 
     <div class="roles__grid">
       {roles.map((role) => (
         <div class="roles__card">
           <img src={role.image} alt={role.title} class="roles__img" />
-          <div class="roles__overlay"></div>
-          <div class="roles__info">
-            <span class="roles__title">{role.title}</span>
-          </div>
         </div>
       ))}
     </div>
@@ -33,11 +29,20 @@ const roles = [
 <style>
   .roles { padding: var(--section-padding); }
 
+  .roles__header .h2 {
+    font-size: 1.75rem;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 900px) {
+    .roles__header .h2 { font-size: 1.35rem; white-space: normal; }
+  }
+
   .roles__header {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
-    max-width: 560px;
+    max-width: 900px;
     margin-bottom: 3rem;
     display: flex;
     flex-direction: column;

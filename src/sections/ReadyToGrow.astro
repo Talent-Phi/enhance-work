@@ -1,0 +1,108 @@
+---
+---
+
+<section class="rtg" id="ready-to-grow">
+  <div class="rtg__overlay"></div>
+  <div class="rtg__inner">
+    <span class="rtg__badge">READY TO GROW?</span>
+    <h2 class="rtg__title">Are you ready to launch<br />your career in the beauty<br />industry in South Florida?</h2>
+    <p class="rtg__sub">Join the talent network used by leading<br />aesthetic clinics across the country.</p>
+    <button class="rtg__btn apply-btn">Join for free</button>
+  </div>
+</section>
+
+<style>
+  .rtg {
+    position: relative;
+    overflow: hidden;
+    background: url('/images/why-choose-clinic.png') center center / cover no-repeat;
+    min-height: 520px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .rtg__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(13, 26, 35, 0.62);
+    z-index: 0;
+  }
+
+  .rtg__inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 5rem 2rem;
+    gap: 1.5rem;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .rtg__badge {
+    display: inline-block;
+    background: rgba(43, 188, 176, 0.55);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.45rem 1.2rem;
+    border-radius: 999px;
+    border: 1px solid rgba(43, 188, 176, 0.6);
+  }
+
+  .rtg__title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.9rem, 4vw, 2.8rem);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.25;
+    margin: 0;
+  }
+
+  .rtg__sub {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.78);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .rtg__btn {
+    margin-top: 0.5rem;
+    display: inline-block;
+    background: rgba(43, 188, 176, 0.75);
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 600;
+    padding: 1rem 3.5rem;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  .rtg__btn:hover {
+    background: rgba(43, 188, 176, 0.92);
+  }
+
+  @media (max-width: 768px) {
+    .rtg {
+      min-height: 420px;
+    }
+    .rtg__inner {
+      padding: 3.5rem 1.5rem;
+      gap: 1.25rem;
+    }
+    .rtg__btn {
+      width: 100%;
+      padding: 0.9rem 1.5rem;
+    }
+  }
+</style>

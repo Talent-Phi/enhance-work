@@ -1,0 +1,241 @@
+---
+---
+
+<section class="whychoose" id="why-choose">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="wc__header">
+      <h2 class="wc__title">Why top aesthetic professionals<br />choose <em class="wc__brand">Enhance.Work</em></h2>
+      <p class="wc__sub">The demand is growing fast, but the hiring process hasn't evolved.</p>
+      <a
+        href="https://www.bls.gov/ooh/healthcare/"
+        target="_blank"
+        rel="noopener"
+        class="wc__bls"
+      >Based on BLS data ↗</a>
+    </div>
+
+    <!-- Stat cards row -->
+    <div class="wc__stats-row">
+      <div class="wc__stat-card">
+        <div class="wc__stat-icon">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <rect width="48" height="48" rx="12" fill="#ede9ff"/>
+            <!-- Medical clipboard with cross -->
+            <rect x="13" y="9" width="22" height="30" rx="3" stroke="#7c6be8" stroke-width="2"/>
+            <path d="M19 9v-2a2 2 0 014 0v2M25 9v-2a2 2 0 014 0v2" stroke="#7c6be8" stroke-width="1.5"/>
+            <path d="M18 22h12M24 16v12" stroke="#7c6be8" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="wc__stat-text">
+          <span class="wc__stat-title">Physician Assistants →</span>
+          <span class="wc__stat-desc">Top 10 nationwide</span>
+        </div>
+      </div>
+      <div class="wc__stat-divider"></div>
+      <div class="wc__stat-card">
+        <div class="wc__stat-icon">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <rect width="48" height="48" rx="12" fill="#ede9ff"/>
+            <!-- Nurse/healthcare cross badge -->
+            <rect x="11" y="11" width="26" height="26" rx="5" stroke="#7c6be8" stroke-width="2"/>
+            <path d="M24 17v14M17 24h14" stroke="#7c6be8" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="wc__stat-text">
+          <span class="wc__stat-title">Nurse Practitioners →</span>
+          <span class="wc__stat-desc">#3 fastest-growing role in the U.S.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- "Enhance.Work fixes this" card -->
+    <div class="wc__fix-card">
+      <p class="wc__fix-title">Enhance.Work fixes this</p>
+      <p class="wc__fix-desc">
+        Every opportunity on the platform comes from real clinics in South Florida, built
+        specifically for aesthetic professionals.
+      </p>
+      <ul class="wc__bullets">
+        <li>No noise</li>
+        <li>No irrelevant applications</li>
+        <li>No wasted time</li>
+      </ul>
+      <div class="wc__clinic-img-wrap">
+        <img
+          src="/images/why-choose-clinic.png"
+          alt="Aesthetic professionals in a clinic"
+          class="wc__clinic-img"
+        />
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  section.whychoose {
+    padding: var(--section-padding);
+    background-color: #e0e0e0 !important;
+    background-image: radial-gradient(circle, #c8c8c8 1px, transparent 1px) !important;
+    background-size: 20px 20px !important;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+    position: relative;
+    z-index: 1;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* Header */
+  .wc__header {
+    text-align: center;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .6rem;
+  }
+
+  .wc__title {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .wc__brand {
+    font-style: italic;
+    color: var(--color-accent);
+  }
+
+  .wc__sub {
+    font-size: 1rem;
+    color: #555;
+    margin: 0;
+  }
+
+  .wc__bls {
+    font-size: .88rem;
+    color: #555;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* Stat cards */
+  .wc__stats-row {
+    display: flex;
+    align-items: stretch;
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+
+  .wc__stat-card {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .wc__stat-divider {
+    width: 1px;
+    background: #e8e8e8;
+    align-self: stretch;
+  }
+
+  .wc__stat-icon {
+    flex-shrink: 0;
+  }
+
+  .wc__stat-text {
+    display: flex;
+    flex-direction: column;
+    gap: .15rem;
+  }
+
+  .wc__stat-title {
+    font-weight: 600;
+    font-size: .95rem;
+    color: #1a1a1a;
+  }
+
+  .wc__stat-desc {
+    font-size: .85rem;
+    color: #666;
+  }
+
+  /* Fix card */
+  .wc__fix-card {
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 14px;
+    padding: 2rem 2rem 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .75rem;
+    overflow: hidden;
+  }
+
+  .wc__fix-title {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    margin: 0;
+  }
+
+  .wc__fix-desc {
+    font-size: .92rem;
+    color: #444;
+    line-height: 1.6;
+    max-width: 580px;
+    margin: 0;
+  }
+
+  .wc__bullets {
+    list-style: disc;
+    display: flex;
+    gap: 2rem;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+  }
+
+  .wc__bullets li {
+    font-size: .9rem;
+    color: #333;
+  }
+
+  .wc__clinic-img-wrap {
+    width: 100%;
+    margin-top: .5rem;
+  }
+
+  .wc__clinic-img {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border-radius: 10px 10px 0 0;
+  }
+
+  @media (max-width: 640px) {
+    .wc__title { font-size: 1.75rem; }
+    .wc__stats-row { flex-direction: column; }
+    .wc__stat-divider { width: 100%; height: 1px; }
+    .wc__bullets { flex-direction: column; gap: .5rem; align-items: center; }
+  }
+</style>
