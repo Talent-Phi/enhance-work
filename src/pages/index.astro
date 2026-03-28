@@ -14,8 +14,35 @@ import Footer     from '../sections/Footer.astro';
 import ApplyModal from '../components/ApplyModal.astro';
 ---
 
-<BaseLayout>
+<BaseLayout
+  title="enhance.work — Aesthetic Jobs & Careers in South Florida"
+  description="The hiring platform built for aesthetic professionals. Browse open roles at med spas across South Florida and connect with practices actively hiring."
+  ogImage="/images/hero-photo.png"
+  canonicalUrl="https://enhance.work/"
+>
   <Nav />
+  <script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "Enhance.work",
+        "url": "https://enhance.work",
+        "logo": "https://enhance.work/images/form/enhance-logo.png",
+        "sameAs": []
+      },
+      {
+        "@type": "WebSite",
+        "name": "Enhance.work",
+        "url": "https://enhance.work",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://enhance.work/blog?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  }</script>
   <main>
     <Hero />
     <Demand />
