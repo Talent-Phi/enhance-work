@@ -124,16 +124,18 @@ const steps = [
     gap: 1rem;
   }
 
-  /* ── 3 equal cards in a row, all same height ── */
+  /* ── Horizontal flex row — cards expand on click ── */
   .how__row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
     gap: 1.25rem;
-    align-items: stretch;  /* equal height */
+    align-items: stretch;
+    min-height: 480px;
   }
 
-  /* Glassmorphism card — rgba(255,255,255,0.2) from Figma */
+  /* Glassmorphism card */
   .how__card {
+    flex: 1;
+    min-width: 140px;   /* prevents crushing on collapse */
     background: rgba(255, 255, 255, 0.09);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
@@ -144,23 +146,26 @@ const steps = [
     display: flex;
     flex-direction: column;
     gap: .75rem;
-    transition: border-color .25s ease, box-shadow .25s ease, background .25s ease, transform .25s cubic-bezier(0.34,1.56,0.64,1);
     overflow: hidden;
-    height: 100%;
     box-sizing: border-box;
+    transition:
+      flex .5s cubic-bezier(0.4, 0, 0.2, 1),
+      border-color .3s ease,
+      background .3s ease,
+      box-shadow .3s ease;
   }
 
   .how__card:hover {
-    border-color: rgba(151, 100, 212, 0.35);
-    box-shadow: 0 0 32px rgba(151, 100, 212, 0.12), 0 8px 24px rgba(0,0,0,0.25);
-    transform: translateY(-4px);
+    border-color: rgba(151, 100, 212, 0.3);
+    box-shadow: 0 0 28px rgba(151, 100, 212, 0.1);
   }
 
+  /* Active card grows to 3× */
   .how__card.active {
+    flex: 3;
     border-color: rgba(151, 100, 212, 0.55);
     background: rgba(255,255,255,0.16);
     box-shadow: 0 0 48px rgba(151, 100, 212, 0.2), 0 12px 32px rgba(0,0,0,0.35);
-    transform: translateY(-6px);
   }
 
   /* STEP number — gradient #9764d4 → #ebdbff (from Figma, 50px 700) */
@@ -180,11 +185,12 @@ const steps = [
   /* Title — 18px 600 white */
   .how__title {
     font-family: var(--font-heading);
-    font-size: 1.125rem;
+    font-size: 1rem;
     font-weight: 600;
     color: #ffffff;
     line-height: 1.4;
     margin: 0;
+    word-break: break-word;
   }
 
   /* Description — 12px/14px white 60% */
