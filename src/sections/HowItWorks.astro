@@ -282,6 +282,7 @@ const steps = [
       gap: 1rem;
       padding-bottom: 1rem;
       min-height: unset;
+      align-items: flex-start;
       /* Hide scrollbar */
       scrollbar-width: none;
       -ms-overflow-style: none;
@@ -293,8 +294,20 @@ const steps = [
       min-width: 85vw;
       scroll-snap-align: start;
       padding: 1.5rem 1.25rem 0;
-      /* All cards show content (no collapse) on mobile */
       flex-grow: 0;
+      /* Let card shrink to its content */
+      height: auto;
+      align-self: flex-start;
+    }
+
+    /* Prevent desc from growing and leaving huge gap on mobile */
+    .how__card .how__desc {
+      flex-grow: 0;
+    }
+
+    /* Mockup closer to text on mobile */
+    .how__mockup-wrap {
+      margin-top: 1rem;
     }
 
     /* First card active by default on mobile */
