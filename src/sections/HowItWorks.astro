@@ -223,16 +223,41 @@ const steps = [
     display: block;
   }
 
-  /* Mobile: single column */
-  @media (max-width: 900px) {
-    .how__row { grid-template-columns: 1fr; }
-    .how__card { padding: 1.5rem 1.25rem 0; }
+  /* Mobile: horizontal carousel */
+  @media (max-width: 768px) {
+    .how__row {
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 1rem;
+      padding-bottom: 1rem;
+      min-height: unset;
+      /* Hide scrollbar */
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .how__row::-webkit-scrollbar { display: none; }
+
+    .how__card {
+      flex: 0 0 85vw;
+      min-width: 85vw;
+      scroll-snap-align: start;
+      padding: 1.5rem 1.25rem 0;
+      /* All cards show content (no collapse) on mobile */
+      flex-grow: 0;
+    }
+
+    /* First card active by default on mobile */
+    .how__card:first-child {
+      border-color: rgba(151, 100, 212, 0.55);
+      background: rgba(255,255,255,0.16);
+    }
+
     .how__num { font-size: 2.5rem; }
     .how__card-img { max-width: 100%; border-radius: 12px; }
     .how__br { display: none; }
-  }
 
-  @media (max-width: 600px) {
     .how__h2 { font-size: 1.75rem; }
     .how__header { text-align: left; margin: 0 0 1.5rem; }
   }
