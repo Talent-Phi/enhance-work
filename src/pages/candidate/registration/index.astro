@@ -2,7 +2,45 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ApplyForm from '../../../components/ApplyForm.astro';
 ---
-<BaseLayout title="Apply — enhance.work">
+<BaseLayout
+  title="Register Free | Aesthetic Medicine Jobs in South Florida | Enhance.work"
+  description="Sign up in 2 minutes. Nurse injectors, estheticians, laser techs, and medical assistants register once and get contacted directly by med spas in Miami-Dade, Broward, and Palm Beach."
+  ogImage="/images/og-registration.png"
+  canonicalUrl="https://enhance.work/candidate/registration/"
+>
+  <script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "name": "Register Free | Enhance.work",
+        "url": "https://enhance.work/candidate/registration/",
+        "description": "Sign up in 2 minutes. Nurse injectors, estheticians, laser techs, and medical assistants register once and get contacted directly by med spas in Miami-Dade, Broward, and Palm Beach.",
+        "isPartOf": {
+          "@type": "WebSite",
+          "name": "Enhance.work",
+          "url": "https://enhance.work"
+        }
+      },
+      {
+        "@type": "EmploymentAgency",
+        "name": "Enhance.work",
+        "url": "https://enhance.work",
+        "description": "Aesthetic medicine job platform connecting nurse injectors, medical aestheticians, laser technicians, and medical assistants with practices in South Florida.",
+        "areaServed": [
+          { "@type": "AdministrativeArea", "name": "Miami-Dade County" },
+          { "@type": "AdministrativeArea", "name": "Broward County" },
+          { "@type": "AdministrativeArea", "name": "Palm Beach County" }
+        ],
+        "priceRange": "Free for candidates",
+        "address": {
+          "@type": "PostalAddress",
+          "addressRegion": "FL",
+          "addressCountry": "US"
+        }
+      }
+    ]
+  }</script>
   <style>
     html, body { height: 100dvh; overflow: hidden; }
   </style>
