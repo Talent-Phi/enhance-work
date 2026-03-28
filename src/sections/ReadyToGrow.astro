@@ -142,15 +142,26 @@
 
   @media (max-width: 768px) {
     .rtg__inner {
-      grid-template-columns: 1fr;
+      display: flex;
+      flex-direction: column;
       padding: 3rem 1.5rem;
       gap: 2rem;
-      text-align: left;
     }
-    .rtg__mockups { order: -1; }
+    /* Mockup is first in HTML → naturally appears at top */
+    .rtg__mockups {
+      order: 0;
+      width: 100%;
+    }
+    .rtg__mockup-img {
+      width: 100%;
+      max-width: 100%;
+      border-radius: 12px;
+    }
     .rtg__content {
+      order: 1;
       align-items: flex-start;
       gap: 1rem;
+      text-align: left;
     }
     .rtg__title {
       font-size: 1.9rem;
@@ -173,6 +184,7 @@
       width: 100%;
       text-align: center;
       padding: .9rem 1.5rem;
+      display: block;
     }
   }
 </style>
