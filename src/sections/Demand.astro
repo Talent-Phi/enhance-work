@@ -13,13 +13,17 @@
     <div class="demand__cards">
       <!-- Chart 1: Line chart -->
       <div class="demand__card-wrap">
-        <img src="/images/demand-chart.png" alt="Demand for aesthetic professional — U.S. Jobs growth chart" class="demand__chart-img" />
+        <div class="demand__img-box">
+          <img src="/images/demand-chart.png" alt="Demand for aesthetic professional — U.S. Jobs growth chart" class="demand__chart-img" />
+        </div>
         <p class="demand__card-label"><strong><em>Demand for Aesthetic Professionals Is Accelerating</em></strong></p>
       </div>
 
       <!-- Chart 2: Bar chart -->
       <div class="demand__card-wrap">
-        <img src="/images/demand-chart-bars.png" alt="Most in-demand roles" class="demand__chart-img" />
+        <div class="demand__img-box">
+          <img src="/images/demand-chart-bars.png" alt="Most in-demand roles" class="demand__chart-img" />
+        </div>
         <p class="demand__card-label">10-year projected growth</p>
       </div>
     </div>
@@ -84,14 +88,23 @@
     gap: .75rem;
   }
 
-  /* Force both chart images to the same height */
+  /* Fixed-height box so both columns are exactly the same height */
+  .demand__img-box {
+    height: 360px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .demand__chart-img {
     width: 100%;
-    height: 340px;
-    object-fit: cover;
-    object-position: top;
+    height: 100%;
+    object-fit: contain;
     display: block;
-    border-radius: 12px;
   }
 
   .demand__card-label {
@@ -108,7 +121,7 @@
     justify-content: center;
     flex-wrap: wrap;
     gap: .5rem;
-    margin-top: 3rem;
+    margin-top: 4rem;
   }
 
   .demand__sources-label {
