@@ -49,21 +49,24 @@
   .footer {
     position: relative;
     overflow: hidden;
+    background: #1b2936;
   }
 
-  /* Clinic photo bg — same asset used in Gateway section */
   .footer__bg {
     position: absolute;
     inset: 0;
     background: url('/images/gateway-bg.png') center center / cover no-repeat;
+    opacity: 0.15;
     z-index: 0;
   }
 
-  .footer__bg::after {
+  .footer::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(27, 41, 54, 0.75);
+    background: radial-gradient(ellipse 70% 90% at 50% 50%, rgba(43,188,176,0.18) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 1;
   }
 
   .footer__content {
