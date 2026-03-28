@@ -325,11 +325,23 @@
   }
 
   @media (max-width: 768px) {
+    .gateway__layout { gap: 2rem; }
     .gateway__left { padding: 0; }
-    .gateway__title { font-size: 1.65rem; }
+    .gateway__title { font-size: 1.75rem; text-align: left; }
     .gateway__sub { font-size: 0.95rem; }
     .gateway__testimonial { padding: 1.25rem; }
-    .gateway__stats-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    /* Stat cards: full-width stacked on mobile */
+    .gateway__stats { grid-template-columns: 1fr; gap: .75rem; }
+    .gateway__stat-card { padding: 1.25rem 1rem; }
     .gateway__map-img { width: 45%; }
+    /* Show mockup on mobile below content */
+    .gateway__right {
+      display: flex;
+      justify-content: center;
+    }
+    .gateway__right img {
+      width: 100%;
+      max-width: 340px;
+    }
   }
 </style>
