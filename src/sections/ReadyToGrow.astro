@@ -10,7 +10,7 @@
 
     <div class="rtg__content">
       <h2 class="rtg__title"><em class="rtg__accent">Ready to grow</em> your<br />career in aesthetics?</h2>
-      <p class="rtg__sub">Start getting discovered by top clinics in South Florida.<br />Create your profile in minutes and connect with<br />real opportunities.</p>
+      <p class="rtg__sub">Start getting discovered by top clinics in South Florida. Create your profile in minutes and connect with real opportunities.</p>
 
       <ul class="rtg__checklist">
         <li>
@@ -145,11 +145,34 @@
       grid-template-columns: 1fr;
       padding: 3rem 1.5rem;
       gap: 2rem;
-      text-align: center;
+      text-align: left;
     }
     .rtg__mockups { order: -1; }
-    .rtg__content { align-items: center; }
-    .rtg__checklist { align-items: center; }
-    .rtg__title { font-size: 2rem; }
+    .rtg__content {
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .rtg__title {
+      font-size: 1.9rem;
+    }
+    .rtg__sub {
+      font-size: .95rem;
+    }
+    .rtg__checklist {
+      align-items: flex-start;
+      gap: .55rem;
+    }
+    .rtg__checklist li {
+      font-size: .95rem;
+    }
+    .rtg__actions {
+      width: 100%;
+      margin-top: .5rem;
+    }
+    .rtg__btn {
+      width: 100%;
+      text-align: center;
+      padding: .9rem 1.5rem;
+    }
   }
 </style>
