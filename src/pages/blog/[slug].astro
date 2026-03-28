@@ -31,6 +31,17 @@ while ((match = h2Regex.exec(post.content)) !== null) {
 for (const [orig, rep] of replacements) {
   contentWithIds = contentWithIds.replace(orig, rep);
 }
+// BreadcrumbList schema for this post
+const breadcrumbSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://enhance.work/" },
+    { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://enhance.work/blog/" },
+    { "@type": "ListItem", "position": 3, "name": post.title, "item": `https://enhance.work/blog/${post.slug}` }
+  ]
+});
+
 // BlogPosting JSON-LD for this post
 const blogPostingSchema = JSON.stringify({
   "@context": "https://schema.org",
@@ -69,6 +80,7 @@ const blogPostingSchema = JSON.stringify({
   <Nav />
 
   <script type="application/ld+json" set:html={blogPostingSchema} />
+  <script type="application/ld+json" set:html={breadcrumbSchema} />
 
   <main class="post-page">
 

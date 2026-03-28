@@ -9,7 +9,30 @@ const featured = posts[0] ?? null;
 const rest = posts.slice(1);
 ---
 
-<BaseLayout title="Blog — enhance.work" description="Career tips, industry news, and everything you need to succeed in medical aesthetics.">
+<BaseLayout
+  title="Aesthetic Medicine Blog | Career Tips & Industry News | Enhance.work"
+  description="Career tips, hiring insights, and guides for nurse injectors, medical aestheticians, laser technicians, and medical assistants in South Florida."
+  canonicalUrl="https://enhance.work/blog/"
+>
+  <script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "name": "Aesthetic Medicine Blog | Enhance.work",
+        "url": "https://enhance.work/blog/",
+        "description": "Career tips, hiring insights, and guides for aesthetic professionals in South Florida.",
+        "isPartOf": { "@type": "WebSite", "name": "Enhance.work", "url": "https://enhance.work" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://enhance.work/" },
+          { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://enhance.work/blog/" }
+        ]
+      }
+    ]
+  }</script>
   <Nav />
 
   <main class="blog-page">
