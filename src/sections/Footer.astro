@@ -2,70 +2,123 @@
 ---
 
 <footer class="footer">
-  <div class="container footer__inner">
-    <div class="footer__brand">
-      <span class="footer__logo">enhance<span>.</span>work</span>
-      <p>Your gateway to a thriving aesthetic career in South Florida.</p>
+  <!-- Clinic photo bg with dark overlay -->
+  <div class="footer__bg"></div>
+
+  <div class="footer__content">
+    <!-- Top row: logo/tagline + nav cols -->
+    <div class="footer__top">
+
+      <!-- Left: logo + tagline -->
+      <div class="footer__brand">
+        <a href="/" class="footer__logo" aria-label="Enhance.work home">
+          Enhance<span class="footer__logo-dot">.work</span>
+        </a>
+        <p class="footer__tagline">Your gateway to a thriving aesthetic<br />career in South Florida.</p>
+      </div>
+
+      <!-- Right: nav columns -->
+      <nav class="footer__nav" aria-label="Footer navigation">
+        <div class="footer__col">
+          <p class="footer__col-title">PLATFORM</p>
+          <a href="#how-it-works">How it works</a>
+          <a href="#roles">Roles</a>
+          <a href="#gateway">Partner clinics</a>
+        </div>
+        <div class="footer__col">
+          <p class="footer__col-title">PROFESSIONALS</p>
+          <a href="/candidate/registration/">Create profile</a>
+          <a href="#roles">Browse jobs</a>
+          <a href="#why-choose">Why join</a>
+        </div>
+      </nav>
     </div>
 
-    <nav class="footer__nav">
-      <div class="footer__col">
-        <p class="footer__col-title">Platform</p>
-        <a href="#how-it-works">How it works</a>
-        <a href="#roles">Roles</a>
-        <a href="#trusted-by">Partner clinics</a>
-      </div>
-      <div class="footer__col">
-        <p class="footer__col-title">Professionals</p>
-        <a href="#apply">Create profile</a>
-        <a href="#roles">Browse jobs</a>
-        <a href="#why-join">Why join</a>
-      </div>
-    </nav>
-  </div>
+    <!-- Divider -->
+    <hr class="footer__divider" />
 
-  <div class="container footer__bottom">
-    <p>© {new Date().getFullYear()} enhance.work — All rights reserved.</p>
-    <p>A growing demand for aesthetic professionals in South Florida.</p>
+    <!-- Bottom bar -->
+    <div class="footer__bottom">
+      <span>© 2026 enhance.work · All rights reserved.</span>
+      <span>A growing demand for aesthetic professionals in South Florida.</span>
+    </div>
   </div>
 </footer>
 
 <style>
   .footer {
-    background: #1b2936; /* Figma: rgb(27,41,54) */
-    color: rgba(240,245,243,.6);
-    padding: 4rem 1.5rem 2rem;
+    position: relative;
+    overflow: hidden;
   }
 
-  .footer__inner {
+  /* Clinic photo bg — same asset used in Gateway section */
+  .footer__bg {
+    position: absolute;
+    inset: 0;
+    background: url('/images/gateway-bg.png') center center / cover no-repeat;
+    z-index: 0;
+  }
+
+  /* Dark overlay */
+  .footer__bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(13, 26, 35, 0.72);
+  }
+
+  .footer__content {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3.5rem 141px;
+  }
+
+  /* Top row */
+  .footer__top {
     display: flex;
     justify-content: space-between;
-    gap: 3rem;
-    flex-wrap: wrap;
-    margin-bottom: 3rem;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
   }
 
+  /* Logo */
   .footer__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
     font-family: var(--font-heading);
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     font-weight: 700;
-    display: block;
+    color: #ffffff;
+    text-decoration: none;
+    letter-spacing: -.01em;
     margin-bottom: .75rem;
   }
 
-  .footer__logo span { color: var(--color-accent); }
-
-  .footer__brand p {
-    color: var(--color-text-secondary);
-    font-size: .9rem;
-    line-height: 1.6;
-    max-width: 280px;
+  .footer__logo-dot {
+    background: var(--color-accent);
+    color: #fff;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: .95rem;
+    margin-left: 1px;
   }
 
+  .footer__tagline {
+    font-size: .88rem;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.55;
+    margin: 0;
+    max-width: 220px;
+  }
+
+  /* Nav */
   .footer__nav {
     display: flex;
-    gap: 3rem;
-    flex-wrap: wrap;
+    gap: 4rem;
   }
 
   .footer__col {
@@ -75,30 +128,45 @@
   }
 
   .footer__col-title {
-    font-weight: 600;
-    font-size: .8rem;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-    margin-bottom: .25rem;
+    font-family: var(--font-heading);
+    font-size: .78rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: .08em;
+    margin: 0 0 .25rem;
   }
 
   .footer__col a {
-    font-size: .9rem;
-    color: var(--color-text-secondary);
-    transition: color .15s;
+    font-size: .88rem;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    transition: color .2s;
   }
 
-  .footer__col a:hover { color: var(--color-accent); }
+  .footer__col a:hover {
+    color: #ffffff;
+  }
 
+  /* Divider */
+  .footer__divider {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.18);
+    margin: 0 0 1.5rem;
+  }
+
+  /* Bottom */
   .footer__bottom {
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
-    gap: .5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--color-border);
-    font-size: .8rem;
-    color: var(--color-text-muted);
+    align-items: center;
+    font-size: .82rem;
+    color: rgba(255,255,255,0.5);
+  }
+
+  @media (max-width: 768px) {
+    .footer__content { padding: 2.5rem 1.5rem; }
+    .footer__top { flex-direction: column; }
+    .footer__nav { gap: 2rem; }
+    .footer__bottom { flex-direction: column; gap: .5rem; text-align: center; }
   }
 </style>
