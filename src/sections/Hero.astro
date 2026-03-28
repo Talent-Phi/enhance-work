@@ -13,7 +13,8 @@ import StatCard from '../components/StatCard.astro';
       <!-- Active professionals badge (randomized 5-15, updates every 30s) -->
       <div class="hero__badge" id="hero-active-badge">
         <span class="hero__badge-dot hero__active-dot"></span>
-        <u><span id="hero-active-count">9</span> professionals</u> live right now
+        <span class="hero__badge-count"><u><span id="hero-active-count">8</span> professionals</u></span>
+        <span class="hero__badge-rest">live right now</span>
       </div>
 
       <h1 class="hero__headline">
@@ -46,10 +47,7 @@ import StatCard from '../components/StatCard.astro';
 
       <!-- Trust signal below button (Frame 3930) -->
       <div class="hero__trust">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-          <circle cx="7" cy="7" r="7" fill="#2bbcb0"/>
-          <path d="M4 7l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        <span class="hero__trust-check">✓</span>
         <span>Professionals in aesthetics only</span>
       </div>
 
@@ -266,13 +264,40 @@ import StatCard from '../components/StatCard.astro';
     flex-wrap: nowrap;
   }
 
+  /* Badge count — larger, semibold, teal */
+  .hero__badge-count {
+    font-size: .95rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration-color: var(--color-accent);
+  }
+
+  .hero__badge-count u {
+    text-underline-offset: 2px;
+  }
+
+  .hero__badge-rest {
+    font-size: .82rem;
+    font-weight: 400;
+    color: #555;
+  }
+
+  /* Trust signal */
   .hero__trust {
     display: flex;
     align-items: center;
-    gap: .5rem;
+    gap: .45rem;
     font-family: var(--font-body);
-    font-size: .85rem;
-    color: #404040;
+    font-size: .88rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .hero__trust-check {
+    color: var(--color-accent);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
   }
 
   .hero__join-btn {
