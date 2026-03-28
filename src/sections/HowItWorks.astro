@@ -36,7 +36,7 @@ const steps = [
     </div>
 
     <!-- 3 equal glassmorphism cards — all content always visible -->
-    <div class="how__row">
+    <div class="how__row" id="howRow">
       {steps.map((step, i) => (
         <div class="how__card" data-index={i} tabindex="0" role="button">
           <!-- STEP number: gradient purple→lavender -->
@@ -50,12 +50,21 @@ const steps = [
         </div>
       ))}
     </div>
+    <!-- Carousel dots (mobile only) -->
+    <div class="how__dots" id="howDots">
+      {steps.map((_, i) => (
+        <button class={`how__dot${i === 0 ? ' active' : ''}`} data-dot={i} aria-label={`Step ${i + 1}`}></button>
+      ))}
+    </div>
   </div>
 </section>
 
 <script>
-  // In Astro, component scripts run after DOM is ready — no DOMContentLoaded needed
   const howCards = document.querySelectorAll('.how__card');
+  const howDots  = document.querySelectorAll('.how__dot');
+  const howRow   = document.getElementById('howRow');
+
+  // Desktop: click to highlight
   howCards.forEach(card => {
     card.addEventListener('click', () => {
       const isActive = card.classList.contains('active');
@@ -63,6 +72,24 @@ const steps = [
       if (!isActive) card.classList.add('active');
     });
   });
+
+  // Dots: click to scroll carousel to card
+  howDots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const idx = parseInt(dot.dataset.dot);
+      const card = howRow.children[idx];
+      howRow.scrollTo({ left: card.offsetLeft - howRow.offsetLeft, behavior: 'smooth' });
+    });
+  });
+
+  // Sync dots on scroll
+  if (howRow) {
+    howRow.addEventListener('scroll', () => {
+      const cardWidth = howRow.children[0]?.offsetWidth || 1;
+      const idx = Math.round(howRow.scrollLeft / cardWidth);
+      howDots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    }, { passive: true });
+  }
 </script>
 
 <style>
@@ -223,6 +250,28 @@ const steps = [
     display: block;
   }
 
+  /* Carousel dots */
+  .how__dots {
+    display: none; /* hidden on desktop */
+    justify-content: center;
+    gap: .5rem;
+    margin-top: 1.25rem;
+  }
+  .how__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background .25s, transform .25s;
+  }
+  .how__dot.active {
+    background: var(--color-accent);
+    transform: scale(1.25);
+  }
+
   /* Mobile: horizontal carousel */
   @media (max-width: 768px) {
     .how__row {
@@ -260,5 +309,6 @@ const steps = [
 
     .how__h2 { font-size: 1.75rem; }
     .how__header { text-align: left; margin: 0 0 1.5rem; }
+    .how__dots { display: flex; }
   }
 </style>

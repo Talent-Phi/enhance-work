@@ -226,15 +226,9 @@ a { color: inherit; text-decoration: none; }
   .h2 { font-size: 1.65rem !important; }
   .h3 { font-size: 1.05rem !important; }
 
-  /* Buttons full-width on mobile */
-  .btn { width: 100%; text-align: center; }
-
   /* Two-col grids → single col */
   .finalcta__row,
   .wc__stats-row { flex-direction: column !important; }
-
-  /* Nav: hide desktop links, show hamburger area */
-  .nav__links { display: none; }
 
   /* Images: full width */
   .finalcta__mockup,
