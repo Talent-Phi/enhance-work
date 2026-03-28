@@ -6,8 +6,7 @@
     <span class="cta__label">Ready to grow?</span>
 
     <h2 class="cta__headline">
-      Ready to grow your career<br />
-      <em>in aesthetics?</em>
+      Are you ready to launch your career in the beauty industry in South Florida?
     </h2>
 
     <p class="cta__sub">
@@ -15,8 +14,7 @@
     </p>
 
     <div class="cta__actions">
-      <a href="/candidate/registration/" class="btn cta__btn-primary">Join for free</a>
-      <a href="#roles" class="btn cta__btn-outline">Browse opportunities</a>
+      <a href="/candidate/registration/" class="btn cta__btn-primary apply-btn">Join for free</a>
     </div>
   </div>
 </section>
@@ -28,7 +26,7 @@
     padding: 9rem 1.5rem;
   }
 
-  /* Clinic bg image (EFM-736 from Figma — aesthetic treatment room) */
+  /* Clinic bg image */
   .cta::before {
     content: '';
     position: absolute;
@@ -37,7 +35,7 @@
     z-index: 0;
   }
 
-  /* Dark overlay ~65% — same tone as the image */
+  /* Dark overlay */
   .cta::after {
     content: '';
     position: absolute;
@@ -50,7 +48,7 @@
   .cta__inner {
     position: relative;
     z-index: 2;
-    max-width: 680px;
+    max-width: 640px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -59,93 +57,77 @@
     gap: 1.25rem;
   }
 
+  /* Glassmorphism label pill */
   .cta__label {
     display: inline-block;
     font-family: var(--font-body);
     font-size: .7rem;
     font-weight: 600;
-    letter-spacing: .12em;
+    letter-spacing: .14em;
     text-transform: uppercase;
-    color: #2bbcb0;
-    background: rgba(43,188,176,.18);
-    padding: .35rem 1rem;
+    color: #ffffff;
+    background: rgba(43,188,176,.22);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(43,188,176,.45);
+    padding: .38rem 1.1rem;
     border-radius: 100px;
   }
 
   .cta__headline {
     font-family: var(--font-heading);
-    font-weight: 500;
-    font-size: clamp(1.9rem, 3vw, 2.75rem);
+    font-weight: 600;
+    font-size: clamp(2rem, 4vw, 3rem);
     line-height: 1.2;
     color: #ffffff;
     margin: 0;
   }
 
-  .cta__headline em {
-    font-style: normal;
-    color: #ffffff;
-  }
-
   .cta__sub {
-    color: rgba(255,255,255,.6);
-    font-size: .95rem;
+    color: rgba(255,255,255,.75);
+    font-size: 1rem;
     line-height: 1.65;
-    max-width: 460px;
+    max-width: 480px;
     margin: 0;
   }
 
   .cta__actions {
     display: flex;
-    flex-wrap: wrap;
-    gap: .9rem;
     justify-content: center;
-    margin-top: .25rem;
+    margin-top: .5rem;
   }
 
-  /* Primary teal button */
+  /* Wide glassmorphism teal button */
   .cta__btn-primary {
-    background: var(--color-accent);
+    background: rgba(43,188,176,.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     color: #ffffff;
     font-family: var(--font-heading);
-    font-size: .95rem;
+    font-size: 1rem;
     font-weight: 600;
-    padding: .8rem 1.75rem;
+    padding: .9rem 4rem;
     border-radius: 53px;
-    border: none;
+    border: 1px solid rgba(43,188,176,.6);
     cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    min-width: 260px;
+    text-align: center;
     transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
   }
   .cta__btn-primary:hover {
-    background: var(--color-accent-hover);
+    background: rgba(43,188,176,.9);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(43,188,176,0.35);
-  }
-
-  /* White/gray outline button */
-  .cta__btn-outline {
-    background: rgba(255,255,255,.12);
-    color: rgba(255,255,255,.85);
-    font-family: var(--font-heading);
-    font-size: .95rem;
-    font-weight: 600;
-    padding: .8rem 1.75rem;
-    border-radius: 53px;
-    border: 1.5px solid rgba(255,255,255,.3);
-    cursor: pointer;
-    transition: border-color .2s ease, color .2s ease, transform .2s ease;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-  }
-  .cta__btn-outline:hover {
-    border-color: rgba(255,255,255,.7);
-    color: #fff;
-    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(43,188,176,0.4);
   }
 
   @media (max-width: 600px) {
-    .cta { padding: 4rem 1.25rem; }
-    .cta__actions { flex-direction: column; align-items: center; }
-    .cta__btn-primary, .cta__btn-outline { width: 100%; max-width: 300px; justify-content: center; }
+    .cta { padding: 5rem 1.25rem; }
+    .cta__btn-primary {
+      width: 100%;
+      min-width: unset;
+      padding: .9rem 2rem;
+    }
   }
 </style>
