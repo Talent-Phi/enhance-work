@@ -11,8 +11,8 @@
 
       <!-- Left: logo + tagline -->
       <div class="footer__brand">
-        <a href="/" class="footer__logo" aria-label="Enhance.work home">
-          Enhance<span class="footer__logo-dot">.work</span>
+        <a href="/" aria-label="Enhance.work home">
+          <img src="/images/logo.png" alt="Enhance.work" class="footer__logo-img" />
         </a>
         <p class="footer__tagline">Your gateway to a thriving aesthetic<br />career in South Florida.</p>
       </div>
@@ -85,26 +85,11 @@
   }
 
   /* Logo */
-  .footer__logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 0;
-    font-family: var(--font-heading);
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: #ffffff;
-    text-decoration: none;
-    letter-spacing: -.01em;
+  .footer__logo-img {
+    height: 32px;
+    width: auto;
+    display: block;
     margin-bottom: .75rem;
-  }
-
-  .footer__logo-dot {
-    background: var(--color-accent);
-    color: #fff;
-    padding: 1px 5px;
-    border-radius: 4px;
-    font-size: .95rem;
-    margin-left: 1px;
   }
 
   .footer__tagline {
