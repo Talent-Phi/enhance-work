@@ -60,11 +60,21 @@ import StatCard from '../components/StatCard.astro';
           alt="Aesthetic professional performing treatment"
           class="hero__mockup"
         />
-        <img
-          src="/images/hero/top-hiring-card.png"
-          alt="Top hiring areas — Coral Gables, Miramar, Aventura, Boca Raton"
-          class="hero__hiring-card"
-        />
+        <!-- Top hiring areas card — HTML/CSS with location layers -->
+        <div class="hero__hiring-card">
+          <div class="hiring__left">
+            <p class="hiring__title">Top hiring areas</p>
+            <ol class="hiring__list">
+              <li><span class="hiring__num">1.</span> Coral Gables</li>
+              <li><span class="hiring__num">2.</span> Miramar</li>
+              <li><span class="hiring__num">3.</span> Aventura</li>
+              <li><span class="hiring__num">4.</span> Boca Raton</li>
+            </ol>
+          </div>
+          <div class="hiring__map">
+            <img src="/images/hero/map-south-florida.png" alt="South Florida map" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -336,16 +346,73 @@ import StatCard from '../components/StatCard.astro';
     display: block;
     border-radius: 20px;
   }
-  /* Top hiring areas card — overlapping bottom edge of photo */
+  /* Top hiring areas card — HTML card with map */
   .hero__hiring-card {
     position: absolute;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 82%;
-    height: auto;
+    width: 84%;
+    background: #fff;
     border-radius: 14px;
-    box-shadow: 0 8px 28px rgba(0,0,0,0.13);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+    display: flex;
+    overflow: hidden;
+  }
+
+  .hiring__left {
+    flex: 1;
+    padding: 16px 14px 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .hiring__title {
+    font-family: var(--font-heading);
+    font-size: .78rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+
+  .hiring__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .hiring__list li {
+    font-family: var(--font-body);
+    font-size: .78rem;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .hiring__num {
+    color: var(--color-accent);
+    font-weight: 700;
+    min-width: 18px;
+  }
+
+  .hiring__map {
+    width: 42%;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .hiring__map img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   /* ── STATS BAND ── */
