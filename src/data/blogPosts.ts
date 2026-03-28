@@ -27,7 +27,7 @@ export const blogPosts: BlogPost[] = [
     title: "How to Become a Nurse Injector in Florida: License, Training, and First Job",
     subtitle: "The complete guide to Florida licensure, aesthetic training, and landing your first injector role in South Florida",
     date: "March 27, 2026",
-    excerpt: "In Florida, only APRNs can legally perform aesthetic injections independently. Here's the real path — licensure, hands-on training, what hiring managers look for, and what new injectors get wrong in their first year.",
+    excerpt: "Florida limits aesthetic injections to APRNs. The real path to your first injector job: licensure, training, and what hiring managers actually look for.",
     category: "Career",
     readTime: "10 min",
     author: "Sofia Reyes, APRN",
