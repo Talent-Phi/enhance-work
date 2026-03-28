@@ -274,6 +274,7 @@ const steps = [
 
   /* Mobile: horizontal carousel */
   @media (max-width: 768px) {
+    /* Pull the row to full viewport width, breaking out of container padding */
     .how__row {
       display: flex;
       flex-direction: row;
@@ -281,8 +282,12 @@ const steps = [
       scroll-snap-type: x mandatory;
       gap: 1rem;
       padding-bottom: 1rem;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      margin-left: -1.5rem;
+      margin-right: -1.5rem;
       min-height: unset;
-      align-items: flex-start;
+      align-items: stretch;
       /* Hide scrollbar */
       scrollbar-width: none;
       -ms-overflow-style: none;
@@ -290,24 +295,12 @@ const steps = [
     .how__row::-webkit-scrollbar { display: none; }
 
     .how__card {
-      flex: 0 0 85vw;
-      min-width: 85vw;
+      /* Card = full viewport minus container padding on both sides */
+      flex: 0 0 calc(100vw - 3rem);
+      min-width: calc(100vw - 3rem);
       scroll-snap-align: start;
       padding: 1.5rem 1.25rem 0;
       flex-grow: 0;
-      /* Let card shrink to its content */
-      height: auto;
-      align-self: flex-start;
-    }
-
-    /* Prevent desc from growing and leaving huge gap on mobile */
-    .how__card .how__desc {
-      flex-grow: 0;
-    }
-
-    /* Mockup closer to text on mobile */
-    .how__mockup-wrap {
-      margin-top: 1rem;
     }
 
     /* First card active by default on mobile */
