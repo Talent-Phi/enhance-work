@@ -60,21 +60,12 @@ import StatCard from '../components/StatCard.astro';
           alt="Aesthetic professional performing treatment"
           class="hero__mockup"
         />
-        <!-- Top hiring areas card — HTML/CSS with location layers -->
-        <div class="hero__hiring-card">
-          <div class="hiring__left">
-            <p class="hiring__title">Top hiring areas</p>
-            <ol class="hiring__list">
-              <li><span class="hiring__num">1.</span> Coral Gables</li>
-              <li><span class="hiring__num">2.</span> Miramar</li>
-              <li><span class="hiring__num">3.</span> Aventura</li>
-              <li><span class="hiring__num">4.</span> Boca Raton</li>
-            </ol>
-          </div>
-          <div class="hiring__map">
-            <img src="/images/hero/map-south-florida.png" alt="South Florida map" />
-          </div>
-        </div>
+        <!-- Top hiring areas card — direct Figma export (node 1027:1786) -->
+        <img
+          src="/images/hero/top-hiring-card.png"
+          alt="Top hiring areas — Coral Gables, Miramar, Aventura, Boca Raton"
+          class="hero__hiring-card"
+        />
       </div>
     </div>
   </div>
@@ -349,18 +340,17 @@ import StatCard from '../components/StatCard.astro';
     display: block;
     border-radius: 20px;
   }
-  /* Top hiring areas card — HTML card with map */
+  /* Top hiring areas card — Figma PNG export */
   .hero__hiring-card {
     position: absolute;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 84%;
-    background: #fff;
+    width: 88%;
+    height: auto;
+    display: block;
     border-radius: 14px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.14);
-    display: flex;
-    overflow: hidden;
   }
 
   .hiring__left {
