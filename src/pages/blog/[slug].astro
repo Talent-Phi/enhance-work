@@ -31,10 +31,44 @@ while ((match = h2Regex.exec(post.content)) !== null) {
 for (const [orig, rep] of replacements) {
   contentWithIds = contentWithIds.replace(orig, rep);
 }
+// BlogPosting JSON-LD for this post
+const blogPostingSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": post.title,
+  "description": post.excerpt,
+  "image": post.image ? `https://enhance.work${post.image}` : "https://enhance.work/images/hero-photo.png",
+  "datePublished": post.date,
+  "author": {
+    "@type": "Person",
+    "name": post.author
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Enhance.work",
+    "url": "https://enhance.work"
+  },
+  "url": `https://enhance.work/blog/${post.slug}`,
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": `https://enhance.work/blog/${post.slug}`
+  }
+});
+
 ---
 
-<BaseLayout title={`${post.title} — enhance.work Blog`} description={post.excerpt}>
+<BaseLayout
+  title={`${post.title} — enhance.work Blog`}
+  description={post.excerpt}
+  ogImage={post.image || '/images/hero-photo.png'}
+  canonicalUrl={`https://enhance.work/blog/${post.slug}`}
+  ogType="article"
+  publishedTime={post.date}
+  author={post.author}
+>
   <Nav />
+
+  <script type="application/ld+json" set:html={blogPostingSchema} />
 
   <main class="post-page">
 
