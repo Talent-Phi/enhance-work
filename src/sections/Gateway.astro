@@ -32,22 +32,30 @@
         <!-- Stat mini-cards -->
         <div class="gateway__stats">
           <div class="gateway__stat-card">
-            <p class="gateway__stat-label">Interviews</p>
-            <p class="gateway__stat-value green">342</p>
+            <p class="gateway__stat-label">Jobs not on Indeed</p>
+            <p class="gateway__stat-value green">842</p>
             <span class="gateway__stat-badge green">↑ +7%</span>
-            <div class="gateway__stat-bar"><div class="gateway__stat-bar-fill" style="width:57%"></div></div>
+            <div class="gateway__stat-bar"><div class="gateway__stat-bar-fill" style="width:84%"></div></div>
           </div>
           <div class="gateway__stat-card">
-            <p class="gateway__stat-label">Placements</p>
-            <p class="gateway__stat-value green">218</p>
-            <span class="gateway__stat-badge green">↑ +12%</span>
-            <div class="gateway__stat-bar"><div class="gateway__stat-bar-fill" style="width:75%"></div></div>
+            <p class="gateway__stat-label">Irrelevant job offers</p>
+            <p class="gateway__stat-value">0</p>
+            <span class="gateway__stat-badge red">↓ -2%</span>
+            <div class="gateway__stat-bar"><div class="gateway__stat-bar-fill neutral" style="width:0%"></div></div>
           </div>
-          <div class="gateway__stat-card">
-            <p class="gateway__stat-label">New profiles</p>
-            <p class="gateway__stat-value">1.2k</p>
-            <span class="gateway__stat-badge neutral">↑ +0%</span>
-            <div class="gateway__stat-bar"><div class="gateway__stat-bar-fill neutral" style="width:30%"></div></div>
+        </div>
+
+        <!-- Top hiring areas -->
+        <div class="gateway__map-card">
+          <p class="gateway__map-title">Top hiring areas</p>
+          <div class="gateway__map-layout">
+            <img src="/images/map-top-hiring-areas.png" alt="Top hiring areas map — South Florida" class="gateway__map-img" />
+            <ol class="gateway__map-list">
+              <li>Coral Gables</li>
+              <li>Miramar</li>
+              <li>Aventura</li>
+              <li>Boca Raton</li>
+            </ol>
           </div>
         </div>
       </div>
@@ -55,7 +63,7 @@
       <!-- Right: Frame 22 — Megan Roberts profile + Job Matches UI -->
       <div class="gateway__right">
         <img
-          src="/images/mockups/frame22-jobs.png"
+          src="/images/gateway-profile-mockup.png"
           alt="Enhance.work — profile and job matches"
           class="gateway__mockup"
         />
@@ -226,6 +234,67 @@
   .gateway__stat-badge.neutral {
     background: #f0f0f0;
     color: #bababa;
+  }
+
+  .gateway__stat-badge.red {
+    background: #fff0f0;
+    color: #c0392b;
+  }
+
+  /* Top hiring areas map card */
+  .gateway__map-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1.25rem 1.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  }
+
+  .gateway__map-title {
+    font-family: var(--font-heading);
+    font-size: .85rem;
+    font-weight: 600;
+    color: #1e2b38;
+    margin-bottom: .85rem;
+  }
+
+  .gateway__map-layout {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .gateway__map-img {
+    width: 52%;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
+  .gateway__map-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .55rem;
+    counter-reset: maplist;
+  }
+
+  .gateway__map-list li {
+    counter-increment: maplist;
+    font-size: .9rem;
+    color: #404040;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+
+  .gateway__map-list li::before {
+    content: counter(maplist) ".";
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--color-accent);
+    font-size: .8rem;
+    min-width: 16px;
   }
 
   .gateway__stat-bar {

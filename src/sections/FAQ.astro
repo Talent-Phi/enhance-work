@@ -1,0 +1,202 @@
+---
+const faqs = [
+  {
+    q: '1. Is it free for candidates?',
+    a: 'Yes — creating a profile and getting discovered by clinics is completely free for aesthetic professionals. Enhance.work is funded by the practices, not the candidates.',
+  },
+  {
+    q: '2. How does it work for candidates?',
+    a: 'Create your profile, add your specialty, certifications, and experience. Aesthetic practices in South Florida can find you and reach out directly. You can also browse open roles and apply.',
+  },
+  {
+    q: 'What roles does Enhance.work cover?',
+    a: 'We focus exclusively on medical aesthetics: Nurse Injectors, Medical Aestheticians, Laser Technicians, Medical Assistants, Clinic Managers, and more. Every role is inside the aesthetic medicine field.',
+  },
+  {
+    q: 'Do I need to apply for jobs?',
+    a: 'Not necessarily. Many candidates get contacted directly by clinics without ever applying. Your profile works like a live resume — practices reach out to you.',
+  },
+  {
+    q: '5. What med spa jobs are available near Miami?',
+    a: 'Enhance.work lists open positions from practices across Miami-Dade, Broward, and Palm Beach counties, including areas like Coral Gables, Doral, Aventura, Brickell, and Fort Lauderdale.',
+  },
+  {
+    q: '6. Can I find med spa jobs as a registered nurse?',
+    a: 'Absolutely. Registered nurses with aesthetic training — especially in neurotoxins and dermal fillers — are among the most sought-after candidates on the platform.',
+  },
+  {
+    q: '7. What areas does Enhance.work cover?',
+    a: 'We are hyper-focused on South Florida: Miami-Dade, Broward, and Palm Beach counties. This means every opportunity is relevant to your area.',
+  },
+  {
+    q: '8. How is this different from Indeed or ZipRecruiter?',
+    a: 'Indeed and ZipRecruiter are general job boards. Enhance.work is built exclusively for aesthetic medicine — so clinics posting here are serious about finding the right candidate, and candidates are actually qualified for the roles.',
+  },
+  {
+    q: '9. How to become a nurse injector?',
+    a: 'You typically need an RN, NP, or PA license plus hands-on training in neurotoxins and fillers. Many candidates on Enhance.work have completed specialized aesthetic training programs. Clinics here often mention their training requirements directly.',
+  },
+  {
+    q: '10. How do I get started?',
+    a: 'Click "Join for free," fill out your profile with your specialty and certifications, and you\'ll start appearing in searches by aesthetic practices in your area.',
+  },
+];
+---
+
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="faq__header">
+      <p class="faq__label">What most people ask for:</p>
+      <h2 class="h2 faq__title">Aesthetic Medicine Jobs<br />in South Florida.</h2>
+    </div>
+
+    <div class="faq__list" id="faq-list">
+      {faqs.map((item, i) => (
+        <div class="faq__item" data-index={i}>
+          <button class="faq__question" aria-expanded="false">
+            <span>{item.q}</span>
+            <svg class="faq__chevron" width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="faq__answer">
+            <p>{item.a}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const items = Array.from(document.querySelectorAll('.faq__item'));
+  items.forEach(item => {
+    const btn = item.querySelector('.faq__question');
+    btn?.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      // Close all
+      items.forEach(el => {
+        el.classList.remove('open');
+        el.querySelector('.faq__question')?.setAttribute('aria-expanded', 'false');
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+</script>
+
+<style>
+  .faq {
+    padding: var(--section-padding);
+    background: var(--color-bg);
+  }
+
+  .faq__header {
+    max-width: 640px;
+    margin: 0 auto 3rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+  }
+
+  .faq__label {
+    font-family: var(--font-body);
+    font-size: .8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--color-accent);
+  }
+
+  .faq__title {
+    margin: 0;
+  }
+
+  .faq__list {
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  }
+
+  .faq__item {
+    background: #ffffff;
+    border-bottom: 1px solid #ebebeb;
+  }
+
+  .faq__item:last-child {
+    border-bottom: none;
+  }
+
+  .faq__question {
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    text-align: left;
+    font-family: var(--font-heading);
+    font-size: .95rem;
+    font-weight: 500;
+    color: #1e2b38;
+    transition: background .2s ease, color .2s ease;
+  }
+
+  .faq__question:hover {
+    background: #f7fffe;
+    color: var(--color-accent);
+  }
+
+  .faq__item.open .faq__question {
+    color: var(--color-accent);
+    background: #f0fffe;
+  }
+
+  .faq__chevron {
+    flex-shrink: 0;
+    color: #9aa5b1;
+    transition: transform .3s cubic-bezier(0.4, 0, 0.2, 1), color .2s ease;
+  }
+
+  .faq__item.open .faq__chevron {
+    transform: rotate(180deg);
+    color: var(--color-accent);
+  }
+
+  .faq__answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .4s cubic-bezier(0.4, 0, 0.2, 1), padding .3s ease;
+    padding: 0 1.5rem;
+  }
+
+  .faq__item.open .faq__answer {
+    max-height: 300px;
+    padding: 0 1.5rem 1.25rem;
+  }
+
+  .faq__answer p {
+    font-size: .92rem;
+    color: #5c6b7a;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .faq__header { text-align: left; margin: 0 0 1.5rem; }
+    .faq__question { font-size: .88rem; padding: 1rem 1.25rem; }
+    .faq__answer { padding: 0 1.25rem; }
+    .faq__item.open .faq__answer { padding: 0 1.25rem 1rem; }
+  }
+</style>
