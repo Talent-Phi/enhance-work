@@ -4,10 +4,13 @@
 <section class="rtg" id="ready-to-grow">
   <div class="rtg__inner">
 
+    <div class="rtg__mockups">
+      <img src="/images/mockups/how-it-works.png" alt="Enhance.work platform preview" class="rtg__mockup-img" />
+    </div>
+
     <div class="rtg__content">
-      <h2 class="rtg__title">Ready to grow your career<br />in aesthetics?</h2>
-      <p class="rtg__sub">Start getting discovered by top clinics in South Florida.</p>
-      <p class="rtg__sub2">Create your profile in minutes and connect with real opportunities.</p>
+      <h2 class="rtg__title"><em class="rtg__accent">Ready to grow</em> your<br />career in aesthetics?</h2>
+      <p class="rtg__sub">Start getting discovered by top clinics in South Florida.<br />Create your profile in minutes and connect with<br />real opportunities.</p>
 
       <ul class="rtg__checklist">
         <li>
@@ -60,40 +63,52 @@
   .rtg__inner {
     position: relative;
     z-index: 1;
-    max-width: 760px;
+    max-width: 1380px;
     margin: 0 auto;
-    padding: 5rem 1.5rem;
-    display: flex;
-    flex-direction: column;
+    padding: 5rem 6%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
     align-items: center;
-    text-align: center;
+  }
+
+  .rtg__mockups {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .rtg__mockup-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
   }
 
   .rtg__content {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     gap: 1.1rem;
   }
 
   .rtg__title {
     font-family: var(--font-heading);
-    font-size: 2.75rem;
+    font-size: 2.5rem;
     font-weight: 700;
     color: #ffffff;
     line-height: 1.2;
     margin: 0;
   }
 
-  .rtg__sub {
-    font-size: 1.05rem;
-    color: rgba(255,255,255,0.75);
-    margin: 0;
+  .rtg__accent {
+    font-style: normal;
+    color: var(--color-accent);
   }
 
-  .rtg__sub2 {
-    font-size: .95rem;
-    color: rgba(255,255,255,0.55);
+  .rtg__sub {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.65;
     margin: 0;
   }
 
@@ -125,7 +140,16 @@
     font-size: 1rem;
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 768px) {
+    .rtg__inner {
+      grid-template-columns: 1fr;
+      padding: 3rem 1.5rem;
+      gap: 2rem;
+      text-align: center;
+    }
+    .rtg__mockups { order: -1; }
+    .rtg__content { align-items: center; }
+    .rtg__checklist { align-items: center; }
     .rtg__title { font-size: 2rem; }
   }
 </style>
