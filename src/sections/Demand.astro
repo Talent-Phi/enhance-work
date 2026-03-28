@@ -13,24 +13,27 @@
     <div class="demand__cards">
       <!-- Chart 1: Line chart -->
       <div class="demand__card-wrap">
-        <img src="/images/demand-chart.png" alt="Demand for aesthetic professional — U.S. Jobs growth chart" class="demand__chart-img" />
+        <div class="demand__card-img-box">
+          <img src="/images/demand-chart.png" alt="Demand for aesthetic professional — U.S. Jobs growth chart" class="demand__chart-img" />
+        </div>
         <p class="demand__card-label"><strong><em>Demand for Aesthetic Professionals Is Accelerating</em></strong></p>
+        <!-- Data sources under left card -->
+        <div class="demand__sources">
+          <span class="demand__sources-label">Data sources:</span>
+          <ul class="demand__sources-list">
+            <li><a href="https://www.bls.gov/ooh/personal-care-and-service/skincare-specialists.htm" target="_blank" rel="noopener">Skincare specialists provide ↗</a></li>
+            <li><a href="https://www.bls.gov/ooh/healthcare/nurse-anesthetists-nurse-midwives-and-nurse-practitioners.htm" target="_blank" rel="noopener">Healthcare nurse practitioners ↗</a></li>
+          </ul>
+        </div>
       </div>
 
       <!-- Chart 2: Bar chart -->
       <div class="demand__card-wrap">
-        <img src="/images/mockups/chart-bars.png" alt="Most in-demand roles" class="demand__chart-img" />
+        <div class="demand__card-img-box">
+          <img src="/images/mockups/chart-bars.png" alt="Most in-demand roles" class="demand__chart-img" />
+        </div>
         <p class="demand__card-label">10-year projected growth</p>
       </div>
-    </div>
-
-    <!-- Data sources row -->
-    <div class="demand__sources">
-      <span class="demand__sources-label">Data sources:</span>
-      <ul class="demand__sources-list">
-        <li><a href="https://www.bls.gov/ooh/personal-care-and-service/skincare-specialists.htm" target="_blank" rel="noopener">Skincare specialists provide ↗</a></li>
-        <li><a href="https://www.bls.gov/ooh/healthcare/nurse-anesthetists-nurse-midwives-and-nurse-practitioners.htm" target="_blank" rel="noopener">Healthcare nurse practitioners ↗</a></li>
-      </ul>
     </div>
   </div>
 </section>
@@ -67,7 +70,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
-    align-items: stretch;
+    align-items: start; /* allow each col to define its own height */
   }
 
   .demand__card-wrap {
@@ -76,40 +79,47 @@
     gap: .75rem;
   }
 
+  /* White card box — chart image with padding so it doesn't bleed edge-to-edge */
+  .demand__card-img-box {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1.25rem;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+  }
+
   .demand__card-label {
     font-family: var(--font-body);
     font-size: .9rem;
     color: #3a3a3a;
-    text-align: center;
+    text-align: left;
     margin: 0;
   }
 
-  /* Data sources */
+  /* Data sources — left-aligned under left card */
   .demand__sources {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 1.75rem;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: .35rem;
+    margin-top: .25rem;
   }
 
   .demand__sources-label {
-    font-size: .88rem;
+    font-size: .82rem;
     color: #666;
     font-weight: 500;
   }
 
   .demand__sources-list {
-    list-style: none;
-    padding: 0;
+    list-style: disc;
+    padding-left: 1.2rem;
     margin: 0;
     display: flex;
-    gap: 1.5rem;
+    flex-direction: column;
+    gap: .2rem;
   }
 
   .demand__sources-list a {
-    font-size: .88rem;
+    font-size: .82rem;
     color: var(--color-accent);
     text-decoration: underline;
     text-underline-offset: 2px;
@@ -189,7 +199,7 @@
     width: 100%;
     height: auto;
     display: block;
-    border-radius: 16px;
+    border-radius: 8px;
   }
 
   /* Bar chart */
