@@ -12,19 +12,23 @@
 
     <div class="demand__cards">
       <!-- Chart 1: Line chart -->
-      <div class="demand__card-wrap">
-        <div class="demand__img-box">
-          <img src="/images/demand-chart.png" alt="Demand for aesthetic professional — U.S. Jobs growth chart" class="demand__chart-img" />
+      <div class="demand__card-col">
+        <div class="demand__card-wrap">
+          <div class="demand__img-box">
+            <img src="/images/demand-chart.png" alt="Demand for aesthetic professional — U.S. Jobs growth chart" class="demand__chart-img" />
+          </div>
         </div>
         <p class="demand__card-label"><strong><em>Demand for Aesthetic Professionals Is Accelerating</em></strong></p>
       </div>
 
       <!-- Chart 2: Bar chart -->
-      <div class="demand__card-wrap">
-        <div class="demand__img-box">
-          <img src="/images/demand-growth-bars.png" alt="Most in-demand roles growth percentages" class="demand__chart-img" />
+      <div class="demand__card-col">
+        <div class="demand__card-wrap">
+          <div class="demand__img-box">
+            <img src="/images/demand-growth-bars.png" alt="Most in-demand roles growth percentages" class="demand__chart-img" />
+          </div>
         </div>
-        <p class="demand__card-label"><strong>10-year projected growth</strong></p>
+        <p class="demand__card-label"><strong><em>10-year projected growth</em></strong></p>
       </div>
     </div>
 
@@ -80,6 +84,12 @@
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
     align-items: stretch;
+  }
+
+  .demand__card-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
   }
 
   .demand__card-wrap {
