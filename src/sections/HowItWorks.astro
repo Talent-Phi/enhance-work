@@ -31,7 +31,8 @@ const steps = [
   <div class="container how__inner">
     <div class="how__header">
       <div class="label-divider label-divider--dark"><span class="label how__label">How it works</span></div>
-      <h2 class="h2 how__h2">Three steps to your next<br />role in South Florida</h2>
+      <h2 class="h2 how__h2">Three steps to your next role in <span class="how__accent">South Florida.</span></h2>
+      <p class="how__sub">Fill out your profile, get discovered by South Florida practices,<br />and let clinics come to you.</p>
     </div>
 
     <!-- Horizontal expanding glassmorphism cards -->
@@ -39,22 +40,13 @@ const steps = [
       {steps.map((step, i) => (
         <div class="how__card" data-index={i}>
           <button class="how__card-btn" aria-expanded="false">
-            <div class="how__card-top">
-              <!-- STEP number: 50px gradient purple→lavender -->
-              <span class="how__num">{step.number}</span>
-              <!-- Purple circle icon -->
-              <span class="how__icon-circle" aria-hidden="true">
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                  <circle cx="11" cy="11" r="11" fill="white" fill-opacity="0.95"/>
-                  <path d="M7 11.5l2.5 2.5 5.5-5.5" stroke="#9764d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-            </div>
+            <!-- STEP number: 50px gradient purple→lavender -->
+            <span class="how__num">{step.number}</span>
             <h3 class="how__title">{step.title}</h3>
-            <p class="how__desc">{step.desc}</p>
+            <p class="how__desc"><span class="how__desc-inner">{step.desc}</span></p>
           </button>
-          <!-- Mockup — revealed on expand -->
-          <div class="how__card-expand">
+          <!-- Mockup — always at bottom, partially visible when collapsed -->
+          <div class="how__card-mockup">
             <img src={step.card} alt={step.cardAlt} class="how__card-img" loading="lazy" />
           </div>
         </div>
@@ -86,17 +78,17 @@ const steps = [
 <style>
   .how {
     padding: var(--section-padding);
-    background: #18232c;
+    background: #0f1b24;
     position: relative;
     overflow: hidden;
   }
 
-  /* Background image from Figma (Rectangle 18) */
+  /* Background image from Figma */
   .how__bg {
     position: absolute;
     inset: 0;
     background: url('/images/hiw-bg.png') center center / cover no-repeat;
-    opacity: 0.18;
+    opacity: 0.22;
     pointer-events: none;
     z-index: 0;
   }
@@ -113,14 +105,25 @@ const steps = [
   }
 
   .how__h2 {
-    color: #dff5f3;
+    color: #ffffff;
+    font-size: clamp(1.8rem, 3.5vw, 2.9rem);
+  }
+
+  .how__accent {
+    color: var(--color-accent);
+  }
+
+  .how__sub {
+    color: rgba(255,255,255,0.55);
+    font-size: .95rem;
+    line-height: 1.65;
   }
 
   .how__header {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
-    max-width: 640px;
+    max-width: 680px;
     margin-bottom: 3rem;
     display: flex;
     flex-direction: column;
@@ -132,19 +135,20 @@ const steps = [
     display: flex;
     gap: 1.25rem;
     align-items: stretch;
-    min-height: 400px;
+    /* Fixed height so collapsed cards clip the mockup at bottom */
+    height: 520px;
   }
 
-  /* Glassmorphism card — rgba(255,255,255,0.2) from Figma */
+  /* Glassmorphism card — rgba(255,255,255,0.12) over dark bg */
   .how__card {
     flex: 1;
     min-width: 0;
-    background: rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 15px;
-    overflow: hidden;
+    overflow: hidden;         /* clips mockup at card bottom when collapsed */
     cursor: pointer;
     transition:
       flex 0.5s cubic-bezier(0.4, 0, 0.2, 1),
@@ -157,17 +161,9 @@ const steps = [
 
   .how__card.active {
     flex: 3;
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(151, 100, 212, 0.5);
-    box-shadow: 0 0 40px rgba(151, 100, 212, 0.2), 0 16px 40px rgba(0,0,0,0.3);
-  }
-
-  /* Top row: step number + circle icon */
-  .how__card-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1rem;
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(151, 100, 212, 0.45);
+    box-shadow: 0 0 48px rgba(151, 100, 212, 0.18), 0 16px 40px rgba(0,0,0,0.4);
   }
 
   /* STEP number — 50px gradient from Figma: #9764d4 → #ebdbff */
@@ -182,127 +178,96 @@ const steps = [
     background-clip: text;
     display: block;
     letter-spacing: -0.02em;
+    margin-bottom: .75rem;
   }
 
-  /* Purple circle icon (Component 4 from Figma) */
-  .how__icon-circle {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.25);
-    transition: background .3s ease;
-  }
-
-  .how__card.active .how__icon-circle {
-    background: rgba(255,255,255,0.9);
-  }
-
-  /* Button area (always visible) */
+  /* Button area — text content */
   .how__card-btn {
     width: 100%;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 1.75rem 1.5rem 1.25rem;
+    padding: 1.75rem 1.5rem 1rem;
     text-align: left;
     display: flex;
     flex-direction: column;
-    gap: 0;
     flex-shrink: 0;
   }
 
   .how__title {
     font-family: var(--font-heading);
-    font-size: 1.125rem; /* 18px */
+    font-size: 1.05rem;
     font-weight: 600;
     color: #ffffff;
     line-height: 1.4;
     margin: 0 0 .5rem;
-    /* Clamp when collapsed */
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .how__card.active .how__title {
-    -webkit-line-clamp: unset;
-    overflow: visible;
   }
 
   .how__desc {
-    font-size: .75rem; /* 12px */
+    font-size: .8rem;
     font-weight: 400;
-    color: rgba(255,255,255,0.7);
+    color: rgba(255,255,255,0.6);
     line-height: 1.6;
     margin: 0;
-    /* Hidden when collapsed */
-    max-height: 0;
+    /* Hidden when not active — collapses via grid trick */
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .35s ease;
+  }
+
+  .how__desc-inner {
     overflow: hidden;
-    opacity: 0;
-    transition: max-height .4s ease, opacity .3s ease;
+    min-height: 0;
   }
 
   .how__card.active .how__desc {
-    max-height: 80px;
-    opacity: 1;
+    grid-template-rows: 1fr;
   }
 
-  /* Expand area (mockup image) */
-  .how__card-expand {
+  /* Mockup area — always rendered at bottom, clipped by card overflow:hidden */
+  .how__card-mockup {
     flex: 1;
-    padding: 0 1.25rem 1.5rem;
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    opacity: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition:
-      opacity .35s ease .1s,
-      max-height .5s ease;
-  }
-
-  .how__card.active .how__card-expand {
-    opacity: 1;
-    max-height: 380px;
-    overflow: visible;
+    padding: 0 1.25rem 0;
+    min-height: 0;
   }
 
   .how__card-img {
     width: 100%;
     max-width: 280px;
-    border-radius: 12px;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.35);
     display: block;
+    /* Always visible but clipped from bottom by container overflow */
+    object-fit: cover;
+    object-position: top;
   }
 
   /* Mobile: stack vertically */
   @media (max-width: 768px) {
     .how__header { text-align: left; margin: 0 0 1.5rem; }
     .how__h2 { font-size: 1.75rem; }
+    .how__sub { font-size: .88rem; }
 
     .how__row {
       flex-direction: column;
+      height: auto;
       gap: 0.75rem;
-      min-height: auto;
     }
 
     .how__card {
       flex: none !important;
       width: 100%;
+      height: 260px;
     }
 
-    .how__card.active .how__card-expand {
-      max-height: 300px;
+    .how__card.active {
+      height: 480px;
     }
 
     .how__num { font-size: 2.5rem; }
-    .how__card-img { max-width: 100%; }
+    .how__card-img { max-width: 100%; border-radius: 12px 12px 0 0; }
   }
 </style>
