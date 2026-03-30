@@ -191,13 +191,12 @@ const blogPostingSchema = JSON.stringify({
     <section class="post-cta">
       <div class="post-cta__inner">
         <div class="post-cta__text">
-          <h2>Ready to <span class="post-cta__accent">elevate</span> your career in aesthetic medicine? Apply today and discover the right opportunity for your growth.</h2>
+          <p class="post-cta__arrow">→</p>
+          <h2>Ready to elevate your career in aesthetic medicine? Apply today and discover the right opportunity for your growth.</h2>
+          <a href="/candidate/registration" class="post-cta__btn">Find out</a>
         </div>
         <div class="post-cta__visual">
-          <img src="/images/form/form-mockup-collage.png" alt="Enhance.work platform" class="post-cta__img" loading="lazy" onerror="this.style.display='none'" />
-        </div>
-        <div class="post-cta__action">
-          <a href="/candidate/registration" class="post-cta__btn">Find out</a>
+          <img src="/images/blog/cta-illustration.png" alt="Aesthetic professionals" class="post-cta__img" loading="lazy" onerror="this.style.display='none'" />
         </div>
       </div>
     </section>
@@ -206,9 +205,9 @@ const blogPostingSchema = JSON.stringify({
     {related.length > 0 && (
       <section class="post-related">
         <div class="post-related__inner">
-          <h2 class="post-related__title">Other <span class="post-related__accent">content</span> we recommend</h2>
+          <h2 class="post-related__title">Other <span class="post-related__accent">content</span> we recomend</h2>
           <div class="post-related__grid">
-            {related.map(p => (
+            {related.slice(0, 2).map(p => (
               <a href={`/blog/${p.slug}`} class="post-related__card">
                 <div class="post-related__img-wrap">
                   {p.image
@@ -216,9 +215,9 @@ const blogPostingSchema = JSON.stringify({
                     : <div class="post-related__img-placeholder" />}
                 </div>
                 <div class="post-related__card-body">
-                  {p.category && <span class="post-related__cat">{p.category}</span>}
+                  <p class="post-related__card-date">On {p.date}</p>
                   <h3 class="post-related__card-title">{p.title}</h3>
-                  <p class="post-related__card-date">{p.date} · {p.readTime} read</p>
+                  {p.excerpt && <p class="post-related__card-excerpt">{p.excerpt}</p>}
                 </div>
               </a>
             ))}
@@ -617,94 +616,112 @@ const blogPostingSchema = JSON.stringify({
   .post-cta {
     background: #18232c;
     margin: 0;
-    padding: 3.5rem 2rem;
+    padding: 0 2rem;
   }
   .post-cta__inner {
     max-width: 1100px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr auto auto;
+    grid-template-columns: 1fr auto;
     gap: 2rem;
     align-items: center;
+    min-height: 200px;
+  }
+  .post-cta__text {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    padding: 2.5rem 0;
+  }
+  .post-cta__arrow {
+    font-size: 1.2rem;
+    color: #fff;
+    margin: 0;
+    line-height: 1;
   }
   .post-cta__text h2 {
     font-family: 'Poppins', sans-serif;
-    font-size: clamp(1.1rem, 2.2vw, 1.55rem);
+    font-size: clamp(1rem, 2vw, 1.35rem);
     font-weight: 600;
     color: #fff;
-    line-height: 1.4;
+    line-height: 1.45;
     margin: 0;
-  }
-  .post-cta__accent { color: #2bbcb0; }
-  .post-cta__visual { display: flex; align-items: center; }
-  .post-cta__img {
-    width: 180px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 8px;
-    opacity: 0.85;
+    max-width: 480px;
   }
   .post-cta__btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.75rem 2rem;
+    padding: 0.7rem 2rem;
     background: #2bbcb0;
     color: #fff;
     font-family: 'Poppins', sans-serif;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 600;
     border-radius: 50px;
     text-decoration: none;
-    white-space: nowrap;
+    align-self: flex-start;
     transition: background 0.2s;
   }
   .post-cta__btn:hover { background: #22a89d; }
+  .post-cta__visual {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    align-self: stretch;
+  }
+  .post-cta__img {
+    width: 240px;
+    height: 180px;
+    object-fit: contain;
+    object-position: bottom;
+    display: block;
+  }
 
   /* ═══════════════════════════════
      RELATED POSTS
   ═══════════════════════════════ */
   .post-related {
-    background: #f8f8f8;
-    padding: 3.5rem 2rem 4rem;
+    background: #fff;
+    padding: 3rem 2rem 4rem;
   }
   .post-related__inner {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
   }
   .post-related__title {
     font-family: 'Poppins', sans-serif;
-    font-size: 1.6rem;
-    font-weight: 700;
+    font-size: 1.25rem;
+    font-weight: 600;
     color: #1a1a1a;
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.5rem;
   }
-  .post-related__accent { color: #2bbcb0; }
+  .post-related__accent { color: #2bbcb0; font-weight: 700; }
   .post-related__grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
   }
   .post-related__card {
     background: #fff;
-    border-radius: 10px;
+    border-radius: 8px;
     overflow: hidden;
     text-decoration: none;
     color: inherit;
     display: flex;
     flex-direction: column;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   }
   .post-related__card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
   }
   .post-related__img-wrap {
     width: 100%;
     aspect-ratio: 16/9;
     overflow: hidden;
     background: #e8f8f7;
+    border-radius: 6px;
   }
   .post-related__img-placeholder {
     width: 100%;
@@ -717,38 +734,43 @@ const blogPostingSchema = JSON.stringify({
     object-fit: cover;
     transition: transform 0.3s;
   }
-  .post-related__card:hover .post-related__img { transform: scale(1.04); }
+  .post-related__card:hover .post-related__img { transform: scale(1.03); }
   .post-related__card-body {
-    padding: 1rem 1.1rem 1.25rem;
+    padding: 0.85rem 0.1rem 0.5rem;
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: 0.3rem;
     flex: 1;
   }
-  .post-related__cat {
-    font-size: 0.68rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: #2bbcb0;
+  .post-related__card-date {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #555;
+    margin: 0;
   }
   .post-related__card-title {
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
     color: #1a1a1a;
     line-height: 1.35;
     margin: 0;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  .post-related__card-date {
-    font-size: 0.72rem;
-    color: #999;
-    margin: auto 0 0;
-    padding-top: 0.35rem;
+  .post-related__card-excerpt {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.78rem;
+    color: #555;
+    line-height: 1.55;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   /* ═══════════════════════════════
@@ -771,7 +793,8 @@ const blogPostingSchema = JSON.stringify({
     .post-layout { grid-template-columns: 1fr; padding: 1.5rem 1.25rem 2.5rem; }
     .post-toc { position: static; margin-bottom: 1.5rem; }
     .post-related__grid { grid-template-columns: 1fr; }
-    .post-cta__inner { grid-template-columns: 1fr; text-align: center; }
+    .post-cta__inner { grid-template-columns: 1fr; }
+    .post-cta__visual { display: none; }
     .post-hero__inner { padding: 0 1.25rem; }
     .post-hero { padding: 1.5rem 0 0; }
     .post-author { flex-direction: column; align-items: flex-start; }
@@ -779,7 +802,7 @@ const blogPostingSchema = JSON.stringify({
   }
   @media (max-width: 560px) {
     .post-related__grid { grid-template-columns: 1fr; }
-    .post-cta { padding: 2.5rem 1.25rem; }
+    .post-cta { padding: 0 1.25rem; }
     .post-related { padding: 2.5rem 1.25rem 3rem; }
   }
 </style>
