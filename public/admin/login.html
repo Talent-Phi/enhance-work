@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login — Enhance.work</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f4f8;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+      padding: 2.5rem 2.25rem 2rem;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      justify-content: center;
+    }
+
+    .logo-text {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      letter-spacing: -0.3px;
+    }
+
+    .logo-badge {
+      background: #2bbcb0;
+      color: #fff;
+      border-radius: 6px;
+      padding: 0 6px 1px;
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+
+    h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 0.35rem;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-bottom: 1.75rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.35rem;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.65rem 0.9rem;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 0.93rem;
+      color: #1a1a2e;
+      outline: none;
+      transition: border-color 0.2s;
+      margin-bottom: 1.1rem;
+      background: #fafafa;
+    }
+
+    input:focus {
+      border-color: #2bbcb0;
+      background: #fff;
+    }
+
+    .error-msg {
+      background: #fef2f2;
+      border: 1px solid #fca5a5;
+      border-radius: 8px;
+      color: #dc2626;
+      font-size: 0.83rem;
+      padding: 0.6rem 0.9rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .btn {
+      width: 100%;
+      background: #2bbcb0;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn:hover { background: #22a69b; }
+    .btn:active { transform: scale(0.98); }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.78rem;
+      color: #9ca3af;
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <span class="logo-text">Enhance</span>
+      <span class="logo-badge">.work</span>
+    </div>
+
+    <h1>Blog Admin</h1>
+    <p class="subtitle">Ingresa con tus credenciales para continuar</p>
+
+    <form method="POST" action="/admin/login" autocomplete="on">
+      <label for="email">Correo electrónico</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="tu@email.com"
+        autocomplete="email"
+        required
+        autofocus
+      />
+
+      <label for="password">Contraseña</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="••••••••••"
+        autocomplete="current-password"
+        required
+      />
+
+      <div id="error-msg" class="error-msg" style="display:none">
+        Usuario o contraseña incorrectos. Intenta de nuevo.
+      </div>
+
+      <button type="submit" class="btn">Iniciar sesión</button>
+    </form>
+
+    <p class="footer-note">Acceso restringido · Solo usuarios autorizados</p>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    if (params.get('error')) {
+      document.getElementById('error-msg').style.display = 'block';
+    }
+  </script>
+</body>
+</html>

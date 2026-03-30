@@ -4,12 +4,47 @@ import multer from 'multer';
 import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
 import fs from 'fs';
+import session from 'express-session';
+import bcrypt from 'bcryptjs';
 import { initGoogleSheets, appendApplicationRow, getSpreadsheetUrl } from './googleSheets.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// ── Admin users ──────────────────────────────────────────────
+const ADMIN_USERS = [
+  {
+    name: 'Rafael',
+    email: 'rafael@perfectb.com',
+    hash: '$2b$10$XgMcBdrrOSELOODMy3JM.u7OxqD4LGZFIuYzdXKP.NRylZbJvxy6O',
+  },
+  {
+    name: 'Santiago',
+    email: 'santiago.loaiza@talentphi.com',
+    hash: '$2b$10$JoiPaIotSivlQm3MXg0iT.xw2iLf0fszvzn8.QH9V3XTqNf/.Opu2',
+  },
+];
+
 const app = express();
 app.use(express.json());
+
+// ── Session middleware ────────────────────────────────────────
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'enhance-admin-secret-2026',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    maxAge: 8 * 60 * 60 * 1000, // 8 hours
+    sameSite: 'lax',
+  },
+}));
+
+// ── Auth middleware ───────────────────────────────────────────
+function requireAuth(req, res, next) {
+  if (req.session && req.session.adminUser) return next();
+  if (req.path.startsWith('/api/')) return res.status(401).json({ error: 'Unauthorized' });
+  return res.redirect('/admin/login');
+}
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -396,12 +431,37 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
 });
 
 // ════════════════════════════════════════════════════════════
-//  BLOG ADMIN PANEL
+//  BLOG ADMIN PANEL  (auth-protected)
 // ════════════════════════════════════════════════════════════
 
-// Serve admin panel HTML
-app.get('/admin/blog', (req, res) => {
-  // Try public/admin/blog.html first (works after build), then admin/blog.html (dev)
+// ── Login page ───────────────────────────────────────────────
+app.get('/admin/login', (req, res) => {
+  if (req.session && req.session.adminUser) return res.redirect('/admin/blog');
+  res.sendFile(path.join(__dirname, 'public', 'admin', 'login.html'));
+});
+
+// ── Login POST ───────────────────────────────────────────────
+app.post('/admin/login', express.urlencoded({ extended: false }), async (req, res) => {
+  const { email, password } = req.body;
+  const user = ADMIN_USERS.find(u => u.email.toLowerCase() === (email || '').toLowerCase());
+  if (!user) {
+    return res.redirect('/admin/login?error=1');
+  }
+  const valid = await bcrypt.compare(password || '', user.hash);
+  if (!valid) {
+    return res.redirect('/admin/login?error=1');
+  }
+  req.session.adminUser = { name: user.name, email: user.email };
+  res.redirect('/admin/blog');
+});
+
+// ── Logout ───────────────────────────────────────────────────
+app.get('/admin/logout', (req, res) => {
+  req.session.destroy(() => res.redirect('/admin/login'));
+});
+
+// ── Admin panel (protected) ───────────────────────────────────
+app.get('/admin/blog', requireAuth, (req, res) => {
   const candidates = [
     path.join(__dirname, 'dist', 'client', 'admin', 'blog.html'),
     path.join(__dirname, 'dist', 'admin', 'blog.html'),
@@ -435,6 +495,9 @@ const blogImageUpload = multer({
     cb(null, allowed.includes(path.extname(file.originalname).toLowerCase()));
   }
 });
+
+// Protect ALL /api/blog/admin/* routes
+app.use('/api/blog/admin', requireAuth);
 
 app.post('/api/blog/admin/upload-image', blogImageUpload.single('image'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
