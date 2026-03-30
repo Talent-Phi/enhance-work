@@ -334,10 +334,14 @@ const blogPostingSchema = JSON.stringify({
     background: #e5e7eb;
   }
 
-  /* Author strip */
+  /* Author strip — uses same grid as the hero inner so avatar aligns with title */
   .post-hero__author-strip {
-    padding: 1.25rem 3rem 1.5rem 30%;
     border-top: 1px solid #f0f0f0;
+    display: grid;
+    grid-template-columns: 1fr 48%;
+  }
+  .post-hero__author-strip > .post-author-card {
+    padding: 1.25rem 3rem 1.5rem 30%;
   }
   .post-author-card {
     display: flex;
