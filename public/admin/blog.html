@@ -65,14 +65,16 @@
     .sidebar {
       background: #fff;
       border-right: 1px solid #e5e7eb;
-      padding: 1.25rem;
-      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
     .sidebar__header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 1rem;
+      padding: 1.25rem 1.25rem 0;
     }
     .sidebar__heading {
       font-size: 0.75rem;
@@ -96,7 +98,7 @@
       transition: opacity 0.15s;
     }
     .btn-new:hover { opacity: 0.88; }
-    .post-list { display: flex; flex-direction: column; gap: 2px; }
+    .post-list { display: flex; flex-direction: column; gap: 2px; flex: 1; overflow-y: auto; min-height: 0; padding: 0 1.25rem 0.5rem; }
     .post-item {
       padding: 0.7rem 0.75rem;
       border-radius: 8px;
@@ -141,7 +143,7 @@
     .sidebar__bottom {
       padding: 0.75rem 1rem;
       border-top: 1px solid #e5e7eb;
-      margin-top: auto;
+      flex-shrink: 0;
     }
     .btn-logout {
       width: 100%;
@@ -166,6 +168,7 @@
     .sidebar__search {
       margin-bottom: 0.6rem;
       position: relative;
+      padding: 0 1.25rem;
     }
     .sidebar__search input {
       width: 100%;
@@ -207,6 +210,7 @@
       margin-bottom: 0.75rem;
       display: flex;
       gap: 0.35rem;
+      padding: 0 1.25rem;
     }
     .filter-btn {
       flex: 1;
