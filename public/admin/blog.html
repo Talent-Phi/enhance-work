@@ -761,6 +761,17 @@
 
     function refreshPreview() {
       const pane = document.getElementById('preview-content');
+      const slug  = document.getElementById('f-slug')?.value.trim();
+
+      // If post is saved and has a slug, load the real page
+      if (slug && currentId) {
+        const existing = pane.querySelector('iframe');
+        if (existing && existing.dataset.blobUrl) URL.revokeObjectURL(existing.dataset.blobUrl);
+        pane.innerHTML = `<iframe src="/blog/${encodeURIComponent(slug)}?t=${Date.now()}" style="flex:1;border:none;width:100%;height:100%;" allowfullscreen></iframe>`;
+        return;
+      }
+
+      // Fallback: blob preview for unsaved/new posts
       const title    = document.getElementById('f-title')?.value.trim() || 'Untitled';
       const subtitle = document.getElementById('f-subtitle')?.value.trim() || '';
       const author   = document.getElementById('f-author')?.value.trim() || '';
