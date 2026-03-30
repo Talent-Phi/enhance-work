@@ -91,18 +91,6 @@ const blogPostingSchema = JSON.stringify({
     </div>
 
     <section class="post-hero">
-      <!-- top bar: logo + apply -->
-      <div class="post-hero__topbar">
-        <a href="/" class="post-hero__logo" aria-label="Enhance.work home">
-          <svg height="24" viewBox="0 0 160 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <text x="0" y="24" font-family="Poppins,sans-serif" font-size="22" font-weight="700" fill="#1a1a2e">Enhance.</text>
-            <rect x="108" y="4" width="52" height="24" rx="5" fill="#2bbcb0"/>
-            <text x="111" y="22" font-family="Poppins,sans-serif" font-size="16" font-weight="700" fill="#fff">work</text>
-          </svg>
-        </a>
-        <a href="/candidate/registration" class="post-hero__apply">APPLY</a>
-      </div>
-
       <div class="post-hero__inner">
         <!-- Left: title + subtitle + author -->
         <div class="post-hero__text">
@@ -296,34 +284,12 @@ const blogPostingSchema = JSON.stringify({
     margin: 0;
   }
 
-  /* Top bar: logo + apply */
-  .post-hero__topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 1.75rem;
-    border-bottom: 1px solid #f0f0f0;
-  }
-  .post-hero__logo { display: flex; align-items: center; text-decoration: none; }
-  .post-hero__apply {
-    background: #2bbcb0;
-    color: #fff;
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    padding: 0.4rem 1rem;
-    border-radius: 20px;
-    text-decoration: none;
-    transition: opacity 0.15s;
-  }
-  .post-hero__apply:hover { opacity: 0.85; }
-
   /* 2-col grid: text left, image right */
   .post-hero__inner {
     display: grid;
-    grid-template-columns: 1fr 420px;
+    grid-template-columns: 1fr 480px;
     align-items: stretch;
-    min-height: 260px;
+    min-height: 420px;
   }
   .post-hero__text {
     display: flex;
@@ -355,7 +321,7 @@ const blogPostingSchema = JSON.stringify({
   .post-hero__img {
     width: 100%;
     height: 100%;
-    min-height: 260px;
+    min-height: 420px;
     object-fit: cover;
     object-position: center top;
     display: block;
@@ -364,7 +330,7 @@ const blogPostingSchema = JSON.stringify({
   .post-hero__img-placeholder {
     width: 100%;
     height: 100%;
-    min-height: 260px;
+    min-height: 420px;
     background: #e5e7eb;
   }
 
