@@ -172,25 +172,18 @@
     }
     .sidebar__search input {
       width: 100%;
-      padding: 0.45rem 0.75rem 0.45rem 2rem;
+      padding: 0.45rem 2rem 0.45rem 0.75rem;
       border: 1px solid #e5e7eb;
       border-radius: 6px;
       font-size: 0.82rem;
       color: #374151;
-      background: #f9fafb;
+      background: #f9fafb url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2.5'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat 0.6rem center;
       box-sizing: border-box;
       outline: none;
       transition: border-color 0.15s;
     }
-    .sidebar__search input:focus { border-color: #2bbcb0; background: #fff; }
-    .sidebar__search__icon {
-      position: absolute;
-      left: 0.55rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #9ca3af;
-      pointer-events: none;
-    }
+    .sidebar__search input:focus { border-color: #2bbcb0; background-color: #fff; }
+    .sidebar__search__icon { display: none; }
     .sidebar__search__clear {
       position: absolute;
       right: 0.5rem;
@@ -200,7 +193,7 @@
       border: none;
       cursor: pointer;
       color: #9ca3af;
-      font-size: 0.9rem;
+      font-size: 1rem;
       padding: 0;
       line-height: 1;
       display: none;
@@ -212,21 +205,25 @@
       gap: 0.35rem;
       padding: 0 1.25rem;
     }
-    .filter-btn {
-      flex: 1;
-      padding: 0.3rem 0;
+    .sidebar__filter select {
+      width: 100%;
+      padding: 0.4rem 0.65rem;
       border: 1px solid #e5e7eb;
-      border-radius: 5px;
-      background: #f9fafb;
-      font-size: 0.7rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
       font-weight: 600;
-      color: #6b7280;
+      color: #374151;
+      background: #f9fafb;
       cursor: pointer;
-      transition: all 0.15s;
-      text-align: center;
+      outline: none;
+      box-sizing: border-box;
+      transition: border-color 0.15s;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.6rem center;
     }
-    .filter-btn:hover { border-color: #2bbcb0; color: #2bbcb0; }
-    .filter-btn.active { background: #2bbcb0; border-color: #2bbcb0; color: #fff; }
+    .sidebar__filter select:focus { border-color: #2bbcb0; }
 
     /* ── PREVIEW PANEL ── */
     .preview-panel {
@@ -518,10 +515,12 @@
       </div>
       <!-- Status filter -->
       <div class="sidebar__filter">
-        <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">All</button>
-        <button class="filter-btn" data-filter="published" onclick="setFilter('published')">Published</button>
-        <button class="filter-btn" data-filter="draft" onclick="setFilter('draft')">Draft</button>
-        <button class="filter-btn" data-filter="archived" onclick="setFilter('archived')">Archived</button>
+        <select id="filter-select" onchange="setFilter(this.value)">
+          <option value="all">All statuses</option>
+          <option value="published">Published</option>
+          <option value="draft">Draft</option>
+          <option value="archived">Archived</option>
+        </select>
       </div>
       <div class="post-list" id="post-list">
         <div class="sidebar__empty">Loading posts…</div>
@@ -643,9 +642,8 @@
 
     function setFilter(filter) {
       activeFilter = filter;
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.filter === filter);
-      });
+      const sel = document.getElementById('filter-select');
+      if (sel) sel.value = filter;
       renderPostList();
     }
 
