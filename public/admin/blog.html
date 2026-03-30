@@ -59,6 +59,7 @@
       display: grid;
       grid-template-columns: 280px 1fr;
       min-height: calc(100vh - 52px);
+      align-items: start;
     }
 
     /* ── SIDEBAR ── */
@@ -68,6 +69,9 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      position: sticky;
+      top: 52px;
+      height: calc(100vh - 52px);
     }
     .sidebar__header {
       display: flex;
