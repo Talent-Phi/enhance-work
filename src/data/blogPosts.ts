@@ -23,6 +23,104 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "aesthetic-rn-florida",
+    title: "What Is an Aesthetic RN? Florida Law, Scope of Practice, and How to Make the Move",
+    subtitle: "RNs and APRNs are not the same in Florida aesthetics. Here is what the law actually says, what each role can do, and how to position yourself for the work you want.",
+    date: "March 30, 2026",
+    excerpt: "18,100 people search 'aesthetic RN' every month — and most of what they find online gets the Florida law wrong. Here is what RNs can actually do in a med spa, where the ceiling is, and what it takes to break through it.",
+    category: "Careers",
+    readTime: "10 min",
+    author: "Sofia Reyes, APRN",
+    authorBio: "Sofia spent nearly a decade working in Miami's top medical aesthetic clinics before joining Enhance.work as a career advisor. She writes about licensing, Florida law, salary, and what actually gets you hired.",
+    authorCredential: "Verified Aesthetic Nurse Practitioner · 9 years in South Florida med spas",
+    authorExpertise: ["Florida Aesthetic Law", "RN vs APRN Scope", "Aesthetic Nursing Careers", "South Florida Med Spa Market"],
+    image: "/images/blog/aesthetic-rn-florida-hero.webp",
+    content: `<h2>Key Takeaways</h2>
+<ul>
+  <li><strong>RNs and APRNs face different legal ceilings in Florida:</strong> A registered nurse can work in aesthetics, but Florida law limits who can perform independent aesthetic injections. Knowing this before you job-search saves you months of frustration.</li>
+  <li><strong>Aesthetic RN is a real, well-paid career path:</strong> Roles like laser technician, clinical coordinator, treatment nurse, and patient educator are open to RNs at most South Florida practices. Base salaries run $55,000 to $80,000.</li>
+  <li><strong>APRNs have broader scope:</strong> Nurse practitioners and certified nurse midwives can perform and prescribe aesthetic treatments more independently. That scope difference shows up directly in comp.</li>
+  <li><strong>Aesthetic RN salary in Florida averages $68,000 to $85,000:</strong> Top earners at high-volume practices in Miami pull $95,000+ with commission structures.</li>
+  <li><strong>The path from RN to APRN in aesthetics is well-defined:</strong> Most South Florida practices will hire and train a strong RN candidate, then support or incentivize the NP transition.</li>
+</ul>
+
+<img src="/images/blog/aesthetic-rn-florida-hero.webp" alt="Aesthetic RN at a South Florida med spa" style="width:100%;border-radius:8px;margin:24px 0;" />
+
+<h2>What "Aesthetic RN" Actually Means</h2>
+<p>The term gets used loosely online, and that causes real confusion for nurses trying to plan a career move.</p>
+<p>An aesthetic RN is a registered nurse who works in a medical aesthetics setting — typically a medical spa, plastic surgery office, or dermatology clinic. The role almost always involves direct patient care: consultations, pre- and post-treatment support, laser treatments, skincare services, and sometimes supportive roles in injectable procedures.</p>
+<p>What the role does not include, in most Florida practices, is independent aesthetic injection of neurotoxins or dermal fillers. That distinction is where the Florida law conversation starts.</p>
+
+<h2>Florida Law: What RNs Can and Cannot Do in Aesthetics</h2>
+<p>Florida does not have a single statute that says "RNs cannot inject Botox." The reality is more nuanced, and it depends on how each practice interprets delegated medical acts and the supervising physician's protocol.</p>
+<p>Here is how it typically plays out across South Florida practices:</p>
+<ul>
+  <li><strong>RNs under physician delegation:</strong> In some practice models, RNs perform neurotoxin injections under a physician's direct or indirect supervision, with proper protocols in place. This is legally possible in Florida but carries risk if the delegation structure is not airtight. Most practices avoid it for liability reasons.</li>
+  <li><strong>APRNs with prescriptive authority:</strong> Nurse practitioners and certified registered nurse anesthetists with prescriptive authority can assess, prescribe, and administer aesthetic treatments under a collaborative agreement. This is the cleaner and more commonly accepted pathway for autonomous injectable work.</li>
+  <li><strong>What RNs do freely:</strong> Laser treatments, chemical peels, microneedling (depending on device and depth), IV therapy, skincare consultations, patient education, and supportive roles in procedures supervised by the injecting provider.</li>
+</ul>
+<p>The practical result: if your goal is to be a primary injector at a South Florida med spa, an NP or PA credential removes the structural barriers that an RN-only license creates. If your goal is a strong clinical role in aesthetics with good earning potential, an RN license opens most of the doors you need.</p>
+
+<img src="/images/blog/aesthetic-rn-florida-scope.webp" alt="Aesthetic nurse performing treatment at Miami med spa" style="width:100%;border-radius:8px;margin:24px 0;" />
+
+<h2>Aesthetic RN Salary in Florida</h2>
+<p>DataForSEO puts "aesthetic RN salary" at 5,400 searches per month in the US. CPC of $14.03 tells you this audience converts: people searching that term are actively planning a career move, not just curious.</p>
+<p>What does it actually pay? Based on compensation data from South Florida practices on Enhance.work:</p>
+<ul>
+  <li><strong>Entry-level aesthetic RN (0-2 years experience):</strong> $55,000 to $68,000 base. Typically a clinical coordinator, treatment nurse, or laser tech role at a growing practice.</li>
+  <li><strong>Mid-level aesthetic RN (2-5 years):</strong> $68,000 to $82,000 base. Often includes commission on retail or treatments. Clinical lead or senior treatment nurse titles.</li>
+  <li><strong>Senior aesthetic RN at a high-volume practice:</strong> $82,000 to $95,000+. Sometimes structured as base + production bonus. Practices in Miami, Boca, and Fort Lauderdale pay at the top of this range for nurses with established patient relationships.</li>
+</ul>
+<p>Aesthetic NPs — who carry broader scope and often drive more revenue through injectable volume — typically earn $95,000 to $140,000 base, with total comp above $160,000 at established practices.</p>
+
+<img src="/images/blog/aesthetic-rn-florida-salary.webp" alt="Aesthetic nurse reviewing compensation at med spa" style="width:100%;border-radius:8px;margin:24px 0;" />
+
+<h2>What Roles Are Actually Open to Aesthetic RNs in South Florida</h2>
+<p>Despite the scope limitations on independent injectable work, South Florida practices actively hire RNs for a wide range of clinical roles:</p>
+<ul>
+  <li><strong>Laser technician / laser nurse:</strong> Operates energy-based devices — Soprano Ice, ResurFX, PiQo4. High demand across South Florida. Most practices provide device training on hire.</li>
+  <li><strong>IV therapy nurse:</strong> Administers IV vitamin cocktails, NAD+, hydration drips. No prescriptive authority required. Common in both med spas and concierge wellness clinics.</li>
+  <li><strong>Clinical coordinator:</strong> Manages patient flow, pre- and post-procedure care, coordinates with injecting providers. Often the first aesthetic hire a growing practice makes.</li>
+  <li><strong>Treatment nurse (OxyGeneo, HydraFacial, microneedling):</strong> Performs device-based skin treatments. Revenue-generating role, often includes commission.</li>
+  <li><strong>Aesthetic educator / injector support:</strong> Works directly alongside NP or PA injectors. Some practices use this role as a formal pathway toward independent injection, with plans to support NP licensure.</li>
+</ul>
+
+<h2>How to Make the Move Into Aesthetics as an RN</h2>
+<p>Most nurses making this transition come from hospital, surgical, or outpatient clinical backgrounds. The adjustment is real. Here is what the transition actually requires:</p>
+<p><strong>What carries over:</strong> IV skills, patient assessment, clinical judgment, infection control, documentation habits. These are valued in every aesthetic setting and are usually what separates competent candidates from the rest.</p>
+<p><strong>What you need to build:</strong> Knowledge of aesthetic devices and modalities, comfort with sales-adjacent consultations, familiarity with the treatment menu and product lines the practice uses. Most of this is trainable.</p>
+<p><strong>Certifications that help:</strong> A laser safety certification (CMLSO or equivalent) shows you take device-based treatments seriously and reduces onboarding time. The American Society of Plastic Surgical Nurses (ASPSN) offers resources specific to aesthetic nursing.</p>
+<p><strong>How to present yourself:</strong> Lead with clinical skills and patient care instincts. Practices are not primarily looking for someone with a full aesthetic treatment portfolio. They want a nurse they can trust with patients. The aesthetic-specific skills come with training.</p>
+
+<img src="/images/blog/aesthetic-rn-florida-training.webp" alt="Aesthetic nurse training session at medical clinic" style="width:100%;border-radius:8px;margin:24px 0;" />
+
+<h2>The APRN Path: Is It Worth It?</h2>
+<p>The most common question from RNs already working in aesthetics: should I go back for my NP?</p>
+<p>The honest answer depends on your goals. If you want to be a primary injector with autonomous patient authority, yes — the APRN credential removes the structural barriers and the salary ceiling. The comp difference between an experienced aesthetic RN and an aesthetic NP in Miami is roughly $40,000 to $60,000 annually at full production.</p>
+<p>If you want a strong clinical role in aesthetics without the added academic cost and time, the RN path offers competitive pay and genuine career development, especially at practices that value well-trained treatment nurses and clinical leads.</p>
+<p>Several South Florida practices on Enhance.work explicitly offer NP support — tuition assistance, schedule flexibility, or structured advancement plans — for RNs who join and commit to the practice while pursuing their APRN. That is worth asking about in every interview.</p>
+
+<h2>Common Questions</h2>
+<details>
+  <summary><strong>Can an RN be a nurse injector in Florida?</strong></summary>
+  <p>In some practice models, yes — with proper physician delegation and supervision protocols. In practice, most South Florida medical spas hire APRNs (nurse practitioners) for primary injectable roles because the legal structure is cleaner. RNs are actively hired for a wide range of other clinical aesthetic roles.</p>
+</details>
+<details>
+  <summary><strong>How much does an aesthetic RN make in Florida?</strong></summary>
+  <p>Base salaries range from $55,000 to $95,000 depending on experience, role, and practice volume. Mid-level aesthetic RNs at Miami practices average $68,000 to $82,000, often with production bonuses or retail commission on top.</p>
+</details>
+<details>
+  <summary><strong>How long does it take to become an aesthetic RN?</strong></summary>
+  <p>If you are already an RN, the transition to an aesthetic setting can happen quickly. Most practices hire and train. The credential-building part — laser safety, device training, aesthetic assessment skills — takes 3 to 6 months of hands-on clinical experience.</p>
+</details>
+<details>
+  <summary><strong>Is it better to be an RN or NP in aesthetics?</strong></summary>
+  <p>NPs have broader scope of practice and higher earning potential as primary injectors. RNs access strong clinical roles in laser, IV therapy, and treatment coordination. If independent injectable work is your goal, the NP credential makes the path cleaner in Florida.</p>
+</details>
+
+<p style="margin-top:32px;"><strong>Looking for aesthetic RN or APRN roles in South Florida?</strong> Enhance.work connects qualified candidates directly with medical spas and aesthetic practices hiring in Miami, Boca, Fort Lauderdale, and across the region. <a href="/candidate/registration">Create your free candidate profile here.</a></p>`,
+  },
+  {
     slug: "nurse-injector-jobs-miami",
     title: "Nurse Injector Jobs in Miami: What to Expect and What They Pay",
     subtitle: "A candid look at how Miami med spas hire, what pay structures actually look like, and why most listings don't tell the full story",
