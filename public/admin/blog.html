@@ -645,6 +645,19 @@
         image: {
           toolbar: ['imageStyle:inline', 'imageStyle:block', 'imageStyle:side', '|', 'imageTextAlternative']
         },
+        link: {
+          defaultProtocol: 'https://',
+          decorators: {
+            openInNewTab: {
+              mode: 'manual',
+              label: 'Open in new tab',
+              attributes: {
+                target: '_blank',
+                rel: 'noopener noreferrer'
+              }
+            }
+          }
+        },
       });
       editor.setData(post.content || '');
 
