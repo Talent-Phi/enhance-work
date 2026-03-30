@@ -6,7 +6,7 @@ import node from '@astrojs/node';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://enhance.work',
-  output: 'static',
+  output: 'hybrid',
   adapter: node({ mode: 'middleware' }),
   integrations: [
     sitemap(),
