@@ -74,22 +74,24 @@ const rest = posts.slice(1);
             ))}
           </div>
 
-          <!-- Featured post: large image + text -->
+          <!-- Featured post: vertical layout (title → image → text → cta) -->
           {featured && (
             <div class="blog-featured-section">
-              <a href={`/blog/${featured.slug}`} class="blog-featured">
+              <h2 class="blog-featured__title">{featured.title}</h2>
+              <a href={`/blog/${featured.slug}`} class="blog-featured__img-link">
                 <div class="blog-featured__img-wrap">
                   {featured.image
                     ? <img src={featured.image} alt={featured.title} class="blog-featured__img" loading="eager" />
                     : <div class="blog-featured__img-placeholder" />}
                 </div>
-                <div class="blog-featured__body">
-                  <h2 class="blog-featured__title">{featured.title}</h2>
-                  <p class="blog-featured__location">South Florida.</p>
-                  <p class="blog-featured__excerpt">{featured.excerpt}</p>
+              </a>
+              <div class="blog-featured__body">
+                <p class="blog-featured__location">South Florida.</p>
+                <p class="blog-featured__excerpt">{featured.excerpt}</p>
+                <div class="blog-featured__cta-wrap">
                   <a href={`/blog/${featured.slug}`} class="btn-primary blog-featured__cta">Join for free</a>
                 </div>
-              </a>
+              </div>
             </div>
           )}
 
@@ -253,24 +255,30 @@ const rest = posts.slice(1);
     overflow: hidden;
   }
 
-  /* ── Featured (A growing demand...) ── */
+  /* ── Featured (vertical: title → image → text → cta) ── */
   .blog-featured-section {
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
   }
-  .blog-featured {
-    display: grid;
-    grid-template-columns: 1.1fr 1fr;
-    gap: 2rem;
+  .blog-featured__title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1.25;
+    margin: 0 0 1.25rem;
+  }
+  .blog-featured__img-link {
+    display: block;
     text-decoration: none;
-    color: inherit;
-    align-items: start;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
   }
   .blog-featured__img-wrap {
     width: 100%;
-    aspect-ratio: 4/3;
+    aspect-ratio: 16/7;
     overflow: hidden;
     background: #e8f8f7;
-    border-radius: 6px;
   }
   .blog-featured__img-placeholder {
     width: 100%;
@@ -281,50 +289,46 @@ const rest = posts.slice(1);
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.3s ease;
   }
+  .blog-featured__img-link:hover .blog-featured__img { transform: scale(1.02); }
   .blog-featured__body {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    padding-top: 0.5rem;
-  }
-  .blog-featured__title {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: #404040;
-    line-height: 1.2;
-    margin: 0;
   }
   .blog-featured__location {
     font-family: 'Montserrat', sans-serif;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 700;
-    color: #3d3d3d;
+    color: #1a1a1a;
     margin: 0;
   }
   .blog-featured__excerpt {
     font-family: 'Montserrat', sans-serif;
     font-size: 0.9rem;
     color: #3d3d3d;
-    line-height: 1.7;
+    line-height: 1.75;
     margin: 0;
+  }
+  .blog-featured__cta-wrap {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
   }
   .blog-featured__cta {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.7rem 2rem;
+    padding: 0.65rem 2rem;
     border-radius: 53px;
     background: #2bbcb0;
     color: #fff;
     font-family: 'Poppins', sans-serif;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
     text-decoration: none;
-    align-self: flex-start;
     transition: opacity 0.2s;
-    margin-top: 0.5rem;
   }
   .blog-featured__cta:hover { opacity: 0.88; }
 
@@ -341,7 +345,7 @@ const rest = posts.slice(1);
   @media (max-width: 900px) {
     .blog-grid--latest,
     .blog-grid--all { grid-template-columns: repeat(2, 1fr); }
-    .blog-featured { grid-template-columns: 1fr; }
+
   }
   @media (max-width: 560px) {
     .blog-main { padding: 2rem 1.25rem 4rem; }
