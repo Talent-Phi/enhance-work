@@ -290,13 +290,10 @@ const blogPostingSchema = JSON.stringify({
   /* ── HERO CARD ── */
   .post-hero {
     background: #fff;
-    max-width: 1100px;
-    margin: 0 auto;
-    border-radius: 12px;
+    width: 100%;
     overflow: hidden;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
-    margin-top: 1rem;
-    margin-bottom: 0;
+    border-bottom: 1px solid #f0f0f0;
+    margin: 0;
   }
 
   /* Top bar: logo + apply */
@@ -772,7 +769,7 @@ const blogPostingSchema = JSON.stringify({
      RESPONSIVE
   ═══════════════════════════════ */
   @media (max-width: 1120px) {
-    .post-hero { margin: 0.75rem 1rem; }
+    .post-hero { margin: 0; border-radius: 0; }
   }
   @media (max-width: 1024px) {
     .post-hero__inner { grid-template-columns: 1fr; }
@@ -783,7 +780,7 @@ const blogPostingSchema = JSON.stringify({
     .post-cta__visual { display: none; }
   }
   @media (max-width: 768px) {
-    .post-hero { margin: 0.5rem; border-radius: 8px; }
+    .post-hero { margin: 0; border-radius: 0; }
     .post-hero__text { padding: 1.5rem 1.25rem; }
     .post-hero__author-strip { padding: 1rem 1.25rem 1.25rem; }
     .post-author-card__avatar { width: 44px; height: 44px; min-width: 44px; font-size: 0.9rem; }
