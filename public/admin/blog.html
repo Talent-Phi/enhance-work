@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog Admin — Enhance.work</title>
+
+  <!-- CKEditor 5 (Classic Editor via CDN) -->
+  <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f4f8;
+      color: #1a1a2e;
+      min-height: 100vh;
+    }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      background: #1a1a2e;
+      color: #fff;
+      padding: 0 1.5rem;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .topbar__logo {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #2bbcb0;
+      letter-spacing: -0.02em;
+    }
+    .topbar__sep { color: #444; font-size: 1.1rem; }
+    .topbar__title { font-size: 0.9rem; color: #ccc; }
+    .topbar__nav { margin-left: auto; display: flex; gap: 0.5rem; }
+    .topbar__nav a {
+      color: #aaa;
+      text-decoration: none;
+      font-size: 0.82rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 4px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .topbar__nav a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+
+    /* ── LAYOUT ── */
+    .layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: calc(100vh - 52px);
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      background: #fff;
+      border-right: 1px solid #e5e7eb;
+      padding: 1.25rem;
+      overflow-y: auto;
+    }
+    .sidebar__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    .sidebar__heading {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #9ca3af;
+    }
+    .btn-new {
+      background: #2bbcb0;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.35rem 0.85rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: opacity 0.15s;
+    }
+    .btn-new:hover { opacity: 0.88; }
+    .post-list { display: flex; flex-direction: column; gap: 2px; }
+    .post-item {
+      padding: 0.7rem 0.75rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+      border: 2px solid transparent;
+    }
+    .post-item:hover { background: #f3f4f6; }
+    .post-item.active { background: #edfcfb; border-color: #2bbcb0; }
+    .post-item__title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #111827;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .post-item__meta {
+      font-size: 0.72rem;
+      color: #9ca3af;
+      margin-top: 0.2rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 0.1rem 0.45rem;
+      border-radius: 20px;
+      font-size: 0.65rem;
+      font-weight: 700;
+    }
+    .status-badge.published { background: #dcfce7; color: #16a34a; }
+    .status-badge.draft { background: #fef9c3; color: #ca8a04; }
+    .sidebar__empty {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: #9ca3af;
+      font-size: 0.85rem;
+    }
+
+    /* ── MAIN EDITOR ── */
+    .editor-area {
+      padding: 1.5rem 2rem;
+      overflow-y: auto;
+    }
+    .editor-area--empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+    }
+    .editor-placeholder {
+      text-align: center;
+      color: #9ca3af;
+    }
+    .editor-placeholder svg { margin: 0 auto 1rem; display: block; }
+    .editor-placeholder h3 { font-size: 1.1rem; color: #374151; margin-bottom: 0.4rem; }
+    .editor-placeholder p { font-size: 0.85rem; }
+
+    /* Form layout */
+    .form-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .form-header__title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #111827;
+    }
+    .form-actions { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+    .btn {
+      padding: 0.5rem 1.1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.15s, background 0.15s;
+    }
+    .btn:hover { opacity: 0.88; }
+    .btn-primary { background: #2bbcb0; color: #fff; }
+    .btn-secondary { background: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; }
+    .btn-danger { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; }
+
+    /* Form sections */
+    .form-section {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.25rem;
+      border: 1px solid #e5e7eb;
+    }
+    .form-section__title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #9ca3af;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .form-section__title svg { color: #2bbcb0; }
+
+    .form-row { display: grid; gap: 1rem; margin-bottom: 1rem; }
+    .form-row.cols-2 { grid-template-columns: 1fr 1fr; }
+    .form-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .form-group { display: flex; flex-direction: column; gap: 0.3rem; }
+    .form-group label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #374151;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 0.5rem 0.75rem;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      color: #111827;
+      background: #fff;
+      transition: border-color 0.15s;
+      font-family: inherit;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #2bbcb0;
+    }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .char-count {
+      font-size: 0.7rem;
+      color: #9ca3af;
+      text-align: right;
+    }
+    .char-count.warn { color: #f59e0b; }
+    .char-count.over { color: #dc2626; }
+
+    /* SEO preview */
+    .seo-preview {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-top: 0.75rem;
+    }
+    .seo-preview__url { font-size: 0.75rem; color: #16a34a; margin-bottom: 0.2rem; }
+    .seo-preview__title { font-size: 1rem; color: #1a0dab; font-weight: 400; }
+    .seo-preview__desc { font-size: 0.82rem; color: #545454; line-height: 1.4; }
+
+    /* CKEditor container */
+    .ck-editor-wrap .ck-editor__editable {
+      min-height: 450px;
+      font-size: 0.95rem;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: #1a1a2e;
+      color: #fff;
+      padding: 0.7rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.25s, transform 0.25s;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.success { border-left: 3px solid #2bbcb0; }
+    .toast.error { border-left: 3px solid #dc2626; }
+
+    /* Slug preview */
+    .slug-preview {
+      font-size: 0.72rem;
+      color: #9ca3af;
+      margin-top: 0.2rem;
+    }
+    .slug-preview span { color: #2bbcb0; font-weight: 600; }
+
+    /* Image upload */
+    .image-upload-area {
+      border: 2px dashed #e5e7eb;
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .image-upload-area:hover { border-color: #2bbcb0; background: #f0fffe; }
+    .image-upload-area img { max-height: 120px; border-radius: 6px; margin: 0 auto 0.5rem; display: block; }
+    .image-upload-area p { font-size: 0.8rem; color: #9ca3af; }
+    .image-upload-area input[type=file] { display: none; }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { border-right: none; border-bottom: 1px solid #e5e7eb; max-height: 250px; }
+      .form-row.cols-2,
+      .form-row.cols-3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <span class="topbar__logo">enhance.work</span>
+    <span class="topbar__sep">/</span>
+    <span class="topbar__title">Blog Admin</span>
+    <nav class="topbar__nav">
+      <a href="/blog" target="_blank">↗ View Blog</a>
+      <a href="/">← Back to site</a>
+    </nav>
+  </div>
+
+  <!-- LAYOUT -->
+  <div class="layout">
+
+    <!-- SIDEBAR: post list -->
+    <aside class="sidebar">
+      <div class="sidebar__header">
+        <span class="sidebar__heading">Posts</span>
+        <button class="btn-new" onclick="newPost()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          New Post
+        </button>
+      </div>
+      <div class="post-list" id="post-list">
+        <div class="sidebar__empty">Loading posts…</div>
+      </div>
+    </aside>
+
+    <!-- MAIN: editor -->
+    <main class="editor-area editor-area--empty" id="editor-area">
+      <div class="editor-placeholder">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        <h3>Select a post to edit</h3>
+        <p>Or click "New Post" to create one</p>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    let editor = null;
+    let currentId = null;
+    let allPosts = [];
+
+    // ── API helpers ──────────────────────────────────────────
+    async function apiFetch(url, opts = {}) {
+      const res = await fetch(url, {
+        headers: { 'Content-Type': 'application/json', ...opts.headers },
+        ...opts,
+      });
+      if (!res.ok) throw new Error(await res.text());
+      return res.json();
+    }
+
+    // ── Toast ────────────────────────────────────────────────
+    function toast(msg, type = 'success') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = `toast show ${type}`;
+      setTimeout(() => t.className = 'toast', 3000);
+    }
+
+    // ── Load post list ───────────────────────────────────────
+    async function loadPosts() {
+      try {
+        allPosts = await apiFetch('/api/blog/admin/posts');
+        renderPostList();
+      } catch (e) {
+        document.getElementById('post-list').innerHTML =
+          '<div class="sidebar__empty">Error loading posts</div>';
+      }
+    }
+
+    function renderPostList() {
+      const list = document.getElementById('post-list');
+      if (!allPosts.length) {
+        list.innerHTML = '<div class="sidebar__empty">No posts yet. Create one!</div>';
+        return;
+      }
+      list.innerHTML = allPosts.map(p => `
+        <div class="post-item ${p.id === currentId ? 'active' : ''}" onclick="loadPost(${p.id})">
+          <div class="post-item__title">${escHtml(p.title)}</div>
+          <div class="post-item__meta">
+            <span class="status-badge ${p.status}">${p.status}</span>
+            <span>${p.date || ''}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function escHtml(s) {
+      return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // ── New post ─────────────────────────────────────────────
+    function newPost() {
+      currentId = null;
+      renderEditor({
+        title: '', slug: '', subtitle: '', date: new Date().toLocaleDateString('en-US', {month:'long',day:'numeric',year:'numeric'}),
+        excerpt: '', category: '', read_time: '', author: 'Sofia Reyes, APRN',
+        author_bio: '', author_credential: '', author_expertise: [],
+        image: '', content: '', status: 'draft',
+        seo_title: '', seo_description: '', seo_og_image: '', canonical_url: '', focus_keyword: '',
+        sort_order: 0
+      });
+    }
+
+    // ── Load post by ID ──────────────────────────────────────
+    async function loadPost(id) {
+      try {
+        const post = await apiFetch(`/api/blog/admin/posts/${id}`);
+        currentId = id;
+        renderPostList();
+        renderEditor(post);
+      } catch (e) {
+        toast('Failed to load post', 'error');
+      }
+    }
+
+    // ── Render editor form ───────────────────────────────────
+    async function renderEditor(post) {
+      const area = document.getElementById('editor-area');
+      area.className = 'editor-area';
+
+      const expertise = Array.isArray(post.author_expertise)
+        ? post.author_expertise.join(', ')
+        : (post.author_expertise || '');
+
+      area.innerHTML = `
+        <div class="form-header">
+          <div class="form-header__title">${currentId ? 'Edit Post' : 'New Post'}</div>
+          <div class="form-actions">
+            <button class="btn btn-secondary" onclick="previewPost()">Preview ↗</button>
+            <button class="btn btn-secondary" onclick="saveDraft()">Save Draft</button>
+            <button class="btn btn-primary" onclick="publishPost()">Publish</button>
+            ${currentId ? `<button class="btn btn-danger" onclick="deletePost()">Delete</button>` : ''}
+          </div>
+        </div>
+
+        <!-- MAIN FIELDS -->
+        <div class="form-section">
+          <div class="form-section__title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Post Details
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Title *</label>
+              <input type="text" id="f-title" value="${escHtml(post.title)}" placeholder="Post title…" oninput="onTitleChange(this.value)" />
+            </div>
+          </div>
+          <div class="form-row cols-2">
+            <div class="form-group">
+              <label>Slug (URL) *</label>
+              <input type="text" id="f-slug" value="${escHtml(post.slug)}" placeholder="my-post-url" />
+              <div class="slug-preview">enhance.work/blog/<span id="slug-preview">${escHtml(post.slug)}</span></div>
+            </div>
+            <div class="form-group">
+              <label>Status</label>
+              <select id="f-status">
+                <option value="draft" ${post.status === 'draft' ? 'selected' : ''}>Draft</option>
+                <option value="published" ${post.status === 'published' ? 'selected' : ''}>Published</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row cols-3">
+            <div class="form-group">
+              <label>Date</label>
+              <input type="text" id="f-date" value="${escHtml(post.date)}" placeholder="March 30, 2026" />
+            </div>
+            <div class="form-group">
+              <label>Category</label>
+              <input type="text" id="f-category" value="${escHtml(post.category || '')}" placeholder="Careers" />
+            </div>
+            <div class="form-group">
+              <label>Read time</label>
+              <input type="text" id="f-read-time" value="${escHtml(post.read_time || '')}" placeholder="10 min" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Subtitle / Tagline</label>
+              <input type="text" id="f-subtitle" value="${escHtml(post.subtitle || '')}" placeholder="Optional subtitle shown on post page" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Excerpt (used in listings &amp; meta description fallback)</label>
+              <textarea id="f-excerpt" rows="3" placeholder="Short summary for listings and SEO…">${escHtml(post.excerpt || '')}</textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- AUTHOR -->
+        <div class="form-section">
+          <div class="form-section__title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Author
+          </div>
+          <div class="form-row cols-2">
+            <div class="form-group">
+              <label>Author name</label>
+              <input type="text" id="f-author" value="${escHtml(post.author || '')}" placeholder="Sofia Reyes, APRN" />
+            </div>
+            <div class="form-group">
+              <label>Credential line</label>
+              <input type="text" id="f-author-cred" value="${escHtml(post.author_credential || '')}" placeholder="Verified Aesthetic NP · 9 years" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Author bio</label>
+              <textarea id="f-author-bio" rows="2">${escHtml(post.author_bio || '')}</textarea>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Expertise tags (comma-separated)</label>
+              <input type="text" id="f-expertise" value="${escHtml(expertise)}" placeholder="Florida Aesthetic Law, RN vs APRN Scope" />
+            </div>
+          </div>
+        </div>
+
+        <!-- FEATURED IMAGE -->
+        <div class="form-section">
+          <div class="form-section__title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            Featured Image
+          </div>
+          <div class="form-row cols-2">
+            <div class="form-group">
+              <label>Image URL or path</label>
+              <input type="text" id="f-image" value="${escHtml(post.image || '')}" placeholder="/images/blog/my-post-hero.webp" oninput="updateImgPreview(this.value)" />
+            </div>
+            <div style="display:flex;align-items:center;">
+              <div class="image-upload-area" id="img-drop-area" onclick="document.getElementById('img-file-input').click()" style="width:100%">
+                ${post.image ? `<img src="${escHtml(post.image)}" id="img-preview" />` : '<p>Click or drag to upload image</p>'}
+                <input type="file" id="img-file-input" accept="image/*" onchange="uploadImage(this)" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEO -->
+        <div class="form-section">
+          <div class="form-section__title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            SEO Settings
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Focus keyword</label>
+              <input type="text" id="f-focus-kw" value="${escHtml(post.focus_keyword || '')}" placeholder="aesthetic rn florida" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>SEO Title <small style="color:#9ca3af;font-weight:400">(50-60 chars ideal)</small></label>
+              <input type="text" id="f-seo-title" value="${escHtml(post.seo_title || '')}" placeholder="Leave blank to use post title" oninput="updateSeoPreview()" maxlength="90" />
+              <div class="char-count" id="seo-title-count">0 / 60</div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Meta Description <small style="color:#9ca3af;font-weight:400">(120-160 chars ideal)</small></label>
+              <textarea id="f-seo-desc" rows="3" placeholder="Leave blank to use excerpt" oninput="updateSeoPreview()" maxlength="300">${escHtml(post.seo_description || '')}</textarea>
+              <div class="char-count" id="seo-desc-count">0 / 160</div>
+            </div>
+          </div>
+          <div class="form-row cols-2">
+            <div class="form-group">
+              <label>OG Image URL (social share)</label>
+              <input type="text" id="f-og-image" value="${escHtml(post.seo_og_image || '')}" placeholder="Leave blank to use featured image" />
+            </div>
+            <div class="form-group">
+              <label>Canonical URL</label>
+              <input type="text" id="f-canonical" value="${escHtml(post.canonical_url || '')}" placeholder="Leave blank for default" />
+            </div>
+          </div>
+          <!-- SEO Preview -->
+          <div class="seo-preview" id="seo-preview-box">
+            <div class="seo-preview__url">https://enhance.work/blog/<span id="sp-slug">${escHtml(post.slug)}</span></div>
+            <div class="seo-preview__title" id="sp-title">${escHtml(post.seo_title || post.title || '—')}</div>
+            <div class="seo-preview__desc" id="sp-desc">${escHtml(post.seo_description || post.excerpt || '—')}</div>
+          </div>
+        </div>
+
+        <!-- CONTENT EDITOR -->
+        <div class="form-section">
+          <div class="form-section__title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+            Content (HTML Editor)
+          </div>
+          <div class="ck-editor-wrap">
+            <div id="ck-editor"></div>
+          </div>
+        </div>
+
+        <!-- SORT ORDER -->
+        <div class="form-section">
+          <div class="form-section__title">Advanced</div>
+          <div class="form-row cols-2">
+            <div class="form-group">
+              <label>Sort order <small style="color:#9ca3af;font-weight:400">(lower = appears first)</small></label>
+              <input type="number" id="f-sort-order" value="${post.sort_order ?? 0}" min="0" />
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Init CKEditor
+      if (editor) { await editor.destroy(); editor = null; }
+      editor = await ClassicEditor.create(document.getElementById('ck-editor'), {
+        toolbar: {
+          items: [
+            'heading', '|',
+            'bold', 'italic', 'underline', 'strikethrough', '|',
+            'link', '|',
+            'bulletedList', 'numberedList', '|',
+            'blockQuote', 'horizontalLine', '|',
+            'insertTable', '|',
+            'imageInsert', 'mediaEmbed', '|',
+            'sourceEditing', '|',
+            'undo', 'redo'
+          ]
+        },
+        image: {
+          toolbar: ['imageStyle:inline', 'imageStyle:block', 'imageStyle:side', '|', 'imageTextAlternative']
+        },
+      });
+      editor.setData(post.content || '');
+
+      // Update SEO preview & counters
+      updateSeoPreview();
+      document.getElementById('f-slug').addEventListener('input', e => {
+        document.getElementById('slug-preview').textContent = e.target.value;
+        document.getElementById('sp-slug').textContent = e.target.value;
+      });
+    }
+
+    // ── Title → auto-slug ────────────────────────────────────
+    function onTitleChange(val) {
+      const slugEl = document.getElementById('f-slug');
+      if (!currentId && slugEl) {
+        const slug = val.toLowerCase().replace(/[^a-z0-9\s-]/g,'').trim().replace(/\s+/g,'-').replace(/-+/g,'-');
+        slugEl.value = slug;
+        const sp = document.getElementById('slug-preview');
+        if (sp) sp.textContent = slug;
+        updateSeoPreview();
+      }
+      const stEl = document.getElementById('f-seo-title');
+      if (stEl && !stEl.value) updateSeoPreview();
+    }
+
+    // ── SEO preview updater ──────────────────────────────────
+    function updateSeoPreview() {
+      const title = document.getElementById('f-seo-title')?.value.trim() || document.getElementById('f-title')?.value.trim() || '';
+      const desc  = document.getElementById('f-seo-desc')?.value.trim() || document.getElementById('f-excerpt')?.value.trim() || '';
+      const slug  = document.getElementById('f-slug')?.value.trim() || '';
+
+      const spTitle = document.getElementById('sp-title');
+      const spDesc  = document.getElementById('sp-desc');
+      const spSlug  = document.getElementById('sp-slug');
+      if (spTitle) spTitle.textContent = title || '—';
+      if (spDesc)  spDesc.textContent  = desc || '—';
+      if (spSlug)  spSlug.textContent  = slug;
+
+      // Char counters
+      const tc = document.getElementById('seo-title-count');
+      const dc = document.getElementById('seo-desc-count');
+      if (tc) {
+        const len = document.getElementById('f-seo-title')?.value.length || 0;
+        tc.textContent = `${len} / 60`;
+        tc.className = `char-count ${len > 70 ? 'over' : len > 55 ? 'warn' : ''}`;
+      }
+      if (dc) {
+        const len = document.getElementById('f-seo-desc')?.value.length || 0;
+        dc.textContent = `${len} / 160`;
+        dc.className = `char-count ${len > 180 ? 'over' : len > 155 ? 'warn' : ''}`;
+      }
+    }
+
+    // ── Image preview updater ────────────────────────────────
+    function updateImgPreview(url) {
+      const wrap = document.getElementById('img-drop-area');
+      if (!wrap) return;
+      let img = wrap.querySelector('img');
+      if (!img) {
+        img = document.createElement('img');
+        img.id = 'img-preview';
+        wrap.prepend(img);
+      }
+      img.src = url;
+    }
+
+    // ── Image upload ─────────────────────────────────────────
+    async function uploadImage(input) {
+      if (!input.files[0]) return;
+      const fd = new FormData();
+      fd.append('image', input.files[0]);
+      try {
+        const res = await fetch('/api/blog/admin/upload-image', { method: 'POST', body: fd });
+        const data = await res.json();
+        if (data.url) {
+          document.getElementById('f-image').value = data.url;
+          updateImgPreview(data.url);
+          toast('Image uploaded ✓');
+        }
+      } catch {
+        toast('Image upload failed', 'error');
+      }
+    }
+
+    // ── Collect form data ────────────────────────────────────
+    function collectFormData(status) {
+      const expertise = (document.getElementById('f-expertise')?.value || '')
+        .split(',').map(s => s.trim()).filter(Boolean);
+      return {
+        title:             document.getElementById('f-title').value.trim(),
+        slug:              document.getElementById('f-slug').value.trim(),
+        subtitle:          document.getElementById('f-subtitle')?.value.trim() || '',
+        date:              document.getElementById('f-date')?.value.trim() || '',
+        excerpt:           document.getElementById('f-excerpt')?.value.trim() || '',
+        category:          document.getElementById('f-category')?.value.trim() || '',
+        read_time:         document.getElementById('f-read-time')?.value.trim() || '',
+        author:            document.getElementById('f-author')?.value.trim() || '',
+        author_bio:        document.getElementById('f-author-bio')?.value.trim() || '',
+        author_credential: document.getElementById('f-author-cred')?.value.trim() || '',
+        author_expertise:  expertise,
+        image:             document.getElementById('f-image')?.value.trim() || '',
+        content:           editor ? editor.getData() : '',
+        status:            status || document.getElementById('f-status')?.value || 'draft',
+        seo_title:         document.getElementById('f-seo-title')?.value.trim() || '',
+        seo_description:   document.getElementById('f-seo-desc')?.value.trim() || '',
+        seo_og_image:      document.getElementById('f-og-image')?.value.trim() || '',
+        canonical_url:     document.getElementById('f-canonical')?.value.trim() || '',
+        focus_keyword:     document.getElementById('f-focus-kw')?.value.trim() || '',
+        sort_order:        parseInt(document.getElementById('f-sort-order')?.value || '0', 10),
+      };
+    }
+
+    // ── Save (draft) ─────────────────────────────────────────
+    async function saveDraft() {
+      await savePost('draft');
+    }
+
+    // ── Publish ──────────────────────────────────────────────
+    async function publishPost() {
+      await savePost('published');
+    }
+
+    async function savePost(status) {
+      const data = collectFormData(status);
+      if (!data.title) { toast('Title is required', 'error'); return; }
+      if (!data.slug)  { toast('Slug is required', 'error');  return; }
+      try {
+        if (currentId) {
+          await apiFetch(`/api/blog/admin/posts/${currentId}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+          });
+          toast(`Post ${status === 'published' ? 'published' : 'saved'} ✓`);
+        } else {
+          const created = await apiFetch('/api/blog/admin/posts', {
+            method: 'POST',
+            body: JSON.stringify(data),
+          });
+          currentId = created.id;
+          toast('Post created ✓');
+        }
+        await loadPosts();
+        renderPostList();
+        // update status select
+        const statusEl = document.getElementById('f-status');
+        if (statusEl) statusEl.value = status;
+      } catch (e) {
+        toast('Save failed: ' + e.message, 'error');
+      }
+    }
+
+    // ── Delete ───────────────────────────────────────────────
+    async function deletePost() {
+      if (!currentId) return;
+      if (!confirm('Delete this post? This cannot be undone.')) return;
+      try {
+        await apiFetch(`/api/blog/admin/posts/${currentId}`, { method: 'DELETE' });
+        currentId = null;
+        toast('Post deleted');
+        await loadPosts();
+        document.getElementById('editor-area').className = 'editor-area editor-area--empty';
+        document.getElementById('editor-area').innerHTML = `
+          <div class="editor-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            <h3>Post deleted</h3><p>Create a new post or select another</p>
+          </div>`;
+      } catch (e) {
+        toast('Delete failed: ' + e.message, 'error');
+      }
+    }
+
+    // ── Preview ──────────────────────────────────────────────
+    function previewPost() {
+      const slug = document.getElementById('f-slug')?.value;
+      if (slug) window.open(`/blog/${slug}`, '_blank');
+    }
+
+    // ── Init ─────────────────────────────────────────────────
+    loadPosts();
+  </script>
+</body>
+</html>
