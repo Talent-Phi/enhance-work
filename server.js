@@ -2,7 +2,7 @@ import express from 'express';
 import pg from 'pg';
 import multer from 'multer';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 import fs from 'fs';
 import { initGoogleSheets, appendApplicationRow, getSpreadsheetUrl } from './googleSheets.js';
 
@@ -84,6 +84,37 @@ async function initDatabase() {
       created_at TIMESTAMP DEFAULT NOW()
     )
   `);
+
+  // ── Blog posts table ────────────────────────────────────────
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS blog_posts (
+      id                SERIAL PRIMARY KEY,
+      slug              VARCHAR(255) UNIQUE NOT NULL,
+      title             TEXT NOT NULL,
+      subtitle          TEXT DEFAULT '',
+      date              VARCHAR(100) DEFAULT '',
+      excerpt           TEXT DEFAULT '',
+      category          VARCHAR(100) DEFAULT '',
+      read_time         VARCHAR(50) DEFAULT '',
+      author            VARCHAR(200) DEFAULT '',
+      author_bio        TEXT DEFAULT '',
+      author_credential VARCHAR(255) DEFAULT '',
+      author_expertise  TEXT[] DEFAULT '{}',
+      image             TEXT DEFAULT '',
+      content           TEXT DEFAULT '',
+      status            VARCHAR(20) DEFAULT 'draft',
+      sort_order        INTEGER DEFAULT 0,
+      seo_title         TEXT DEFAULT '',
+      seo_description   TEXT DEFAULT '',
+      seo_og_image      TEXT DEFAULT '',
+      canonical_url     TEXT DEFAULT '',
+      focus_keyword     VARCHAR(255) DEFAULT '',
+      published_at      TIMESTAMP,
+      created_at        TIMESTAMP DEFAULT NOW(),
+      updated_at        TIMESTAMP DEFAULT NOW()
+    )
+  `);
+
   console.log('Database initialized');
 }
 
@@ -364,6 +395,201 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
   }
 });
 
+// ════════════════════════════════════════════════════════════
+//  BLOG ADMIN PANEL
+// ════════════════════════════════════════════════════════════
+
+// Serve admin panel HTML
+app.get('/admin/blog', (req, res) => {
+  const adminFile = path.join(__dirname, 'admin', 'blog.html');
+  if (fs.existsSync(adminFile)) {
+    res.sendFile(adminFile);
+  } else {
+    res.status(404).send('Admin panel not found');
+  }
+});
+
+// Image upload for blog (reuse multer, save to public/images/blog/)
+const blogImageUpload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      const dir = path.join(__dirname, 'public', 'images', 'blog');
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      cb(null, dir);
+    },
+    filename: (req, file, cb) => {
+      const ext = path.extname(file.originalname).toLowerCase();
+      const name = path.basename(file.originalname, ext)
+        .toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').slice(0, 60);
+      cb(null, `${name}-${Date.now()}${ext}`);
+    }
+  }),
+  limits: { fileSize: 10 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const allowed = ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.avif'];
+    cb(null, allowed.includes(path.extname(file.originalname).toLowerCase()));
+  }
+});
+
+app.post('/api/blog/admin/upload-image', blogImageUpload.single('image'), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+  res.json({ url: `/images/blog/${req.file.filename}` });
+});
+
+// ── Blog CRUD API ────────────────────────────────────────────
+
+// GET all posts (admin — includes drafts)
+app.get('/api/blog/admin/posts', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT id, slug, title, status, date, sort_order, published_at, updated_at
+      FROM blog_posts
+      ORDER BY sort_order ASC, published_at DESC NULLS LAST, created_at DESC
+    `);
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Blog admin GET list:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET single post (admin)
+app.get('/api/blog/admin/posts/:id', async (req, res) => {
+  try {
+    const result = await pool.query(`SELECT * FROM blog_posts WHERE id = $1`, [req.params.id]);
+    if (!result.rows[0]) return res.status(404).json({ error: 'Not found' });
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST create
+app.post('/api/blog/admin/posts', async (req, res) => {
+  try {
+    const {
+      slug, title, subtitle, date, excerpt, category, read_time,
+      author, author_bio, author_credential, author_expertise,
+      image, content, status, sort_order,
+      seo_title, seo_description, seo_og_image, canonical_url, focus_keyword
+    } = req.body;
+
+    const published_at = status === 'published' ? new Date() : null;
+
+    const result = await pool.query(`
+      INSERT INTO blog_posts (
+        slug, title, subtitle, date, excerpt, category, read_time,
+        author, author_bio, author_credential, author_expertise,
+        image, content, status, sort_order,
+        seo_title, seo_description, seo_og_image, canonical_url, focus_keyword,
+        published_at
+      ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21)
+      RETURNING id, slug, title, status
+    `, [
+      slug, title, subtitle||'', date||'', excerpt||'', category||'', read_time||'',
+      author||'', author_bio||'', author_credential||'',
+      author_expertise || [],
+      image||'', content||'', status||'draft', sort_order||0,
+      seo_title||'', seo_description||'', seo_og_image||'', canonical_url||'', focus_keyword||'',
+      published_at
+    ]);
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error('Blog POST:', err);
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// PUT update
+app.put('/api/blog/admin/posts/:id', async (req, res) => {
+  try {
+    const {
+      slug, title, subtitle, date, excerpt, category, read_time,
+      author, author_bio, author_credential, author_expertise,
+      image, content, status, sort_order,
+      seo_title, seo_description, seo_og_image, canonical_url, focus_keyword
+    } = req.body;
+
+    // Only set published_at if transitioning to published and not already set
+    const existingResult = await pool.query(
+      `SELECT published_at FROM blog_posts WHERE id = $1`, [req.params.id]
+    );
+    const existing = existingResult.rows[0];
+    const published_at = (status === 'published' && !existing?.published_at)
+      ? new Date()
+      : (existing?.published_at || null);
+
+    const result = await pool.query(`
+      UPDATE blog_posts SET
+        slug = $1, title = $2, subtitle = $3, date = $4, excerpt = $5,
+        category = $6, read_time = $7,
+        author = $8, author_bio = $9, author_credential = $10, author_expertise = $11,
+        image = $12, content = $13, status = $14, sort_order = $15,
+        seo_title = $16, seo_description = $17, seo_og_image = $18,
+        canonical_url = $19, focus_keyword = $20,
+        published_at = $21, updated_at = NOW()
+      WHERE id = $22
+      RETURNING id, slug, title, status
+    `, [
+      slug, title, subtitle||'', date||'', excerpt||'', category||'', read_time||'',
+      author||'', author_bio||'', author_credential||'',
+      author_expertise || [],
+      image||'', content||'', status||'draft', sort_order||0,
+      seo_title||'', seo_description||'', seo_og_image||'', canonical_url||'', focus_keyword||'',
+      published_at, req.params.id
+    ]);
+    if (!result.rows[0]) return res.status(404).json({ error: 'Not found' });
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Blog PUT:', err);
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// DELETE
+app.delete('/api/blog/admin/posts/:id', async (req, res) => {
+  try {
+    await pool.query(`DELETE FROM blog_posts WHERE id = $1`, [req.params.id]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ── Public blog API (for SSR fallback if needed) ─────────────
+app.get('/api/blog/posts', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT id, slug, title, subtitle, date, excerpt, category, read_time,
+             author, author_bio, author_credential, author_expertise, image,
+             seo_title, seo_description, seo_og_image, canonical_url, focus_keyword,
+             status, sort_order, published_at
+      FROM blog_posts
+      WHERE status = 'published'
+      ORDER BY sort_order ASC, published_at DESC NULLS LAST
+    `);
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/blog/posts/:slug', async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT * FROM blog_posts WHERE slug = $1 AND status = 'published'`,
+      [req.params.slug]
+    );
+    if (!result.rows[0]) return res.status(404).json({ error: 'Not found' });
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ════════════════════════════════════════════════════════════
+//  ERROR HANDLER
+// ════════════════════════════════════════════════════════════
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
     return res.status(400).json({ success: false, error: `File upload error: ${err.message}` });
@@ -416,20 +642,42 @@ app.get('/api/health', (req, res) => {
 
 const distDir = path.join(__dirname, 'dist');
 if (fs.existsSync(distDir)) {
-  app.use(express.static(distDir));
-  app.get('/{*splat}', (req, res) => {
-    const splatParam = req.params.splat;
-    const reqPath = Array.isArray(splatParam) ? splatParam.join('/') : (splatParam || '');
-    const htmlFile = path.join(distDir, reqPath, 'index.html');
-    if (fs.existsSync(htmlFile)) {
-      return res.sendFile(htmlFile);
+  // Serve static assets from dist/client (hybrid mode)
+  const clientDir = path.join(distDir, 'client');
+  const hasClient = fs.existsSync(clientDir);
+  app.use(express.static(hasClient ? clientDir : distDir));
+
+  // Try to load Astro SSR middleware (hybrid mode)
+  const ssrEntryServer = path.join(distDir, 'server', 'entry.mjs');
+  const ssrEntryMiddleware = path.join(distDir, 'server', 'entry.mjs');
+  let astroMiddleware = null;
+  try {
+    const ssrPath = fs.existsSync(ssrEntryServer) ? ssrEntryServer : null;
+    if (ssrPath) {
+      const { handler } = await import(pathToFileURL(ssrPath).href);
+      astroMiddleware = handler;
     }
-    const directFile = path.join(distDir, reqPath + '.html');
-    if (fs.existsSync(directFile)) {
-      return res.sendFile(directFile);
-    }
-    res.sendFile(path.join(distDir, 'index.html'));
-  });
+  } catch (e) {
+    console.warn('Astro SSR middleware not loaded:', e.message);
+  }
+
+  if (astroMiddleware) {
+    app.use(astroMiddleware);
+  } else {
+    // Fallback: static file serving
+    app.get('/{*splat}', (req, res) => {
+      const splatParam = req.params.splat;
+      const reqPath = Array.isArray(splatParam) ? splatParam.join('/') : (splatParam || '');
+      const base = hasClient ? clientDir : distDir;
+      const htmlFile = path.join(base, reqPath, 'index.html');
+      if (fs.existsSync(htmlFile)) return res.sendFile(htmlFile);
+      const directFile = path.join(base, reqPath + '.html');
+      if (fs.existsSync(directFile)) return res.sendFile(directFile);
+      const indexFile = path.join(base, 'index.html');
+      if (fs.existsSync(indexFile)) return res.sendFile(indexFile);
+      res.status(404).send('Not found');
+    });
+  }
 }
 
 const PORT = process.env.PORT || 3000;
