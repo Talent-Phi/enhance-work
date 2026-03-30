@@ -172,12 +172,12 @@
     }
     .sidebar__search input {
       width: 100%;
-      padding: 0.45rem 2rem 0.45rem 0.75rem;
+      padding: 0.45rem 2rem 0.45rem 2rem;
       border: 1px solid #e5e7eb;
       border-radius: 6px;
       font-size: 0.82rem;
       color: #374151;
-      background: #f9fafb url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2.5'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat 0.6rem center;
+      background: #f9fafb url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat 0.65rem center;
       box-sizing: border-box;
       outline: none;
       transition: border-color 0.15s;
@@ -201,31 +201,65 @@
     .sidebar__search__clear.visible { display: block; }
     .sidebar__filter {
       margin-bottom: 0.75rem;
-      display: flex;
-      gap: 0.35rem;
       padding: 0 1.25rem;
+      position: relative;
     }
-    .sidebar__filter select {
+    /* Custom dropdown — replaces native select */
+    .c-select {
+      position: relative;
       width: 100%;
-      padding: 0.42rem 2rem 0.42rem 0.75rem;
+      user-select: none;
+    }
+    .c-select__trigger {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.42rem 0.75rem;
       border: 1.5px solid #e5e7eb;
       border-radius: 7px;
+      background: #f9fafb;
       font-size: 0.8rem;
       font-weight: 600;
       color: #374151;
-      background: #f9fafb;
       cursor: pointer;
-      outline: none;
-      box-sizing: border-box;
       transition: border-color 0.15s, background 0.15s;
-      appearance: none;
-      -webkit-appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232bbcb0' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 0.6rem center;
     }
-    .sidebar__filter select:hover { border-color: #2bbcb0; }
-    .sidebar__filter select:focus { border-color: #2bbcb0; background-color: #fff; box-shadow: 0 0 0 3px rgba(43,188,176,0.12); }
+    .c-select__trigger:hover,
+    .c-select.open .c-select__trigger { border-color: #2bbcb0; background: #fff; }
+    .c-select__arrow { flex-shrink: 0; transition: transform 0.2s; color: #2bbcb0; }
+    .c-select.open .c-select__arrow { transform: rotate(180deg); }
+    .c-select__dot {
+      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+    }
+    .c-select__label { flex: 1; }
+    .c-select__menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0; right: 0;
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 8px;
+      overflow: hidden;
+      z-index: 200;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+    .c-select.open .c-select__menu { display: block; }
+    .c-select__option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #374151;
+      cursor: pointer;
+      transition: background 0.12s, color 0.12s;
+    }
+    .c-select__option:hover { background: #f0fafa; color: #2bbcb0; }
+    .c-select__option.selected { background: #e6f7f6; color: #2bbcb0; font-weight: 700; }
 
     /* ── PREVIEW PANEL ── */
     .preview-panel {
@@ -516,13 +550,28 @@
         <button class="sidebar__search__clear" id="search-clear" onclick="clearSearch()">×</button>
       </div>
       <!-- Status filter -->
-      <div class="sidebar__filter">
-        <select id="filter-select" onchange="setFilter(this.value)">
-          <option value="all">All statuses</option>
-          <option value="published">Published</option>
-          <option value="draft">Draft</option>
-          <option value="archived">Archived</option>
-        </select>
+            <div class="sidebar__filter">
+        <div class="c-select" id="c-select-filter">
+          <button class="c-select__trigger" onclick="toggleCSelect()">
+            <span class="c-select__dot" id="c-select-dot" style="background:#6b7280;"></span>
+            <span class="c-select__label" id="c-select-label">All statuses</span>
+            <svg class="c-select__arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="c-select__menu">
+            <div class="c-select__option selected" data-value="all" data-dot="#6b7280" onclick="setCFilter('all','All statuses','#6b7280',this)">
+              <span class="c-select__dot" style="background:#6b7280;"></span> All statuses
+            </div>
+            <div class="c-select__option" data-value="published" data-dot="#10b981" onclick="setCFilter('published','Published','#10b981',this)">
+              <span class="c-select__dot" style="background:#10b981;"></span> Published
+            </div>
+            <div class="c-select__option" data-value="draft" data-dot="#f59e0b" onclick="setCFilter('draft','Draft','#f59e0b',this)">
+              <span class="c-select__dot" style="background:#f59e0b;"></span> Draft
+            </div>
+            <div class="c-select__option" data-value="archived" data-dot="#9ca3af" onclick="setCFilter('archived','Archived','#9ca3af',this)">
+              <span class="c-select__dot" style="background:#9ca3af;"></span> Archived
+            </div>
+          </div>
+        </div>
       </div>
       <div class="post-list" id="post-list">
         <div class="sidebar__empty">Loading posts…</div>
@@ -642,10 +691,24 @@
       renderPostList();
     }
 
+    function toggleCSelect() {
+      document.getElementById('c-select-filter').classList.toggle('open');
+    }
+    function setCFilter(value, label, dot, el) {
+      document.getElementById('c-select-label').textContent = label;
+      document.getElementById('c-select-dot').style.background = dot;
+      document.querySelectorAll('.c-select__option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      document.getElementById('c-select-filter').classList.remove('open');
+      setFilter(value);
+    }
+    document.addEventListener('click', e => {
+      const el = document.getElementById('c-select-filter');
+      if (el && !el.contains(e.target)) el.classList.remove('open');
+    });
+
     function setFilter(filter) {
       activeFilter = filter;
-      const sel = document.getElementById('filter-select');
-      if (sel) sel.value = filter;
       renderPostList();
     }
 
