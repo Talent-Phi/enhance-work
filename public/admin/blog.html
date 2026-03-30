@@ -866,6 +866,10 @@
         currentId = id;
         renderPostList();
         renderEditor(post);
+        // Reset editor scroll to top when switching posts
+        const editorArea = document.getElementById('editor-area');
+        if (editorArea) editorArea.scrollTop = 0;
+        window.scrollTo({ top: 0, behavior: 'instant' });
       } catch (e) {
         toast('Failed to load post', 'error');
       }
