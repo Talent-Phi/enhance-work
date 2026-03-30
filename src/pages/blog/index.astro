@@ -7,8 +7,9 @@ import Footer from '../../sections/Footer.astro';
 import { getAllPublishedPosts } from '../../lib/blogDb';
 
 const posts = await getAllPublishedPosts();
-const featured = posts[0] ?? null;
-const rest = posts.slice(1);
+// Featured is always the "aesthetic-rn-florida" post (pinned), fallback to first post
+const featured = posts.find(p => p.slug === 'aesthetic-rn-florida') ?? posts[0] ?? null;
+const rest = posts.filter(p => p.slug !== featured?.slug);
 ---
 
 <BaseLayout
