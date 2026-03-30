@@ -130,7 +130,7 @@ const blogPostingSchema = JSON.stringify({
           </div>
 
           <!-- Expertise tags -->
-          {postNorm.authorExpertise && post.authorExpertise.length > 0 && (
+          {postNorm.authorExpertise && postNorm.authorExpertise.length > 0 && (
             <div class="post-tags">
               {postNorm.authorExpertise.map((tag: string) => <span class="post-tag">{tag}</span>)}
             </div>
