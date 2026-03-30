@@ -895,7 +895,7 @@
             </button>
             <button class="btn btn-secondary" onclick="saveDraft()">Save Draft</button>
             <button class="btn btn-primary" onclick="publishPost()">Publish</button>
-            ${currentId ? `<button class="btn btn-danger" onclick="deletePost()">Delete</button>` : ''}
+            ${currentId ? `<button class="btn btn-danger" onclick="archivePost()">Archive</button>` : ''}
           </div>
         </div>
 
@@ -1253,23 +1253,29 @@
       }
     }
 
-    // ── Delete ───────────────────────────────────────────────
-    async function deletePost() {
+    // ── Archive ──────────────────────────────────────────────
+    async function archivePost() {
       if (!currentId) return;
-      if (!confirm('Delete this post? This cannot be undone.')) return;
+      if (!confirm('Archive this post? It will be hidden from the public blog but not deleted.')) return;
       try {
-        await apiFetch(`/api/blog/admin/posts/${currentId}`, { method: 'DELETE' });
+        const data = collectFormData('archived');
+        data.status = 'archived';
+        await apiFetch(`/api/blog/admin/posts/${currentId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
         currentId = null;
-        toast('Post deleted');
+        toast('Post archived');
         await loadPosts();
         document.getElementById('editor-area').className = 'editor-area editor-area--empty';
         document.getElementById('editor-area').innerHTML = `
           <div class="editor-placeholder">
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            <h3>Post deleted</h3><p>Create a new post or select another</p>
+            <h3>Post archived</h3><p>It's hidden from the public blog. Select another post or create a new one.</p>
           </div>`;
       } catch (e) {
-        toast('Delete failed: ' + e.message, 'error');
+        toast('Archive failed: ' + e.message, 'error');
       }
     }
 
