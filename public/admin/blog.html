@@ -262,49 +262,66 @@
     .c-select__option.selected { background: #e6f7f6; color: #2bbcb0; font-weight: 700; }
 
     /* ── PREVIEW PANEL ── */
+    /* preview-panel = full-screen modal overlay */
     .preview-panel {
       position: fixed;
-      top: 52px;
-      right: 0;
-      bottom: 0;
-      width: 420px;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      box-sizing: border-box;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .preview-panel.open { opacity: 1; pointer-events: all; }
+    /* inner modal box */
+    .preview-panel > .preview-inner {
       background: #fff;
-      border-left: 1px solid #e5e7eb;
-      z-index: 50;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 1100px;
+      height: 90vh;
       display: flex;
       flex-direction: column;
-      transform: translateX(100%);
-      transition: transform 0.25s ease;
-      box-shadow: -4px 0 24px rgba(0,0,0,0.08);
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+      transform: scale(0.97);
+      transition: transform 0.2s ease;
     }
-    .preview-panel.open { transform: translateX(0); }
+    .preview-panel.open > .preview-inner { transform: scale(1); }
     .preview-panel__header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 1rem;
+      gap: 0.75rem;
+      padding: 0.65rem 1rem;
       border-bottom: 1px solid #e5e7eb;
       background: #f9fafb;
       flex-shrink: 0;
     }
-    .preview-panel__title { font-size: 0.8rem; font-weight: 700; color: #374151; }
-    .preview-panel__actions { display: flex; gap: 0.5rem; align-items: center; }
+    .preview-panel__title { font-size: 0.82rem; font-weight: 700; color: #374151; white-space: nowrap; }
+    .preview-panel__actions { display: flex; gap: 0.5rem; align-items: center; margin-left: auto; }
     .preview-panel__close {
       background: none;
       border: none;
       cursor: pointer;
       color: #6b7280;
-      font-size: 1.1rem;
-      padding: 0.2rem;
+      font-size: 1.3rem;
+      padding: 0.1rem 0.35rem;
       line-height: 1;
+      border-radius: 4px;
+      transition: background 0.15s;
     }
-    .preview-panel__close:hover { color: #111; }
+    .preview-panel__close:hover { background: #f3f4f6; color: #111; }
     .preview-refresh {
       background: none;
       border: 1px solid #e5e7eb;
       border-radius: 5px;
-      padding: 0.25rem 0.6rem;
-      font-size: 0.72rem;
+      padding: 0.3rem 0.7rem;
+      font-size: 0.75rem;
       color: #6b7280;
       cursor: pointer;
       transition: all 0.15s;
@@ -584,19 +601,21 @@
       </div>
     </aside>
 
-    <!-- PREVIEW PANEL -->
-    <div class="preview-panel" id="preview-panel">
-      <div class="preview-panel__header">
-        <span class="preview-panel__title">👁 Live Preview</span>
-        <div class="preview-panel__actions">
-          <button class="preview-refresh" onclick="refreshPreview()" title="Refresh preview">⟳ Refresh</button>
-          <button class="preview-panel__close" onclick="closePreview()" title="Close preview">×</button>
+    <!-- PREVIEW PANEL (modal overlay) -->
+    <div class="preview-panel" id="preview-panel" onclick="onPreviewOverlayClick(event)">
+      <div class="preview-inner">
+        <div class="preview-panel__header">
+          <span class="preview-panel__title">👁 Live Preview</span>
+          <div class="preview-panel__actions">
+            <button class="preview-refresh" onclick="refreshPreview()" title="Refresh preview">⟳ Refresh</button>
+            <button class="preview-panel__close" onclick="closePreview()" title="Close preview">×</button>
+          </div>
         </div>
-      </div>
-      <div id="preview-content" style="flex:1;display:flex;flex-direction:column;">
-        <div class="preview-panel__placeholder">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          <p>Select or create a post, then click <strong>⟳ Refresh</strong> to preview without saving.</p>
+        <div id="preview-content" style="flex:1;display:flex;flex-direction:column;">
+          <div class="preview-panel__placeholder">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <p>Select or create a post, then click <strong>⟳ Refresh</strong> to preview without saving.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -725,6 +744,7 @@
       previewOpen = true;
       document.getElementById('preview-panel').classList.add('open');
       document.getElementById('btn-preview-toggle').classList.add('active');
+      document.body.style.overflow = 'hidden';
       refreshPreview();
     }
 
@@ -732,6 +752,11 @@
       previewOpen = false;
       document.getElementById('preview-panel').classList.remove('open');
       document.getElementById('btn-preview-toggle').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function onPreviewOverlayClick(e) {
+      if (e.target === document.getElementById('preview-panel')) closePreview();
     }
 
     function refreshPreview() {
