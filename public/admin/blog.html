@@ -4,18 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Blog Admin — Enhance.work</title>
-
-  <!-- CKEditor 5 (Classic Editor via CDN) -->
-  <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-build-classic@41.4.2/build/ckeditor.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+    :root {
+      --teal: #2bbcb0;
+      --teal-light: #edfcfb;
+      --dark: #111827;
+      --gray: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f3f4f6;
+      --white: #fff;
+      --red: #dc2626;
+      --green: #16a34a;
+    }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #f0f4f8;
-      color: #1a1a2e;
+      background: var(--bg);
+      color: var(--dark);
       min-height: 100vh;
+      font-size: 14px;
     }
 
     /* ── TOP BAR ── */
@@ -23,86 +31,155 @@
       background: #1a1a2e;
       color: #fff;
       padding: 0 1.5rem;
-      height: 52px;
+      height: 56px;
       display: flex;
       align-items: center;
-      gap: 1.5rem;
+      gap: 1rem;
       position: sticky;
       top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      z-index: 200;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.25);
     }
     .topbar__logo {
-      font-weight: 700;
-      font-size: 1rem;
-      color: #2bbcb0;
-      letter-spacing: -0.02em;
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--teal);
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
-    .topbar__sep { color: #444; font-size: 1.1rem; }
-    .topbar__title { font-size: 0.9rem; color: #ccc; }
-    .topbar__nav { margin-left: auto; display: flex; gap: 0.5rem; }
-    .topbar__nav a {
-      color: #aaa;
+    .topbar__logo span { color: #fff; }
+    .topbar__sep { color: #334155; font-size: 1.3rem; margin: 0 0.25rem; }
+    .topbar__title { font-size: 0.88rem; color: #94a3b8; font-weight: 500; }
+    .topbar__right { margin-left: auto; display: flex; align-items: center; gap: 0.5rem; }
+    .topbar__user { font-size: 0.8rem; color: #94a3b8; padding: 0.25rem 0.75rem; }
+    .topbar__link {
+      color: #94a3b8;
       text-decoration: none;
-      font-size: 0.82rem;
-      padding: 0.3rem 0.7rem;
-      border-radius: 4px;
-      transition: color 0.15s, background 0.15s;
+      font-size: 0.8rem;
+      padding: 0.35rem 0.8rem;
+      border-radius: 6px;
+      transition: color .15s, background .15s;
+      display: flex; align-items: center; gap: 0.35rem;
     }
-    .topbar__nav a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+    .topbar__link:hover { color: #fff; background: rgba(255,255,255,0.08); }
+    .topbar__link.danger { color: #f87171; }
+    .topbar__link.danger:hover { color: #fff; background: rgba(220,38,38,0.2); }
+
+    /* ── AUTO-SAVE INDICATOR ── */
+    .autosave-status {
+      font-size: 0.75rem;
+      color: #64748b;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      transition: all .3s;
+    }
+    .autosave-status.saving { color: var(--teal); }
+    .autosave-status.saved  { color: var(--green); }
+    .autosave-status.error  { color: var(--red); }
 
     /* ── LAYOUT ── */
     .layout {
       display: grid;
-      grid-template-columns: 280px 1fr;
-      min-height: calc(100vh - 52px);
+      grid-template-columns: 300px 1fr;
+      height: calc(100vh - 56px);
+      overflow: hidden;
     }
 
     /* ── SIDEBAR ── */
     .sidebar {
-      background: #fff;
-      border-right: 1px solid #e5e7eb;
-      padding: 1.25rem;
-      overflow-y: auto;
-    }
-    .sidebar__header {
+      background: var(--white);
+      border-right: 1px solid var(--border);
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1rem;
+      flex-direction: column;
+      overflow: hidden;
     }
-    .sidebar__heading {
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #9ca3af;
+    .sidebar__top {
+      padding: 1rem 1rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
     }
     .btn-new {
-      background: #2bbcb0;
+      background: var(--teal);
       color: #fff;
       border: none;
-      border-radius: 6px;
-      padding: 0.35rem 0.85rem;
-      font-size: 0.8rem;
-      font-weight: 600;
+      border-radius: 8px;
+      padding: 0.55rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 0.3rem;
-      transition: opacity 0.15s;
+      justify-content: center;
+      gap: 0.4rem;
+      width: 100%;
+      transition: opacity .15s, transform .1s;
+      letter-spacing: .01em;
     }
-    .btn-new:hover { opacity: 0.88; }
-    .post-list { display: flex; flex-direction: column; gap: 2px; }
+    .btn-new:hover { opacity: 0.9; }
+    .btn-new:active { transform: scale(.98); }
+
+    .search-box {
+      position: relative;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 0.45rem 0.75rem 0.45rem 2rem;
+      border: 1.5px solid var(--border);
+      border-radius: 7px;
+      font-size: 0.82rem;
+      color: var(--dark);
+      background: var(--bg);
+      outline: none;
+      transition: border-color .15s;
+    }
+    .search-box input:focus { border-color: var(--teal); background: #fff; }
+    .search-box svg { position: absolute; left: 0.55rem; top: 50%; transform: translateY(-50%); color: #9ca3af; }
+
+    .filter-tabs {
+      display: flex;
+      gap: 0.25rem;
+    }
+    .filter-tab {
+      flex: 1;
+      padding: 0.3rem 0.5rem;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: transparent;
+      color: var(--gray);
+      transition: all .15s;
+      text-align: center;
+    }
+    .filter-tab.active { background: var(--teal-light); border-color: var(--teal); color: var(--teal); }
+
+    .sidebar__posts {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.5rem;
+    }
+    .sidebar__empty {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: #9ca3af;
+      font-size: 0.82rem;
+      line-height: 1.6;
+    }
     .post-item {
-      padding: 0.7rem 0.75rem;
+      padding: 0.75rem 0.85rem;
       border-radius: 8px;
       cursor: pointer;
-      transition: background 0.15s;
-      border: 2px solid transparent;
+      border: 1.5px solid transparent;
+      transition: background .15s, border-color .15s;
+      margin-bottom: 2px;
     }
-    .post-item:hover { background: #f3f4f6; }
-    .post-item.active { background: #edfcfb; border-color: #2bbcb0; }
+    .post-item:hover { background: var(--bg); }
+    .post-item.active { background: var(--teal-light); border-color: var(--teal); }
     .post-item__title {
       font-size: 0.85rem;
       font-weight: 600;
@@ -110,201 +187,296 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      margin-bottom: 0.3rem;
     }
-    .post-item__meta {
-      font-size: 0.72rem;
-      color: #9ca3af;
-      margin-top: 0.2rem;
-      display: flex;
-      gap: 0.5rem;
-    }
-    .status-badge {
-      display: inline-block;
-      padding: 0.1rem 0.45rem;
+    .post-item.active .post-item__title { color: #0d7a72; }
+    .post-item__meta { display: flex; align-items: center; gap: 0.5rem; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.1rem 0.5rem;
       border-radius: 20px;
       font-size: 0.65rem;
       font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .03em;
     }
-    .status-badge.published { background: #dcfce7; color: #16a34a; }
-    .status-badge.draft { background: #fef9c3; color: #ca8a04; }
-    .sidebar__empty {
-      text-align: center;
-      padding: 2rem 1rem;
-      color: #9ca3af;
-      font-size: 0.85rem;
-    }
+    .badge.published { background: #dcfce7; color: #15803d; }
+    .badge.draft { background: #fef9c3; color: #92400e; }
+    .post-item__date { font-size: 0.7rem; color: #9ca3af; }
 
-    /* ── MAIN EDITOR ── */
+    /* ── EDITOR AREA ── */
     .editor-area {
-      padding: 1.5rem 2rem;
       overflow-y: auto;
+      display: flex;
+      flex-direction: column;
     }
-    .editor-area--empty {
+    .editor-empty {
+      flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 400px;
     }
     .editor-placeholder {
       text-align: center;
       color: #9ca3af;
+      padding: 2rem;
     }
-    .editor-placeholder svg { margin: 0 auto 1rem; display: block; }
-    .editor-placeholder h3 { font-size: 1.1rem; color: #374151; margin-bottom: 0.4rem; }
+    .editor-placeholder svg { margin: 0 auto 1.25rem; display: block; opacity: 0.5; }
+    .editor-placeholder h3 { font-size: 1.1rem; color: #374151; margin-bottom: 0.4rem; font-weight: 600; }
     .editor-placeholder p { font-size: 0.85rem; }
 
-    /* Form layout */
-    .form-header {
+    /* ── STICKY TOOLBAR ── */
+    .editor-toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.75rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 1.5rem;
+      gap: 1rem;
       flex-wrap: wrap;
-      gap: 0.75rem;
     }
-    .form-header__title {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: #111827;
-    }
-    .form-actions { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+    .editor-toolbar__left { display: flex; align-items: center; gap: 0.75rem; }
+    .editor-toolbar__title { font-size: 1rem; font-weight: 700; color: var(--dark); }
+    .editor-toolbar__right { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+
     .btn {
-      padding: 0.5rem 1.1rem;
-      border-radius: 6px;
-      font-size: 0.85rem;
+      padding: 0.45rem 1rem;
+      border-radius: 7px;
+      font-size: 0.82rem;
       font-weight: 600;
       cursor: pointer;
       border: none;
-      transition: opacity 0.15s, background 0.15s;
+      transition: opacity .15s, transform .1s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      white-space: nowrap;
     }
     .btn:hover { opacity: 0.88; }
-    .btn-primary { background: #2bbcb0; color: #fff; }
-    .btn-secondary { background: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; }
-    .btn-danger { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; }
+    .btn:active { transform: scale(.97); }
+    .btn-primary  { background: var(--teal); color: #fff; }
+    .btn-ghost    { background: transparent; color: #374151; border: 1.5px solid var(--border); }
+    .btn-ghost:hover { background: var(--bg); opacity: 1; }
+    .btn-danger   { background: #fee2e2; color: var(--red); border: 1px solid #fca5a5; }
+    .btn-icon     { padding: 0.45rem 0.65rem; }
 
-    /* Form sections */
-    .form-section {
-      background: #fff;
-      border-radius: 10px;
-      padding: 1.25rem 1.5rem;
-      margin-bottom: 1.25rem;
-      border: 1px solid #e5e7eb;
+    /* ── EDITOR CONTENT ── */
+    .editor-content {
+      padding: 1.5rem 1.75rem 3rem;
+      max-width: 960px;
+      width: 100%;
+      margin: 0 auto;
     }
-    .form-section__title {
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: #9ca3af;
-      margin-bottom: 1rem;
+
+    /* ── CARDS / SECTIONS ── */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 1.25rem;
+      overflow: hidden;
+    }
+    .card__header {
+      padding: 0.85rem 1.25rem;
+      border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
     }
-    .form-section__title svg { color: #2bbcb0; }
+    .card__header-left { display: flex; align-items: center; gap: 0.6rem; }
+    .card__header-icon { color: var(--teal); }
+    .card__label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #374151; }
+    .card__chevron { color: #9ca3af; transition: transform .25s; font-size: 1rem; }
+    .card__chevron.open { transform: rotate(180deg); }
+    .card__body { padding: 1.25rem; display: none; }
+    .card__body.open { display: block; }
+    .card--always-open .card__header { cursor: default; }
+    .card--always-open .card__body { display: block; }
 
-    .form-row { display: grid; gap: 1rem; margin-bottom: 1rem; }
-    .form-row.cols-2 { grid-template-columns: 1fr 1fr; }
-    .form-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
-    .form-group { display: flex; flex-direction: column; gap: 0.3rem; }
-    .form-group label {
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: #374151;
-    }
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      padding: 0.5rem 0.75rem;
-      border: 1.5px solid #e5e7eb;
-      border-radius: 6px;
+    /* ── FORM ── */
+    .field { display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 1rem; }
+    .field:last-child { margin-bottom: 0; }
+    .field label { font-size: 0.78rem; font-weight: 600; color: #374151; }
+    .field label .hint { font-weight: 400; color: #9ca3af; margin-left: 0.3rem; }
+    .field input,
+    .field select,
+    .field textarea {
+      padding: 0.55rem 0.85rem;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
       font-size: 0.875rem;
-      color: #111827;
+      color: var(--dark);
       background: #fff;
-      transition: border-color 0.15s;
+      transition: border-color .15s, box-shadow .15s;
       font-family: inherit;
+      width: 100%;
     }
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
       outline: none;
-      border-color: #2bbcb0;
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(43,188,176,.12);
     }
-    .form-group textarea { resize: vertical; min-height: 80px; }
-    .char-count {
-      font-size: 0.7rem;
-      color: #9ca3af;
-      text-align: right;
-    }
-    .char-count.warn { color: #f59e0b; }
-    .char-count.over { color: #dc2626; }
+    .field textarea { resize: vertical; min-height: 88px; line-height: 1.55; }
+    .field-hint { font-size: 0.72rem; color: #9ca3af; margin-top: 0.2rem; }
 
-    /* SEO preview */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+
+    .slug-preview {
+      font-size: 0.72rem;
+      color: #9ca3af;
+      margin-top: 0.25rem;
+    }
+    .slug-preview span { color: var(--teal); font-weight: 600; }
+
+    /* ── CHAR COUNTER ── */
+    .char-row { display: flex; justify-content: flex-end; margin-top: 0.2rem; }
+    .char-count { font-size: 0.7rem; color: #9ca3af; }
+    .char-count.warn { color: #f59e0b; }
+    .char-count.over { color: var(--red); font-weight: 600; }
+
+    /* ── SEO PREVIEW ── */
     .seo-preview {
       background: #f8fafc;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
       padding: 1rem 1.25rem;
-      margin-top: 0.75rem;
+      margin-top: 1rem;
     }
-    .seo-preview__url { font-size: 0.75rem; color: #16a34a; margin-bottom: 0.2rem; }
-    .seo-preview__title { font-size: 1rem; color: #1a0dab; font-weight: 400; }
-    .seo-preview__desc { font-size: 0.82rem; color: #545454; line-height: 1.4; }
+    .seo-preview__url { font-size: 0.75rem; color: #16a34a; margin-bottom: 0.2rem; word-break: break-all; }
+    .seo-preview__title { font-size: 1rem; color: #1a0dab; font-weight: 400; margin-bottom: 0.2rem; }
+    .seo-preview__desc { font-size: 0.82rem; color: #4d5156; line-height: 1.45; }
 
-    /* CKEditor container */
-    .ck-editor-wrap .ck-editor__editable {
-      min-height: 450px;
-      font-size: 0.95rem;
+    /* ── IMAGE AREA ── */
+    .image-drop-zone {
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      position: relative;
+      background: #fafafa;
+    }
+    .image-drop-zone:hover,
+    .image-drop-zone.dragover { border-color: var(--teal); background: var(--teal-light); }
+    .image-drop-zone input[type=file] { display: none; }
+    .image-drop-zone .dz-icon { color: #d1d5db; margin-bottom: 0.75rem; }
+    .image-drop-zone .dz-text { font-size: 0.85rem; color: #9ca3af; }
+    .image-drop-zone .dz-link { color: var(--teal); font-weight: 600; }
+    .image-drop-zone .dz-hint { font-size: 0.72rem; color: #9ca3af; margin-top: 0.35rem; }
+    .image-preview-box {
+      width: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #f1f5f9;
+      position: relative;
+    }
+    .image-preview-box img {
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+    .image-preview-box .img-remove {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+    .upload-progress {
+      height: 3px;
+      background: var(--teal);
+      border-radius: 2px;
+      transition: width .3s;
+      margin-top: 0.5rem;
     }
 
-    /* Toast */
+    /* ── CONTENT EDITOR ── */
+    .ck-wrap { min-height: 400px; }
+    .ck.ck-editor { border-radius: 8px !important; overflow: hidden; }
+    .ck.ck-editor__editable { min-height: 400px; font-size: 0.95rem; line-height: 1.7; padding: 1.25rem 1.5rem !important; }
+    .ck.ck-editor__editable:focus { box-shadow: 0 0 0 3px rgba(43,188,176,.12) !important; }
+    .ck.ck-toolbar { border-radius: 0 !important; background: #f8fafc !important; border-color: var(--border) !important; }
+    .ck.ck-editor__main .ck-editor__editable { border-top: 1px solid var(--border) !important; }
+
+    /* ── TOAST ── */
     .toast {
       position: fixed;
       bottom: 1.5rem;
       right: 1.5rem;
-      background: #1a1a2e;
+      background: #1e293b;
       color: #fff;
-      padding: 0.7rem 1.25rem;
-      border-radius: 8px;
+      padding: 0.75rem 1.25rem;
+      border-radius: 10px;
       font-size: 0.875rem;
       font-weight: 500;
-      z-index: 1000;
+      z-index: 9999;
       opacity: 0;
-      transform: translateY(12px);
-      transition: opacity 0.25s, transform 0.25s;
+      transform: translateY(10px);
+      transition: opacity .25s, transform .25s;
       pointer-events: none;
+      max-width: 320px;
     }
     .toast.show { opacity: 1; transform: translateY(0); }
-    .toast.success { border-left: 3px solid #2bbcb0; }
-    .toast.error { border-left: 3px solid #dc2626; }
+    .toast.success { border-left: 3px solid var(--teal); }
+    .toast.error   { border-left: 3px solid var(--red); }
+    .toast.info    { border-left: 3px solid #60a5fa; }
 
-    /* Slug preview */
-    .slug-preview {
-      font-size: 0.72rem;
-      color: #9ca3af;
-      margin-top: 0.2rem;
+    /* ── CONFIRM DIALOG ── */
+    .confirm-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 8000;
+      display: none;
+      align-items: center;
+      justify-content: center;
     }
-    .slug-preview span { color: #2bbcb0; font-weight: 600; }
-
-    /* Image upload */
-    .image-upload-area {
-      border: 2px dashed #e5e7eb;
-      border-radius: 8px;
-      padding: 1.5rem;
-      text-align: center;
-      cursor: pointer;
-      transition: border-color 0.15s, background 0.15s;
+    .confirm-overlay.open { display: flex; }
+    .confirm-box {
+      background: #fff;
+      border-radius: 12px;
+      padding: 1.75rem;
+      max-width: 380px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
     }
-    .image-upload-area:hover { border-color: #2bbcb0; background: #f0fffe; }
-    .image-upload-area img { max-height: 120px; border-radius: 6px; margin: 0 auto 0.5rem; display: block; }
-    .image-upload-area p { font-size: 0.8rem; color: #9ca3af; }
-    .image-upload-area input[type=file] { display: none; }
+    .confirm-box h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .confirm-box p { font-size: 0.875rem; color: var(--gray); margin-bottom: 1.25rem; }
+    .confirm-box__btns { display: flex; gap: 0.75rem; justify-content: flex-end; }
 
-    @media (max-width: 900px) {
-      .layout { grid-template-columns: 1fr; }
-      .sidebar { border-right: none; border-bottom: 1px solid #e5e7eb; max-height: 250px; }
-      .form-row.cols-2,
-      .form-row.cols-3 { grid-template-columns: 1fr; }
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+
+    @media (max-width: 860px) {
+      .layout { grid-template-columns: 1fr; height: auto; overflow: visible; }
+      .sidebar { height: auto; max-height: 280px; }
+      .editor-area { height: auto; overflow: visible; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -312,39 +484,55 @@
 
   <!-- TOP BAR -->
   <div class="topbar">
-    <span class="topbar__logo">enhance.work</span>
+    <div class="topbar__logo">Enhance<span>.work</span></div>
     <span class="topbar__sep">/</span>
     <span class="topbar__title">Blog Admin</span>
-    <nav class="topbar__nav">
-      <a href="/blog" target="_blank">↗ View Blog</a>
-      <a href="/">← Back to site</a>
-      <a href="/admin/logout" style="color:#f87171;border:1px solid rgba(248,113,113,0.3);padding:0.3rem 0.8rem;border-radius:5px;" onclick="return confirm('¿Cerrar sesión?')">Salir</a>
-    </nav>
+    <div class="topbar__right">
+      <span class="autosave-status" id="autosave-status"></span>
+      <a href="/blog" target="_blank" class="topbar__link">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Ver blog
+      </a>
+      <a href="/admin/logout" class="topbar__link danger" id="logout-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Salir
+      </a>
+    </div>
   </div>
 
   <!-- LAYOUT -->
   <div class="layout">
 
-    <!-- SIDEBAR: post list -->
+    <!-- SIDEBAR -->
     <aside class="sidebar">
-      <div class="sidebar__header">
-        <span class="sidebar__heading">Posts</span>
+      <div class="sidebar__top">
         <button class="btn-new" onclick="newPost()">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          New Post
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nuevo post
         </button>
+        <div class="search-box">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="search-input" placeholder="Buscar posts…" oninput="filterPosts()" />
+        </div>
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-filter="all" onclick="setFilter('all',this)">Todos</button>
+          <button class="filter-tab" data-filter="published" onclick="setFilter('published',this)">Publicados</button>
+          <button class="filter-tab" data-filter="draft" onclick="setFilter('draft',this)">Borradores</button>
+        </div>
       </div>
-      <div class="post-list" id="post-list">
-        <div class="sidebar__empty">Loading posts…</div>
+      <div class="sidebar__posts" id="post-list">
+        <div class="sidebar__empty">Cargando posts…</div>
       </div>
     </aside>
 
-    <!-- MAIN: editor -->
-    <main class="editor-area editor-area--empty" id="editor-area">
-      <div class="editor-placeholder">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-        <h3>Select a post to edit</h3>
-        <p>Or click "New Post" to create one</p>
+    <!-- EDITOR -->
+    <main class="editor-area" id="editor-area">
+      <div class="editor-empty">
+        <div class="editor-placeholder">
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          <h3>Selecciona un post para editar</h3>
+          <p>O haz clic en "Nuevo post" para crear uno</p>
+        </div>
       </div>
     </main>
 
@@ -353,279 +541,405 @@
   <!-- TOAST -->
   <div class="toast" id="toast"></div>
 
-  <script>
-    let editor = null;
-    let currentId = null;
-    let allPosts = [];
+  <!-- CONFIRM DIALOG -->
+  <div class="confirm-overlay" id="confirm-overlay">
+    <div class="confirm-box">
+      <h4 id="confirm-title">¿Confirmar acción?</h4>
+      <p id="confirm-msg"></p>
+      <div class="confirm-box__btns">
+        <button class="btn btn-ghost" onclick="closeConfirm()">Cancelar</button>
+        <button class="btn btn-danger" id="confirm-ok-btn">Confirmar</button>
+      </div>
+    </div>
+  </div>
 
-    // ── API helpers ──────────────────────────────────────────
-    async function apiFetch(url, opts = {}) {
-      const res = await fetch(url, {
-        headers: { 'Content-Type': 'application/json', ...opts.headers },
-        ...opts,
-      });
-      if (!res.ok) throw new Error(await res.text());
-      return res.json();
+<script>
+  // ────────────────────────────────────────────────────────────────
+  //  STATE
+  // ────────────────────────────────────────────────────────────────
+  let editor       = null;
+  let currentId    = null;
+  let allPosts     = [];
+  let activeFilter = 'all';
+  let autosaveTimer = null;
+  let isDirty      = false;
+
+  // ────────────────────────────────────────────────────────────────
+  //  UTILITIES
+  // ────────────────────────────────────────────────────────────────
+  function esc(s) {
+    return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  async function apiFetch(url, opts = {}) {
+    const res = await fetch(url, {
+      headers: { 'Content-Type': 'application/json', ...opts.headers },
+      credentials: 'same-origin',
+      ...opts,
+    });
+    if (res.status === 401) { window.location.href = '/admin/login'; throw new Error('Session expired'); }
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(err);
     }
+    return res.json();
+  }
 
-    // ── Toast ────────────────────────────────────────────────
-    function toast(msg, type = 'success') {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.className = `toast show ${type}`;
-      setTimeout(() => t.className = 'toast', 3000);
-    }
+  // ────────────────────────────────────────────────────────────────
+  //  TOAST
+  // ────────────────────────────────────────────────────────────────
+  let toastTimer;
+  function toast(msg, type = 'success') {
+    const el = document.getElementById('toast');
+    clearTimeout(toastTimer);
+    el.textContent = msg;
+    el.className = `toast show ${type}`;
+    toastTimer = setTimeout(() => { el.className = 'toast'; }, 3500);
+  }
 
-    // ── Load post list ───────────────────────────────────────
-    async function loadPosts() {
-      try {
-        allPosts = await apiFetch('/api/blog/admin/posts');
-        renderPostList();
-      } catch (e) {
-        document.getElementById('post-list').innerHTML =
-          '<div class="sidebar__empty">Error loading posts</div>';
+  // ────────────────────────────────────────────────────────────────
+  //  CONFIRM DIALOG
+  // ────────────────────────────────────────────────────────────────
+  function confirm2(title, msg) {
+    return new Promise(resolve => {
+      document.getElementById('confirm-title').textContent = title;
+      document.getElementById('confirm-msg').textContent = msg;
+      const overlay = document.getElementById('confirm-overlay');
+      overlay.classList.add('open');
+      const btn = document.getElementById('confirm-ok-btn');
+      const onOk = () => { cleanup(); resolve(true); };
+      const onClose = () => { cleanup(); resolve(false); };
+      btn.onclick = onOk;
+      overlay.querySelector('.btn-ghost').onclick = onClose;
+      function cleanup() {
+        overlay.classList.remove('open');
+        btn.onclick = null;
       }
-    }
+    });
+  }
+  function closeConfirm() { document.getElementById('confirm-overlay').classList.remove('open'); }
 
-    function renderPostList() {
-      const list = document.getElementById('post-list');
-      if (!allPosts.length) {
-        list.innerHTML = '<div class="sidebar__empty">No posts yet. Create one!</div>';
-        return;
-      }
-      list.innerHTML = allPosts.map(p => `
-        <div class="post-item ${p.id === currentId ? 'active' : ''}" onclick="loadPost(${p.id})">
-          <div class="post-item__title">${escHtml(p.title)}</div>
-          <div class="post-item__meta">
-            <span class="status-badge ${p.status}">${p.status}</span>
-            <span>${p.date || ''}</span>
+  // ────────────────────────────────────────────────────────────────
+  //  LOAD & RENDER POST LIST
+  // ────────────────────────────────────────────────────────────────
+  async function loadPosts() {
+    try {
+      allPosts = await apiFetch('/api/blog/admin/posts');
+      renderPostList();
+    } catch (e) {
+      document.getElementById('post-list').innerHTML =
+        '<div class="sidebar__empty">Error cargando posts</div>';
+    }
+  }
+
+  function setFilter(f, btn) {
+    activeFilter = f;
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    renderPostList();
+  }
+
+  function filterPosts() { renderPostList(); }
+
+  function renderPostList() {
+    const q = (document.getElementById('search-input')?.value || '').toLowerCase();
+    let list = allPosts;
+    if (activeFilter !== 'all') list = list.filter(p => p.status === activeFilter);
+    if (q) list = list.filter(p => p.title.toLowerCase().includes(q) || (p.slug || '').includes(q));
+
+    const el = document.getElementById('post-list');
+    if (!list.length) {
+      el.innerHTML = `<div class="sidebar__empty">No hay posts${q ? ' con ese término' : ''}.<br>Crea uno con el botón de arriba.</div>`;
+      return;
+    }
+    el.innerHTML = list.map(p => `
+      <div class="post-item ${p.id === currentId ? 'active' : ''}" onclick="loadPost(${p.id})" title="${esc(p.title)}">
+        <div class="post-item__title">${esc(p.title)}</div>
+        <div class="post-item__meta">
+          <span class="badge ${p.status}">${p.status === 'published' ? 'Publicado' : 'Borrador'}</span>
+          <span class="post-item__date">${p.date || (p.updated_at ? new Date(p.updated_at).toLocaleDateString('es', {day:'2-digit',month:'short',year:'numeric'}) : '')}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ────────────────────────────────────────────────────────────────
+  //  NEW POST
+  // ────────────────────────────────────────────────────────────────
+  function newPost() {
+    currentId = null;
+    renderEditor({
+      title: '', slug: '', subtitle: '',
+      date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+      excerpt: '', category: '', read_time: '',
+      author: 'Sofia Reyes, APRN', author_bio: '',
+      author_credential: '', author_expertise: [],
+      image: '', content: '', status: 'draft',
+      seo_title: '', seo_description: '', seo_og_image: '',
+      canonical_url: '', focus_keyword: '', sort_order: 0,
+    });
+  }
+
+  // ────────────────────────────────────────────────────────────────
+  //  LOAD POST BY ID
+  // ────────────────────────────────────────────────────────────────
+  async function loadPost(id) {
+    if (isDirty && currentId) {
+      const ok = await confirm2('Cambios sin guardar', '¿Salir sin guardar los cambios de este post?');
+      if (!ok) return;
+    }
+    try {
+      const post = await apiFetch(`/api/blog/admin/posts/${id}`);
+      currentId = id;
+      renderPostList();
+      renderEditor(post);
+    } catch (e) {
+      toast('Error cargando post', 'error');
+    }
+  }
+
+  // ────────────────────────────────────────────────────────────────
+  //  RENDER EDITOR
+  // ────────────────────────────────────────────────────────────────
+  async function renderEditor(post) {
+    isDirty = false;
+    const area = document.getElementById('editor-area');
+    const expertise = Array.isArray(post.author_expertise)
+      ? post.author_expertise.join(', ')
+      : (post.author_expertise || '');
+
+    area.innerHTML = `
+      <!-- STICKY TOOLBAR -->
+      <div class="editor-toolbar">
+        <div class="editor-toolbar__left">
+          <div class="editor-toolbar__title">${currentId ? 'Editando post' : 'Nuevo post'}</div>
+          <span class="badge ${post.status || 'draft'}" id="status-badge">${(post.status||'draft') === 'published' ? 'Publicado' : 'Borrador'}</span>
+        </div>
+        <div class="editor-toolbar__right">
+          <button class="btn btn-ghost btn-icon" onclick="previewPost()" title="Vista previa">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+          <button class="btn btn-ghost" onclick="saveDraft()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            Guardar borrador
+          </button>
+          <button class="btn btn-primary" onclick="publishPost()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Publicar
+          </button>
+          ${currentId ? `<button class="btn btn-danger" onclick="deletePost()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            Eliminar
+          </button>` : ''}
+        </div>
+      </div>
+
+      <!-- EDITOR BODY -->
+      <div class="editor-content">
+
+        <!-- TITLE BIG -->
+        <div style="margin-bottom:1.5rem;">
+          <input
+            type="text" id="f-title"
+            value="${esc(post.title)}"
+            placeholder="Título del post…"
+            oninput="onTitleChange(this.value); markDirty();"
+            style="width:100%;font-size:1.6rem;font-weight:700;border:none;border-bottom:2px solid var(--border);border-radius:0;padding:0.5rem 0;background:transparent;color:var(--dark);outline:none;transition:border-color .2s;"
+            onfocus="this.style.borderBottomColor='var(--teal)'"
+            onblur="this.style.borderBottomColor='var(--border)'"
+          />
+          <div class="slug-preview" style="margin-top:0.5rem;">enhance.work/blog/<span id="slug-preview">${esc(post.slug)}</span></div>
+        </div>
+
+        <!-- POST DETAILS -->
+        <div class="card">
+          <div class="card__header card--always-open" style="cursor:default;">
+            <div class="card__header-left">
+              <svg class="card__header-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <span class="card__label">Detalles del post</span>
+            </div>
+          </div>
+          <div class="card__body open">
+            <div class="grid-2">
+              <div class="field">
+                <label>Slug (URL) <span class="hint">auto-generado desde el título</span></label>
+                <input type="text" id="f-slug" value="${esc(post.slug)}" placeholder="mi-url-del-post" oninput="onSlugChange(this.value); markDirty();" />
+              </div>
+              <div class="field">
+                <label>Estado</label>
+                <select id="f-status" onchange="markDirty()">
+                  <option value="draft"     ${(post.status||'draft') === 'draft'     ? 'selected' : ''}>Borrador</option>
+                  <option value="published" ${post.status === 'published' ? 'selected' : ''}>Publicado</option>
+                </select>
+              </div>
+            </div>
+            <div class="grid-3">
+              <div class="field">
+                <label>Fecha</label>
+                <input type="text" id="f-date" value="${esc(post.date||'')}" placeholder="March 30, 2026" oninput="markDirty()" />
+              </div>
+              <div class="field">
+                <label>Categoría</label>
+                <input type="text" id="f-category" value="${esc(post.category||'')}" placeholder="Careers" oninput="markDirty()" />
+              </div>
+              <div class="field">
+                <label>Tiempo de lectura</label>
+                <input type="text" id="f-read-time" value="${esc(post.read_time||'')}" placeholder="10 min" oninput="markDirty()" />
+              </div>
+            </div>
+            <div class="field">
+              <label>Subtítulo / Tagline</label>
+              <input type="text" id="f-subtitle" value="${esc(post.subtitle||'')}" placeholder="Subtítulo opcional que aparece debajo del título" oninput="markDirty()" />
+            </div>
+            <div class="field">
+              <label>Extracto <span class="hint">(resumen para listados y SEO)</span></label>
+              <textarea id="f-excerpt" rows="3" placeholder="Resumen corto del artículo…" oninput="markDirty()">${esc(post.excerpt||'')}</textarea>
+            </div>
+            <div class="field">
+              <label>Orden de aparición <span class="hint">(menor número = aparece primero)</span></label>
+              <input type="number" id="f-sort-order" value="${post.sort_order??0}" min="0" style="max-width:120px;" oninput="markDirty()" />
+            </div>
           </div>
         </div>
-      `).join('');
-    }
 
-    function escHtml(s) {
-      return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    }
-
-    // ── New post ─────────────────────────────────────────────
-    function newPost() {
-      currentId = null;
-      renderEditor({
-        title: '', slug: '', subtitle: '', date: new Date().toLocaleDateString('en-US', {month:'long',day:'numeric',year:'numeric'}),
-        excerpt: '', category: '', read_time: '', author: 'Sofia Reyes, APRN',
-        author_bio: '', author_credential: '', author_expertise: [],
-        image: '', content: '', status: 'draft',
-        seo_title: '', seo_description: '', seo_og_image: '', canonical_url: '', focus_keyword: '',
-        sort_order: 0
-      });
-    }
-
-    // ── Load post by ID ──────────────────────────────────────
-    async function loadPost(id) {
-      try {
-        const post = await apiFetch(`/api/blog/admin/posts/${id}`);
-        currentId = id;
-        renderPostList();
-        renderEditor(post);
-      } catch (e) {
-        toast('Failed to load post', 'error');
-      }
-    }
-
-    // ── Render editor form ───────────────────────────────────
-    async function renderEditor(post) {
-      const area = document.getElementById('editor-area');
-      area.className = 'editor-area';
-
-      const expertise = Array.isArray(post.author_expertise)
-        ? post.author_expertise.join(', ')
-        : (post.author_expertise || '');
-
-      area.innerHTML = `
-        <div class="form-header">
-          <div class="form-header__title">${currentId ? 'Edit Post' : 'New Post'}</div>
-          <div class="form-actions">
-            <button class="btn btn-secondary" onclick="previewPost()">Preview ↗</button>
-            <button class="btn btn-secondary" onclick="saveDraft()">Save Draft</button>
-            <button class="btn btn-primary" onclick="publishPost()">Publish</button>
-            ${currentId ? `<button class="btn btn-danger" onclick="deletePost()">Delete</button>` : ''}
+        <!-- CONTENT EDITOR -->
+        <div class="card">
+          <div class="card__header" style="cursor:default;">
+            <div class="card__header-left">
+              <svg class="card__header-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+              <span class="card__label">Contenido</span>
+            </div>
+          </div>
+          <div class="card__body open" style="padding:0;">
+            <div class="ck-wrap" id="ck-editor"></div>
           </div>
         </div>
 
-        <!-- MAIN FIELDS -->
-        <div class="form-section">
-          <div class="form-section__title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            Post Details
+        <!-- FEATURED IMAGE -->
+        <div class="card">
+          <div class="card__header" onclick="toggleCard(this)">
+            <div class="card__header-left">
+              <svg class="card__header-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span class="card__label">Imagen destacada</span>
+            </div>
+            <span class="card__chevron open">&#8964;</span>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Title *</label>
-              <input type="text" id="f-title" value="${escHtml(post.title)}" placeholder="Post title…" oninput="onTitleChange(this.value)" />
+          <div class="card__body open">
+            <div class="field" style="margin-bottom:1rem;">
+              <label>URL de imagen</label>
+              <input type="text" id="f-image" value="${esc(post.image||'')}" placeholder="/images/blog/mi-imagen.webp" oninput="updateImgPreview(this.value); markDirty();" />
+              <div class="field-hint">Pega una URL o sube un archivo abajo</div>
             </div>
-          </div>
-          <div class="form-row cols-2">
-            <div class="form-group">
-              <label>Slug (URL) *</label>
-              <input type="text" id="f-slug" value="${escHtml(post.slug)}" placeholder="my-post-url" />
-              <div class="slug-preview">enhance.work/blog/<span id="slug-preview">${escHtml(post.slug)}</span></div>
+            <div id="img-preview-wrap">
+              ${post.image ? `
+                <div class="image-preview-box">
+                  <img src="${esc(post.image)}" alt="" />
+                  <button class="img-remove" onclick="clearImage()" title="Quitar imagen">✕</button>
+                </div>
+              ` : `
+                <div class="image-drop-zone" id="img-drop-zone"
+                  onclick="document.getElementById('img-file').click()"
+                  ondragover="dzDragOver(event)"
+                  ondragleave="dzDragLeave(event)"
+                  ondrop="dzDrop(event)">
+                  <input type="file" id="img-file" accept="image/*" onchange="uploadImage(this.files[0])" />
+                  <div class="dz-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  </div>
+                  <div class="dz-text"><span class="dz-link">Haz clic para subir</span> o arrastra aquí</div>
+                  <div class="dz-hint">PNG, JPG, WebP — máx 10 MB</div>
+                </div>
+              `}
             </div>
-            <div class="form-group">
-              <label>Status</label>
-              <select id="f-status">
-                <option value="draft" ${post.status === 'draft' ? 'selected' : ''}>Draft</option>
-                <option value="published" ${post.status === 'published' ? 'selected' : ''}>Published</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-row cols-3">
-            <div class="form-group">
-              <label>Date</label>
-              <input type="text" id="f-date" value="${escHtml(post.date)}" placeholder="March 30, 2026" />
-            </div>
-            <div class="form-group">
-              <label>Category</label>
-              <input type="text" id="f-category" value="${escHtml(post.category || '')}" placeholder="Careers" />
-            </div>
-            <div class="form-group">
-              <label>Read time</label>
-              <input type="text" id="f-read-time" value="${escHtml(post.read_time || '')}" placeholder="10 min" />
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Subtitle / Tagline</label>
-              <input type="text" id="f-subtitle" value="${escHtml(post.subtitle || '')}" placeholder="Optional subtitle shown on post page" />
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Excerpt (used in listings &amp; meta description fallback)</label>
-              <textarea id="f-excerpt" rows="3" placeholder="Short summary for listings and SEO…">${escHtml(post.excerpt || '')}</textarea>
+            <div id="upload-progress" style="display:none;">
+              <div class="upload-progress" id="progress-bar" style="width:0%"></div>
             </div>
           </div>
         </div>
 
         <!-- AUTHOR -->
-        <div class="form-section">
-          <div class="form-section__title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            Author
-          </div>
-          <div class="form-row cols-2">
-            <div class="form-group">
-              <label>Author name</label>
-              <input type="text" id="f-author" value="${escHtml(post.author || '')}" placeholder="Sofia Reyes, APRN" />
+        <div class="card">
+          <div class="card__header" onclick="toggleCard(this)">
+            <div class="card__header-left">
+              <svg class="card__header-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span class="card__label">Autor</span>
             </div>
-            <div class="form-group">
-              <label>Credential line</label>
-              <input type="text" id="f-author-cred" value="${escHtml(post.author_credential || '')}" placeholder="Verified Aesthetic NP · 9 years" />
-            </div>
+            <span class="card__chevron open">&#8964;</span>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Author bio</label>
-              <textarea id="f-author-bio" rows="2">${escHtml(post.author_bio || '')}</textarea>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Expertise tags (comma-separated)</label>
-              <input type="text" id="f-expertise" value="${escHtml(expertise)}" placeholder="Florida Aesthetic Law, RN vs APRN Scope" />
-            </div>
-          </div>
-        </div>
-
-        <!-- FEATURED IMAGE -->
-        <div class="form-section">
-          <div class="form-section__title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            Featured Image
-          </div>
-          <div class="form-row cols-2">
-            <div class="form-group">
-              <label>Image URL or path</label>
-              <input type="text" id="f-image" value="${escHtml(post.image || '')}" placeholder="/images/blog/my-post-hero.webp" oninput="updateImgPreview(this.value)" />
-            </div>
-            <div style="display:flex;align-items:center;">
-              <div class="image-upload-area" id="img-drop-area" onclick="document.getElementById('img-file-input').click()" style="width:100%">
-                ${post.image ? `<img src="${escHtml(post.image)}" id="img-preview" />` : '<p>Click or drag to upload image</p>'}
-                <input type="file" id="img-file-input" accept="image/*" onchange="uploadImage(this)" />
+          <div class="card__body open">
+            <div class="grid-2">
+              <div class="field">
+                <label>Nombre del autor</label>
+                <input type="text" id="f-author" value="${esc(post.author||'')}" placeholder="Sofia Reyes, APRN" oninput="markDirty()" />
               </div>
+              <div class="field">
+                <label>Credencial</label>
+                <input type="text" id="f-author-cred" value="${esc(post.author_credential||'')}" placeholder="Verified Aesthetic NP · 9 years" oninput="markDirty()" />
+              </div>
+            </div>
+            <div class="field">
+              <label>Bio del autor</label>
+              <textarea id="f-author-bio" rows="2" oninput="markDirty()">${esc(post.author_bio||'')}</textarea>
+            </div>
+            <div class="field">
+              <label>Tags de expertise <span class="hint">(separados por comas)</span></label>
+              <input type="text" id="f-expertise" value="${esc(expertise)}" placeholder="Florida Aesthetic Law, RN vs APRN Scope" oninput="markDirty()" />
             </div>
           </div>
         </div>
 
         <!-- SEO -->
-        <div class="form-section">
-          <div class="form-section__title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            SEO Settings
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Focus keyword</label>
-              <input type="text" id="f-focus-kw" value="${escHtml(post.focus_keyword || '')}" placeholder="aesthetic rn florida" />
+        <div class="card">
+          <div class="card__header" onclick="toggleCard(this)">
+            <div class="card__header-left">
+              <svg class="card__header-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span class="card__label">SEO</span>
             </div>
+            <span class="card__chevron">&#8964;</span>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>SEO Title <small style="color:#9ca3af;font-weight:400">(50-60 chars ideal)</small></label>
-              <input type="text" id="f-seo-title" value="${escHtml(post.seo_title || '')}" placeholder="Leave blank to use post title" oninput="updateSeoPreview()" maxlength="90" />
-              <div class="char-count" id="seo-title-count">0 / 60</div>
+          <div class="card__body">
+            <div class="field">
+              <label>Keyword principal</label>
+              <input type="text" id="f-focus-kw" value="${esc(post.focus_keyword||'')}" placeholder="aesthetic rn florida" oninput="markDirty()" />
             </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Meta Description <small style="color:#9ca3af;font-weight:400">(120-160 chars ideal)</small></label>
-              <textarea id="f-seo-desc" rows="3" placeholder="Leave blank to use excerpt" oninput="updateSeoPreview()" maxlength="300">${escHtml(post.seo_description || '')}</textarea>
-              <div class="char-count" id="seo-desc-count">0 / 160</div>
+            <div class="field">
+              <label>SEO Title <span class="hint">ideal 50-60 caracteres</span></label>
+              <input type="text" id="f-seo-title" value="${esc(post.seo_title||'')}" placeholder="Déjalo vacío para usar el título del post" oninput="updateSeoPreview(); markDirty();" maxlength="90" />
+              <div class="char-row"><span class="char-count" id="seo-title-count">0 / 60</span></div>
             </div>
-          </div>
-          <div class="form-row cols-2">
-            <div class="form-group">
-              <label>OG Image URL (social share)</label>
-              <input type="text" id="f-og-image" value="${escHtml(post.seo_og_image || '')}" placeholder="Leave blank to use featured image" />
+            <div class="field">
+              <label>Meta Description <span class="hint">ideal 120-160 caracteres</span></label>
+              <textarea id="f-seo-desc" rows="3" placeholder="Déjalo vacío para usar el extracto" oninput="updateSeoPreview(); markDirty();" maxlength="300">${esc(post.seo_description||'')}</textarea>
+              <div class="char-row"><span class="char-count" id="seo-desc-count">0 / 160</span></div>
             </div>
-            <div class="form-group">
-              <label>Canonical URL</label>
-              <input type="text" id="f-canonical" value="${escHtml(post.canonical_url || '')}" placeholder="Leave blank for default" />
+            <div class="grid-2">
+              <div class="field">
+                <label>OG Image URL <span class="hint">(redes sociales)</span></label>
+                <input type="text" id="f-og-image" value="${esc(post.seo_og_image||'')}" placeholder="Déjalo vacío para usar imagen destacada" oninput="markDirty()" />
+              </div>
+              <div class="field">
+                <label>Canonical URL</label>
+                <input type="text" id="f-canonical" value="${esc(post.canonical_url||'')}" placeholder="Déjalo vacío para la URL por defecto" oninput="markDirty()" />
+              </div>
             </div>
-          </div>
-          <!-- SEO Preview -->
-          <div class="seo-preview" id="seo-preview-box">
-            <div class="seo-preview__url">https://enhance.work/blog/<span id="sp-slug">${escHtml(post.slug)}</span></div>
-            <div class="seo-preview__title" id="sp-title">${escHtml(post.seo_title || post.title || '—')}</div>
-            <div class="seo-preview__desc" id="sp-desc">${escHtml(post.seo_description || post.excerpt || '—')}</div>
-          </div>
-        </div>
-
-        <!-- CONTENT EDITOR -->
-        <div class="form-section">
-          <div class="form-section__title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
-            Content (HTML Editor)
-          </div>
-          <div class="ck-editor-wrap">
-            <div id="ck-editor"></div>
-          </div>
-        </div>
-
-        <!-- SORT ORDER -->
-        <div class="form-section">
-          <div class="form-section__title">Advanced</div>
-          <div class="form-row cols-2">
-            <div class="form-group">
-              <label>Sort order <small style="color:#9ca3af;font-weight:400">(lower = appears first)</small></label>
-              <input type="number" id="f-sort-order" value="${post.sort_order ?? 0}" min="0" />
+            <!-- Google preview -->
+            <div class="seo-preview">
+              <div class="seo-preview__url">https://enhance.work/blog/<span id="sp-slug">${esc(post.slug)}</span></div>
+              <div class="seo-preview__title" id="sp-title">${esc(post.seo_title || post.title || '—')}</div>
+              <div class="seo-preview__desc" id="sp-desc">${esc(post.seo_description || post.excerpt || '—')}</div>
             </div>
           </div>
         </div>
-      `;
 
-      // Init CKEditor
-      if (editor) { await editor.destroy(); editor = null; }
+      </div><!-- /editor-content -->
+    `;
+
+    // Init CKEditor
+    if (editor) {
+      try { await editor.destroy(); } catch(e){}
+      editor = null;
+    }
+    try {
       editor = await ClassicEditor.create(document.getElementById('ck-editor'), {
         toolbar: {
           items: [
@@ -635,193 +949,332 @@
             'bulletedList', 'numberedList', '|',
             'blockQuote', 'horizontalLine', '|',
             'insertTable', '|',
-            'imageInsert', 'mediaEmbed', '|',
-            'sourceEditing', '|',
-            'undo', 'redo'
-          ]
-        },
-        image: {
-          toolbar: ['imageStyle:inline', 'imageStyle:block', 'imageStyle:side', '|', 'imageTextAlternative']
+            'undo', 'redo',
+          ],
+          shouldNotGroupWhenFull: true,
         },
       });
       editor.setData(post.content || '');
-
-      // Update SEO preview & counters
-      updateSeoPreview();
-      document.getElementById('f-slug').addEventListener('input', e => {
-        document.getElementById('slug-preview').textContent = e.target.value;
-        document.getElementById('sp-slug').textContent = e.target.value;
-      });
+      editor.model.document.on('change:data', () => markDirty());
+    } catch (e) {
+      console.error('CKEditor init error:', e);
+      document.getElementById('ck-editor').innerHTML =
+        `<textarea id="ck-fallback" rows="20" style="width:100%;padding:1rem;font-family:monospace;font-size:0.85rem;border:none;outline:none;resize:vertical;" oninput="markDirty()">${esc(post.content||'')}</textarea>`;
+      editor = { getData: () => document.getElementById('ck-fallback')?.value || '', destroy: async () => {} };
     }
 
-    // ── Title → auto-slug ────────────────────────────────────
-    function onTitleChange(val) {
-      const slugEl = document.getElementById('f-slug');
-      if (!currentId && slugEl) {
-        const slug = val.toLowerCase().replace(/[^a-z0-9\s-]/g,'').trim().replace(/\s+/g,'-').replace(/-+/g,'-');
-        slugEl.value = slug;
-        const sp = document.getElementById('slug-preview');
-        if (sp) sp.textContent = slug;
-        updateSeoPreview();
+    updateSeoPreview();
+    setupAutosave();
+    window.scrollTo(0,0);
+  }
+
+  // ────────────────────────────────────────────────────────────────
+  //  CARD TOGGLE
+  // ────────────────────────────────────────────────────────────────
+  function toggleCard(header) {
+    const body = header.nextElementSibling;
+    const chevron = header.querySelector('.card__chevron');
+    body.classList.toggle('open');
+    if (chevron) chevron.classList.toggle('open');
+  }
+
+  // ────────────────────────────────────────────────────────────────
+  //  SLUG / TITLE HELPERS
+  // ────────────────────────────────────────────────────────────────
+  function onTitleChange(val) {
+    const slugEl = document.getElementById('f-slug');
+    if (!currentId && slugEl) {
+      const slug = val.toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+        .replace(/[^a-z0-9\s-]/g,'').trim()
+        .replace(/\s+/g,'-').replace(/-+/g,'-');
+      slugEl.value = slug;
+      onSlugChange(slug);
+    }
+    updateSeoPreview();
+  }
+
+  function onSlugChange(val) {
+    const sp = document.getElementById('slug-preview');
+    if (sp) sp.textContent = val;
+    const spSlug = document.getElementById('sp-slug');
+    if (spSlug) spSlug.textContent = val;
+  }
+
+  // ────────────────────────────────────────────────────────────────
+  //  SEO PREVIEW
+  // ────────────────────────────────────────────────────────────────
+  function updateSeoPreview() {
+    const title = document.getElementById('f-seo-title')?.value.trim() || document.getElementById('f-title')?.value.trim() || '';
+    const desc  = document.getElementById('f-seo-desc')?.value.trim()  || document.getElementById('f-excerpt')?.value.trim() || '';
+    const slug  = document.getElementById('f-slug')?.value.trim() || '';
+    const spTitle = document.getElementById('sp-title');
+    const spDesc  = document.getElementById('sp-desc');
+    const spSlug  = document.getElementById('sp-slug');
+    if (spTitle) spTitle.textContent = title || '—';
+    if (spDesc)  spDesc.textContent  = desc  || '—';
+    if (spSlug)  spSlug.textContent  = slug;
+    // Counters
+    const tc = document.getElementById('seo-title-count');
+    const dc = document.getElementById('seo-desc-count');
+    if (tc) {
+      const l = document.getElementById('f-seo-title')?.value.length || 0;
+      tc.textContent = `${l} / 60`;
+      tc.className = `char-count ${l > 70 ? 'over' : l > 55 ? 'warn' : ''}`;
+    }
+    if (dc) {
+      const l = document.getElementById('f-seo-desc')?.value.length || 0;
+      dc.textContent = `${l} / 160`;
+      dc.className = `char-count ${l > 180 ? 'over' : l > 155 ? 'warn' : ''}`;
+    }
+  }
+
+  // ────────────────────────────────────────────────────────────────
+  //  IMAGE UPLOAD
+  // ────────────────────────────────────────────────────────────────
+  function updateImgPreview(url) {
+    if (!url) return;
+    const wrap = document.getElementById('img-preview-wrap');
+    wrap.innerHTML = `
+      <div class="image-preview-box">
+        <img src="${esc(url)}" alt="" onerror="this.style.display='none'" />
+        <button class="img-remove" onclick="clearImage()" title="Quitar imagen">✕</button>
+      </div>`;
+  }
+
+  function clearImage() {
+    document.getElementById('f-image').value = '';
+    document.getElementById('img-preview-wrap').innerHTML = `
+      <div class="image-drop-zone" id="img-drop-zone"
+        onclick="document.getElementById('img-file').click()"
+        ondragover="dzDragOver(event)"
+        ondragleave="dzDragLeave(event)"
+        ondrop="dzDrop(event)">
+        <input type="file" id="img-file" accept="image/*" onchange="uploadImage(this.files[0])" />
+        <div class="dz-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div>
+        <div class="dz-text"><span class="dz-link">Haz clic para subir</span> o arrastra aquí</div>
+        <div class="dz-hint">PNG, JPG, WebP — máx 10 MB</div>
+      </div>`;
+    markDirty();
+  }
+
+  function dzDragOver(e) {
+    e.preventDefault();
+    document.getElementById('img-drop-zone')?.classList.add('dragover');
+  }
+  function dzDragLeave(e) {
+    document.getElementById('img-drop-zone')?.classList.remove('dragover');
+  }
+  function dzDrop(e) {
+    e.preventDefault();
+    document.getElementById('img-drop-zone')?.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file) uploadImage(file);
+  }
+
+  async function uploadImage(file) {
+    if (!file) return;
+    const prog = document.getElementById('upload-progress');
+    const bar  = document.getElementById('progress-bar');
+    if (prog) { prog.style.display = 'block'; }
+    if (bar)  { bar.style.width = '30%'; }
+
+    const fd = new FormData();
+    fd.append('image', file);
+    try {
+      if (bar) bar.style.width = '70%';
+      const res = await fetch('/api/blog/admin/upload-image', { method: 'POST', body: fd, credentials: 'same-origin' });
+      if (!res.ok) throw new Error(await res.text());
+      const data = await res.json();
+      if (bar) bar.style.width = '100%';
+      setTimeout(() => { if (prog) prog.style.display = 'none'; }, 500);
+      if (data.url) {
+        document.getElementById('f-image').value = data.url;
+        updateImgPreview(data.url);
+        markDirty();
+        toast('Imagen subida ✓');
       }
-      const stEl = document.getElementById('f-seo-title');
-      if (stEl && !stEl.value) updateSeoPreview();
+    } catch (e) {
+      if (prog) prog.style.display = 'none';
+      toast('Error subiendo imagen: ' + e.message, 'error');
     }
+  }
 
-    // ── SEO preview updater ──────────────────────────────────
-    function updateSeoPreview() {
-      const title = document.getElementById('f-seo-title')?.value.trim() || document.getElementById('f-title')?.value.trim() || '';
-      const desc  = document.getElementById('f-seo-desc')?.value.trim() || document.getElementById('f-excerpt')?.value.trim() || '';
-      const slug  = document.getElementById('f-slug')?.value.trim() || '';
+  // ────────────────────────────────────────────────────────────────
+  //  DIRTY / AUTOSAVE
+  // ────────────────────────────────────────────────────────────────
+  function markDirty() {
+    isDirty = true;
+    setAutosaveStatus('');
+    clearTimeout(autosaveTimer);
+    autosaveTimer = setTimeout(() => autoSave(), 30000); // 30s
+  }
 
-      const spTitle = document.getElementById('sp-title');
-      const spDesc  = document.getElementById('sp-desc');
-      const spSlug  = document.getElementById('sp-slug');
-      if (spTitle) spTitle.textContent = title || '—';
-      if (spDesc)  spDesc.textContent  = desc || '—';
-      if (spSlug)  spSlug.textContent  = slug;
+  function setAutosaveStatus(msg, type = '') {
+    const el = document.getElementById('autosave-status');
+    if (!el) return;
+    el.textContent = msg;
+    el.className = `autosave-status ${type}`;
+  }
 
-      // Char counters
-      const tc = document.getElementById('seo-title-count');
-      const dc = document.getElementById('seo-desc-count');
-      if (tc) {
-        const len = document.getElementById('f-seo-title')?.value.length || 0;
-        tc.textContent = `${len} / 60`;
-        tc.className = `char-count ${len > 70 ? 'over' : len > 55 ? 'warn' : ''}`;
+  function setupAutosave() {
+    clearTimeout(autosaveTimer);
+  }
+
+  async function autoSave() {
+    if (!isDirty) return;
+    setAutosaveStatus('Guardando…', 'saving');
+    try {
+      await savePost('draft', true);
+      setAutosaveStatus('Guardado automáticamente ✓', 'saved');
+      setTimeout(() => setAutosaveStatus('', ''), 3000);
+    } catch (e) {
+      setAutosaveStatus('Error al autoguardar', 'error');
+    }
+  }
+
+  // ────────────────────────────────────────────────────────────────
+  //  COLLECT FORM DATA
+  // ────────────────────────────────────────────────────────────────
+  function collectFormData(status) {
+    const expertise = (document.getElementById('f-expertise')?.value || '')
+      .split(',').map(s => s.trim()).filter(Boolean);
+    const formStatus = status || document.getElementById('f-status')?.value || 'draft';
+    return {
+      title:             (document.getElementById('f-title')?.value || '').trim(),
+      slug:              (document.getElementById('f-slug')?.value || '').trim(),
+      subtitle:          (document.getElementById('f-subtitle')?.value || '').trim(),
+      date:              (document.getElementById('f-date')?.value || '').trim(),
+      excerpt:           (document.getElementById('f-excerpt')?.value || '').trim(),
+      category:          (document.getElementById('f-category')?.value || '').trim(),
+      read_time:         (document.getElementById('f-read-time')?.value || '').trim(),
+      author:            (document.getElementById('f-author')?.value || '').trim(),
+      author_bio:        (document.getElementById('f-author-bio')?.value || '').trim(),
+      author_credential: (document.getElementById('f-author-cred')?.value || '').trim(),
+      author_expertise:  expertise,
+      image:             (document.getElementById('f-image')?.value || '').trim(),
+      content:           editor ? editor.getData() : '',
+      status:            formStatus,
+      seo_title:         (document.getElementById('f-seo-title')?.value || '').trim(),
+      seo_description:   (document.getElementById('f-seo-desc')?.value || '').trim(),
+      seo_og_image:      (document.getElementById('f-og-image')?.value || '').trim(),
+      canonical_url:     (document.getElementById('f-canonical')?.value || '').trim(),
+      focus_keyword:     (document.getElementById('f-focus-kw')?.value || '').trim(),
+      sort_order:        parseInt(document.getElementById('f-sort-order')?.value || '0', 10),
+    };
+  }
+
+  // ────────────────────────────────────────────────────────────────
+  //  SAVE / PUBLISH / DELETE
+  // ────────────────────────────────────────────────────────────────
+  function saveDraft()    { return savePost('draft'); }
+  function publishPost()  { return savePost('published'); }
+
+  async function savePost(status, silent = false) {
+    const data = collectFormData(status);
+    if (!data.title) { toast('El título es obligatorio', 'error'); return; }
+    if (!data.slug)  { toast('El slug es obligatorio', 'error'); return; }
+
+    try {
+      let result;
+      if (currentId) {
+        result = await apiFetch(`/api/blog/admin/posts/${currentId}`, {
+          method: 'PUT',
+          body: JSON.stringify(data),
+        });
+      } else {
+        result = await apiFetch('/api/blog/admin/posts', {
+          method: 'POST',
+          body: JSON.stringify(data),
+        });
+        currentId = result.id;
       }
-      if (dc) {
-        const len = document.getElementById('f-seo-desc')?.value.length || 0;
-        dc.textContent = `${len} / 160`;
-        dc.className = `char-count ${len > 180 ? 'over' : len > 155 ? 'warn' : ''}`;
+      isDirty = false;
+
+      // Update status badge
+      const badge = document.getElementById('status-badge');
+      if (badge) {
+        badge.className = `badge ${status}`;
+        badge.textContent = status === 'published' ? 'Publicado' : 'Borrador';
       }
-    }
+      // Update status select
+      const sel = document.getElementById('f-status');
+      if (sel) sel.value = status;
 
-    // ── Image preview updater ────────────────────────────────
-    function updateImgPreview(url) {
-      const wrap = document.getElementById('img-drop-area');
-      if (!wrap) return;
-      let img = wrap.querySelector('img');
-      if (!img) {
-        img = document.createElement('img');
-        img.id = 'img-preview';
-        wrap.prepend(img);
+      if (!silent) {
+        toast(status === 'published' ? '¡Post publicado! ✓' : 'Borrador guardado ✓');
       }
-      img.src = url;
+      await loadPosts();
+    } catch (e) {
+      if (!silent) toast('Error al guardar: ' + e.message, 'error');
+      throw e;
     }
+  }
 
-    // ── Image upload ─────────────────────────────────────────
-    async function uploadImage(input) {
-      if (!input.files[0]) return;
-      const fd = new FormData();
-      fd.append('image', input.files[0]);
-      try {
-        const res = await fetch('/api/blog/admin/upload-image', { method: 'POST', body: fd });
-        const data = await res.json();
-        if (data.url) {
-          document.getElementById('f-image').value = data.url;
-          updateImgPreview(data.url);
-          toast('Image uploaded ✓');
-        }
-      } catch {
-        toast('Image upload failed', 'error');
-      }
-    }
-
-    // ── Collect form data ────────────────────────────────────
-    function collectFormData(status) {
-      const expertise = (document.getElementById('f-expertise')?.value || '')
-        .split(',').map(s => s.trim()).filter(Boolean);
-      return {
-        title:             document.getElementById('f-title').value.trim(),
-        slug:              document.getElementById('f-slug').value.trim(),
-        subtitle:          document.getElementById('f-subtitle')?.value.trim() || '',
-        date:              document.getElementById('f-date')?.value.trim() || '',
-        excerpt:           document.getElementById('f-excerpt')?.value.trim() || '',
-        category:          document.getElementById('f-category')?.value.trim() || '',
-        read_time:         document.getElementById('f-read-time')?.value.trim() || '',
-        author:            document.getElementById('f-author')?.value.trim() || '',
-        author_bio:        document.getElementById('f-author-bio')?.value.trim() || '',
-        author_credential: document.getElementById('f-author-cred')?.value.trim() || '',
-        author_expertise:  expertise,
-        image:             document.getElementById('f-image')?.value.trim() || '',
-        content:           editor ? editor.getData() : '',
-        status:            status || document.getElementById('f-status')?.value || 'draft',
-        seo_title:         document.getElementById('f-seo-title')?.value.trim() || '',
-        seo_description:   document.getElementById('f-seo-desc')?.value.trim() || '',
-        seo_og_image:      document.getElementById('f-og-image')?.value.trim() || '',
-        canonical_url:     document.getElementById('f-canonical')?.value.trim() || '',
-        focus_keyword:     document.getElementById('f-focus-kw')?.value.trim() || '',
-        sort_order:        parseInt(document.getElementById('f-sort-order')?.value || '0', 10),
-      };
-    }
-
-    // ── Save (draft) ─────────────────────────────────────────
-    async function saveDraft() {
-      await savePost('draft');
-    }
-
-    // ── Publish ──────────────────────────────────────────────
-    async function publishPost() {
-      await savePost('published');
-    }
-
-    async function savePost(status) {
-      const data = collectFormData(status);
-      if (!data.title) { toast('Title is required', 'error'); return; }
-      if (!data.slug)  { toast('Slug is required', 'error');  return; }
-      try {
-        if (currentId) {
-          await apiFetch(`/api/blog/admin/posts/${currentId}`, {
-            method: 'PUT',
-            body: JSON.stringify(data),
-          });
-          toast(`Post ${status === 'published' ? 'published' : 'saved'} ✓`);
-        } else {
-          const created = await apiFetch('/api/blog/admin/posts', {
-            method: 'POST',
-            body: JSON.stringify(data),
-          });
-          currentId = created.id;
-          toast('Post created ✓');
-        }
-        await loadPosts();
-        renderPostList();
-        // update status select
-        const statusEl = document.getElementById('f-status');
-        if (statusEl) statusEl.value = status;
-      } catch (e) {
-        toast('Save failed: ' + e.message, 'error');
-      }
-    }
-
-    // ── Delete ───────────────────────────────────────────────
-    async function deletePost() {
-      if (!currentId) return;
-      if (!confirm('Delete this post? This cannot be undone.')) return;
-      try {
-        await apiFetch(`/api/blog/admin/posts/${currentId}`, { method: 'DELETE' });
-        currentId = null;
-        toast('Post deleted');
-        await loadPosts();
-        document.getElementById('editor-area').className = 'editor-area editor-area--empty';
-        document.getElementById('editor-area').innerHTML = `
+  async function deletePost() {
+    if (!currentId) return;
+    const ok = await confirm2('Eliminar post', '¿Estás seguro? Esta acción no se puede deshacer.');
+    if (!ok) return;
+    try {
+      await apiFetch(`/api/blog/admin/posts/${currentId}`, { method: 'DELETE' });
+      currentId = null;
+      isDirty = false;
+      toast('Post eliminado');
+      await loadPosts();
+      document.getElementById('editor-area').innerHTML = `
+        <div class="editor-empty">
           <div class="editor-placeholder">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            <h3>Post deleted</h3><p>Create a new post or select another</p>
-          </div>`;
-      } catch (e) {
-        toast('Delete failed: ' + e.message, 'error');
-      }
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            <h3>Post eliminado</h3>
+            <p>Selecciona otro post o crea uno nuevo</p>
+          </div>
+        </div>`;
+    } catch (e) {
+      toast('Error al eliminar: ' + e.message, 'error');
     }
+  }
 
-    // ── Preview ──────────────────────────────────────────────
-    function previewPost() {
-      const slug = document.getElementById('f-slug')?.value;
-      if (slug) window.open(`/blog/${slug}`, '_blank');
+  // ────────────────────────────────────────────────────────────────
+  //  PREVIEW
+  // ────────────────────────────────────────────────────────────────
+  function previewPost() {
+    const slug = document.getElementById('f-slug')?.value;
+    if (slug) window.open(`/blog/${slug}`, '_blank');
+    else toast('Guarda el post primero para previsualizar', 'info');
+  }
+
+  // ────────────────────────────────────────────────────────────────
+  //  LOGOUT
+  // ────────────────────────────────────────────────────────────────
+  document.getElementById('logout-btn').addEventListener('click', async (e) => {
+    e.preventDefault();
+    if (isDirty) {
+      const ok = await confirm2('Cerrar sesión', '¿Tienes cambios sin guardar. Salir de todas formas?');
+      if (!ok) return;
     }
+    window.location.href = '/admin/logout';
+  });
 
-    // ── Init ─────────────────────────────────────────────────
-    loadPosts();
-  </script>
+  // ────────────────────────────────────────────────────────────────
+  //  KEYBOARD SHORTCUTS
+  // ────────────────────────────────────────────────────────────────
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+      e.preventDefault();
+      if (document.getElementById('f-title')) saveDraft();
+    }
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'P') {
+      e.preventDefault();
+      if (document.getElementById('f-title')) publishPost();
+    }
+  });
+
+  // ────────────────────────────────────────────────────────────────
+  //  INIT
+  // ────────────────────────────────────────────────────────────────
+  loadPosts();
+</script>
 </body>
 </html>
