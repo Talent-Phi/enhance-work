@@ -401,12 +401,17 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
 
 // Serve admin panel HTML
 app.get('/admin/blog', (req, res) => {
-  const adminFile = path.join(__dirname, 'admin', 'blog.html');
-  if (fs.existsSync(adminFile)) {
-    res.sendFile(adminFile);
-  } else {
-    res.status(404).send('Admin panel not found');
+  // Try public/admin/blog.html first (works after build), then admin/blog.html (dev)
+  const candidates = [
+    path.join(__dirname, 'dist', 'client', 'admin', 'blog.html'),
+    path.join(__dirname, 'dist', 'admin', 'blog.html'),
+    path.join(__dirname, 'public', 'admin', 'blog.html'),
+    path.join(__dirname, 'admin', 'blog.html'),
+  ];
+  for (const f of candidates) {
+    if (fs.existsSync(f)) return res.sendFile(f);
   }
+  res.status(404).send('Admin panel not found');
 });
 
 // Image upload for blog (reuse multer, save to public/images/blog/)
