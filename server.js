@@ -10,19 +10,6 @@ import { initGoogleSheets, appendApplicationRow, getSpreadsheetUrl } from './goo
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// ── Admin users ──────────────────────────────────────────────
-const ADMIN_USERS = [
-  {
-    name: 'Rafael',
-    email: 'rafael@perfectb.com',
-    hash: '$2b$10$XgMcBdrrOSELOODMy3JM.u7OxqD4LGZFIuYzdXKP.NRylZbJvxy6O',
-  },
-  {
-    name: 'Santiago',
-    email: 'santiago.loaiza@talentphi.com',
-    hash: '$2b$10$JoiPaIotSivlQm3MXg0iT.xw2iLf0fszvzn8.QH9V3XTqNf/.Opu2',
-  },
-];
 
 const app = express();
 app.use(express.json());
@@ -147,6 +134,17 @@ async function initDatabase() {
       published_at      TIMESTAMP,
       created_at        TIMESTAMP DEFAULT NOW(),
       updated_at        TIMESTAMP DEFAULT NOW()
+    )
+  `);
+
+  // ── Admin users table ────────────────────────────────────────
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS users (
+      id            SERIAL PRIMARY KEY,
+      name          VARCHAR(100) NOT NULL,
+      email         VARCHAR(255) UNIQUE NOT NULL,
+      password_hash VARCHAR(255) NOT NULL,
+      created_at    TIMESTAMP DEFAULT NOW()
     )
   `);
 
@@ -443,16 +441,21 @@ app.get('/admin/login', (req, res) => {
 // ── Login POST ───────────────────────────────────────────────
 app.post('/admin/login', express.urlencoded({ extended: false }), async (req, res) => {
   const { email, password } = req.body;
-  const user = ADMIN_USERS.find(u => u.email.toLowerCase() === (email || '').toLowerCase());
-  if (!user) {
-    return res.redirect('/admin/login?error=1');
+  try {
+    const result = await pool.query(
+      'SELECT id, name, email, password_hash FROM users WHERE email = $1',
+      [(email || '').toLowerCase().trim()]
+    );
+    const user = result.rows[0];
+    if (!user) return res.redirect('/admin/login?error=1');
+    const valid = await bcrypt.compare(password || '', user.password_hash);
+    if (!valid) return res.redirect('/admin/login?error=1');
+    req.session.adminUser = { id: user.id, name: user.name, email: user.email };
+    res.redirect('/admin/blog');
+  } catch (err) {
+    console.error('Login error:', err);
+    res.redirect('/admin/login?error=1');
   }
-  const valid = await bcrypt.compare(password || '', user.hash);
-  if (!valid) {
-    return res.redirect('/admin/login?error=1');
-  }
-  req.session.adminUser = { name: user.name, email: user.email };
-  res.redirect('/admin/blog');
 });
 
 // ── Logout ───────────────────────────────────────────────────
