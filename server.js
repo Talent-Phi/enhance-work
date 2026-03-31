@@ -7,6 +7,7 @@ import fs from 'fs';
 import session from 'express-session';
 import bcrypt from 'bcryptjs';
 import { initGoogleSheets, appendApplicationRow, getSpreadsheetUrl } from './googleSheets.js';
+import { seedBlogPosts } from './scripts/blog-seed-data.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -162,6 +163,34 @@ async function initDatabase() {
       );
       console.log(`Admin user seeded: ${u.email}`);
     }
+  }
+
+  // ── Seed blog posts if table is empty ────────────────────────
+  const blogCount = await pool.query('SELECT COUNT(*) FROM blog_posts');
+  if (parseInt(blogCount.rows[0].count, 10) === 0 && seedBlogPosts.length > 0) {
+    console.log(`Seeding ${seedBlogPosts.length} blog posts…`);
+    for (const p of seedBlogPosts) {
+      await pool.query(`
+        INSERT INTO blog_posts (
+          slug, title, subtitle, date, excerpt, category, read_time,
+          author, author_bio, author_credential, author_expertise,
+          image, content, status, sort_order,
+          seo_title, seo_description, seo_og_image, canonical_url, focus_keyword,
+          published_at
+        ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21)
+        ON CONFLICT (slug) DO NOTHING
+      `, [
+        p.slug, p.title, p.subtitle||'', p.date||'', p.excerpt||'',
+        p.category||'', p.read_time||'',
+        p.author||'', p.author_bio||'', p.author_credential||'',
+        p.author_expertise || [],
+        p.image||'', p.content||'', p.status||'draft', p.sort_order||0,
+        p.seo_title||'', p.seo_description||'', p.seo_og_image||'',
+        p.canonical_url||'', p.focus_keyword||'',
+        p.published_at || null,
+      ]);
+    }
+    console.log('Blog posts seeded ✓');
   }
 
   console.log('Database initialized');
