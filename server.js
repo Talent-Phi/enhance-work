@@ -148,6 +148,22 @@ async function initDatabase() {
     )
   `);
 
+  const adminUsers = [
+    { name: 'Rafael',   email: 'rafael@perfectb.com',           password: 'Enhancerafael1!' },
+    { name: 'Santiago', email: 'santiago.loaiza@talentphi.com', password: 'Enhancesantiago1!' },
+  ];
+  for (const u of adminUsers) {
+    const exists = await pool.query('SELECT id FROM users WHERE email = $1', [u.email]);
+    if (exists.rows.length === 0) {
+      const hash = await bcrypt.hash(u.password, 10);
+      await pool.query(
+        'INSERT INTO users (name, email, password_hash) VALUES ($1, $2, $3)',
+        [u.name, u.email, hash]
+      );
+      console.log(`Admin user seeded: ${u.email}`);
+    }
+  }
+
   console.log('Database initialized');
 }
 
