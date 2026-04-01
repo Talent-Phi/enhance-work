@@ -94,9 +94,22 @@ async function initDatabase() {
       injector_msg_read BOOLEAN DEFAULT FALSE,
       terms_agreed BOOLEAN DEFAULT FALSE,
       resume_filename VARCHAR(255),
+      utm_source VARCHAR(255),
+      utm_medium VARCHAR(255),
+      utm_campaign VARCHAR(255),
+      utm_term VARCHAR(255),
+      utm_content VARCHAR(255),
       created_at TIMESTAMP DEFAULT NOW()
     )
   `);
+  // ── UTM columns migration (safe: ADD COLUMN IF NOT EXISTS) ──
+  const utmCols = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content'];
+  for (const col of utmCols) {
+    await pool.query(
+      `ALTER TABLE applications ADD COLUMN IF NOT EXISTS ${col} VARCHAR(255)`
+    );
+  }
+
   await pool.query(`
     CREATE TABLE IF NOT EXISTS resumes (
       id SERIAL PRIMARY KEY,
@@ -296,7 +309,8 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
         language_4, language_level_4, language_5, language_level_5,
         licenses, license_other,
         years_experience, skills, start_date, employed,
-        salary, pay_type, injector_msg_read, terms_agreed, resume_filename
+        salary, pay_type, injector_msg_read, terms_agreed, resume_filename,
+        utm_source, utm_medium, utm_campaign, utm_term, utm_content
       ) VALUES (
         $1, $2, $3, $4, $5, $6, $7,
         $8, $9, $10, $11, $12,
@@ -305,7 +319,8 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
         $20, $21, $22, $23,
         $24, $25,
         $26, $27, $28, $29,
-        $30, $31, $32, $33, $34
+        $30, $31, $32, $33, $34,
+        $35, $36, $37, $38, $39
       ) RETURNING id`,
       [
         data.role,
@@ -341,7 +356,12 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
         data.pay_type || null,
         data.injector_msg_read === 'true' || data.injector_msg_read === true,
         data.terms_agreed === 'true' || data.terms_agreed === true,
-        resumeFilename
+        resumeFilename,
+        data.utm_source || null,
+        data.utm_medium || null,
+        data.utm_campaign || null,
+        data.utm_term || null,
+        data.utm_content || null
       ]
     );
 
@@ -417,6 +437,12 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
       'Salary Expectations':  data.salary || '',
       'Salary Type':          data.pay_type || '',
       'Resume Filename':      resumeLink || '',
+      // --- UTMs ---
+      'UTM Source':           data.utm_source || '',
+      'UTM Medium':           data.utm_medium || '',
+      'UTM Campaign':         data.utm_campaign || '',
+      'UTM Term':             data.utm_term || '',
+      'UTM Content':          data.utm_content || '',
       // --- Meta ---
       'Application ID':       appId,
       'Submitted At':         new Date().toISOString(),
@@ -463,7 +489,12 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
       employed: data.employed || '',
       salary: data.salary || '',
       pay_type: data.pay_type || '',
-      resume_filename: resumeLink || ''
+      resume_filename: resumeLink || '',
+      utm_source: data.utm_source || '',
+      utm_medium: data.utm_medium || '',
+      utm_campaign: data.utm_campaign || '',
+      utm_term: data.utm_term || '',
+      utm_content: data.utm_content || ''
     }).catch(() => {});
 
     res.json({ success: true, id: appId });

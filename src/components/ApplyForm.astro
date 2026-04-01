@@ -1473,6 +1473,21 @@
 <script>
 (function() {
 
+  // ── UTM capture ────────────────────────────────────────────────────────────
+  const UTM_KEYS = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content'];
+  (function captureUtms() {
+    const params = new URLSearchParams(window.location.search);
+    const stored = {};
+    UTM_KEYS.forEach(k => {
+      const v = params.get(k);
+      if (v) stored[k] = v;
+    });
+    if (Object.keys(stored).length) {
+      sessionStorage.setItem('ew_utms', JSON.stringify(stored));
+    }
+  })();
+  // ──────────────────────────────────────────────────────────────────────────
+
   // ── Date field validation ──────────────────────────────────────────────────
   function daysInMonth(month, year) {
     const m = parseInt(month, 10);
@@ -1717,6 +1732,15 @@
         const resumeInput = form.querySelector('input[name="resume"]');
         if (resumeInput && resumeInput.files[0]) {
           formData.append('resume', resumeInput.files[0]);
+        }
+
+        // Attach UTMs from sessionStorage
+        try {
+          const utmRaw = sessionStorage.getItem('ew_utms');
+          const utms = utmRaw ? JSON.parse(utmRaw) : {};
+          UTM_KEYS.forEach(k => formData.append(k, utms[k] || ''));
+        } catch(e) {
+          UTM_KEYS.forEach(k => formData.append(k, ''));
         }
 
         const resp = await fetch('/api/apply', { method: 'POST', body: formData });
