@@ -20,7 +20,8 @@ const HEADERS = [
   'Start Date', 'Currently Employed',
   'Salary Expectations', 'Salary Type',
   'Resume Filename',
-  'UTM Source', 'UTM Medium', 'UTM Campaign', 'UTM Term', 'UTM Content'
+  'UTM Source', 'UTM Medium', 'UTM Campaign', 'UTM Term', 'UTM Content',
+  'UTM ID', 'UTM Creative Format'
 ];
 
 function getSheetsClient() {
@@ -45,7 +46,7 @@ export async function initGoogleSheets() {
 
     const existing = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
-      range: `${SHEET_NAME}!A1:AL1`
+      range: `${SHEET_NAME}!A1:AN1`
     });
 
     const firstRow = existing.data.values?.[0] || [];
@@ -111,12 +112,14 @@ export async function appendApplicationRow(data) {
       data.utm_medium || '',
       data.utm_campaign || '',
       data.utm_term || '',
-      data.utm_content || ''
+      data.utm_content || '',
+      data.utm_id || '',
+      data.utm_creative_format || '',
     ];
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
-      range: `${SHEET_NAME}!A:AL`,
+      range: `${SHEET_NAME}!A:AN`,
       valueInputOption: 'USER_ENTERED',
       insertDataOption: 'INSERT_ROWS',
       requestBody: { values: [row] }

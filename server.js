@@ -99,11 +99,13 @@ async function initDatabase() {
       utm_campaign VARCHAR(255),
       utm_term VARCHAR(255),
       utm_content VARCHAR(255),
+      utm_id VARCHAR(255),
+      utm_creative_format VARCHAR(255),
       created_at TIMESTAMP DEFAULT NOW()
     )
   `);
   // ── UTM columns migration (safe: ADD COLUMN IF NOT EXISTS) ──
-  const utmCols = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content'];
+  const utmCols = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','utm_creative_format'];
   for (const col of utmCols) {
     await pool.query(
       `ALTER TABLE applications ADD COLUMN IF NOT EXISTS ${col} VARCHAR(255)`
@@ -310,7 +312,8 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
         licenses, license_other,
         years_experience, skills, start_date, employed,
         salary, pay_type, injector_msg_read, terms_agreed, resume_filename,
-        utm_source, utm_medium, utm_campaign, utm_term, utm_content
+        utm_source, utm_medium, utm_campaign, utm_term, utm_content,
+        utm_id, utm_creative_format
       ) VALUES (
         $1, $2, $3, $4, $5, $6, $7,
         $8, $9, $10, $11, $12,
@@ -320,7 +323,8 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
         $24, $25,
         $26, $27, $28, $29,
         $30, $31, $32, $33, $34,
-        $35, $36, $37, $38, $39
+        $35, $36, $37, $38, $39,
+        $40, $41
       ) RETURNING id`,
       [
         data.role,
@@ -361,7 +365,9 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
         data.utm_medium || null,
         data.utm_campaign || null,
         data.utm_term || null,
-        data.utm_content || null
+        data.utm_content || null,
+        data.utm_id || null,
+        data.utm_creative_format || null,
       ]
     );
 
@@ -443,6 +449,8 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
       'UTM Campaign':         data.utm_campaign || '',
       'UTM Term':             data.utm_term || '',
       'UTM Content':          data.utm_content || '',
+      'UTM ID':               data.utm_id || '',
+      'UTM Creative Format':  data.utm_creative_format || '',
       // --- Meta ---
       'Application ID':       appId,
       'Submitted At':         new Date().toISOString(),
@@ -494,7 +502,9 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
       utm_medium: data.utm_medium || '',
       utm_campaign: data.utm_campaign || '',
       utm_term: data.utm_term || '',
-      utm_content: data.utm_content || ''
+      utm_content: data.utm_content || '',
+      utm_id: data.utm_id || '',
+      utm_creative_format: data.utm_creative_format || '',
     }).catch(() => {});
 
     res.json({ success: true, id: appId });
