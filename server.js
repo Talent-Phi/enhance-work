@@ -27,11 +27,25 @@ app.use(session({
   },
 }));
 
-// ── Auth middleware ───────────────────────────────────────────
+// ── Auth middleware (session-based, for admin panel) ─────────
 function requireAuth(req, res, next) {
   if (req.session && req.session.adminUser) return next();
   if (req.path.startsWith('/api/')) return res.status(401).json({ error: 'Unauthorized' });
   return res.redirect('/admin/login');
+}
+
+// ── Token auth middleware (for external API) ─────────────────
+function requireToken(req, res, next) {
+  const authHeader = req.headers['authorization'] || '';
+  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
+  const validToken = process.env.BLOG_API_TOKEN;
+  if (!validToken) {
+    return res.status(500).json({ error: 'Server misconfigured: BLOG_API_TOKEN not set' });
+  }
+  if (!token || token !== validToken) {
+    return res.status(401).json({ error: 'Unauthorized: invalid or missing Bearer token' });
+  }
+  next();
 }
 
 const upload = multer({
@@ -739,6 +753,112 @@ app.get('/api/blog/posts/:slug', async (req, res) => {
     );
     if (!result.rows[0]) return res.status(404).json({ error: 'Not found' });
     res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ════════════════════════════════════════════════════════════
+//  EXTERNAL BLOG API  (token-auth, for agents / integrations)
+// ════════════════════════════════════════════════════════════
+
+// POST /api/blog/external/posts — Create a blog post via token
+app.post('/api/blog/external/posts', requireToken, async (req, res) => {
+  try {
+    const {
+      slug,
+      title,
+      subtitle,
+      date,
+      excerpt,
+      category,
+      read_time,
+      author,
+      author_bio,
+      author_credential,
+      author_expertise,
+      image,
+      content,
+      status,
+      sort_order,
+      seo_title,
+      seo_description,
+      seo_og_image,
+      canonical_url,
+      focus_keyword,
+    } = req.body;
+
+    // Required fields
+    if (!slug || !title || !content) {
+      return res.status(400).json({
+        error: 'Missing required fields: slug, title, content',
+      });
+    }
+
+    // Basic slug validation
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+      return res.status(400).json({
+        error: 'Invalid slug: use lowercase letters, numbers and hyphens only (e.g. my-blog-post)',
+      });
+    }
+
+    const postStatus = ['published', 'draft'].includes(status) ? status : 'draft';
+    const published_at = postStatus === 'published' ? new Date() : null;
+
+    const result = await pool.query(
+      `INSERT INTO blog_posts (
+        slug, title, subtitle, date, excerpt, category, read_time,
+        author, author_bio, author_credential, author_expertise,
+        image, content, status, sort_order,
+        seo_title, seo_description, seo_og_image, canonical_url, focus_keyword,
+        published_at
+      ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21)
+      RETURNING id, slug, title, status, published_at, created_at`,
+      [
+        slug,
+        title,
+        subtitle || '',
+        date || '',
+        excerpt || '',
+        category || '',
+        read_time || '',
+        author || '',
+        author_bio || '',
+        author_credential || '',
+        Array.isArray(author_expertise) ? author_expertise : [],
+        image || '',
+        content,
+        postStatus,
+        sort_order || 0,
+        seo_title || '',
+        seo_description || '',
+        seo_og_image || '',
+        canonical_url || '',
+        focus_keyword || '',
+        published_at,
+      ]
+    );
+
+    res.status(201).json({ success: true, post: result.rows[0] });
+  } catch (err) {
+    if (err.code === '23505') {
+      // Unique constraint on slug
+      return res.status(409).json({ error: `Slug already exists: ${req.body.slug}` });
+    }
+    console.error('External blog POST:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/blog/external/posts — List posts (published + draft) via token
+app.get('/api/blog/external/posts', requireToken, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT id, slug, title, status, date, sort_order, published_at, updated_at
+      FROM blog_posts
+      ORDER BY sort_order ASC, published_at DESC NULLS LAST, created_at DESC
+    `);
+    res.json({ success: true, posts: result.rows });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
