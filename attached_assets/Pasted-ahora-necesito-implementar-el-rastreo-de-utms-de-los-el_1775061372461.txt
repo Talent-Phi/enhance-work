@@ -1,0 +1,41 @@
+ahora necesito implementar el rastreo de utms de los elads que llenan los registros del formualrio de enhance work rasytrear e insertar esto en la base datos y tambien en  el gogole sheets si queires arma tu la logica de esto y yo me encarho en replit de arreglar la abse datos y que se conete conm el goole sheet asiq eu ayudaem cone sto
+Tina Loaiza  [11:34 AM]
+Primero déjame revisar el código del formulario y el servidor para entender la estructura actual.
+[11:34 AM]Ahora veo el endpoint /api/apply y el servidor:
+[11:34 AM]Ya tengo todo el panorama claro. La lógica es:
+
+1. Frontend → capturar UTMs de la URL al cargar la página y guardarlos en sessionStorage (sobreviven si el usuario refresca)
+2. Backend (server.js) → nuevas columnas en DB + leerlos del request
+3. Google Sheets (googleSheets.js) → nuevas columnas en el sheet
+
+Voy a implementar los 3 cambios ahora:
+[11:34 AM]Tengo todo lo que necesito. Voy a implementar los 3 cambios (frontend + DB + Google Sheets) ahora.
+[11:34 AM]Ahora añadir los UTMs al FormData antes del fetch('/api/apply'):
+[11:34 AM]Ahora el backend — server.js:
+[11:34 AM]Ahora actualizar el INSERT de aplicaciones para incluir los UTMs:
+[11:34 AM]Ahora añadir los UTMs al payload de Zapier y a la llamada de Google Sheets:
+[11:34 AM]Ahora añadir UTMs a la llamada appendApplicationRow:
+[11:34 AM]Ahora googleSheets.js — añadir las columnas de UTM:
+[11:34 AM]Ahora añadir los valores UTM al array row en appendApplicationRow:
+[11:34 AM]Actualizar el range del sheet para incluir las 5 columnas nuevas (de AG a AL):
+[11:34 AM]Ahora también necesito añadir una migración para las DBs existentes (las columnas nuevas puede que no existan en Replit). Lo hago en initDatabase:
+[11:34 AM]Ahora commitear y pushear:
+[11:34 AM]Listo, pusheado a main. Esto es lo que implementé:
+
+Frontend (ApplyForm.astro)
+
+• Al cargar la página, lee utm_source, utm_medium, utm_campaign, utm_term, utm_content de la URL y los guarda en sessionStorage
+• Al hacer submit, los adjunta al FormData y los manda al servidor
+
+Backend (server.js)
+
+• Crea las 5 columnas utm_* en la tabla applications (CREATE TABLE + ALTER TABLE ADD COLUMN IF NOT EXISTS para DBs ya existentes)
+• Las persiste en el INSERT
+• Las incluye en el payload de Zapier
+
+Google Sheets (googleSheets.js)
+
+• Agrega 5 columnas nuevas al final: UTM Source, UTM Medium, UTM Campaign, UTM Term, UTM Content
+• Range actualizado de A:AG a A:AL
+
+En Replit solo necesitas hacer pull y el servidor se encargará de migrar la DB automáticamente al arrancar. Las columnas UTM van a aparecer solas en el Sheet la próxima vez que se inicialice.
