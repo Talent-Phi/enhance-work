@@ -1,0 +1,45 @@
+Perfecto, ya tengo el panorama completo. El blog ya existe con toda su estructura en DB. Voy a:
+
+1. Agregar autenticación por Bearer token (separada del sistema de sesiones)
+2. Crear el endpoint POST /api/blog/external/posts
+3. Generar el token y documentarlo
+
+Arranco:
+[1:35 PM]Ahora implemento todo en server.js — agrego el middleware de token auth y el endpoint externo:
+[1:35 PM]Ahora agrego el endpoint externo justo antes de // ════════ ERROR HANDLER:
+[1:35 PM]Ahora guardo el token en .secrets/ y creo la documentación del API:
+[1:35 PM]Ahora commit y push:
+[1:35 PM]Listo. Todo empujado. Aquí el resumen de lo que implementé:
+
+───
+
+API de Blog Externa :white_check_mark:
+
+Endpoint: POST https://enhance.work/api/blog/external/posts
+
+Auth: Authorization: Bearer <token>
+
+Token: 9a656cbc0ca9e093d66e6c8c5357f96045d2ec731e0b86fab1e5bb51ea64f21b
+(guardado en .secrets/enhance-work-blog-api.env — hay que configurarlo como env var BLOG_API_TOKEN en el servidor de producción)
+
+───
+
+Campos del payload:
+
+| Campo                                                                  | Requerido | Descripción                      |
+| ---------------------------------------------------------------------- | --------- | -------------------------------- |
+| slug                                                                   | ✅         | URL del post (mi-blog-post)      |
+| title                                                                  | ✅         | Título                           |
+| content                                                                | ✅         | HTML completo del cuerpo         |
+| excerpt                                                                | —         | Resumen corto ~160 chars         |
+| date                                                                   | —         | Fecha display, ej. April 1, 2026 |
+| category, read_time                                                    | —         | Metadatos de listado             |
+| author, author_bio, author_credential, author_expertise                | —         | Info del autor                   |
+| image                                                                  | —         | URL imagen hero                  |
+| status                                                                 | —         | "published" o "draft"            |
+| seo_title, seo_description, seo_og_image, canonical_url, focus_keyword | —         | SEO completo                     |
+───
+
+Pendiente que hagas en producción: agregar BLOG_API_TOKEN=9a656cbc0ca9e093d66e6c8c5357f96045d2ec731e0b86fab1e5bb51ea64f21b como variable de entorno en Render/Railway/donde corra el servidor. Sin eso el endpoint responde 500.
+
+¿Lo configuro yo o lo haces tú en el panel del hosting?
