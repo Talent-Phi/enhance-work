@@ -494,14 +494,45 @@ import StatCard from '../components/StatCard.astro';
 </style>
 
 <script>
-  function randomActive() {
-    return Math.floor(Math.random() * 11) + 5; // 5–15
+  const CACHE_KEY = 'ew_active_count';
+  const STEP = 5; // multiples of 5
+  const MIN = 5;
+  const MAX = 15;
+
+  function snapToStep(n: number) {
+    return Math.round(n / STEP) * STEP;
   }
+
+  // Load persisted value or pick a fresh one
+  function loadCount(): number {
+    const stored = sessionStorage.getItem(CACHE_KEY);
+    if (stored !== null) {
+      const n = parseInt(stored, 10);
+      if (!isNaN(n) && n >= MIN && n <= MAX) return n;
+    }
+    // First visit: random multiple of STEP in range
+    const steps = (MAX - MIN) / STEP;
+    return MIN + Math.floor(Math.random() * (steps + 1)) * STEP;
+  }
+
+  function nextCount(current: number): number {
+    // Step ±5, stay within range
+    const direction = Math.random() < 0.5 ? -1 : 1;
+    const next = current + direction * STEP;
+    if (next < MIN) return current + STEP;
+    if (next > MAX) return current - STEP;
+    return next;
+  }
+
   const countEl = document.getElementById('hero-active-count');
   if (countEl) {
-    countEl.textContent = randomActive();
+    let current = loadCount();
+    countEl.textContent = String(current);
+
     setInterval(() => {
-      if (countEl) countEl.textContent = randomActive();
+      current = nextCount(current);
+      sessionStorage.setItem(CACHE_KEY, String(current));
+      if (countEl) countEl.textContent = String(current);
     }, 30000);
   }
 </script>
