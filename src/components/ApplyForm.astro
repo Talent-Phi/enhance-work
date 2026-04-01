@@ -1476,7 +1476,7 @@
 (function() {
 
   // ── UTM capture ────────────────────────────────────────────────────────────
-  const UTM_KEYS = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','utm_creative_format'];
+  const UTM_KEYS = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','utm_creative_format','gclid','gad_campaignid'];
   (function captureUtms() {
     const params = new URLSearchParams(window.location.search);
     const stored = {};
