@@ -874,6 +874,68 @@ app.get('/api/blog/external/posts', requireToken, async (req, res) => {
   }
 });
 
+
+// PATCH /api/blog/external/posts/:id — Update a blog post via token
+app.patch('/api/blog/external/posts/:id', requireToken, async (req, res) => {
+  try {
+    const id = req.params.id;
+    const existing = await pool.query('SELECT * FROM blog_posts WHERE id = $1', [id]);
+    if (!existing.rows[0]) return res.status(404).json({ error: 'Post not found' });
+    const e = existing.rows[0];
+
+    const {
+      slug, title, subtitle, date, excerpt, category, read_time,
+      author, author_bio, author_credential, author_expertise,
+      image, content, status, sort_order,
+      seo_title, seo_description, seo_og_image, canonical_url, focus_keyword
+    } = req.body;
+
+    const newStatus = status !== undefined ? status : e.status;
+    const published_at = (newStatus === 'published' && !e.published_at) ? new Date() : (e.published_at || null);
+
+    const result = await pool.query(`
+      UPDATE blog_posts SET
+        slug = $1, title = $2, subtitle = $3, date = $4, excerpt = $5,
+        category = $6, read_time = $7,
+        author = $8, author_bio = $9, author_credential = $10, author_expertise = $11,
+        image = $12, content = $13, status = $14, sort_order = $15,
+        seo_title = $16, seo_description = $17, seo_og_image = $18,
+        canonical_url = $19, focus_keyword = $20,
+        published_at = $21, updated_at = NOW()
+      WHERE id = $22
+      RETURNING id, slug, title, status, updated_at
+    `, [
+      slug ?? e.slug,
+      title ?? e.title,
+      subtitle !== undefined ? subtitle : e.subtitle,
+      date !== undefined ? date : e.date,
+      excerpt !== undefined ? excerpt : e.excerpt,
+      category !== undefined ? category : e.category,
+      read_time !== undefined ? read_time : e.read_time,
+      author !== undefined ? author : e.author,
+      author_bio !== undefined ? author_bio : e.author_bio,
+      author_credential !== undefined ? author_credential : e.author_credential,
+      author_expertise !== undefined ? (Array.isArray(author_expertise) ? author_expertise : []) : e.author_expertise,
+      image !== undefined ? image : e.image,
+      content !== undefined ? content : e.content,
+      newStatus,
+      sort_order !== undefined ? sort_order : e.sort_order,
+      seo_title !== undefined ? seo_title : e.seo_title,
+      seo_description !== undefined ? seo_description : e.seo_description,
+      seo_og_image !== undefined ? seo_og_image : e.seo_og_image,
+      canonical_url !== undefined ? canonical_url : e.canonical_url,
+      focus_keyword !== undefined ? focus_keyword : e.focus_keyword,
+      published_at,
+      id
+    ]);
+
+    res.json({ success: true, post: result.rows[0] });
+  } catch (err) {
+    console.error('External blog PATCH:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ════════════════════════════════════════════════════════════
 //  ERROR HANDLER
 // ════════════════════════════════════════════════════════════
