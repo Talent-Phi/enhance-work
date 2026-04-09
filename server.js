@@ -13,7 +13,24 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 
 const app = express();
-app.use(express.json());
+
+// ── JSON body parser with detailed error on malformed payload ─
+app.use((req, res, next) => {
+  express.json({ limit: '10mb' })(req, res, (err) => {
+    if (err) {
+      const path = req.path;
+      const detail = err.message || 'Unknown JSON parse error';
+      console.error(`[API] ❌ JSON parse error on ${req.method} ${path}: ${detail}`);
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid JSON in request body',
+        detail,
+        hint: 'Ensure Content-Type is application/json and all string values have newlines escaped as \\n, tabs as \\t, and quotes as \\".',
+      });
+    }
+    next();
+  });
+});
 
 // ── Session middleware ────────────────────────────────────────
 app.use(session({
@@ -774,6 +791,10 @@ app.get('/api/blog/posts/:slug', async (req, res) => {
 
 // POST /api/blog/external/posts — Create a blog post via token
 app.post('/api/blog/external/posts', requireToken, async (req, res) => {
+  const ts = new Date().toISOString();
+  console.log(`[Blog API] ▶ POST /api/blog/external/posts — ${ts}`);
+  console.log(`[Blog API]   Fields received: ${Object.keys(req.body || {}).join(', ') || '(none)'}`);
+
   try {
     const {
       slug,
@@ -799,21 +820,42 @@ app.post('/api/blog/external/posts', requireToken, async (req, res) => {
     } = req.body;
 
     // Required fields
-    if (!slug || !title || !content) {
+    const missing = [];
+    if (!slug)    missing.push('slug');
+    if (!title)   missing.push('title');
+    if (!content) missing.push('content');
+    if (missing.length) {
+      console.error(`[Blog API] ❌ Missing required fields: ${missing.join(', ')}`);
       return res.status(400).json({
-        error: 'Missing required fields: slug, title, content',
+        success: false,
+        error: 'Missing required fields',
+        missing,
+        hint: `The following fields are required: slug, title, content. Received keys: ${Object.keys(req.body).join(', ')}`,
       });
     }
 
-    // Basic slug validation
+    // Slug validation
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+      console.error(`[Blog API] ❌ Invalid slug: "${slug}"`);
       return res.status(400).json({
-        error: 'Invalid slug: use lowercase letters, numbers and hyphens only (e.g. my-blog-post)',
+        success: false,
+        error: 'Invalid slug format',
+        received: slug,
+        hint: 'Use only lowercase letters, numbers and hyphens. No uppercase, spaces, accents or underscores. Example: my-blog-post',
       });
+    }
+
+    // Warn about unknown/ignored fields
+    const KNOWN = new Set(['slug','title','subtitle','date','excerpt','category','read_time','author','author_bio','author_credential','author_expertise','image','content','status','sort_order','seo_title','seo_description','seo_og_image','canonical_url','focus_keyword']);
+    const unknown = Object.keys(req.body).filter(k => !KNOWN.has(k));
+    if (unknown.length) {
+      console.warn(`[Blog API] ⚠️  Unknown fields (will be ignored): ${unknown.join(', ')}`);
     }
 
     const postStatus = ['published', 'draft'].includes(status) ? status : 'draft';
     const published_at = postStatus === 'published' ? new Date() : null;
+
+    console.log(`[Blog API]   Inserting — slug: "${slug}" | status: ${postStatus} | author: "${author || ''}" | image: "${image ? 'yes' : 'empty'}"`);
 
     const result = await pool.query(
       `INSERT INTO blog_posts (
@@ -849,14 +891,28 @@ app.post('/api/blog/external/posts', requireToken, async (req, res) => {
       ]
     );
 
-    res.status(201).json({ success: true, post: result.rows[0] });
+    const created = result.rows[0];
+    console.log(`[Blog API] ✅ Post created — id: ${created.id} | slug: "${created.slug}" | status: ${created.status}`);
+    if (unknown.length) {
+      console.warn(`[Blog API] ⚠️  These fields were NOT saved (not in schema): ${unknown.join(', ')}`);
+    }
+    res.status(201).json({
+      success: true,
+      post: created,
+      warnings: unknown.length ? `These fields were ignored (not in schema): ${unknown.join(', ')}` : undefined,
+    });
   } catch (err) {
     if (err.code === '23505') {
-      // Unique constraint on slug
-      return res.status(409).json({ error: `Slug already exists: ${req.body.slug}` });
+      console.error(`[Blog API] ❌ Slug conflict: "${req.body.slug}" already exists`);
+      return res.status(409).json({
+        success: false,
+        error: 'Slug already exists',
+        slug: req.body.slug,
+        hint: 'Change the slug to something unique. Example: add a suffix like -2 or -florida-2026',
+      });
     }
-    console.error('External blog POST:', err);
-    res.status(500).json({ error: err.message });
+    console.error('[Blog API] ❌ DB error:', err.message);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
