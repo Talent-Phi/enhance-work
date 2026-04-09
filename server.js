@@ -186,6 +186,17 @@ async function initDatabase() {
     )
   `);
 
+  // ── Blog images table (permanent storage in DB) ─────────────
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS blog_images (
+      id           SERIAL PRIMARY KEY,
+      original_name VARCHAR(255),
+      content_type  VARCHAR(100),
+      file_data     BYTEA NOT NULL,
+      created_at    TIMESTAMP DEFAULT NOW()
+    )
+  `);
+
   // ── Admin users table ────────────────────────────────────────
   await pool.query(`
     CREATE TABLE IF NOT EXISTS users (
@@ -604,21 +615,9 @@ app.get('/admin/blog', requireAuth, (req, res) => {
   res.status(404).send('Admin panel not found');
 });
 
-// Image upload for blog (reuse multer, save to public/images/blog/)
+// Blog image upload — memory storage, saved permanently to PostgreSQL
 const blogImageUpload = multer({
-  storage: multer.diskStorage({
-    destination: (req, file, cb) => {
-      const dir = path.join(__dirname, 'public', 'images', 'blog');
-      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-      cb(null, dir);
-    },
-    filename: (req, file, cb) => {
-      const ext = path.extname(file.originalname).toLowerCase();
-      const name = path.basename(file.originalname, ext)
-        .toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').slice(0, 60);
-      cb(null, `${name}-${Date.now()}${ext}`);
-    }
-  }),
+  storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowed = ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.avif'];
@@ -629,9 +628,40 @@ const blogImageUpload = multer({
 // Protect ALL /api/blog/admin/* routes
 app.use('/api/blog/admin', requireAuth);
 
-app.post('/api/blog/admin/upload-image', blogImageUpload.single('image'), (req, res) => {
+// POST — upload image, store in DB, return permanent URL
+app.post('/api/blog/admin/upload-image', blogImageUpload.single('image'), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
-  res.json({ url: `/images/blog/${req.file.filename}` });
+  try {
+    const result = await pool.query(
+      `INSERT INTO blog_images (original_name, content_type, file_data)
+       VALUES ($1, $2, $3) RETURNING id`,
+      [req.file.originalname, req.file.mimetype, req.file.buffer]
+    );
+    const id = result.rows[0].id;
+    console.log(`[Blog Images] ✅ Saved image id=${id} (${req.file.originalname}, ${req.file.size} bytes)`);
+    res.json({ url: `/api/blog/image/${id}` });
+  } catch (err) {
+    console.error('[Blog Images] ❌ DB save error:', err.message);
+    res.status(500).json({ error: 'Failed to save image' });
+  }
+});
+
+// GET — serve image from DB (public, no auth needed)
+app.get('/api/blog/image/:id', async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT content_type, file_data FROM blog_images WHERE id = $1`,
+      [req.params.id]
+    );
+    if (!result.rows.length) return res.status(404).json({ error: 'Image not found' });
+    const { content_type, file_data } = result.rows[0];
+    res.setHeader('Content-Type', content_type || 'application/octet-stream');
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    res.send(file_data);
+  } catch (err) {
+    console.error('[Blog Images] ❌ Serve error:', err.message);
+    res.status(500).json({ error: 'Failed to retrieve image' });
+  }
 });
 
 // ── Blog CRUD API ────────────────────────────────────────────
