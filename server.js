@@ -253,6 +253,58 @@ async function initDatabase() {
   }
 
   console.log('Database initialized');
+
+  // ── Migrate static blog images → DB (one-time, idempotent) ──
+  await migrateBlogImagesToDb();
+}
+
+async function migrateBlogImagesToDb() {
+  try {
+    // Find blog posts that still reference static files
+    const { rows: posts } = await pool.query(
+      `SELECT id, image FROM blog_posts WHERE image LIKE '/images/blog/%'`
+    );
+    if (posts.length === 0) {
+      console.log('[BlogImgMigrate] All blog images already using DB storage ✓');
+      return;
+    }
+    console.log(`[BlogImgMigrate] Migrating ${posts.length} blog post image(s) to DB…`);
+
+    const extToMime = {
+      '.webp': 'image/webp', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
+      '.png': 'image/png',  '.gif': 'image/gif',   '.svg': 'image/svg+xml',
+      '.avif': 'image/avif',
+    };
+
+    for (const post of posts) {
+      const filename = path.basename(post.image);
+      const filePath = path.join(__dirname, 'public', 'images', 'blog', filename);
+
+      if (!fs.existsSync(filePath)) {
+        console.warn(`[BlogImgMigrate] ⚠️  File not found, skipping post id=${post.id}: ${filename}`);
+        continue;
+      }
+
+      const fileData = fs.readFileSync(filePath);
+      const ext = path.extname(filename).toLowerCase();
+      const contentType = extToMime[ext] || 'application/octet-stream';
+
+      const { rows: [img] } = await pool.query(
+        `INSERT INTO blog_images (original_name, content_type, file_data)
+         VALUES ($1, $2, $3) RETURNING id`,
+        [filename, contentType, fileData]
+      );
+
+      await pool.query(
+        `UPDATE blog_posts SET image = $1 WHERE id = $2`,
+        [`/api/blog/image/${img.id}`, post.id]
+      );
+      console.log(`[BlogImgMigrate] ✅ Post id=${post.id} → blog_images id=${img.id} (${filename}, ${Math.round(fileData.length / 1024)}KB)`);
+    }
+    console.log('[BlogImgMigrate] Migration complete ✓');
+  } catch (err) {
+    console.error('[BlogImgMigrate] ❌ Error:', err.message);
+  }
 }
 
 // ── Meta Conversions API (server-side) ──────────────────────────────────────
