@@ -494,37 +494,66 @@ import StatCard from '../components/StatCard.astro';
 </style>
 
 <script>
-  const CACHE_KEY = 'ew_active_count';
+  const STORAGE_KEY = 'ew_active';
+  const INTERVAL_MS = 30_000;
   const MIN = 5;
   const MAX = 15;
 
-  function loadCount(): number {
-    const stored = sessionStorage.getItem(CACHE_KEY);
-    if (stored !== null) {
-      const n = parseInt(stored, 10);
-      if (!isNaN(n) && n >= MIN && n <= MAX) return n;
-    }
+  interface ActiveState { count: number; ts: number; }
+
+  function readState(): ActiveState | null {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      const s: ActiveState = JSON.parse(raw);
+      if (typeof s.count === 'number' && typeof s.ts === 'number') return s;
+    } catch {}
+    return null;
+  }
+
+  function saveState(count: number): void {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ count, ts: Date.now() })); } catch {}
+  }
+
+  function randomCount(): number {
     return MIN + Math.floor(Math.random() * (MAX - MIN + 1));
   }
 
-  function nextCount(current: number): number {
-    // step ±1, stay within range
+  function stepCount(n: number): number {
     const delta = Math.random() < 0.5 ? 1 : -1;
-    const next = current + delta;
-    if (next < MIN) return current + 1;
-    if (next > MAX) return current - 1;
+    const next = n + delta;
+    if (next < MIN) return n + 1;
+    if (next > MAX) return n - 1;
     return next;
   }
 
   const countEl = document.getElementById('hero-active-count');
   if (countEl) {
-    let current = loadCount();
+    // Load persisted state; only generate new count if 30s have elapsed
+    const state = readState();
+    const now = Date.now();
+    let current: number;
+
+    if (state && (now - state.ts) < INTERVAL_MS) {
+      // Still within the window — keep exact same number
+      current = state.count;
+    } else {
+      // First ever load OR enough time has passed → pick new count
+      current = state ? stepCount(state.count) : randomCount();
+      saveState(current);
+    }
+
     countEl.textContent = String(current);
 
-    setInterval(() => {
-      current = nextCount(current);
-      sessionStorage.setItem(CACHE_KEY, String(current));
+    // Schedule next change aligned to when the window actually expires
+    const elapsed = state ? (now - state.ts) : 0;
+    const delay = Math.max(0, INTERVAL_MS - elapsed);
+
+    setTimeout(function tick() {
+      current = stepCount(current);
+      saveState(current);
       if (countEl) countEl.textContent = String(current);
-    }, 30000);
+      setTimeout(tick, INTERVAL_MS);
+    }, delay);
   }
 </script>
