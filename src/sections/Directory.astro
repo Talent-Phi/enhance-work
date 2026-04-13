@@ -374,8 +374,9 @@
     align-items: center;
     justify-content: center;
     animation: slideInRight 0.8s ease-out;
-    perspective: 1500px;
-    min-height: 600px;
+    perspective: 2000px;
+    min-height: 650px;
+    padding-top: 2rem;
   }
   
   @keyframes slideInRight {
@@ -397,14 +398,14 @@
     transform-style: preserve-3d;
   }
   
-  /* Individual page layers - Accordion/Fan effect */
+  /* Individual page layers - Accordion/Fan effect leaning back */
   .directory__page {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-    transform-origin: left center;
+    transform-origin: bottom center;
   }
   
   .directory__page img {
@@ -412,78 +413,56 @@
     height: auto;
     display: block;
     border-radius: 8px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
   }
   
-  /* Page 3: Back page (clinic listing) - Default state */
+  /* Page 3: Back page (clinic listing) - Leaning back most */
   .directory__page--3 {
     z-index: 1;
-    transform: translateX(80px) translateZ(-100px) rotateY(-18deg) rotateZ(3deg);
-    opacity: 0.75;
+    transform: translateX(100px) translateY(-30px) translateZ(-120px) rotateX(15deg) rotateY(-20deg) rotateZ(8deg);
+    opacity: 0.7;
   }
   
-  /* Page 2: Middle page (index) - Default state */
+  /* Page 2: Middle page (index) - Leaning back medium */
   .directory__page--2 {
     z-index: 2;
-    transform: translateX(40px) translateZ(-50px) rotateY(-10deg) rotateZ(1.5deg);
+    transform: translateX(50px) translateY(-15px) translateZ(-60px) rotateX(12deg) rotateY(-12deg) rotateZ(4deg);
     opacity: 0.85;
   }
   
-  /* Page 1: Front cover - Default state */
+  /* Page 1: Front cover - Slight lean */
   .directory__page--1 {
     position: relative;
     z-index: 3;
-    transform: translateZ(0) rotateY(-3deg);
+    transform: translateZ(0) rotateX(8deg) rotateY(-5deg) rotateZ(1deg);
   }
   
-  /* Active state - brings page to front */
+  /* Active state - brings page to front with animation */
   .directory__page.active {
-    z-index: 10;
-    transform: translateZ(20px) rotateY(0deg) rotateZ(0deg) scale(1.05);
-    opacity: 1;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.35);
+    z-index: 10 !important;
+    transform: translateZ(30px) rotateX(5deg) rotateY(0deg) rotateZ(0deg) scale(1.05) !important;
+    opacity: 1 !important;
   }
   
-  /* When page 1 is active */
-  .directory__page--1.active ~ .directory__page--2 {
-    transform: translateX(40px) translateZ(-50px) rotateY(-10deg) rotateZ(1.5deg);
-  }
-  
-  .directory__page--1.active ~ .directory__page--3 {
-    transform: translateX(80px) translateZ(-100px) rotateY(-18deg) rotateZ(3deg);
-  }
-  
-  /* When page 2 is active */
-  .directory__page--2.active {
-    z-index: 10;
-  }
-  
-  .directory__page--2.active ~ .directory__page--3 {
-    transform: translateX(40px) translateZ(-50px) rotateY(-10deg) rotateZ(1.5deg);
-  }
-  
-  /* When page 3 is active */
-  .directory__page--3.active {
-    z-index: 10;
-  }
-  
-  /* Hover effect - pause animation and spread pages */
+  /* Hover effect - spread pages more */
   .directory__mockup:hover .directory__page--3 {
-    transform: translateX(100px) translateZ(-100px) rotateY(-20deg) rotateZ(4deg);
+    transform: translateX(120px) translateY(-35px) translateZ(-120px) rotateX(18deg) rotateY(-22deg) rotateZ(10deg);
+    opacity: 0.8;
   }
   
   .directory__mockup:hover .directory__page--2 {
-    transform: translateX(50px) translateZ(-50px) rotateY(-12deg) rotateZ(2deg);
+    transform: translateX(65px) translateY(-18px) translateZ(-60px) rotateX(14deg) rotateY(-14deg) rotateZ(5deg);
+    opacity: 0.9;
   }
   
   .directory__mockup:hover .directory__page--1 {
-    transform: translateZ(10px) rotateY(-2deg);
+    transform: translateZ(10px) rotateX(6deg) rotateY(-3deg) rotateZ(0.5deg);
   }
   
   /* Label overlay */
   .directory__mockup-label {
     position: absolute;
-    bottom: -1.5rem;
+    bottom: -2rem;
     left: 50%;
     transform: translateX(-50%);
     background: rgba(255,255,255,0.15);
