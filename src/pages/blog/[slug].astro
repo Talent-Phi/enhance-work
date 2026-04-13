@@ -398,12 +398,12 @@ const blogPostingSchema = JSON.stringify({
      THREE-COLUMN LAYOUT
   ═══════════════════════════════ */
   .post-layout {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 2.5rem 2rem 3rem;
     display: grid;
-    grid-template-columns: 220px 1fr 44px;
-    gap: 2.5rem;
+    grid-template-columns: 240px 1fr;
+    gap: 3rem;
     align-items: start;
   }
 
@@ -411,27 +411,31 @@ const blogPostingSchema = JSON.stringify({
   .post-toc {
     position: sticky;
     top: 84px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   }
   .post-toc__title {
     font-family: 'Poppins', sans-serif;
-    font-size: 0.85rem;
+    font-size: 1rem;
     font-weight: 700;
     color: #2bbcb0;
-    margin-bottom: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+    text-transform: none;
+    letter-spacing: 0;
   }
   .post-toc__item {
     display: flex;
-    gap: 0.35rem;
-    font-size: 0.73rem;
+    gap: 0.5rem;
+    font-size: 0.8rem;
     font-weight: 500;
     color: #666;
     text-decoration: none;
-    padding: 0.3rem 0;
-    line-height: 1.35;
+    padding: 0.45rem 0;
+    line-height: 1.4;
     border-left: 2px solid transparent;
-    padding-left: 0.6rem;
+    padding-left: 0.75rem;
     transition: color 0.15s, border-color 0.15s;
   }
   .post-toc__item:hover,
@@ -440,14 +444,20 @@ const blogPostingSchema = JSON.stringify({
     border-left-color: #2bbcb0;
   }
   .post-toc__num {
-    min-width: 18px;
+    min-width: 20px;
     color: #bbb;
     font-weight: 600;
     flex-shrink: 0;
   }
 
   /* CONTENT */
-  .post-body { min-width: 0; }
+  .post-body { 
+    min-width: 0;
+    background: #fff;
+    border-radius: 12px;
+    padding: 2.5rem 3rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
   .post-content {
     font-size: 1rem;
     line-height: 1.8;
@@ -519,39 +529,8 @@ const blogPostingSchema = JSON.stringify({
 
   /* Share sidebar */
   .post-share {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.6rem;
-    position: sticky;
-    top: 84px;
+    display: none;
   }
-  .post-share__label {
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    font-size: 0.6rem;
-    font-weight: 600;
-    color: #aaa;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 0.25rem;
-  }
-  .post-share__btn {
-    width: 36px;
-    height: 36px;
-    background: #f6f6f6;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #555;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background 0.15s, color 0.15s, border-color 0.15s;
-    padding: 0;
-  }
-  .post-share__btn:hover { background: #2bbcb0; color: #fff; border-color: #2bbcb0; }
 
   /* ═══════════════════════════════
      CTA BANNER
@@ -742,8 +721,8 @@ const blogPostingSchema = JSON.stringify({
   @media (max-width: 1024px) {
     .post-hero__inner { grid-template-columns: 1fr; }
     .post-hero__visual { display: none; }
-    .post-layout { grid-template-columns: 180px 1fr; }
-    .post-share { display: none; }
+    .post-layout { grid-template-columns: 1fr; gap: 2rem; }
+    .post-toc { position: static; }
     .post-cta__inner { grid-template-columns: 1fr; }
     .post-cta__visual { display: none; }
   }
@@ -754,6 +733,7 @@ const blogPostingSchema = JSON.stringify({
     .post-author-card__avatar { width: 44px; height: 44px; min-width: 44px; font-size: 0.9rem; }
     .post-layout { grid-template-columns: 1fr; padding: 1.5rem 1.25rem 2.5rem; }
     .post-toc { position: static; margin-bottom: 1.5rem; }
+    .post-body { padding: 1.5rem 1.25rem; }
     .post-related__grid { grid-template-columns: 1fr; }
     .post-cta { padding: 2rem 1.25rem; }
     .post-cta__inner { grid-template-columns: 1fr; }
