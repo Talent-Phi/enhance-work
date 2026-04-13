@@ -24,7 +24,7 @@ import Nav from '../../components/Nav.astro';
           <span class="dir-price-note">One-time · Instant PDF download</span>
         </div>
 
-        <button class="dir-cta-btn" id="buyBtn">Get Instant Access →</button>
+        <button class="dir-cta-btn" id="buyBtn" type="button">Get Instant Access →</button>
         <p class="dir-guarantee">🔒 Secure checkout via Stripe · Immediate download after payment</p>
       </div>
 
@@ -93,7 +93,7 @@ import Nav from '../../components/Nav.astro';
           <li>Medical assistants breaking into the aesthetics space</li>
           <li>Practice managers scouting the competition</li>
         </ul>
-        <button class="dir-cta-btn" id="buyBtn2">Get Instant Access — $35 →</button>
+        <button class="dir-cta-btn" id="buyBtn2" type="button">Get Instant Access — $35 →</button>
       </div>
     </section>
 
@@ -123,8 +123,8 @@ import Nav from '../../components/Nav.astro';
   </main>
 
   <script>
-    async function startCheckout() {
-      const btn = document.getElementById('buyBtn') || document.getElementById('buyBtn2');
+    async function startCheckout(e) {
+      e.preventDefault();
       const allBtns = document.querySelectorAll('.dir-cta-btn');
       allBtns.forEach(b => { b.disabled = true; b.textContent = 'Redirecting to checkout...'; });
       try {
@@ -135,19 +135,25 @@ import Nav from '../../components/Nav.astro';
         });
         const data = await res.json();
         if (data.url) {
-          window.location.href = data.url;
+          // Use window.top so it works both standalone and inside iframes
+          (window.top || window).location.href = data.url;
         } else {
           throw new Error(data.error || 'Unknown error');
         }
       } catch (err) {
-        allBtns.forEach(b => { b.disabled = false; b.textContent = 'Get Instant Access →'; });
+        allBtns.forEach(b => {
+          b.disabled = false;
+          b.textContent = b.id === 'buyBtn2' ? 'Get Instant Access — $35 →' : 'Get Instant Access →';
+        });
         alert('Something went wrong. Please try again.');
         console.error(err);
       }
     }
 
-    document.getElementById('buyBtn')?.addEventListener('click', startCheckout);
-    document.getElementById('buyBtn2')?.addEventListener('click', startCheckout);
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('buyBtn')?.addEventListener('click', startCheckout);
+      document.getElementById('buyBtn2')?.addEventListener('click', startCheckout);
+    });
   </script>
 
 </BaseLayout>
