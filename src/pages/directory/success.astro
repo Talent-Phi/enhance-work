@@ -41,6 +41,7 @@ import Nav from '../../components/Nav.astro';
 
       <p class="success-note">Didn't start? <a id="manualLink" href="#">Click here</a> to download again.</p>
       <p class="success-email">Confirmation sent to <span id="customerEmail"></span></p>
+      <p class="redirect-note">Returning to home in <span id="countdown">3</span>s…</p>
     </div>
 
     <div class="success-card" id="errorState" style="display:none">
@@ -85,13 +86,25 @@ import Nav from '../../components/Nav.astro';
         loadingEl.style.display = 'none';
         successEl.style.display = 'flex';
 
-        // Auto-download
+        // Auto-download then redirect to home
         const a = document.createElement('a');
         a.href     = url;
         a.download = 'South-Florida-Med-Spa-Directory.pdf';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+
+        // Countdown and redirect to home
+        const countdownEl = document.getElementById('countdown');
+        let secs = 3;
+        const interval = setInterval(() => {
+          secs--;
+          if (countdownEl) countdownEl.textContent = String(secs);
+          if (secs <= 0) {
+            clearInterval(interval);
+            (window.top || window).location.href = '/';
+          }
+        }, 1000);
 
       } catch (err) {
         showError('Network error. Please try again or contact support.');
@@ -214,6 +227,12 @@ import Nav from '../../components/Nav.astro';
 .success-email {
   font-size: 0.82rem;
   color: #bbb;
+  margin: 0;
+}
+.redirect-note {
+  font-size: 0.82rem;
+  color: var(--color-accent);
+  font-weight: 500;
   margin: 0;
 }
 
