@@ -398,12 +398,12 @@ const blogPostingSchema = JSON.stringify({
      THREE-COLUMN LAYOUT
   ═══════════════════════════════ */
   .post-layout {
-    max-width: 1100px;
+    max-width: 1440px;
     margin: 0 auto;
     padding: 2.5rem 2rem 3rem;
     display: grid;
-    grid-template-columns: 240px 1fr;
-    gap: 3rem;
+    grid-template-columns: 200px 1fr;
+    gap: 4rem;
     align-items: start;
   }
 
@@ -415,6 +415,7 @@ const blogPostingSchema = JSON.stringify({
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    margin-left: 2rem;
   }
   .post-toc__title {
     font-family: 'Poppins', sans-serif;
@@ -453,6 +454,7 @@ const blogPostingSchema = JSON.stringify({
   /* CONTENT */
   .post-body { 
     min-width: 0;
+    max-width: 1100px;
   }
   .post-content {
     font-size: 1rem;
