@@ -105,31 +105,24 @@
 </section>
 
 <script>
-  // Auto-rotate pages animation
-  const pagesStack = document.querySelector('.directory__pages-stack');
-  const pages = document.querySelectorAll('.directory__page');
-  let currentPage = 0;
+  // Auto-rotate pages animation — cover (page--1) always starts in front
+  const pages = Array.from(document.querySelectorAll('.directory__page'));
   const totalPages = pages.length;
-  const rotationInterval = 3000; // 3 seconds per page
+  const rotationInterval = 3500;
+
+  // pages NodeList order: [page--3 (listing), page--2 (index), page--1 (cover)]
+  // We want cover first, so start at index 2
+  let currentPage = totalPages - 1; // points to page--1 (cover)
 
   function rotatePage() {
-    // Remove active class from all pages
-    pages.forEach(page => page.classList.remove('active'));
-    
-    // Add active class to current page
+    pages.forEach(p => p.classList.remove('active'));
     pages[currentPage].classList.add('active');
-    
-    // Move to next page
     currentPage = (currentPage + 1) % totalPages;
   }
 
-  // Start rotation
+  // Show cover immediately, then rotate
+  rotatePage();
   setInterval(rotatePage, rotationInterval);
-  
-  // Initialize first page as active
-  if (pages.length > 0) {
-    pages[0].classList.add('active');
-  }
 </script>
 
 <style>
