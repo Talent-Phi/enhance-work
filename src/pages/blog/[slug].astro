@@ -409,19 +409,18 @@ const blogPostingSchema = JSON.stringify({
     min-width: 0;
   }
 
-  /* TOC sits in column 1, sticky, pushed flush to right edge of its cell */
+  /* TOC sits in column 1, flush left, stretches to fill available space */
   .post-toc {
     grid-column: 1;
-    justify-self: end;
+    justify-self: stretch;
     align-self: start;
     position: sticky;
     top: 84px;
     width: 100%;
-    max-width: 220px;
+    overflow: hidden;  /* never bleeds into content column */
     background: #fff;
     border-radius: 12px;
-    padding: 1.5rem;
-    padding-right: 0; /* gap to content provided by TOC card right padding only */
+    padding: 1.5rem 1rem 1.5rem 2rem; /* left flush, right gives gap to content */
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   }
   .post-toc__title {
