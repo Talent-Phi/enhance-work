@@ -27,7 +27,7 @@ export const blogPosts: BlogPost[] = [
     title: "What Is an Aesthetic RN? Florida Law, Scope of Practice, and How to Make the Move",
     subtitle: "RNs and APRNs are not the same in Florida aesthetics. Here is what the law actually says, what each role can do, and how to position yourself for the work you want.",
     date: "March 30, 2026",
-    excerpt: "18,100 people search 'aesthetic RN' every month — and most of what they find online gets the Florida law wrong. Here is what RNs can actually do in a med spa, where the ceiling is, and what it takes to break through it.",
+    excerpt: "18,100 people search 'aesthetic RN' every month, and most of what they find online gets the Florida law wrong. Here is what RNs can actually do in a med spa, where the ceiling is, and what it takes to break through it.",
     category: "Careers",
     readTime: "10 min",
     author: "Sofia Reyes, APRN",
@@ -48,7 +48,7 @@ export const blogPosts: BlogPost[] = [
 
 <h2>What "Aesthetic RN" Actually Means</h2>
 <p>The term gets used loosely online, and that causes real confusion for nurses trying to plan a career move.</p>
-<p>An aesthetic RN is a registered nurse who works in a medical aesthetics setting — typically a medical spa, plastic surgery office, or dermatology clinic. The role almost always involves direct patient care: consultations, pre- and post-treatment support, laser treatments, skincare services, and sometimes supportive roles in injectable procedures.</p>
+<p>An aesthetic RN is a registered nurse who works in a medical aesthetics setting, typically a medical spa, plastic surgery office, or dermatology clinic. The role almost always involves direct patient care: consultations, pre- and post-treatment support, laser treatments, skincare services, and sometimes supportive roles in injectable procedures.</p>
 <p>What the role does not include, in most Florida practices, is independent aesthetic injection of neurotoxins or dermal fillers. That distinction is where the Florida law conversation starts.</p>
 
 <h2>Florida Law: What RNs Can and Cannot Do in Aesthetics</h2>
@@ -71,14 +71,14 @@ export const blogPosts: BlogPost[] = [
   <li><strong>Mid-level aesthetic RN (2-5 years):</strong> $68,000 to $82,000 base. Often includes commission on retail or treatments. Clinical lead or senior treatment nurse titles.</li>
   <li><strong>Senior aesthetic RN at a high-volume practice:</strong> $82,000 to $95,000+. Sometimes structured as base + production bonus. Practices in Miami, Boca, and Fort Lauderdale pay at the top of this range for nurses with established patient relationships.</li>
 </ul>
-<p>Aesthetic NPs — who carry broader scope and often drive more revenue through injectable volume — typically earn $95,000 to $140,000 base, with total comp above $160,000 at established practices.</p>
+<p>Aesthetic NPs, who carry broader scope and often drive more revenue through injectable volume, typically earn $95,000 to $140,000 base, with total comp above $160,000 at established practices.</p>
 
 <img src="/images/blog/aesthetic-rn-florida-salary.webp" alt="Aesthetic nurse reviewing compensation at med spa" style="width:100%;border-radius:8px;margin:24px 0;" />
 
 <h2>What Roles Are Actually Open to Aesthetic RNs in South Florida</h2>
 <p>Despite the scope limitations on independent injectable work, South Florida practices actively hire RNs for a wide range of clinical roles:</p>
 <ul>
-  <li><strong>Laser technician / laser nurse:</strong> Operates energy-based devices — Soprano Ice, ResurFX, PiQo4. High demand across South Florida. Most practices provide device training on hire.</li>
+  <li><strong>Laser technician / laser nurse:</strong> Operates energy-based devices: Soprano Ice, ResurFX, PiQo4. High demand across South Florida. Most practices provide device training on hire.</li>
   <li><strong>IV therapy nurse:</strong> Administers IV vitamin cocktails, NAD+, hydration drips. No prescriptive authority required. Common in both med spas and concierge wellness clinics.</li>
   <li><strong>Clinical coordinator:</strong> Manages patient flow, pre- and post-procedure care, coordinates with injecting providers. Often the first aesthetic hire a growing practice makes.</li>
   <li><strong>Treatment nurse (OxyGeneo, HydraFacial, microneedling):</strong> Performs device-based skin treatments. Revenue-generating role, often includes commission.</li>
@@ -96,14 +96,14 @@ export const blogPosts: BlogPost[] = [
 
 <h2>The APRN Path: Is It Worth It?</h2>
 <p>The most common question from RNs already working in aesthetics: should I go back for my NP?</p>
-<p>The honest answer depends on your goals. If you want to be a primary injector with autonomous patient authority, yes — the APRN credential removes the structural barriers and the salary ceiling. The comp difference between an experienced aesthetic RN and an aesthetic NP in Miami is roughly $40,000 to $60,000 annually at full production.</p>
+<p>The honest answer depends on your goals. If you want to be a primary injector with autonomous patient authority. Yes, the APRN credential removes the structural barriers and the salary ceiling. The comp difference between an experienced aesthetic RN and an aesthetic NP in Miami is roughly $40,000 to $60,000 annually at full production.</p>
 <p>If you want a strong clinical role in aesthetics without the added academic cost and time, the RN path offers competitive pay and genuine career development, especially at practices that value well-trained treatment nurses and clinical leads.</p>
-<p>Several South Florida practices on Enhance.work explicitly offer NP support — tuition assistance, schedule flexibility, or structured advancement plans — for RNs who join and commit to the practice while pursuing their APRN. That is worth asking about in every interview.</p>
+<p>Several South Florida practices on Enhance.work explicitly offer NP support: tuition assistance, schedule flexibility, or structured advancement plans, for RNs who join and commit to the practice while pursuing their APRN. That is worth asking about in every interview.</p>
 
 <h2>Common Questions</h2>
 <details>
   <summary><strong>Can an RN be a nurse injector in Florida?</strong></summary>
-  <p>In some practice models, yes — with proper physician delegation and supervision protocols. In practice, most South Florida medical spas hire APRNs (nurse practitioners) for primary injectable roles because the legal structure is cleaner. RNs are actively hired for a wide range of other clinical aesthetic roles.</p>
+  <p>In some practice models, yes, with proper physician delegation and supervision protocols. In practice, most South Florida medical spas hire APRNs (nurse practitioners) for primary injectable roles because the legal structure is cleaner. RNs are actively hired for a wide range of other clinical aesthetic roles.</p>
 </details>
 <details>
   <summary><strong>How much does an aesthetic RN make in Florida?</strong></summary>
@@ -111,7 +111,7 @@ export const blogPosts: BlogPost[] = [
 </details>
 <details>
   <summary><strong>How long does it take to become an aesthetic RN?</strong></summary>
-  <p>If you are already an RN, the transition to an aesthetic setting can happen quickly. Most practices hire and train. The credential-building part — laser safety, device training, aesthetic assessment skills — takes 3 to 6 months of hands-on clinical experience.</p>
+  <p>If you are already an RN, the transition to an aesthetic setting can happen quickly. Most practices hire and train. The credential-building part, covering laser safety, device training, and aesthetic assessment skills, takes 3 to 6 months of hands-on clinical experience.</p>
 </details>
 <details>
   <summary><strong>Is it better to be an RN or NP in aesthetics?</strong></summary>
@@ -125,7 +125,7 @@ export const blogPosts: BlogPost[] = [
     title: "Nurse Injector Jobs in Miami: What to Expect and What They Pay",
     subtitle: "A candid look at how Miami med spas hire, what pay structures actually look like, and why most listings don't tell the full story",
     date: "March 30, 2026",
-    excerpt: "Nurse injector jobs in Miami pay more than most listings show — if you know how the compensation structures work and what practices are actually hiring for.",
+    excerpt: "Nurse injector jobs in Miami pay more than most listings show, if you know how the compensation structures work and what practices are actually hiring for.",
     category: "Jobs",
     readTime: "9 min",
     author: "Sofia Reyes, APRN",
@@ -150,17 +150,17 @@ export const blogPosts: BlogPost[] = [
 
 <p>Compensation for nurse injector roles in Miami varies significantly by experience level, practice type, and how production incentives are structured. The figures below reflect the South Florida market specifically, which pays at or above the national average for aesthetic nursing due to patient volume and market density.</p>
 
-<p><strong>Entry-level / training positions (0–1 year aesthetics experience):</strong></p>
+<p><strong>Entry-level / training positions (0 to 1 year aesthetics experience):</strong></p>
 <ul>
   <li>Hourly range: $30 to $45/hour, or a base salary of $55,000 to $75,000</li>
-  <li>Commission: typically 5–8% of revenue generated once above a production floor</li>
-  <li>Some practices structure this as a fixed salary with no commission during training, transitioning to a production model after 6–12 months</li>
+  <li>Commission: typically 5 to 8% of revenue generated once above a production floor</li>
+  <li>Some practices structure this as a fixed salary with no commission during training, transitioning to a production model after 6 to 12 months</li>
 </ul>
 
-<p><strong>Mid-level (1–3 years aesthetics experience, established patient base):</strong></p>
+<p><strong>Mid-level (1 to 3 years aesthetics experience, established patient base):</strong></p>
 <ul>
   <li>Total compensation typically ranges from $80,000 to $120,000 annually</li>
-  <li>Commission structures become more important at this stage — injectors with strong patient retention often earn meaningfully above their base</li>
+  <li>Commission structures become more important at this stage, and injectors with strong patient retention often earn meaningfully above their base</li>
   <li>Some practices offer tiered commission (e.g., 8% up to $X monthly revenue, 12% above that)</li>
 </ul>
 
@@ -171,11 +171,11 @@ export const blogPosts: BlogPost[] = [
   <li>Some experienced injectors in Miami work across multiple practices on a per diem or revenue-share model</li>
 </ul>
 
-<p>The most important variable is patient volume. An injector seeing 6–8 patients per day at $600–$1,200 average ticket value generates between $900k and $1.5M in annual practice revenue. Practices that pay 10–15% commission on that production are writing checks that most published salary ranges don't reflect.</p>
+<p>The most important variable is patient volume. An injector seeing 6 to 8 patients per day at $600 to $1,200 average ticket value generates between $900k and $1.5M in annual practice revenue. Practices that pay 10 to 15% commission on that production are writing checks that most published salary ranges don't reflect.</p>
 
 <h2>Why Most Listings Understate Compensation</h2>
 
-<p>Job listings for aesthetic injectors in Miami routinely show base salary figures that look modest — often $65,000 to $90,000 — without adequately communicating the production component. This is partly legal caution (listing a "total potential" that most candidates won't reach), partly competitive discretion, and partly because practices in South Florida don't need to advertise aggressively to attract candidates. The market is demand-driven.</p>
+<p>Job listings for aesthetic injectors in Miami routinely show base salary figures that look modest, often $65,000 to $90,000, without adequately communicating the production component. This is partly legal caution (listing a "total potential" that most candidates won't reach), partly competitive discretion, and partly because practices in South Florida don't need to advertise aggressively to attract candidates. The market is demand-driven.</p>
 
 <p>The practical consequence is that a candidate evaluating jobs by base salary alone will consistently undervalue the better opportunities and overvalue the ones with inflated bases and weak commission structures. A $75k base with 12% commission at a high-volume practice will outperform a $95k flat salary almost every time.</p>
 
@@ -194,19 +194,19 @@ export const blogPosts: BlogPost[] = [
 <p>The aesthetic job market in South Florida does not behave like healthcare hiring. The majority of nurse injector positions in Miami are filled through:</p>
 
 <ul>
-  <li><strong>Internal referrals and practitioner networks:</strong> Medical directors and practice owners hire people they know, or people recommended by people they know. This is not favoritism — it's risk management. Hiring an injector sight-unseen from a job board is a significant financial exposure for a small practice.</li>
+  <li><strong>Internal referrals and practitioner networks:</strong> Medical directors and practice owners hire people they know, or people recommended by people they know. This is not favoritism: it's risk management. Hiring an injector sight-unseen from a job board is a significant financial exposure for a small practice.</li>
   <li><strong>Candidates who trained at the practice:</strong> Practices that run internal training programs frequently hire from their own cohort. An APRN who trained with you for six months is a known quantity. A stranger from Indeed is not.</li>
   <li><strong>Direct outreach from candidates:</strong> Practices respond better to cold outreach from candidates than most applicants expect. A direct message to a medical director, a well-composed email, or a referral from a device rep can open a door that a formal application cannot.</li>
-  <li><strong>Industry-specific platforms:</strong> Platforms like <a href="https://enhance.work" style="color:#2bbcb0;">Enhance.work</a> are built specifically for aesthetic professionals and the practices hiring them — the listings reflect actual market roles, not recycled general healthcare postings.</li>
+  <li><strong>Industry-specific platforms:</strong> Platforms like <a href="https://enhance.work" style="color:#2bbcb0;">Enhance.work</a> are built specifically for aesthetic professionals and the practices hiring them, with listings that reflect actual market roles, not recycled general healthcare postings.</li>
 </ul>
 
-<p>Generic job boards — Indeed, LinkedIn, ZipRecruiter — exist on the periphery of this market. They capture the positions practices couldn't fill any other way, which are not typically the best positions.</p>
+<p>Generic job boards, like Indeed, LinkedIn, and ZipRecruiter, exist on the periphery of this market. They capture the positions practices couldn't fill any other way, which are not typically the best positions.</p>
 
 <h2>What South Florida Practices Are Actually Hiring For</h2>
 
 <p>A hiring decision at a Miami med spa involves two separate evaluations that most candidates conflate into one: can this person inject well, and can this person run a consultation room.</p>
 
-<p>The clinical piece — Botox, dermal fillers, cannula technique, anatomy knowledge — is baseline. Practices expect it. They do not hire for it. An APRN showing up to an interview leading with their injection technique is bringing the minimum, not a differentiator.</p>
+<p>The clinical piece, covering Botox, dermal fillers, cannula technique, and anatomy knowledge, is baseline. Practices expect it. They do not hire for it. An APRN showing up to an interview leading with their injection technique is bringing the minimum, not a differentiator.</p>
 
 <p>What actually differentiates candidates in the Miami market:</p>
 
@@ -245,7 +245,7 @@ export const blogPosts: BlogPost[] = [
   <li>Transition: practices that run formal training programs frequently hire from their own cohort at the end of the training period</li>
 </ul>
 
-<p>The calculation for a candidate is straightforward: accepting below-market pay for 6–12 months in exchange for supervised patient hours and a direct path to an offer at market rate is a better deal than searching for a market-rate role without experience and not getting interviews.</p>
+<p>The calculation for a candidate is straightforward: accepting below-market pay for 6 to 12 months in exchange for supervised patient hours and a direct path to an offer at market rate is a better deal than searching for a market-rate role without experience and not getting interviews.</p>
 
 <a href="https://enhance.work/candidate/registration" style="color:#2bbcb0;">→ <strong>Browse training and entry-level injector positions across South Florida on Enhance.work</strong></a>
 
@@ -266,7 +266,7 @@ export const blogPosts: BlogPost[] = [
 
 <ol>
   <li><strong>Direct outreach to practices you'd want to work at:</strong> Make a list of 15 to 20 practices in South Florida that represent the type of environment you're targeting. Send a personalized, professional message to the medical director or owner. Be specific about your background, what you're looking for, and what you can offer. You will hear back from a meaningful percentage of them.</li>
-  <li><strong>Aesthetic-specific platforms:</strong> <a href="https://enhance.work" style="color:#2bbcb0;">Enhance.work</a> lists roles from South Florida practices that are actively hiring aesthetic professionals — including positions specifically designed for APRNs entering the specialty.</li>
+  <li><strong>Aesthetic-specific platforms:</strong> <a href="https://enhance.work" style="color:#2bbcb0;">Enhance.work</a> lists roles from South Florida practices that are actively hiring aesthetic professionals, including positions specifically designed for APRNs entering the specialty.</li>
   <li><strong>Manufacturer and device rep networks:</strong> Allergan, Galderma, and Revance sales reps work closely with practices in your target market. They know who is hiring, who is expanding, and which practices are worth working for. Building these relationships is a legitimate job search strategy.</li>
   <li><strong>Training program connections:</strong> If you've completed an aesthetic training course, your instructors and co-participants are professional contacts. The aesthetic training circuit in South Florida is small enough that a single good referral can open multiple doors.</li>
   <li><strong>General job boards:</strong> Useful as a fallback and for market benchmarking. Not where the best roles live.</li>
@@ -278,16 +278,16 @@ export const blogPosts: BlogPost[] = [
 <p>Total compensation for South Florida APRN aesthetic injectors typically ranges from $75,000 to $180,000+ depending on experience and production volume. Entry-level training roles pay lower base salaries, while experienced injectors with established patient books earn significantly more through commission. Base salary figures listed in job postings rarely reflect total take-home compensation.</p>
 
 <h3>2. Can RNs work as injectors in Miami?</h3>
-<p>In practice, no. Florida nursing law requires a physician to be physically present for each injection procedure performed by an RN — a workflow that no operating aesthetic practice follows. Only APRNs can work as autonomous aesthetic injectors in Florida under a collaborative practice agreement with a supervising physician.</p>
+<p>In practice, no. Florida nursing law requires a physician to be physically present for each injection procedure performed by an RN, a workflow that no operating aesthetic practice follows. Only APRNs can work as autonomous aesthetic injectors in Florida under a collaborative practice agreement with a supervising physician.</p>
 
 <h3>3. How do I get a nurse injector job with no aesthetics experience?</h3>
 <p>The most reliable path is pursuing a training or apprenticeship role with a practice that hires APRNs without aesthetic backgrounds and trains internally. These positions pay below market rate but provide supervised patient experience and a direct path to full employment. Direct outreach to practices and using aesthetic-specific platforms like Enhance.work gives access to these roles before they're publicly posted.</p>
 
 <h3>4. What commission structure is standard for injector jobs in Miami?</h3>
-<p>Commission structures vary widely. Common models include: a flat percentage of revenue (typically 8–15%), tiered commission that increases above monthly revenue thresholds, or a hybrid base-plus-bonus structure tied to patient volume or retention. There is no single standard — negotiate explicitly and ask for specific historical production numbers before accepting any role.</p>
+<p>Commission structures vary widely. Common models include: a flat percentage of revenue (typically 8 to 15%), tiered commission that increases above monthly revenue thresholds, or a hybrid base-plus-bonus structure tied to patient volume or retention. There is no single standard. Negotiate explicitly and ask for specific historical production numbers before accepting any role.</p>
 
 <h3>5. Are nurse injector jobs in Miami posted on Indeed or LinkedIn?</h3>
-<p>Some are, but the majority of South Florida aesthetic positions are filled through referral networks, direct outreach, and industry-specific platforms before they're posted publicly. General job boards capture the roles practices couldn't fill any other way. The highest-quality positions — better compensation, better practice environments, stronger mentorship — are typically filled before they ever appear on a general board.</p>
+<p>Some are, but the majority of South Florida aesthetic positions are filled through referral networks, direct outreach, and industry-specific platforms before they're posted publicly. General job boards capture the roles practices couldn't fill any other way. The highest-quality positions, offering better compensation, better practice environments, and stronger mentorship, are typically filled before they ever appear on a general board.</p>
 
 <h3>6. What should I ask in a nurse injector job interview in Miami?</h3>
 <p>Key questions: What is the average monthly revenue per injector? How is the commission structure tiered? How many patients per day at full schedule? Is the patient base already built or does the injector develop it? What does the collaborative practice agreement look like, and who is the supervising physician? What does the training and onboarding process look like for new injectors?</p>
@@ -296,12 +296,12 @@ export const blogPosts: BlogPost[] = [
 
 <h2>Closing: The Miami Market Rewards the Prepared</h2>
 
-<p>South Florida's aesthetic market is among the most competitive and highest-compensating in the country. For APRNs who approach it strategically — by understanding how compensation really works, how practices actually hire, and what skills drive earning potential — it offers a career path that most nursing specialties cannot match.</p>
+<p>South Florida's aesthetic market is among the most competitive and highest-compensating in the country. For APRNs who approach it strategically, by understanding how compensation really works, how practices actually hire, and what skills drive earning potential, it offers a career path that most nursing specialties cannot match.</p>
 
 <p>The candidates who struggle are the ones who apply passively through job boards, lead with their clinical credentials alone, and accept the first offer without asking the right questions. The candidates who succeed are the ones who treat the job search with the same directness they'll eventually need in the consultation room.</p>
 
-<p>📍 <strong><a href="https://enhance.work" style="color:#2bbcb0;">Browse open injector roles across South Florida on Enhance.work</a></strong></p>
-<p>📋 <strong><a href="https://enhance.work/candidate/registration" style="color:#2bbcb0;">Create your candidate profile and get matched with practices hiring now</a></strong></p>
+<p><strong><a href="https://enhance.work" style="color:#2bbcb0;">Browse open injector roles across South Florida on Enhance.work</a></strong></p>
+<p><strong><a href="https://enhance.work/candidate/registration" style="color:#2bbcb0;">Create your candidate profile and get matched with practices hiring now</a></strong></p>
 
 <script type="application/ld+json">
 {
@@ -311,7 +311,7 @@ export const blogPosts: BlogPost[] = [
     {"@type": "Question", "name": "1. What is the average salary for a nurse injector in Miami?", "acceptedAnswer": {"@type": "Answer", "text": "Total compensation for South Florida APRN aesthetic injectors typically ranges from $75,000 to $180,000+ depending on experience and production volume. Entry-level training roles pay lower base salaries, while experienced injectors with established patient books earn significantly more through commission. Base salary figures listed in job postings rarely reflect total take-home compensation."}},
     {"@type": "Question", "name": "2. Can RNs work as injectors in Miami?", "acceptedAnswer": {"@type": "Answer", "text": "In practice, no. Florida nursing law requires a physician to be physically present for each injection procedure performed by an RN. Only APRNs can work as autonomous aesthetic injectors in Florida under a collaborative practice agreement with a supervising physician."}},
     {"@type": "Question", "name": "3. How do I get a nurse injector job with no aesthetics experience?", "acceptedAnswer": {"@type": "Answer", "text": "The most reliable path is pursuing a training or apprenticeship role with a practice that hires APRNs without aesthetic backgrounds and trains internally. Direct outreach to practices and using aesthetic-specific platforms like Enhance.work gives access to these roles before they're publicly posted."}},
-    {"@type": "Question", "name": "4. What commission structure is standard for injector jobs in Miami?", "acceptedAnswer": {"@type": "Answer", "text": "Common models include: a flat percentage of revenue (typically 8–15%), tiered commission that increases above monthly revenue thresholds, or a hybrid base-plus-bonus structure tied to patient volume or retention. There is no single standard — negotiate explicitly and ask for specific historical production numbers before accepting any role."}},
+    {"@type": "Question", "name": "4. What commission structure is standard for injector jobs in Miami?", "acceptedAnswer": {"@type": "Answer", "text": "Common models include: a flat percentage of revenue (typically 8 to 15%), tiered commission that increases above monthly revenue thresholds, or a hybrid base-plus-bonus structure tied to patient volume or retention. There is no single standard. Negotiate explicitly and ask for specific historical production numbers before accepting any role."}},
     {"@type": "Question", "name": "5. Are nurse injector jobs in Miami posted on Indeed or LinkedIn?", "acceptedAnswer": {"@type": "Answer", "text": "Some are, but the majority of South Florida aesthetic positions are filled through referral networks, direct outreach, and industry-specific platforms before they're posted publicly. General job boards capture the roles practices couldn't fill any other way."}},
     {"@type": "Question", "name": "6. What should I ask in a nurse injector job interview in Miami?", "acceptedAnswer": {"@type": "Answer", "text": "Key questions: What is the average monthly revenue per injector? How is the commission structure tiered? How many patients per day at full schedule? Is the patient base already built or does the injector develop it? What does the collaborative practice agreement look like, and who is the supervising physician?"}}
   ]
@@ -426,7 +426,7 @@ export const blogPosts: BlogPost[] = [
 
 <h2>Your First Year as an Aesthetic Injector: The Most Common Mistake</h2>
 
-<p>New injectors entering aesthetics are primarily focused on avoiding complications. Occlusions, overfilling, asymmetry — these are the outcomes that generate anxiety in early practice, and that anxiety shows up in a predictable pattern: underinjecting.</p>
+<p>New injectors entering aesthetics are primarily focused on avoiding complications. Occlusions, overfilling, asymmetry: these are the outcomes that generate anxiety in early practice, and that anxiety shows up in a predictable pattern: underinjecting.</p>
 
 <p>The most common mistake new aesthetic nurse practitioners make in their first year is using too little product to produce a visible result. They dilute Botox beyond the standard concentration. They stop filler placement well short of the correction the patient actually needs. The patient leaves the appointment comfortable, the provider feels safe, and both believe the treatment went well, until the patient looks in the mirror two weeks later, sees no meaningful change, and does not come back.</p>
 
@@ -491,8 +491,8 @@ export const blogPosts: BlogPost[] = [
 
 <p>What the training course advertisements do not tell you is that the credential matters far less than the experience. An APRN who has injected a hundred patients under supervision in a real clinical setting is a fundamentally different candidate than one who has completed three weekend courses with a certificate. Get the APRN license, get in front of patients as early as possible, and build your skill set where it counts: in the room, with real supervision, with real outcomes.</p>
 
-<p>📍 <strong><a href="https://enhance.work" style="color:#2bbcb0;">Find aesthetic injector positions across South Florida on Enhance.work</a></strong></p>
-<p>📋 <strong><a href="https://enhance.work/candidate/registration" style="color:#2bbcb0;">Create your candidate profile and connect with practices hiring now</a></strong></p>
+<p><strong><a href="https://enhance.work" style="color:#2bbcb0;">Find aesthetic injector positions across South Florida on Enhance.work</a></strong></p>
+<p><strong><a href="https://enhance.work/candidate/registration" style="color:#2bbcb0;">Create your candidate profile and connect with practices hiring now</a></strong></p>
 
 <script type="application/ld+json">
 {
