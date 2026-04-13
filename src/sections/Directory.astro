@@ -1,0 +1,426 @@
+---
+// Directory.astro — South Florida Med Spa Directory CTA section
+// Positioned between Demand and WhyChoose sections
+---
+
+<section class="directory" id="directory">
+  <div class="directory__container">
+    
+    <!-- Left content -->
+    <div class="directory__content">
+      <h2 class="directory__title">
+        Get instant access to<br />
+        every <span class="directory__highlight">aesthetic practice<br />in South Florida</span>.
+      </h2>
+      
+      <p class="directory__subtitle">Stop guessing and start applying smarter.</p>
+      
+      <!-- Benefits list -->
+      <ul class="directory__benefits">
+        <li class="directory__benefit">
+          <svg class="directory__check" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <circle cx="10" cy="10" r="10" fill="#2bbcb0"/>
+            <path d="M6 10l3 3 5-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>7,000+ aesthetic clinics</span>
+        </li>
+        <li class="directory__benefit">
+          <svg class="directory__check" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <circle cx="10" cy="10" r="10" fill="#2bbcb0"/>
+            <path d="M6 10l3 3 5-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Contact info & hiring insights</span>
+        </li>
+        <li class="directory__benefit">
+          <svg class="directory__check" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <circle cx="10" cy="10" r="10" fill="#2bbcb0"/>
+            <path d="M6 10l3 3 5-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Services, specialties, and reputation</span>
+        </li>
+        <li class="directory__benefit">
+          <svg class="directory__check" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <circle cx="10" cy="10" r="10" fill="#2bbcb0"/>
+            <path d="M6 10l3 3 5-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Where and how to apply</span>
+        </li>
+      </ul>
+      
+      <!-- Pricing -->
+      <div class="directory__pricing">
+        <p class="directory__pricing-label">LIMITED ACCESS</p>
+        <div class="directory__price-row">
+          <span class="directory__price-old">$50</span>
+          <span class="directory__price-current">$35</span>
+        </div>
+      </div>
+      
+      <!-- CTA Button -->
+      <a href="#apply" class="directory__cta"><span>GET INSTANT ACCESS</span></a>
+      
+      <!-- Fine print -->
+      <p class="directory__fine-print">Instant download • One-time payment • No subscription</p>
+    </div>
+    
+    <!-- Right mockup -->
+    <div class="directory__mockup">
+      <img 
+        src="/images/mockups/cta-right.png" 
+        alt="South Florida Med Spa Directory preview showing clinic listings and contact information"
+        class="directory__mockup-img"
+        loading="lazy"
+      />
+      <div class="directory__mockup-label">
+        <span>The South Florida Med Spa Directory</span>
+      </div>
+    </div>
+    
+  </div>
+</section>
+
+<style>
+  .directory {
+    padding: 6rem 1.5rem;
+    background: linear-gradient(135deg, #1a5f5a 0%, #2a7a73 100%);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+  }
+  
+  /* Animated circular gradient overlay (Ellipse 1 from Figma) */
+  .directory::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    width: 301px;
+    height: 301px;
+    background: radial-gradient(circle, rgba(43,188,176,0.25) 0%, rgba(43,188,176,0.1) 50%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: float 8s ease-in-out infinite;
+    transform: translate(-50%, -50%);
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translate(-50%, -50%) translateY(0px);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translate(-50%, -50%) translateY(-20px);
+      opacity: 0.8;
+    }
+  }
+  
+  .directory__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Left content */
+  .directory__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    animation: slideInLeft 0.8s ease-out;
+  }
+  
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .directory__title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 3.5vw, 2.75rem);
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.2;
+    margin: 0;
+  }
+  
+  .directory__highlight {
+    color: #ffffff;
+    text-decoration: underline;
+    text-decoration-color: rgba(255,255,255,0.4);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+  
+  .directory__subtitle {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.85);
+    margin: 0;
+    line-height: 1.5;
+  }
+  
+  /* Benefits list */
+  .directory__benefits {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  
+  .directory__benefit {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1rem;
+    color: #ffffff;
+    font-weight: 400;
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+  
+  .directory__benefit:nth-child(1) { animation-delay: 0.2s; }
+  .directory__benefit:nth-child(2) { animation-delay: 0.3s; }
+  .directory__benefit:nth-child(3) { animation-delay: 0.4s; }
+  .directory__benefit:nth-child(4) { animation-delay: 0.5s; }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .directory__check {
+    flex-shrink: 0;
+    animation: scaleIn 0.4s ease-out;
+  }
+  
+  @keyframes scaleIn {
+    from {
+      transform: scale(0);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+  
+  /* Pricing */
+  .directory__pricing {
+    margin-top: 0.5rem;
+  }
+  
+  .directory__pricing-label {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 0.5rem;
+    letter-spacing: 0.02em;
+  }
+  
+  .directory__price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+  
+  .directory__price-old {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+  }
+  
+  .directory__price-current {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1;
+  }
+  
+  /* CTA Button */
+  .directory__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #2bbcb0;
+    color: #ffffff;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.9rem 2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    align-self: flex-start;
+    margin-top: 0.5rem;
+    letter-spacing: 0.03em;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .directory__cta::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+  }
+  
+  .directory__cta:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .directory__cta:hover {
+    background: #22a89d;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(43,188,176,0.4);
+  }
+  
+  .directory__cta span {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .directory__fine-print {
+    font-size: 0.875rem;
+    color: rgba(255,255,255,0.7);
+    margin: 0;
+    line-height: 1.5;
+  }
+  
+  /* Right mockup */
+  .directory__mockup {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    animation: slideInRight 0.8s ease-out;
+  }
+  
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .directory__mockup-img {
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.3));
+    transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);
+    transition: transform 0.4s ease, filter 0.4s ease;
+    animation: float-mockup 6s ease-in-out infinite;
+  }
+  
+  @keyframes float-mockup {
+    0%, 100% {
+      transform: perspective(1000px) rotateY(-5deg) rotateX(2deg) translateY(0px);
+    }
+    50% {
+      transform: perspective(1000px) rotateY(-5deg) rotateX(2deg) translateY(-10px);
+    }
+  }
+  
+  .directory__mockup:hover .directory__mockup-img {
+    transform: perspective(1000px) rotateY(-2deg) rotateX(1deg) scale(1.02);
+    filter: drop-shadow(0 25px 50px rgba(0,0,0,0.4));
+  }
+  
+  .directory__mockup-label {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 100px;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.9rem;
+    color: #ffffff;
+    font-weight: 500;
+    animation: fadeIn 1s ease-out 0.6s both;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* Responsive */
+  @media (max-width: 968px) {
+    .directory__container {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    
+    .directory__mockup {
+      order: -1;
+    }
+    
+    .directory__content {
+      text-align: center;
+      align-items: center;
+    }
+    
+    .directory__benefits {
+      align-items: flex-start;
+      max-width: 400px;
+    }
+    
+    .directory__cta {
+      align-self: center;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .directory {
+      padding: 4rem 1.25rem;
+    }
+    
+    .directory__title {
+      font-size: 1.75rem;
+    }
+    
+    .directory__price-current {
+      font-size: 2.5rem;
+    }
+    
+    .directory__mockup-img {
+      max-width: 100%;
+    }
+  }
+</style>
