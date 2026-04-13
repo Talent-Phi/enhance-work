@@ -29,10 +29,10 @@ import StatCard from '../components/StatCard.astro';
       <!-- Social proof row -->
       <div class="hero__social">
         <div class="hero__avatars">
-          <span class="hero__av" style="background:#6bbdb6">KL</span>
-          <span class="hero__av" style="background:#9b8ec4">MR</span>
-          <span class="hero__av" style="background:#5bb5a2">SN</span>
-          <span class="hero__av" style="background:#7BAFD4">TP</span>
+          <img src="/images/hero/avatar-1.jpg" alt="Aesthetic professional" class="hero__av" />
+          <img src="/images/hero/avatar-2.jpg" alt="Aesthetic professional" class="hero__av" />
+          <img src="/images/hero/avatar-3.jpg" alt="Aesthetic professional" class="hero__av" />
+          <img src="/images/hero/avatar-4.jpg" alt="Aesthetic professional" class="hero__av" />
         </div>
         <div class="hero__social-text">
           <strong>Join 2,500+ aesthetic professionals</strong>
@@ -225,13 +225,7 @@ import StatCard from '../components/StatCard.astro';
     height: 32px;
     border-radius: 50%;
     border: 2px solid #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: .6rem;
-    font-weight: 600;
-    color: #fff;
-    font-family: var(--font-heading);
+    object-fit: cover;
     margin-left: -9px;
     flex-shrink: 0;
   }
