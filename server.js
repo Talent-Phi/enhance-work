@@ -1150,7 +1150,7 @@ app.get('/api/stripe/download/:token', async (req, res) => {
       [token]
     );
 
-    const pdfPath = path.join(__dirname, 'private', 'south-florida-med-spa-directory.pdf');
+    const pdfPath = path.join(__dirname, 'private', 'SFL_MedSpa_Directory.pdf');
     if (!fs.existsSync(pdfPath)) {
       return res.status(404).json({ error: 'PDF file not yet uploaded. Please contact support.' });
     }
