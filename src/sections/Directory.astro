@@ -93,7 +93,7 @@
         </div>
       </div>
       
-      <a href="#apply" class="directory__cta"><span>GET INSTANT ACCESS</span></a>
+      <button type="button" class="directory__cta" id="directoryCta"><span>GET INSTANT ACCESS</span></button>
       
       <p class="directory__fine-print">Instant download • One-time payment • No subscription</p>
     </div>
@@ -102,6 +102,35 @@
 </section>
 
 <script>
+  // Checkout button
+  const dirCta = document.getElementById('directoryCta');
+  if (dirCta) {
+    dirCta.addEventListener('click', async () => {
+      const btn = dirCta;
+      const span = btn.querySelector('span');
+      btn.disabled = true;
+      if (span) span.textContent = 'Redirecting...';
+      try {
+        const res = await fetch('/api/stripe/create-checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({})
+        });
+        const data = await res.json();
+        if (data.url) {
+          (window.top || window).location.href = data.url;
+        } else {
+          throw new Error(data.error || 'Unknown error');
+        }
+      } catch (err) {
+        btn.disabled = false;
+        if (span) span.textContent = 'GET INSTANT ACCESS';
+        alert('Something went wrong. Please try again.');
+        console.error(err);
+      }
+    });
+  }
+
   // Auto-rotate pages animation — cover (page--1) always starts in front
   const pages = Array.from(document.querySelectorAll('.directory__page'));
   const totalPages = pages.length;
@@ -303,6 +332,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    appearance: none;
+    border: none;
+    cursor: pointer;
     background: linear-gradient(180deg, #2BBCB0 0%, #208D84 100%);
     color: #FFFFFF;
     font-family: 'Inter', sans-serif;
