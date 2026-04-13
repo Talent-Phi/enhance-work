@@ -669,19 +669,7 @@ app.get('/admin/blog', requireAuth, (req, res) => {
 
 // Image upload for blog (save to dist/client/images/blog/ so files are served immediately)
 const blogImageUpload = multer({
-  storage: multer.diskStorage({
-    destination: (req, file, cb) => {
-      const dir = path.join(__dirname, 'dist', 'client', 'images', 'blog');
-      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-      cb(null, dir);
-    },
-    filename: (req, file, cb) => {
-      const ext = path.extname(file.originalname).toLowerCase();
-      const name = path.basename(file.originalname, ext)
-        .toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').slice(0, 60);
-      cb(null, `${name}-${Date.now()}${ext}`);
-    }
-  }),
+  storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowed = ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.avif'];
