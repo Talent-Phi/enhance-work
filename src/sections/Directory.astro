@@ -140,7 +140,7 @@
     background-position: center;
     background-repeat: no-repeat;
     position: relative;
-    overflow: hidden;
+    overflow: clip;   /* clips vertical only; allows right-side page overflow */
     box-shadow: 0 6px 24px rgba(0,0,0,0.08);
   }
   
@@ -382,12 +382,13 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: flex-end;
     animation: slideInRight 0.8s ease-out;
     perspective: 2000px;
-    padding-top: 2rem;
-    padding-bottom: 4rem;
+    padding-top: 5rem;
+    padding-bottom: 2rem;
+    overflow: visible;
   }
   
   @keyframes slideInRight {
@@ -404,10 +405,11 @@
   /* Stacked pages container — needs explicit height so abs children don't collapse it */
   .directory__pages-stack {
     position: relative;
-    width: 540px;
-    height: 720px;
+    width: 480px;
+    height: 660px;
     transform-style: preserve-3d;
-    margin: 0 auto;
+    margin-left: -20px;   /* slight shift right into the overflow zone */
+    flex-shrink: 0;
   }
 
   /* Individual page layers */
