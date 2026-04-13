@@ -85,11 +85,6 @@ const blogPostingSchema = JSON.stringify({
   <main class="post-page">
 
     <!-- ── HERO ── -->
-    <!-- breadcrumb above hero card -->
-    <div class="post-breadcrumb-bar">
-      <a href="/blog" class="post-breadcrumb">Blog</a>
-    </div>
-
     <section class="post-hero">
       <div class="post-hero__inner">
         <!-- Left: title + subtitle + author -->
@@ -180,7 +175,6 @@ const blogPostingSchema = JSON.stringify({
     <section class="post-cta">
       <div class="post-cta__inner">
         <div class="post-cta__text">
-          <p class="post-cta__arrow">→</p>
           <h2>Ready to elevate your career in aesthetic medicine? Apply today and discover the right opportunity for your growth.</h2>
           <a href="/candidate/registration" class="post-cta__btn">Find out</a>
         </div>
@@ -261,20 +255,6 @@ const blogPostingSchema = JSON.stringify({
   /* ═══════════════════════════════
      HERO
   ═══════════════════════════════ */
-  /* ── BREADCRUMB BAR (above hero card) ── */
-  .post-breadcrumb-bar {
-    background: #e8eaed;
-    padding: 0.6rem 2rem;
-  }
-  .post-breadcrumb {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #555;
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .post-breadcrumb:hover { color: #2bbcb0; }
-
   /* ── HERO CARD ── */
   .post-hero {
     background: #fff;
@@ -577,30 +557,36 @@ const blogPostingSchema = JSON.stringify({
      CTA BANNER
   ═══════════════════════════════ */
   .post-cta {
-    background: #18232c;
+    background: #e8eaed;
     margin: 0;
-    padding: 0 2rem;
+    padding: 2.5rem 2rem;
   }
   .post-cta__inner {
     max-width: 1100px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr 280px;
     gap: 2rem;
-    align-items: center;
-    min-height: 200px;
+    align-items: stretch;
+    background: #18232c;
+    border-radius: 16px;
+    overflow: hidden;
+    min-height: 180px;
   }
   .post-cta__text {
     display: flex;
     flex-direction: column;
     gap: 1.1rem;
-    padding: 2.5rem 0;
+    padding: 2rem 0 2rem 2.5rem;
   }
   .post-cta__arrow {
     font-size: 1.2rem;
     color: #fff;
     margin: 0;
     line-height: 1;
+    position: absolute;
+    left: 2.5rem;
+    top: 2rem;
   }
   .post-cta__text h2 {
     font-family: 'Poppins', sans-serif;
@@ -609,7 +595,16 @@ const blogPostingSchema = JSON.stringify({
     color: #fff;
     line-height: 1.45;
     margin: 0;
-    max-width: 480px;
+    max-width: 100%;
+    padding-left: 2.5rem;
+    position: relative;
+  }
+  .post-cta__text h2::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 1.2rem;
   }
   .post-cta__btn {
     display: inline-flex;
@@ -625,19 +620,21 @@ const blogPostingSchema = JSON.stringify({
     text-decoration: none;
     align-self: flex-start;
     transition: background 0.2s;
+    margin-left: 2.5rem;
   }
   .post-cta__btn:hover { background: #22a89d; }
   .post-cta__visual {
     display: flex;
-    align-items: flex-end;
+    align-items: stretch;
     justify-content: center;
     align-self: stretch;
+    overflow: hidden;
   }
   .post-cta__img {
-    width: 240px;
-    height: 180px;
-    object-fit: contain;
-    object-position: bottom;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
     display: block;
   }
 
@@ -747,7 +744,7 @@ const blogPostingSchema = JSON.stringify({
     .post-hero__visual { display: none; }
     .post-layout { grid-template-columns: 180px 1fr; }
     .post-share { display: none; }
-    .post-cta__inner { grid-template-columns: 1fr auto; }
+    .post-cta__inner { grid-template-columns: 1fr; }
     .post-cta__visual { display: none; }
   }
   @media (max-width: 768px) {
@@ -758,12 +755,15 @@ const blogPostingSchema = JSON.stringify({
     .post-layout { grid-template-columns: 1fr; padding: 1.5rem 1.25rem 2.5rem; }
     .post-toc { position: static; margin-bottom: 1.5rem; }
     .post-related__grid { grid-template-columns: 1fr; }
+    .post-cta { padding: 2rem 1.25rem; }
     .post-cta__inner { grid-template-columns: 1fr; }
+    .post-cta__text { padding: 1.5rem 1.25rem; }
+    .post-cta__text h2 { padding-left: 2rem; }
+    .post-cta__btn { margin-left: 2rem; }
     .post-cta__visual { display: none; }
   }
   @media (max-width: 560px) {
     .post-related__grid { grid-template-columns: 1fr; }
-    .post-cta { padding: 0 1.25rem; }
     .post-related { padding: 2.5rem 1.25rem 3rem; }
   }
 </style>
