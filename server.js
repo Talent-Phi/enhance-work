@@ -8,11 +8,59 @@ import session from 'express-session';
 import bcrypt from 'bcryptjs';
 import { initGoogleSheets, appendApplicationRow, getSpreadsheetUrl } from './googleSheets.js';
 import { seedBlogPosts } from './scripts/blog-seed-data.mjs';
+import { getUncachableStripeClient } from './stripeClient.js';
+import crypto from 'crypto';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 
 const app = express();
+
+// ── Stripe Webhook (MUST be before express.json()) ───────────
+app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+  const signature = req.headers['stripe-signature'];
+  if (!signature) return res.status(400).json({ error: 'Missing stripe-signature' });
+  try {
+    if (!Buffer.isBuffer(req.body)) {
+      console.error('[Stripe Webhook] Body is not a Buffer — check middleware order');
+      return res.status(500).json({ error: 'Webhook error' });
+    }
+    const sig = Array.isArray(signature) ? signature[0] : signature;
+    const stripe = await getUncachableStripeClient();
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+    let event;
+    if (webhookSecret) {
+      event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+    } else {
+      event = JSON.parse(req.body.toString());
+    }
+    console.log(`[Stripe Webhook] Event: ${event.type}`);
+
+    if (event.type === 'checkout.session.completed') {
+      const session = event.data.object;
+      if (session.payment_status === 'paid') {
+        const existing = await pool.query(
+          'SELECT id FROM pdf_purchases WHERE session_id = $1',
+          [session.id]
+        );
+        if (existing.rows.length === 0) {
+          const token = crypto.randomBytes(48).toString('hex');
+          await pool.query(
+            `INSERT INTO pdf_purchases (session_id, customer_email, amount_total, download_token)
+             VALUES ($1, $2, $3, $4) ON CONFLICT (session_id) DO NOTHING`,
+            [session.id, session.customer_details?.email, session.amount_total, token]
+          );
+          console.log(`[Stripe Webhook] Purchase recorded for ${session.customer_details?.email}`);
+        }
+      }
+    }
+
+    res.status(200).json({ received: true });
+  } catch (err) {
+    console.error('[Stripe Webhook] Error:', err.message);
+    res.status(400).json({ error: 'Webhook error' });
+  }
+});
 
 // ── JSON body parser with detailed error on malformed payload ─
 app.use((req, res, next) => {
@@ -251,6 +299,19 @@ async function initDatabase() {
     }
     console.log('Blog posts seeded ✓');
   }
+
+  // ── PDF purchases table ──────────────────────────────────────
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS pdf_purchases (
+      id           SERIAL PRIMARY KEY,
+      session_id   VARCHAR(255) UNIQUE NOT NULL,
+      customer_email VARCHAR(255),
+      amount_total INTEGER,
+      download_token VARCHAR(128) UNIQUE NOT NULL,
+      downloaded    BOOLEAN DEFAULT FALSE,
+      created_at   TIMESTAMP DEFAULT NOW()
+    )
+  `);
 
   console.log('Database initialized');
 
@@ -1013,6 +1074,116 @@ app.get('/api/blog/external/posts', requireToken, async (req, res) => {
 });
 
 // ════════════════════════════════════════════════════════════
+//  STRIPE CHECKOUT ROUTES
+// ════════════════════════════════════════════════════════════
+
+// POST /api/stripe/create-checkout — Create Stripe Checkout session
+app.post('/api/stripe/create-checkout', async (req, res) => {
+  try {
+    const stripe = await getUncachableStripeClient();
+    const priceId = process.env.STRIPE_PRICE_ID;
+    if (!priceId) return res.status(500).json({ error: 'Product not configured' });
+
+    const baseUrl = `https://${(process.env.REPLIT_DOMAINS || 'enhance.work').split(',')[0]}`;
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [{ price: priceId, quantity: 1 }],
+      mode: 'payment',
+      success_url: `${baseUrl}/directory/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/directory`,
+      customer_email: req.body.email || undefined,
+      metadata: { product: 'pdf_directory' },
+    });
+    res.json({ url: session.url });
+  } catch (err) {
+    console.error('[Stripe Checkout] Error:', err.message);
+    res.status(500).json({ error: 'Failed to create checkout session' });
+  }
+});
+
+// GET /api/stripe/verify-session/:sessionId — Verify payment and issue download token
+app.get('/api/stripe/verify-session/:sessionId', async (req, res) => {
+  try {
+    const { sessionId } = req.params;
+    const stripe = await getUncachableStripeClient();
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+    if (session.payment_status !== 'paid') {
+      return res.status(402).json({ error: 'Payment not completed' });
+    }
+
+    const existing = await pool.query(
+      'SELECT download_token FROM pdf_purchases WHERE session_id = $1',
+      [sessionId]
+    );
+    if (existing.rows.length > 0) {
+      return res.json({ token: existing.rows[0].download_token, email: session.customer_details?.email });
+    }
+
+    const token = crypto.randomBytes(48).toString('hex');
+    await pool.query(
+      `INSERT INTO pdf_purchases (session_id, customer_email, amount_total, download_token)
+       VALUES ($1, $2, $3, $4)`,
+      [sessionId, session.customer_details?.email, session.amount_total, token]
+    );
+    res.json({ token, email: session.customer_details?.email });
+  } catch (err) {
+    console.error('[Stripe Verify] Error:', err.message);
+    res.status(500).json({ error: 'Failed to verify session' });
+  }
+});
+
+// GET /api/stripe/download/:token — Serve the PDF securely
+app.get('/api/stripe/download/:token', async (req, res) => {
+  try {
+    const { token } = req.params;
+    const result = await pool.query(
+      'SELECT id FROM pdf_purchases WHERE download_token = $1',
+      [token]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Invalid download link' });
+    }
+
+    await pool.query(
+      'UPDATE pdf_purchases SET downloaded = TRUE WHERE download_token = $1',
+      [token]
+    );
+
+    const pdfPath = path.join(__dirname, 'private', 'south-florida-med-spa-directory.pdf');
+    if (!fs.existsSync(pdfPath)) {
+      return res.status(404).json({ error: 'PDF file not yet uploaded. Please contact support.' });
+    }
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename="South-Florida-Med-Spa-Directory.pdf"');
+    res.sendFile(pdfPath);
+  } catch (err) {
+    console.error('[Stripe Download] Error:', err.message);
+    res.status(500).json({ error: 'Download failed' });
+  }
+});
+
+// GET /api/stripe/product — Get product info for the landing page
+app.get('/api/stripe/product', async (req, res) => {
+  try {
+    const stripe = await getUncachableStripeClient();
+    const priceId = process.env.STRIPE_PRICE_ID;
+    if (!priceId) return res.status(500).json({ error: 'Product not configured' });
+    const price = await stripe.prices.retrieve(priceId, { expand: ['product'] });
+    res.json({
+      priceId: price.id,
+      amount: price.unit_amount,
+      currency: price.currency,
+      name: price.product.name,
+      description: price.product.description,
+    });
+  } catch (err) {
+    console.error('[Stripe Product] Error:', err.message);
+    res.status(500).json({ error: 'Failed to fetch product info' });
+  }
+});
+
+// ════════════════════════════════════════════════════════════
 //  ERROR HANDLER
 // ════════════════════════════════════════════════════════════
 app.use((err, req, res, next) => {
@@ -1106,6 +1277,10 @@ if (fs.existsSync(distDir)) {
 }
 
 const PORT = process.env.PORT || 3000;
+
+// Ensure private directory for PDF exists
+const privateDir = path.join(__dirname, 'private');
+if (!fs.existsSync(privateDir)) fs.mkdirSync(privateDir, { recursive: true });
 
 initDatabase().then(async () => {
   await initGoogleSheets();

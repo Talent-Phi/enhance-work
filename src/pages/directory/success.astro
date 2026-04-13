@@ -1,0 +1,158 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+---
+
+<BaseLayout
+  title="Download Your Directory | Enhance.work"
+  description="Thank you for your purchase. Download The South Florida Med Spa Directory now."
+>
+  <Nav />
+
+  <main class="success-page">
+    <div class="success-card" id="loadingState">
+      <div class="spinner"></div>
+      <p>Verifying your payment…</p>
+    </div>
+
+    <div class="success-card" id="successState" style="display:none">
+      <div class="success-icon">✅</div>
+      <h1>Payment Confirmed!</h1>
+      <p class="success-sub">Thank you for your purchase. Your copy of <strong>The South Florida Med Spa Directory</strong> is ready.</p>
+      <a class="download-btn" id="downloadBtn" href="#" download>
+        ⬇ Download PDF Now
+      </a>
+      <p class="success-note">A confirmation has been sent to <span id="customerEmail"></span></p>
+      <p class="success-note small">Save this page or your download link — it will remain active.</p>
+    </div>
+
+    <div class="success-card" id="errorState" style="display:none">
+      <div class="success-icon">❌</div>
+      <h1>Something went wrong</h1>
+      <p class="success-sub" id="errorMsg">We couldn't verify your payment. Please contact us at <a href="mailto:info@enhance.work">info@enhance.work</a>.</p>
+      <a class="download-btn outline" href="/directory">← Back to Directory</a>
+    </div>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const sessionId = params.get('session_id');
+
+    const loadingEl = document.getElementById('loadingState');
+    const successEl = document.getElementById('successState');
+    const errorEl   = document.getElementById('errorState');
+    const errorMsg  = document.getElementById('errorMsg');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const emailEl   = document.getElementById('customerEmail');
+
+    async function verify() {
+      if (!sessionId) {
+        showError('No session ID found. If you completed a purchase, please contact support.');
+        return;
+      }
+      try {
+        const res = await fetch(`/api/stripe/verify-session/${sessionId}`);
+        const data = await res.json();
+        if (!res.ok) {
+          showError(data.error || 'Payment not verified.');
+          return;
+        }
+        downloadBtn.href = `/api/stripe/download/${data.token}`;
+        if (data.email) emailEl.textContent = data.email;
+        loadingEl.style.display = 'none';
+        successEl.style.display = 'flex';
+      } catch (err) {
+        showError('Network error. Please try again or contact support.');
+      }
+    }
+
+    function showError(msg) {
+      loadingEl.style.display = 'none';
+      errorMsg.textContent = msg;
+      errorEl.style.display = 'flex';
+    }
+
+    verify();
+  </script>
+</BaseLayout>
+
+<style>
+.success-page {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.5rem;
+  background: var(--color-bg);
+}
+.success-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 3rem 2.5rem;
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  display: flex;
+}
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 1rem;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.success-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+.success-card h1 {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-text-heading);
+}
+.success-sub {
+  color: var(--color-text-body);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+.download-btn {
+  display: inline-block;
+  background: var(--color-accent);
+  color: #fff;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 1rem 2.5rem;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+  margin-top: 0.5rem;
+}
+.download-btn:hover {
+  background: var(--color-accent-hover);
+  transform: translateY(-1px);
+}
+.download-btn.outline {
+  background: transparent;
+  color: var(--color-accent);
+  border: 2px solid var(--color-accent);
+}
+.download-btn.outline:hover {
+  background: var(--color-accent-light);
+}
+.success-note {
+  color: #999;
+  font-size: 0.85rem;
+}
+.success-note.small {
+  font-size: 0.78rem;
+}
+</style>

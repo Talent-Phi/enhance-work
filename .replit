@@ -55,6 +55,7 @@ channel = "stable-25_05"
 [userenv]
 
 [userenv.shared]
+STRIPE_PRICE_ID = "price_1TLt8zH9C0GAH5OYBP5AGz7u"
 
 [userenv.development]
 META_CAPI_TEST_CODE = "TEST18883"
