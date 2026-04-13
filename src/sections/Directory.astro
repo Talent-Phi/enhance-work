@@ -409,7 +409,7 @@
     transform-style: preserve-3d;
   }
   
-  /* Individual page layers - Stacked cards in diagonal */
+  /* Individual page layers - Stacked cards leaning LEFT */
   .directory__page {
     position: absolute;
     top: 0;
@@ -427,47 +427,47 @@
     box-shadow: 0 20px 50px rgba(0,0,0,0.35);
   }
   
-  /* Page 3: Back page (clinic listing) - Top right diagonal */
+  /* Page 3: Back page (clinic listing) - Top right, leaning LEFT */
   .directory__page--3 {
     z-index: 1;
-    transform: translate(80px, -80px) rotate(16deg) scale(0.95);
-    opacity: 0.8;
+    transform: translate(100px, -60px) rotate(-18deg) scale(0.92);
+    opacity: 0.75;
   }
   
-  /* Page 2: Middle page (index) - Middle diagonal */
+  /* Page 2: Middle page (index) - Middle, leaning LEFT */
   .directory__page--2 {
     z-index: 2;
-    transform: translate(40px, -40px) rotate(8deg) scale(0.97);
-    opacity: 0.9;
+    transform: translate(50px, -30px) rotate(-10deg) scale(0.96);
+    opacity: 0.85;
   }
   
-  /* Page 1: Front cover - Slight rotation */
+  /* Page 1: Front cover - Slight LEFT lean */
   .directory__page--1 {
     position: relative;
     z-index: 3;
-    transform: translate(0, 0) rotate(2deg) scale(1);
+    transform: translate(0, 0) rotate(-4deg) scale(1);
   }
   
   /* Active state - brings page to front with animation */
   .directory__page.active {
     z-index: 10 !important;
-    transform: translate(0, -10px) rotate(0deg) scale(1.03) !important;
+    transform: translate(0, -10px) rotate(-2deg) scale(1.03) !important;
     opacity: 1 !important;
   }
   
   /* Hover effect - spread cards slightly more */
   .directory__mockup:hover .directory__page--3 {
-    transform: translate(90px, -90px) rotate(18deg) scale(0.95);
-    opacity: 0.85;
+    transform: translate(110px, -65px) rotate(-20deg) scale(0.92);
+    opacity: 0.8;
   }
   
   .directory__mockup:hover .directory__page--2 {
-    transform: translate(45px, -45px) rotate(9deg) scale(0.97);
-    opacity: 0.95;
+    transform: translate(55px, -33px) rotate(-11deg) scale(0.96);
+    opacity: 0.9;
   }
   
   .directory__mockup:hover .directory__page--1 {
-    transform: translate(0, -5px) rotate(1deg) scale(1.02);
+    transform: translate(0, -5px) rotate(-3deg) scale(1.02);
   }
   
   /* Label overlay */
