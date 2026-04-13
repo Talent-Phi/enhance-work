@@ -104,6 +104,34 @@
   </div>
 </section>
 
+<script>
+  // Auto-rotate pages animation
+  const pagesStack = document.querySelector('.directory__pages-stack');
+  const pages = document.querySelectorAll('.directory__page');
+  let currentPage = 0;
+  const totalPages = pages.length;
+  const rotationInterval = 3000; // 3 seconds per page
+
+  function rotatePage() {
+    // Remove active class from all pages
+    pages.forEach(page => page.classList.remove('active'));
+    
+    // Add active class to current page
+    pages[currentPage].classList.add('active');
+    
+    // Move to next page
+    currentPage = (currentPage + 1) % totalPages;
+  }
+
+  // Start rotation
+  setInterval(rotatePage, rotationInterval);
+  
+  // Initialize first page as active
+  if (pages.length > 0) {
+    pages[0].classList.add('active');
+  }
+</script>
+
 <style>
   .directory {
     padding: 6rem 1.5rem;
@@ -369,13 +397,14 @@
     transform-style: preserve-3d;
   }
   
-  /* Individual page layers */
+  /* Individual page layers - Accordion/Fan effect */
   .directory__page {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: left center;
   }
   
   .directory__page img {
@@ -383,53 +412,72 @@
     height: auto;
     display: block;
     border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
   }
   
-  /* Page 3: Back page (clinic listing) - furthest back */
+  /* Page 3: Back page (clinic listing) - Default state */
   .directory__page--3 {
     z-index: 1;
-    transform: translateX(40px) translateZ(-80px) rotateY(-16deg);
-    opacity: 0.7;
+    transform: translateX(80px) translateZ(-100px) rotateY(-18deg) rotateZ(3deg);
+    opacity: 0.75;
   }
   
-  /* Page 2: Middle page (index) */
+  /* Page 2: Middle page (index) - Default state */
   .directory__page--2 {
     z-index: 2;
-    transform: translateX(20px) translateZ(-40px) rotateY(-8deg);
+    transform: translateX(40px) translateZ(-50px) rotateY(-10deg) rotateZ(1.5deg);
     opacity: 0.85;
   }
   
-  /* Page 1: Front cover - main focus */
+  /* Page 1: Front cover - Default state */
   .directory__page--1 {
     position: relative;
     z-index: 3;
     transform: translateZ(0) rotateY(-3deg);
-    animation: float-cover 6s ease-in-out infinite;
   }
   
-  @keyframes float-cover {
-    0%, 100% {
-      transform: translateZ(0) rotateY(-3deg) translateY(0px);
-    }
-    50% {
-      transform: translateZ(0) rotateY(-3deg) translateY(-10px);
-    }
+  /* Active state - brings page to front */
+  .directory__page.active {
+    z-index: 10;
+    transform: translateZ(20px) rotateY(0deg) rotateZ(0deg) scale(1.05);
+    opacity: 1;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.35);
   }
   
-  /* Hover effect - spread pages apart */
+  /* When page 1 is active */
+  .directory__page--1.active ~ .directory__page--2 {
+    transform: translateX(40px) translateZ(-50px) rotateY(-10deg) rotateZ(1.5deg);
+  }
+  
+  .directory__page--1.active ~ .directory__page--3 {
+    transform: translateX(80px) translateZ(-100px) rotateY(-18deg) rotateZ(3deg);
+  }
+  
+  /* When page 2 is active */
+  .directory__page--2.active {
+    z-index: 10;
+  }
+  
+  .directory__page--2.active ~ .directory__page--3 {
+    transform: translateX(40px) translateZ(-50px) rotateY(-10deg) rotateZ(1.5deg);
+  }
+  
+  /* When page 3 is active */
+  .directory__page--3.active {
+    z-index: 10;
+  }
+  
+  /* Hover effect - pause animation and spread pages */
   .directory__mockup:hover .directory__page--3 {
-    transform: translateX(55px) translateZ(-80px) rotateY(-18deg);
-    opacity: 0.8;
+    transform: translateX(100px) translateZ(-100px) rotateY(-20deg) rotateZ(4deg);
   }
   
   .directory__mockup:hover .directory__page--2 {
-    transform: translateX(30px) translateZ(-40px) rotateY(-10deg);
-    opacity: 0.9;
+    transform: translateX(50px) translateZ(-50px) rotateY(-12deg) rotateZ(2deg);
   }
   
   .directory__mockup:hover .directory__page--1 {
-    transform: translateZ(10px) rotateY(-2deg) scale(1.02);
+    transform: translateZ(10px) rotateY(-2deg);
   }
   
   /* Label overlay */
@@ -447,7 +495,7 @@
     color: #ffffff;
     font-weight: 500;
     white-space: nowrap;
-    z-index: 10;
+    z-index: 15;
     animation: fadeIn 1s ease-out 0.6s both;
   }
   
