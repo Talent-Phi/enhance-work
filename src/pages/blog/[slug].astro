@@ -397,6 +397,7 @@ const blogPostingSchema = JSON.stringify({
     column-gap: 0;
     padding: 2.5rem 2rem 3rem;
     align-items: start;
+    overflow: clip; /* prevent TOC from bleeding into content column */
   }
 
   /* center column */
@@ -718,8 +719,8 @@ const blogPostingSchema = JSON.stringify({
   @media (max-width: 1120px) {
     .post-hero { margin: 0; border-radius: 0; }
   }
-  @media (max-width: 1200px) {
-    /* On narrower screens: hide TOC, content fills the centered column */
+  @media (max-width: 1640px) {
+    /* Hide TOC when the 1fr column would be narrower than the TOC card */
     .post-toc { display: none; }
   }
   @media (max-width: 1024px) {
