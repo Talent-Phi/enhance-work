@@ -35,7 +35,9 @@
       <!-- ── STEP 1 ── -->
       <div class="ew-step" data-step="1">
         <h2 class="ew-title">What role are you looking for?</h2>
+        <p class="ew-subtitle">Select all that apply</p>
         <hr class="ew-divider">
+        <p class="ew-field-label ew-field-label--grid">Select Position*</p>
         <div class="ew-role-grid ew-role-grid--main">
           <label class="ew-role-card">
             <input type="radio" name="role" value="aesthetic_provider">
@@ -622,25 +624,23 @@
 .ew-role-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 0.65rem;
-  min-height: 0;
+  grid-template-rows: repeat(2, 120px);
+  gap: 0.6rem;
 }
-/* Step 1 — grid fills remaining height, padded like body */
+/* Step 1 — fixed-size grid, not stretching */
 .ew-role-grid--main {
-  flex: 1;
-  padding: 0 4rem 0.5rem;
-  align-items: stretch;
+  padding-bottom: 0.5rem;
 }
 .ew-field-label--grid {
-  padding: 0 4rem 0.4rem;
+  padding-bottom: 0.4rem;
+  margin: 0;
 }
 .ew-role-card {
   display: flex;
   flex-direction: column;
   align-items: center;
   border: 1.5px solid #e8e8e8;
-  border-radius: 12px;
+  border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
   background: #fff;
@@ -648,17 +648,17 @@
   user-select: none;
   padding: 0;
   gap: 0;
-  height: 100%;
+  height: 120px;
   box-sizing: border-box;
 }
 .ew-role-card input { display: none; }
 .ew-role-card__img {
   width: 100%;
-  flex: 1;
-  min-height: 0;
+  height: 88px;
+  flex-shrink: 0;
   overflow: hidden;
   border-radius: 0;
-  background: #f5f5f5;
+  background: #f0f0f0;
 }
 .ew-role-card__img img {
   width: 100%;
@@ -668,13 +668,14 @@
   display: block;
 }
 .ew-role-card span {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: #555;
   text-align: center;
-  padding: 0.4rem 0.3rem 0.5rem;
-  line-height: 1.3;
+  padding: 0.3rem 0.25rem 0.25rem;
+  line-height: 1.2;
   font-family: var(--font-body);
   width: 100%;
+  flex-shrink: 0;
 }
 .ew-role-card:has(input:checked) {
   border-color: #2bbcb0;
