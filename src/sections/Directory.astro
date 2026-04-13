@@ -179,7 +179,7 @@
     gap: 4rem;
     align-items: center;
     position: relative;
-    z-index: 1;
+    z-index: 2;
   }
   
   /* Left content */
@@ -319,13 +319,16 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: #2bbcb0;
-    color: #ffffff;
-    font-family: var(--font-heading);
-    font-size: 1rem;
+    background: linear-gradient(180deg, #2BBCB0 0%, #208D84 100%);
+    color: #FFFFFF;
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
     font-weight: 600;
-    padding: 0.9rem 2rem;
-    border-radius: 8px;
+    line-height: 23px;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 10px 26px;
+    border-radius: 53px;
     text-decoration: none;
     transition: all 0.25s ease;
     align-self: flex-start;
@@ -333,6 +336,9 @@
     letter-spacing: 0.03em;
     position: relative;
     overflow: hidden;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 0px 20px rgba(43, 188, 176, 0.4);
+    min-width: 250px;
+    height: 44px;
   }
   
   .directory__cta::before {
@@ -354,9 +360,9 @@
   }
   
   .directory__cta:hover {
-    background: #22a89d;
+    background: linear-gradient(180deg, #27A99E 0%, #1a7a73 100%);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(43,188,176,0.4);
+    box-shadow: 0px 6px 6px rgba(0, 0, 0, 0.3), 0px 0px 25px rgba(43, 188, 176, 0.6);
   }
   
   .directory__cta span {
