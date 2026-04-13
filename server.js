@@ -1093,6 +1093,7 @@ app.post('/api/stripe/create-checkout', async (req, res) => {
       cancel_url: `${baseUrl}/directory`,
       customer_email: req.body.email || undefined,
       metadata: { product: 'pdf_directory' },
+      adaptive_pricing: { enabled: false },
     });
     res.json({ url: session.url });
   } catch (err) {
