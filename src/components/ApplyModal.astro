@@ -35,45 +35,47 @@
       <!-- ── STEP 1 ── -->
       <div class="ew-step" data-step="1">
         <h2 class="ew-title">What role are you looking for?</h2>
+        <p class="ew-subtitle">Select all that apply</p>
         <hr class="ew-divider">
+        <p class="ew-field-label ew-field-label--grid">Select Position*</p>
         <div class="ew-role-grid ew-role-grid--main">
           <label class="ew-role-card">
-            <input type="radio" name="role" value="aesthetic_provider">
+            <input type="checkbox" name="role" value="aesthetic_provider">
             <div class="ew-role-card__img"><img src="/images/form/role-aesthetic-provider.jpg" alt="Aesthetic Provider"></div>
             <span>Aesthetic Provider</span>
           </label>
           <label class="ew-role-card">
-            <input type="radio" name="role" value="medical_director">
-            <div class="ew-role-card__img"><img src="/images/form/role-medical-esthetician.jpg" alt="Medical Director"></div>
+            <input type="checkbox" name="role" value="medical_director">
+            <div class="ew-role-card__img"><img src="/images/form/role-medical-director.jpg" alt="Medical Director"></div>
             <span>Medical Director</span>
           </label>
           <label class="ew-role-card">
-            <input type="radio" name="role" value="medical_esthetician">
-            <div class="ew-role-card__img"><img src="/images/form/role-body-technician.jpg" alt="Medical Esthetician"></div>
+            <input type="checkbox" name="role" value="medical_esthetician">
+            <div class="ew-role-card__img"><img src="/images/form/role-medical-esthetician.jpg" alt="Medical Esthetician"></div>
             <span>Medical Esthetician</span>
           </label>
           <label class="ew-role-card">
-            <input type="radio" name="role" value="laser_technician">
-            <div class="ew-role-card__img"><img src="/images/form/role-sales-associate.jpg" alt="Laser Technician"></div>
+            <input type="checkbox" name="role" value="laser_technician">
+            <div class="ew-role-card__img"><img src="/images/form/role-laser-technician.jpg" alt="Laser Technician"></div>
             <span>Laser Technician</span>
           </label>
           <label class="ew-role-card">
-            <input type="radio" name="role" value="front_desk">
-            <div class="ew-role-card__img"><img src="/images/form/role-medical-director.jpg" alt="Front Desk"></div>
-            <span>Front Desk</span>
+            <input type="checkbox" name="role" value="patient_coordinator">
+            <div class="ew-role-card__img"><img src="/images/form/role-patient-coordinator.jpg" alt="Patient Coordinator"></div>
+            <span>Patient Coordinator</span>
           </label>
           <label class="ew-role-card">
-            <input type="radio" name="role" value="sales_associate">
-            <div class="ew-role-card__img"><img src="/images/form/role-laser-technician.jpg" alt="Sales Associate"></div>
+            <input type="checkbox" name="role" value="sales_associate">
+            <div class="ew-role-card__img"><img src="/images/form/role-sales-associate.jpg" alt="Sales Associate"></div>
             <span>Sales Associate</span>
           </label>
           <label class="ew-role-card">
-            <input type="radio" name="role" value="practice_manager">
-            <div class="ew-role-card__img"><img src="/images/form/role-marketing.jpg" alt="Practice Manager"></div>
+            <input type="checkbox" name="role" value="practice_manager">
+            <div class="ew-role-card__img"><img src="/images/form/role-practice-manager.jpg" alt="Practice Manager"></div>
             <span>Practice Manager</span>
           </label>
           <label class="ew-role-card">
-            <input type="radio" name="role" value="medical_assistant">
+            <input type="checkbox" name="role" value="medical_assistant">
             <div class="ew-role-card__img"><img src="/images/form/role-medical-assistant.jpg" alt="Medical Assistant"></div>
             <span>Medical Assistant</span>
           </label>
@@ -550,18 +552,21 @@
 /* ── Title / subtitle / divider ── */
 .ew-title {
   font-family: var(--font-heading);
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #363636;
-  text-align: center;
-  margin-bottom: 0.2rem;
-  line-height: 1.25;
-}
-.ew-subtitle {
-  font-size: 0.88rem;
-  color: #8a8a8a;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #565656;
   text-align: center;
   margin-bottom: 0;
+  line-height: 1.25;
+  letter-spacing: -0.046em;
+}
+.ew-subtitle {
+  font-size: 1rem;
+  color: #7a7a7a;
+  text-align: center;
+  margin-bottom: 0;
+  font-family: var(--font-heading);
+  font-weight: 400;
 }
 .ew-divider {
   border: none;
@@ -577,9 +582,9 @@
 /* ── Role grid ── */
 .ew-role-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  gap: 0.65rem;
+  gap: 1.25rem;
   min-height: 0;
 }
 /* Step 1 — grid fills remaining height, padded like body */
@@ -590,20 +595,24 @@
 }
 .ew-field-label--grid {
   padding: 0 4rem 0.4rem;
+  font-size: 1rem;
+  color: #7a7a7a;
+  font-family: var(--font-heading);
+  font-weight: 400;
 }
 .ew-role-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1.5px solid #e8e8e8;
-  border-radius: 12px;
+  border: 1.22px solid rgba(0,0,0,0.08);
+  border-radius: 5px;
   overflow: hidden;
   cursor: pointer;
   background: #fff;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
   user-select: none;
-  padding: 0.6rem 0.6rem 0.45rem;
-  gap: 0.45rem;
+  padding: 0;
+  gap: 0;
   height: 100%;
   box-sizing: border-box;
 }
@@ -613,30 +622,33 @@
   flex: 1;
   min-height: 0;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 5px 5px 0 0;
   background: #f5f5f5;
 }
 .ew-role-card__img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: top center;
+  object-position: center center;
   display: block;
 }
 .ew-role-card span {
   font-size: 0.75rem;
-  color: #555;
+  color: #1a1d1c;
   margin-top: 0;
   text-align: center;
-  padding: 0 0.2rem;
-  line-height: 1.3;
-  font-family: var(--font-body);
+  padding: 0.6rem 0.4rem;
+  line-height: 1.46;
+  font-family: var(--font-heading);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  width: 100%;
 }
 .ew-role-card:has(input:checked) {
   border-color: #2bbcb0;
-  box-shadow: 0 0 0 2px rgba(43,188,176,0.15);
+  background: #eaf8f7;
 }
-.ew-role-card:has(input:checked) span { color: #2bbcb0; font-weight: 500; }
+.ew-role-card:has(input:checked) span { color: #1a1d1c; font-weight: 500; }
 .ew-role-card:hover { border-color: #2bbcb0; }
 
 /* ── Grids ── */
