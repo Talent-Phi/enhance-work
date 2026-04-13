@@ -4,71 +4,103 @@ import Nav from '../../components/Nav.astro';
 ---
 
 <BaseLayout
-  title="Download Your Directory | Enhance.work"
-  description="Thank you for your purchase. Download The South Florida Med Spa Directory now."
+  title="Payment Confirmed | Enhance.work"
+  description="Thank you for your purchase. Your South Florida Med Spa Directory is downloading now."
 >
   <Nav />
 
   <main class="success-page">
     <div class="success-card" id="loadingState">
-      <div class="spinner"></div>
-      <p>Verifying your payment…</p>
+      <div class="spinner-ring">
+        <svg viewBox="0 0 50 50" class="spinner-svg">
+          <circle cx="25" cy="25" r="20" fill="none" stroke-width="4"/>
+        </svg>
+      </div>
+      <p class="loading-text">Verifying your payment…</p>
     </div>
 
     <div class="success-card" id="successState" style="display:none">
-      <div class="success-icon">✅</div>
-      <h1>Payment Confirmed!</h1>
-      <p class="success-sub">Thank you for your purchase. Your copy of <strong>The South Florida Med Spa Directory</strong> is ready.</p>
-      <a class="download-btn" id="downloadBtn" href="#" download>
-        ⬇ Download PDF Now
+      <div class="check-wrap">
+        <svg class="check-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle class="check-circle" cx="40" cy="40" r="36" stroke="#2bbcb0" stroke-width="4"/>
+          <polyline class="check-mark" points="24,41 35,52 56,30" stroke="#2bbcb0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <h1 class="success-title">Payment Confirmed!</h1>
+      <p class="success-sub">Your copy of <strong>The South Florida Med Spa Directory</strong> is downloading now.</p>
+
+      <a class="download-btn" id="downloadBtn" href="#" download="South-Florida-Med-Spa-Directory.pdf">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Download PDF
       </a>
-      <p class="success-note">A confirmation has been sent to <span id="customerEmail"></span></p>
-      <p class="success-note small">Save this page or your download link — it will remain active.</p>
+
+      <p class="success-note">Didn't start? <a id="manualLink" href="#">Click here</a> to download again.</p>
+      <p class="success-email">Confirmation sent to <span id="customerEmail"></span></p>
     </div>
 
     <div class="success-card" id="errorState" style="display:none">
-      <div class="success-icon">❌</div>
-      <h1>Something went wrong</h1>
-      <p class="success-sub" id="errorMsg">We couldn't verify your payment. Please contact us at <a href="mailto:info@enhance.work">info@enhance.work</a>.</p>
-      <a class="download-btn outline" href="/directory">← Back to Directory</a>
+      <div class="error-icon">
+        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="36" stroke="#ef4444" stroke-width="4"/>
+          <line x1="26" y1="26" x2="54" y2="54" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
+          <line x1="54" y1="26" x2="26" y2="54" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h1 class="success-title">Something went wrong</h1>
+      <p class="success-sub error-msg" id="errorMsg">We couldn't verify your payment. Please contact <a href="mailto:info@enhance.work">info@enhance.work</a>.</p>
+      <a class="download-btn outline" href="/">← Back to Home</a>
     </div>
   </main>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
+    const params    = new URLSearchParams(window.location.search);
     const sessionId = params.get('session_id');
 
-    const loadingEl = document.getElementById('loadingState');
-    const successEl = document.getElementById('successState');
-    const errorEl   = document.getElementById('errorState');
-    const errorMsg  = document.getElementById('errorMsg');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const emailEl   = document.getElementById('customerEmail');
+    const loadingEl  = document.getElementById('loadingState')!;
+    const successEl  = document.getElementById('successState')!;
+    const errorEl    = document.getElementById('errorState')!;
+    const downloadBtn = document.getElementById('downloadBtn') as HTMLAnchorElement;
+    const manualLink  = document.getElementById('manualLink') as HTMLAnchorElement;
+    const emailEl    = document.getElementById('customerEmail')!;
+    const errorMsg   = document.getElementById('errorMsg')!;
 
     async function verify() {
-      if (!sessionId) {
-        showError('No session ID found. If you completed a purchase, please contact support.');
-        return;
-      }
+      if (!sessionId) { showError('No session ID found. Please contact support.'); return; }
+
       try {
-        const res = await fetch(`/api/stripe/verify-session/${sessionId}`);
+        const res  = await fetch(`/api/stripe/verify-session/${sessionId}`);
         const data = await res.json();
-        if (!res.ok) {
-          showError(data.error || 'Payment not verified.');
-          return;
-        }
-        downloadBtn.href = `/api/stripe/download/${data.token}`;
+        if (!res.ok) { showError(data.error || 'Payment not verified.'); return; }
+
+        const url = `/api/stripe/download/${data.token}`;
+        downloadBtn.href   = url;
+        manualLink.href    = url;
         if (data.email) emailEl.textContent = data.email;
+
         loadingEl.style.display = 'none';
         successEl.style.display = 'flex';
+
+        // Auto-download
+        const a = document.createElement('a');
+        a.href     = url;
+        a.download = 'South-Florida-Med-Spa-Directory.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
       } catch (err) {
         showError('Network error. Please try again or contact support.');
       }
     }
 
-    function showError(msg) {
+    function showError(msg: string) {
       loadingEl.style.display = 'none';
-      errorMsg.textContent = msg;
+      errorMsg.innerHTML = msg;
       errorEl.style.display = 'flex';
     }
 
@@ -85,56 +117,121 @@ import Nav from '../../components/Nav.astro';
   padding: 4rem 1.5rem;
   background: var(--color-bg);
 }
+
 .success-card {
   background: #fff;
-  border-radius: 16px;
-  padding: 3rem 2.5rem;
-  max-width: 520px;
+  border-radius: 20px;
+  padding: 3.5rem 2.5rem;
+  max-width: 480px;
   width: 100%;
   text-align: center;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+  box-shadow: 0 12px 48px rgba(0,0,0,0.09);
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 1.25rem;
   display: flex;
 }
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid var(--color-border);
-  border-top-color: var(--color-accent);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin: 0 auto 1rem;
+
+/* Loading spinner */
+.spinner-ring {
+  width: 64px;
+  height: 64px;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
-.success-icon {
-  font-size: 3rem;
-  margin-bottom: 0.5rem;
+.spinner-svg {
+  width: 100%;
+  height: 100%;
+  animation: rotate 1s linear infinite;
 }
-.success-card h1 {
+.spinner-svg circle {
+  stroke: var(--color-accent);
+  stroke-dasharray: 100;
+  stroke-dashoffset: 75;
+  stroke-linecap: round;
+}
+@keyframes rotate { to { transform: rotate(360deg); } }
+.loading-text {
+  color: var(--color-text-body);
+  font-size: 1rem;
+}
+
+/* Checkmark */
+.check-wrap {
+  width: 90px;
+  height: 90px;
+}
+.check-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.check-circle {
+  stroke-dasharray: 226;
+  stroke-dashoffset: 226;
+  animation: draw-circle 0.6s ease forwards;
+}
+.check-mark {
+  stroke-dasharray: 60;
+  stroke-dashoffset: 60;
+  animation: draw-check 0.4s ease 0.55s forwards;
+}
+@keyframes draw-circle {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes draw-check {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Error icon */
+.error-icon {
+  width: 80px;
+  height: 80px;
+}
+
+/* Text */
+.success-title {
   font-family: var(--font-heading);
-  font-size: 1.8rem;
+  font-size: 1.75rem;
   font-weight: 700;
   color: var(--color-text-heading);
+  margin: 0;
 }
 .success-sub {
   color: var(--color-text-body);
   font-size: 1rem;
   line-height: 1.65;
+  margin: 0;
 }
+.success-note {
+  font-size: 0.85rem;
+  color: #aaa;
+  margin: 0;
+}
+.success-note a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.success-email {
+  font-size: 0.82rem;
+  color: #bbb;
+  margin: 0;
+}
+
+/* Download button */
 .download-btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
   background: var(--color-accent);
   color: #fff;
   font-family: var(--font-heading);
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
-  padding: 1rem 2.5rem;
+  padding: 0.85rem 2rem;
   border-radius: 10px;
   text-decoration: none;
   transition: background 0.2s, transform 0.15s;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
 }
 .download-btn:hover {
   background: var(--color-accent-hover);
@@ -147,12 +244,6 @@ import Nav from '../../components/Nav.astro';
 }
 .download-btn.outline:hover {
   background: var(--color-accent-light);
-}
-.success-note {
-  color: #999;
-  font-size: 0.85rem;
-}
-.success-note.small {
-  font-size: 0.78rem;
+  transform: none;
 }
 </style>
