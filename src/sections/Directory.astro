@@ -404,8 +404,8 @@
   /* Stacked pages container — needs explicit height so abs children don't collapse it */
   .directory__pages-stack {
     position: relative;
-    width: 380px;
-    height: 520px;
+    width: 540px;
+    height: 720px;
     transform-style: preserve-3d;
     margin: 0 auto;
   }
@@ -431,14 +431,14 @@
   /* Page 3 — furthest back, fan RIGHT (+16°), offset up-right */
   .directory__page--3 {
     z-index: 1;
-    transform: translate(88px, -24px) rotate(16deg) scale(0.95);
+    transform: translate(130px, -34px) rotate(16deg) scale(0.95);
     opacity: 0.80;
   }
 
   /* Page 2 — middle, fan RIGHT (+7°), slight up-right */
   .directory__page--2 {
     z-index: 2;
-    transform: translate(44px, -12px) rotate(7deg) scale(0.975);
+    transform: translate(65px, -17px) rotate(7deg) scale(0.975);
     opacity: 0.90;
   }
 
@@ -451,21 +451,21 @@
   /* Active state — smoothly brings page forward */
   .directory__page.active {
     z-index: 10 !important;
-    transform: translate(-8px, -16px) rotate(-4deg) scale(1.04) !important;
+    transform: translate(-10px, -20px) rotate(-4deg) scale(1.04) !important;
     opacity: 1 !important;
   }
 
   /* Hover — spread the fan a touch more */
   .directory__mockup:hover .directory__page--3 {
-    transform: translate(100px, -28px) rotate(18deg) scale(0.95);
+    transform: translate(145px, -40px) rotate(18deg) scale(0.95);
     opacity: 0.85;
   }
   .directory__mockup:hover .directory__page--2 {
-    transform: translate(50px, -14px) rotate(8deg) scale(0.975);
+    transform: translate(72px, -20px) rotate(8deg) scale(0.975);
     opacity: 0.92;
   }
   .directory__mockup:hover .directory__page--1 {
-    transform: translate(-4px, -6px) rotate(-5deg) scale(1.01);
+    transform: translate(-5px, -8px) rotate(-5deg) scale(1.01);
   }
   
   /* Label overlay */
@@ -509,15 +509,15 @@
     }
 
     .directory__pages-stack {
-      width: 300px;
-      height: 420px;
+      width: 420px;
+      height: 580px;
     }
 
     .directory__page--3 {
-      transform: translate(70px, -18px) rotate(16deg) scale(0.95);
+      transform: translate(100px, -26px) rotate(16deg) scale(0.95);
     }
     .directory__page--2 {
-      transform: translate(35px, -9px) rotate(7deg) scale(0.975);
+      transform: translate(50px, -13px) rotate(7deg) scale(0.975);
     }
 
     .directory__content {
@@ -549,15 +549,15 @@
     }
 
     .directory__pages-stack {
-      width: 260px;
-      height: 360px;
+      width: 320px;
+      height: 440px;
     }
 
     .directory__page--3 {
-      transform: translate(60px, -14px) rotate(16deg) scale(0.95);
+      transform: translate(76px, -20px) rotate(16deg) scale(0.95);
     }
     .directory__page--2 {
-      transform: translate(30px, -7px) rotate(7deg) scale(0.975);
+      transform: translate(38px, -10px) rotate(7deg) scale(0.975);
     }
   }
 </style>
