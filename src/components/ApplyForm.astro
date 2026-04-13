@@ -44,32 +44,32 @@
           </label>
           <label class="ew-role-card">
             <input type="radio" name="role" value="medical_director">
-            <div class="ew-role-card__img"><img src="/images/form/role-medical-esthetician.jpg" alt="Medical Director"></div>
+            <div class="ew-role-card__img"><img src="/images/form/role-medical-director.jpg" alt="Medical Director"></div>
             <span>Medical Director</span>
           </label>
           <label class="ew-role-card">
             <input type="radio" name="role" value="medical_esthetician">
-            <div class="ew-role-card__img"><img src="/images/form/role-body-technician.jpg" alt="Medical Esthetician"></div>
+            <div class="ew-role-card__img"><img src="/images/form/role-medical-esthetician.jpg" alt="Medical Esthetician"></div>
             <span>Medical Esthetician</span>
           </label>
           <label class="ew-role-card">
             <input type="radio" name="role" value="laser_technician">
-            <div class="ew-role-card__img"><img src="/images/form/role-sales-associate.jpg" alt="Laser Technician"></div>
+            <div class="ew-role-card__img"><img src="/images/form/role-laser-technician.jpg" alt="Laser Technician"></div>
             <span>Laser Technician</span>
           </label>
           <label class="ew-role-card">
-            <input type="radio" name="role" value="front_desk">
-            <div class="ew-role-card__img"><img src="/images/form/role-medical-director.jpg" alt="Front Desk"></div>
-            <span>Front Desk</span>
+            <input type="radio" name="role" value="patient_coordinator">
+            <div class="ew-role-card__img"><img src="/images/form/role-patient-coordinator.jpg" alt="Patient Coordinator"></div>
+            <span>Patient Coordinator</span>
           </label>
           <label class="ew-role-card">
             <input type="radio" name="role" value="sales_associate">
-            <div class="ew-role-card__img"><img src="/images/form/role-laser-technician.jpg" alt="Sales Associate"></div>
+            <div class="ew-role-card__img"><img src="/images/form/role-sales-associate.jpg" alt="Sales Associate"></div>
             <span>Sales Associate</span>
           </label>
           <label class="ew-role-card">
             <input type="radio" name="role" value="practice_manager">
-            <div class="ew-role-card__img"><img src="/images/form/role-marketing.jpg" alt="Practice Manager"></div>
+            <div class="ew-role-card__img"><img src="/images/form/role-practice-manager.jpg" alt="Practice Manager"></div>
             <span>Practice Manager</span>
           </label>
           <label class="ew-role-card">
@@ -646,8 +646,8 @@
   background: #fff;
   transition: border-color 0.15s, box-shadow 0.15s;
   user-select: none;
-  padding: 0.6rem 0.6rem 0.45rem;
-  gap: 0.45rem;
+  padding: 0;
+  gap: 0;
   height: 100%;
   box-sizing: border-box;
 }
@@ -657,26 +657,24 @@
   flex: 1;
   min-height: 0;
   overflow: hidden;
-  border-radius: 8px;
-  background: #fff;
+  border-radius: 0;
+  background: #f5f5f5;
 }
 .ew-role-card__img img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  object-position: center;
+  object-fit: cover;
+  object-position: center top;
   display: block;
-  padding: 0.35rem;
-  box-sizing: border-box;
 }
 .ew-role-card span {
   font-size: 0.75rem;
   color: #555;
-  margin-top: 0;
   text-align: center;
-  padding: 0 0.2rem;
+  padding: 0.4rem 0.3rem 0.5rem;
   line-height: 1.3;
   font-family: var(--font-body);
+  width: 100%;
 }
 .ew-role-card:has(input:checked) {
   border-color: #2bbcb0;
