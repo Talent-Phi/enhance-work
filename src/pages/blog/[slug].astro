@@ -386,36 +386,42 @@ const blogPostingSchema = JSON.stringify({
   }
 
   /* ═══════════════════════════════
-     TWO-COLUMN LAYOUT
+     LAYOUT: TOC left | centered content
   ═══════════════════════════════ */
+
+  /* 3-col grid: [TOC space] [1100px content] [mirror] 
+     — the center column is always 1100px, aligned with "Other content" */
   .post-layout {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 2.5rem 3rem 3rem;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr min(1100px, 100%) 1fr;
+    column-gap: 0;
+    padding: 2.5rem 2rem 3rem;
     align-items: start;
-    gap: 2.5rem;
   }
 
-  /* RIGHT column: article + CTA stacked */
+  /* center column */
   .post-main-col {
-    flex: 1;
-    min-width: 0;
+    grid-column: 2;
     display: flex;
     flex-direction: column;
     gap: 2.5rem;
+    min-width: 0;
   }
 
-  /* TOC */
+  /* TOC sits in column 1, sticky, pushed flush to right edge of its cell */
   .post-toc {
+    grid-column: 1;
+    justify-self: end;
+    align-self: start;
     position: sticky;
     top: 84px;
+    width: 100%;
+    max-width: 220px;
     background: #fff;
     border-radius: 12px;
     padding: 1.5rem;
+    padding-right: 0; /* gap to content provided by TOC card right padding only */
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    width: 240px;
-    flex-shrink: 0;
   }
   .post-toc__title {
     font-family: 'Poppins', sans-serif;
@@ -712,11 +718,15 @@ const blogPostingSchema = JSON.stringify({
   @media (max-width: 1120px) {
     .post-hero { margin: 0; border-radius: 0; }
   }
+  @media (max-width: 1200px) {
+    /* On narrower screens: hide TOC, content fills the centered column */
+    .post-toc { display: none; }
+  }
   @media (max-width: 1024px) {
     .post-hero__inner { grid-template-columns: 1fr; }
     .post-hero__visual { display: none; }
-    .post-layout { flex-direction: column; gap: 2rem; padding: 2rem 2rem 2.5rem; }
-    .post-toc { position: static; width: 100%; }
+    .post-layout { grid-template-columns: 1fr; padding: 2rem 2rem 2.5rem; }
+    .post-main-col { grid-column: 1; }
     .post-cta__inner { grid-template-columns: 1fr; }
     .post-cta__visual { display: none; }
   }
@@ -725,8 +735,7 @@ const blogPostingSchema = JSON.stringify({
     .post-hero__text { padding: 1.5rem 1.25rem; }
     .post-hero__author-strip { padding: 1rem 1.25rem 1.25rem; }
     .post-author-card__avatar { width: 44px; height: 44px; min-width: 44px; font-size: 0.9rem; }
-    .post-layout { flex-direction: column; padding: 1.5rem 1.25rem 2.5rem; }
-    .post-toc { position: static; width: 100%; margin-bottom: 0; }
+    .post-layout { grid-template-columns: 1fr; padding: 1.5rem 1.25rem 2.5rem; }
     .post-related__grid { grid-template-columns: 1fr; }
     .post-cta__inner { grid-template-columns: 1fr; }
     .post-cta__text { padding: 1.5rem 1.25rem; }
