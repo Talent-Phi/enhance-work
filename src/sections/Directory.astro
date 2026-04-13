@@ -65,12 +65,37 @@
     
     <!-- Right mockup -->
     <div class="directory__mockup">
-      <img 
-        src="/images/mockups/cta-right.png" 
-        alt="South Florida Med Spa Directory preview showing clinic listings and contact information"
-        class="directory__mockup-img"
-        loading="lazy"
-      />
+      <!-- Stacked pages effect -->
+      <div class="directory__pages-stack">
+        <!-- Page 3: Back page (clinic listing) -->
+        <div class="directory__page directory__page--3">
+          <img 
+            src="/images/mockups/directory-page-listing.png" 
+            alt="Clinic listing page"
+            loading="lazy"
+          />
+        </div>
+        
+        <!-- Page 2: Middle page (index) -->
+        <div class="directory__page directory__page--2">
+          <img 
+            src="/images/mockups/directory-page-index.png" 
+            alt="Directory index page"
+            loading="lazy"
+          />
+        </div>
+        
+        <!-- Page 1: Front cover -->
+        <div class="directory__page directory__page--1">
+          <img 
+            src="/images/mockups/directory-cover.png" 
+            alt="Everything You Need to Know about every aesthetic practice in South Florida"
+            loading="lazy"
+          />
+        </div>
+      </div>
+      
+      <!-- Label overlay -->
       <div class="directory__mockup-label">
         <span>The South Florida Med Spa Directory</span>
       </div>
@@ -319,8 +344,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    justify-content: center;
     animation: slideInRight 0.8s ease-out;
+    perspective: 1500px;
+    min-height: 600px;
   }
   
   @keyframes slideInRight {
@@ -334,32 +361,83 @@
     }
   }
   
-  .directory__mockup-img {
+  /* Stacked pages container */
+  .directory__pages-stack {
+    position: relative;
     width: 100%;
     max-width: 520px;
+    transform-style: preserve-3d;
+  }
+  
+  /* Individual page layers */
+  .directory__page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  
+  .directory__page img {
+    width: 100%;
     height: auto;
     display: block;
-    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.3));
-    transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);
-    transition: transform 0.4s ease, filter 0.4s ease;
-    animation: float-mockup 6s ease-in-out infinite;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   }
   
-  @keyframes float-mockup {
+  /* Page 3: Back page (clinic listing) - furthest back */
+  .directory__page--3 {
+    z-index: 1;
+    transform: translateX(40px) translateZ(-80px) rotateY(-16deg);
+    opacity: 0.7;
+  }
+  
+  /* Page 2: Middle page (index) */
+  .directory__page--2 {
+    z-index: 2;
+    transform: translateX(20px) translateZ(-40px) rotateY(-8deg);
+    opacity: 0.85;
+  }
+  
+  /* Page 1: Front cover - main focus */
+  .directory__page--1 {
+    position: relative;
+    z-index: 3;
+    transform: translateZ(0) rotateY(-3deg);
+    animation: float-cover 6s ease-in-out infinite;
+  }
+  
+  @keyframes float-cover {
     0%, 100% {
-      transform: perspective(1000px) rotateY(-5deg) rotateX(2deg) translateY(0px);
+      transform: translateZ(0) rotateY(-3deg) translateY(0px);
     }
     50% {
-      transform: perspective(1000px) rotateY(-5deg) rotateX(2deg) translateY(-10px);
+      transform: translateZ(0) rotateY(-3deg) translateY(-10px);
     }
   }
   
-  .directory__mockup:hover .directory__mockup-img {
-    transform: perspective(1000px) rotateY(-2deg) rotateX(1deg) scale(1.02);
-    filter: drop-shadow(0 25px 50px rgba(0,0,0,0.4));
+  /* Hover effect - spread pages apart */
+  .directory__mockup:hover .directory__page--3 {
+    transform: translateX(55px) translateZ(-80px) rotateY(-18deg);
+    opacity: 0.8;
   }
   
+  .directory__mockup:hover .directory__page--2 {
+    transform: translateX(30px) translateZ(-40px) rotateY(-10deg);
+    opacity: 0.9;
+  }
+  
+  .directory__mockup:hover .directory__page--1 {
+    transform: translateZ(10px) rotateY(-2deg) scale(1.02);
+  }
+  
+  /* Label overlay */
   .directory__mockup-label {
+    position: absolute;
+    bottom: -1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
     background: rgba(255,255,255,0.15);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255,255,255,0.2);
@@ -368,6 +446,8 @@
     font-size: 0.9rem;
     color: #ffffff;
     font-weight: 500;
+    white-space: nowrap;
+    z-index: 10;
     animation: fadeIn 1s ease-out 0.6s both;
   }
   
