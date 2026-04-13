@@ -626,17 +626,15 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
 }
+/* Step 1 — fixed-size grid, not stretching */
 .ew-role-grid--main {
-  padding-bottom: 0.75rem;
-  max-width: 700px;
-  width: 100%;
-  margin: 0 auto;
+  padding: 0 2rem 0.5rem;
+  max-width: 780px;
 }
 .ew-field-label--grid {
-  padding-bottom: 0.4rem;
-  margin: 0 auto;
-  max-width: 700px;
-  width: 100%;
+  padding: 0 2rem 0.4rem;
+  margin: 0;
+  max-width: 780px;
 }
 .ew-role-card {
   display: flex;
