@@ -494,37 +494,53 @@
   @media (max-width: 968px) {
     .directory__container {
       grid-template-columns: 1fr;
-      gap: 3rem;
+      gap: 2rem;
     }
 
     .directory__mockup {
       order: -1;
+      min-height: 400px;
+      padding-top: 1rem;
     }
 
     .directory__pages-stack {
-      width: 420px;
-      height: 580px;
+      width: 100%;
+      max-width: 380px;
+      height: 480px;
+      margin-left: 0;
+      margin: 0 auto;
     }
 
     .directory__page--3 {
-      transform: translate(100px, -26px) rotate(16deg) scale(0.95);
+      transform: translate(70px, -45px) rotate(-16deg) scale(0.88);
     }
     .directory__page--2 {
-      transform: translate(50px, -13px) rotate(7deg) scale(0.975);
+      transform: translate(35px, -23px) rotate(-9deg) scale(0.94);
+    }
+    .directory__page--1 {
+      transform: translate(0, 0) rotate(-3deg) scale(1);
     }
 
     .directory__content {
-      text-align: center;
-      align-items: center;
+      text-align: left;
+      align-items: flex-start;
     }
 
     .directory__benefits {
       align-items: flex-start;
-      max-width: 400px;
+      max-width: 100%;
     }
 
     .directory__cta {
-      align-self: center;
+      align-self: flex-start;
+      width: 100%;
+      max-width: 350px;
+    }
+    
+    .directory__mockup-label {
+      bottom: -1rem;
+      font-size: 0.85rem;
+      padding: 0.6rem 1.2rem;
     }
   }
 
@@ -534,7 +550,19 @@
     }
 
     .directory__title {
-      font-size: 1.75rem;
+      font-size: 1.5rem;
+    }
+    
+    .directory__subtitle {
+      font-size: 0.95rem;
+    }
+    
+    .directory__pricing-label {
+      font-size: 1.25rem;
+    }
+
+    .directory__price-old {
+      font-size: 1.5rem;
     }
 
     .directory__price-current {
@@ -542,15 +570,23 @@
     }
 
     .directory__pages-stack {
-      width: 320px;
-      height: 440px;
+      max-width: 320px;
+      height: 420px;
     }
 
     .directory__page--3 {
-      transform: translate(76px, -20px) rotate(16deg) scale(0.95);
+      transform: translate(55px, -38px) rotate(-14deg) scale(0.82);
     }
     .directory__page--2 {
-      transform: translate(38px, -10px) rotate(7deg) scale(0.975);
+      transform: translate(28px, -19px) rotate(-8deg) scale(0.91);
+    }
+    .directory__page--1 {
+      transform: translate(0, 0) rotate(-2deg) scale(0.98);
+    }
+    
+    .directory__mockup-label {
+      font-size: 0.75rem;
+      padding: 0.5rem 1rem;
     }
   }
 </style>
