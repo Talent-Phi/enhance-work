@@ -157,6 +157,7 @@
     pointer-events: none;
     animation: float 8s ease-in-out infinite;
     transform: translate(-50%, -50%);
+    z-index: 0;
   }
   
   @keyframes float {
@@ -203,7 +204,7 @@
   .directory__title {
     font-family: var(--font-heading);
     font-size: clamp(2rem, 3.5vw, 2.75rem);
-    font-weight: 600;
+    font-weight: 400;
     color: #ffffff;
     line-height: 1.2;
     margin: 0;
@@ -211,8 +212,9 @@
   
   .directory__highlight {
     color: #ffffff;
+    font-weight: 600;
     text-decoration: underline;
-    text-decoration-color: rgba(255,255,255,0.4);
+    text-decoration-color: #2bbcb0;
     text-decoration-thickness: 2px;
     text-underline-offset: 4px;
   }
