@@ -115,14 +115,14 @@
       try {
         const icId = 'ev_ic_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
         if (typeof window.fbq === 'function') {
-          window.fbq('track', 'InitiateCheckout', { currency: 'USD', value: 35.00, num_items: 1, content_name: 'South Florida Med Spa Directory' }, { eventID: icId });
+          window.fbq('trackCustom', 'Initiate Payment', { currency: 'USD', value: 35.00, num_items: 1, content_name: 'South Florida Med Spa Directory' }, { eventID: icId });
         }
         const cookies = document.cookie.split(';').reduce((acc, c) => { const p = c.trim().split('='); acc[p[0]] = p[1]; return acc; }, {} as Record<string,string>);
         fetch('/api/meta-capi', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            event_name: 'InitiateCheckout',
+            event_name: 'Initiate Payment',
             event_id: icId,
             event_source_url: window.location.href,
             custom_data: { currency: 'USD', value: 35.00, num_items: 1, content_name: 'South Florida Med Spa Directory' },

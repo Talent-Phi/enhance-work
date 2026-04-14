@@ -72,14 +72,14 @@ import Nav from '../../components/Nav.astro';
         try {
           const pId = 'ev_purchase_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
           if (typeof (window as any).fbq === 'function') {
-            (window as any).fbq('track', 'Purchase', { currency: 'USD', value: 35.00, content_name: 'South Florida Med Spa Directory' }, { eventID: pId });
+            (window as any).fbq('trackCustom', 'Payment Processed', { currency: 'USD', value: 35.00, content_name: 'South Florida Med Spa Directory' }, { eventID: pId });
           }
           const cookies = document.cookie.split(';').reduce((acc: Record<string,string>, c: string) => { const p = c.trim().split('='); acc[p[0]] = p[1]; return acc; }, {});
           fetch('/api/meta-capi', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              event_name: 'Purchase',
+              event_name: 'Payment Processed',
               event_id: pId,
               event_source_url: window.location.href,
               custom_data: { currency: 'USD', value: 35.00, content_name: 'South Florida Med Spa Directory' },
