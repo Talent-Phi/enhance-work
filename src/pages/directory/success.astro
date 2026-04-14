@@ -68,10 +68,25 @@ import Nav from '../../components/Nav.astro';
         loadingEl.style.display = 'none';
         successEl.style.display = 'flex';
 
-        // Meta: Purchase (browser Pixel)
-        if (typeof window.fbTrack === 'function') {
-          window.fbTrack('Purchase', { currency: 'USD', value: 35.00, content_name: 'South Florida Med Spa Directory' }, { email: data.email || '' });
-        }
+        // Meta: Purchase — fired directly to guarantee execution
+        try {
+          const pId = 'ev_purchase_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+          if (typeof (window as any).fbq === 'function') {
+            (window as any).fbq('track', 'Purchase', { currency: 'USD', value: 35.00, content_name: 'South Florida Med Spa Directory' }, { eventID: pId });
+          }
+          const cookies = document.cookie.split(';').reduce((acc: Record<string,string>, c: string) => { const p = c.trim().split('='); acc[p[0]] = p[1]; return acc; }, {});
+          fetch('/api/meta-capi', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              event_name: 'Purchase',
+              event_id: pId,
+              event_source_url: window.location.href,
+              custom_data: { currency: 'USD', value: 35.00, content_name: 'South Florida Med Spa Directory' },
+              user_data: { email: data.email || '', fbp: cookies['_fbp'] || '', fbc: cookies['_fbc'] || '' }
+            })
+          }).catch(() => {});
+        } catch(e) {}
 
         // Auto-download PDF once — using location avoids browser popup blockers
         window.location.href = `/api/stripe/download/${data.token}`;
