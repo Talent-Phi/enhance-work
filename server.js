@@ -404,16 +404,21 @@ app.post('/api/meta-capi', async (req, res) => {
       if (user_data.dob)        hashedUserData.db = await sha256(user_data.dob.replace(/\D/g, ''));
     }
 
-    const payload = {
-      data: [{
-        event_name,
-        event_time: Math.floor(Date.now() / 1000),
-        event_id,
-        event_source_url: event_source_url || '',
-        action_source: 'website',
-        user_data: hashedUserData
-      }]
+    const eventData = {
+      event_name,
+      event_time: Math.floor(Date.now() / 1000),
+      event_id,
+      event_source_url: event_source_url || '',
+      action_source: 'website',
+      user_data: hashedUserData
     };
+
+    // Include custom_data (value, currency, etc.) if provided
+    if (req.body.custom_data && Object.keys(req.body.custom_data).length > 0) {
+      eventData.custom_data = req.body.custom_data;
+    }
+
+    const payload = { data: [eventData] };
     if (META_TEST_CODE) payload.test_event_code = META_TEST_CODE;
 
     const url = `https://graph.facebook.com/v19.0/${META_PIXEL_ID}/events?access_token=${META_CAPI_TOKEN}`;
