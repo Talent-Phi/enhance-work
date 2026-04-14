@@ -584,7 +584,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  gap: 1.25rem;
+  gap: 0;
   min-height: 0;
 }
 /* Step 1 — grid fills remaining height, padded like body */
@@ -604,8 +604,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1.22px solid rgba(0,0,0,0.08);
-  border-radius: 5px;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 0;
   overflow: hidden;
   cursor: pointer;
   background: #fff;
@@ -622,7 +622,7 @@
   flex: 1;
   min-height: 0;
   overflow: hidden;
-  border-radius: 5px 5px 0 0;
+  border-radius: 0;
   background: #f5f5f5;
 }
 .ew-role-card__img img {
