@@ -2,14 +2,68 @@ import express from 'express';
 import pg from 'pg';
 import multer from 'multer';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 import fs from 'fs';
+import session from 'express-session';
+import bcrypt from 'bcryptjs';
 import { initGoogleSheets, appendApplicationRow, getSpreadsheetUrl } from './googleSheets.js';
+import { seedBlogPosts } from './scripts/blog-seed-data.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+
 const app = express();
-app.use(express.json());
+
+// ── JSON body parser with detailed error on malformed payload ─
+app.use((req, res, next) => {
+  express.json({ limit: '10mb' })(req, res, (err) => {
+    if (err) {
+      const path = req.path;
+      const detail = err.message || 'Unknown JSON parse error';
+      console.error(`[API] ❌ JSON parse error on ${req.method} ${path}: ${detail}`);
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid JSON in request body',
+        detail,
+        hint: 'Ensure Content-Type is application/json and all string values have newlines escaped as \\n, tabs as \\t, and quotes as \\".',
+      });
+    }
+    next();
+  });
+});
+
+// ── Session middleware ────────────────────────────────────────
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'enhance-admin-secret-2026',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    maxAge: 8 * 60 * 60 * 1000, // 8 hours
+    sameSite: 'lax',
+  },
+}));
+
+// ── Auth middleware (session-based, for admin panel) ─────────
+function requireAuth(req, res, next) {
+  if (req.session && req.session.adminUser) return next();
+  if (req.path.startsWith('/api/')) return res.status(401).json({ error: 'Unauthorized' });
+  return res.redirect('/admin/login');
+}
+
+// ── Token auth middleware (for external API) ─────────────────
+function requireToken(req, res, next) {
+  const authHeader = req.headers['authorization'] || '';
+  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
+  const validToken = process.env.BLOG_API_TOKEN;
+  if (!validToken) {
+    return res.status(500).json({ error: 'Server misconfigured: BLOG_API_TOKEN not set' });
+  }
+  if (!token || token !== validToken) {
+    return res.status(401).json({ error: 'Unauthorized: invalid or missing Bearer token' });
+  }
+  next();
+}
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -71,9 +125,26 @@ async function initDatabase() {
       injector_msg_read BOOLEAN DEFAULT FALSE,
       terms_agreed BOOLEAN DEFAULT FALSE,
       resume_filename VARCHAR(255),
+      utm_source VARCHAR(255),
+      utm_medium VARCHAR(255),
+      utm_campaign VARCHAR(255),
+      utm_term VARCHAR(255),
+      utm_content VARCHAR(255),
+      utm_id VARCHAR(255),
+      utm_creative_format VARCHAR(255),
+      gclid VARCHAR(512),
+      gad_campaignid VARCHAR(255),
       created_at TIMESTAMP DEFAULT NOW()
     )
   `);
+  // ── UTM columns migration (safe: ADD COLUMN IF NOT EXISTS) ──
+  const utmCols = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','utm_creative_format','gclid','gad_campaignid'];
+  for (const col of utmCols) {
+    await pool.query(
+      `ALTER TABLE applications ADD COLUMN IF NOT EXISTS ${col} VARCHAR(255)`
+    );
+  }
+
   await pool.query(`
     CREATE TABLE IF NOT EXISTS resumes (
       id SERIAL PRIMARY KEY,
@@ -84,7 +155,156 @@ async function initDatabase() {
       created_at TIMESTAMP DEFAULT NOW()
     )
   `);
+
+  // ── Blog posts table ────────────────────────────────────────
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS blog_posts (
+      id                SERIAL PRIMARY KEY,
+      slug              VARCHAR(255) UNIQUE NOT NULL,
+      title             TEXT NOT NULL,
+      subtitle          TEXT DEFAULT '',
+      date              VARCHAR(100) DEFAULT '',
+      excerpt           TEXT DEFAULT '',
+      category          VARCHAR(100) DEFAULT '',
+      read_time         VARCHAR(50) DEFAULT '',
+      author            VARCHAR(200) DEFAULT '',
+      author_bio        TEXT DEFAULT '',
+      author_credential VARCHAR(255) DEFAULT '',
+      author_expertise  TEXT[] DEFAULT '{}',
+      image             TEXT DEFAULT '',
+      content           TEXT DEFAULT '',
+      status            VARCHAR(20) DEFAULT 'draft',
+      sort_order        INTEGER DEFAULT 0,
+      seo_title         TEXT DEFAULT '',
+      seo_description   TEXT DEFAULT '',
+      seo_og_image      TEXT DEFAULT '',
+      canonical_url     TEXT DEFAULT '',
+      focus_keyword     VARCHAR(255) DEFAULT '',
+      published_at      TIMESTAMP,
+      created_at        TIMESTAMP DEFAULT NOW(),
+      updated_at        TIMESTAMP DEFAULT NOW()
+    )
+  `);
+
+  // ── Blog images table (permanent storage in DB) ─────────────
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS blog_images (
+      id           SERIAL PRIMARY KEY,
+      original_name VARCHAR(255),
+      content_type  VARCHAR(100),
+      file_data     BYTEA NOT NULL,
+      created_at    TIMESTAMP DEFAULT NOW()
+    )
+  `);
+
+  // ── Admin users table ────────────────────────────────────────
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS users (
+      id            SERIAL PRIMARY KEY,
+      name          VARCHAR(100) NOT NULL,
+      email         VARCHAR(255) UNIQUE NOT NULL,
+      password_hash VARCHAR(255) NOT NULL,
+      created_at    TIMESTAMP DEFAULT NOW()
+    )
+  `);
+
+  const adminUsers = [
+    { name: 'Rafael',   email: 'rafael@perfectb.com',           password: 'Enhancerafael1!' },
+    { name: 'Santiago', email: 'santiago.loaiza@talentphi.com', password: 'Enhancesantiago1!' },
+  ];
+  for (const u of adminUsers) {
+    const exists = await pool.query('SELECT id FROM users WHERE email = $1', [u.email]);
+    if (exists.rows.length === 0) {
+      const hash = await bcrypt.hash(u.password, 10);
+      await pool.query(
+        'INSERT INTO users (name, email, password_hash) VALUES ($1, $2, $3)',
+        [u.name, u.email, hash]
+      );
+      console.log(`Admin user seeded: ${u.email}`);
+    }
+  }
+
+  // ── Seed blog posts if table is empty ────────────────────────
+  const blogCount = await pool.query('SELECT COUNT(*) FROM blog_posts');
+  if (parseInt(blogCount.rows[0].count, 10) === 0 && seedBlogPosts.length > 0) {
+    console.log(`Seeding ${seedBlogPosts.length} blog posts…`);
+    for (const p of seedBlogPosts) {
+      await pool.query(`
+        INSERT INTO blog_posts (
+          slug, title, subtitle, date, excerpt, category, read_time,
+          author, author_bio, author_credential, author_expertise,
+          image, content, status, sort_order,
+          seo_title, seo_description, seo_og_image, canonical_url, focus_keyword,
+          published_at
+        ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21)
+        ON CONFLICT (slug) DO NOTHING
+      `, [
+        p.slug, p.title, p.subtitle||'', p.date||'', p.excerpt||'',
+        p.category||'', p.read_time||'',
+        p.author||'', p.author_bio||'', p.author_credential||'',
+        p.author_expertise || [],
+        p.image||'', p.content||'', p.status||'draft', p.sort_order||0,
+        p.seo_title||'', p.seo_description||'', p.seo_og_image||'',
+        p.canonical_url||'', p.focus_keyword||'',
+        p.published_at || null,
+      ]);
+    }
+    console.log('Blog posts seeded ✓');
+  }
+
   console.log('Database initialized');
+
+  // ── Migrate static blog images → DB (one-time, idempotent) ──
+  await migrateBlogImagesToDb();
+}
+
+async function migrateBlogImagesToDb() {
+  try {
+    // Find blog posts that still reference static files
+    const { rows: posts } = await pool.query(
+      `SELECT id, image FROM blog_posts WHERE image LIKE '/images/blog/%'`
+    );
+    if (posts.length === 0) {
+      console.log('[BlogImgMigrate] All blog images already using DB storage ✓');
+      return;
+    }
+    console.log(`[BlogImgMigrate] Migrating ${posts.length} blog post image(s) to DB…`);
+
+    const extToMime = {
+      '.webp': 'image/webp', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
+      '.png': 'image/png',  '.gif': 'image/gif',   '.svg': 'image/svg+xml',
+      '.avif': 'image/avif',
+    };
+
+    for (const post of posts) {
+      const filename = path.basename(post.image);
+      const filePath = path.join(__dirname, 'public', 'images', 'blog', filename);
+
+      if (!fs.existsSync(filePath)) {
+        console.warn(`[BlogImgMigrate] ⚠️  File not found, skipping post id=${post.id}: ${filename}`);
+        continue;
+      }
+
+      const fileData = fs.readFileSync(filePath);
+      const ext = path.extname(filename).toLowerCase();
+      const contentType = extToMime[ext] || 'application/octet-stream';
+
+      const { rows: [img] } = await pool.query(
+        `INSERT INTO blog_images (original_name, content_type, file_data)
+         VALUES ($1, $2, $3) RETURNING id`,
+        [filename, contentType, fileData]
+      );
+
+      await pool.query(
+        `UPDATE blog_posts SET image = $1 WHERE id = $2`,
+        [`/api/blog/image/${img.id}`, post.id]
+      );
+      console.log(`[BlogImgMigrate] ✅ Post id=${post.id} → blog_images id=${img.id} (${filename}, ${Math.round(fileData.length / 1024)}KB)`);
+    }
+    console.log('[BlogImgMigrate] Migration complete ✓');
+  } catch (err) {
+    console.error('[BlogImgMigrate] ❌ Error:', err.message);
+  }
 }
 
 // ── Meta Conversions API (server-side) ──────────────────────────────────────
@@ -187,7 +407,10 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
         language_4, language_level_4, language_5, language_level_5,
         licenses, license_other,
         years_experience, skills, start_date, employed,
-        salary, pay_type, injector_msg_read, terms_agreed, resume_filename
+        salary, pay_type, injector_msg_read, terms_agreed, resume_filename,
+        utm_source, utm_medium, utm_campaign, utm_term, utm_content,
+        utm_id, utm_creative_format,
+        gclid, gad_campaignid
       ) VALUES (
         $1, $2, $3, $4, $5, $6, $7,
         $8, $9, $10, $11, $12,
@@ -196,7 +419,10 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
         $20, $21, $22, $23,
         $24, $25,
         $26, $27, $28, $29,
-        $30, $31, $32, $33, $34
+        $30, $31, $32, $33, $34,
+        $35, $36, $37, $38, $39,
+        $40, $41,
+        $42, $43
       ) RETURNING id`,
       [
         data.role,
@@ -232,7 +458,16 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
         data.pay_type || null,
         data.injector_msg_read === 'true' || data.injector_msg_read === true,
         data.terms_agreed === 'true' || data.terms_agreed === true,
-        resumeFilename
+        resumeFilename,
+        data.utm_source || null,
+        data.utm_medium || null,
+        data.utm_campaign || null,
+        data.utm_term || null,
+        data.utm_content || null,
+        data.utm_id || null,
+        data.utm_creative_format || null,
+        data.gclid || null,
+        data.gad_campaignid || null,
       ]
     );
 
@@ -308,6 +543,16 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
       'Salary Expectations':  data.salary || '',
       'Salary Type':          data.pay_type || '',
       'Resume Filename':      resumeLink || '',
+      // --- UTMs ---
+      'UTM Source':           data.utm_source || '',
+      'UTM Medium':           data.utm_medium || '',
+      'UTM Campaign':         data.utm_campaign || '',
+      'UTM Term':             data.utm_term || '',
+      'UTM Content':          data.utm_content || '',
+      'UTM ID':               data.utm_id || '',
+      'UTM Creative Format':  data.utm_creative_format || '',
+      'GCLID':                data.gclid || '',
+      'GAD Campaign ID':      data.gad_campaignid || '',
       // --- Meta ---
       'Application ID':       appId,
       'Submitted At':         new Date().toISOString(),
@@ -354,7 +599,16 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
       employed: data.employed || '',
       salary: data.salary || '',
       pay_type: data.pay_type || '',
-      resume_filename: resumeLink || ''
+      resume_filename: resumeLink || '',
+      utm_source: data.utm_source || '',
+      utm_medium: data.utm_medium || '',
+      utm_campaign: data.utm_campaign || '',
+      utm_term: data.utm_term || '',
+      utm_content: data.utm_content || '',
+      utm_id: data.utm_id || '',
+      utm_creative_format: data.utm_creative_format || '',
+      gclid: data.gclid || '',
+      gad_campaignid: data.gad_campaignid || '',
     }).catch(() => {});
 
     res.json({ success: true, id: appId });
@@ -364,6 +618,428 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
   }
 });
 
+// ════════════════════════════════════════════════════════════
+//  BLOG ADMIN PANEL  (auth-protected)
+// ════════════════════════════════════════════════════════════
+
+// ── Login page ───────────────────────────────────────────────
+app.get('/admin/login', (req, res) => {
+  if (req.session && req.session.adminUser) return res.redirect('/admin/blog');
+  res.sendFile(path.join(__dirname, 'public', 'admin', 'login.html'));
+});
+
+// ── Login POST ───────────────────────────────────────────────
+app.post('/admin/login', express.urlencoded({ extended: false }), async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const result = await pool.query(
+      'SELECT id, name, email, password_hash FROM users WHERE email = $1',
+      [(email || '').toLowerCase().trim()]
+    );
+    const user = result.rows[0];
+    if (!user) return res.redirect('/admin/login?error=1');
+    const valid = await bcrypt.compare(password || '', user.password_hash);
+    if (!valid) return res.redirect('/admin/login?error=1');
+    req.session.adminUser = { id: user.id, name: user.name, email: user.email };
+    res.redirect('/admin/blog');
+  } catch (err) {
+    console.error('Login error:', err);
+    res.redirect('/admin/login?error=1');
+  }
+});
+
+// ── Logout ───────────────────────────────────────────────────
+app.get('/admin/logout', (req, res) => {
+  req.session.destroy(() => res.redirect('/admin/login'));
+});
+
+// ── Admin panel (protected) ───────────────────────────────────
+app.get('/admin/blog', requireAuth, (req, res) => {
+  const candidates = [
+    path.join(__dirname, 'dist', 'client', 'admin', 'blog.html'),
+    path.join(__dirname, 'dist', 'admin', 'blog.html'),
+    path.join(__dirname, 'public', 'admin', 'blog.html'),
+    path.join(__dirname, 'admin', 'blog.html'),
+  ];
+  for (const f of candidates) {
+    if (fs.existsSync(f)) return res.sendFile(f);
+  }
+  res.status(404).send('Admin panel not found');
+});
+
+// Image upload for blog (save to dist/client/images/blog/ so files are served immediately)
+const blogImageUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const allowed = ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.avif'];
+    cb(null, allowed.includes(path.extname(file.originalname).toLowerCase()));
+  }
+});
+
+// Protect ALL /api/blog/admin/* routes
+app.use('/api/blog/admin', requireAuth);
+
+// POST — upload image, store in DB, return permanent URL
+app.post('/api/blog/admin/upload-image', blogImageUpload.single('image'), async (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+  try {
+    const result = await pool.query(
+      `INSERT INTO blog_images (original_name, content_type, file_data)
+       VALUES ($1, $2, $3) RETURNING id`,
+      [req.file.originalname, req.file.mimetype, req.file.buffer]
+    );
+    const id = result.rows[0].id;
+    console.log(`[Blog Images] ✅ Saved image id=${id} (${req.file.originalname}, ${req.file.size} bytes)`);
+    res.json({ url: `/api/blog/image/${id}` });
+  } catch (err) {
+    console.error('[Blog Images] ❌ DB save error:', err.message);
+    res.status(500).json({ error: 'Failed to save image' });
+  }
+});
+
+// GET — serve image from DB (public, no auth needed)
+app.get('/api/blog/image/:id', async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT content_type, file_data FROM blog_images WHERE id = $1`,
+      [req.params.id]
+    );
+    if (!result.rows.length) return res.status(404).json({ error: 'Image not found' });
+    const { content_type, file_data } = result.rows[0];
+    res.setHeader('Content-Type', content_type || 'application/octet-stream');
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    res.send(file_data);
+  } catch (err) {
+    console.error('[Blog Images] ❌ Serve error:', err.message);
+    res.status(500).json({ error: 'Failed to retrieve image' });
+  }
+});
+
+// ── Blog CRUD API ────────────────────────────────────────────
+
+// GET all posts (admin — includes drafts)
+app.get('/api/blog/admin/posts', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT id, slug, title, status, date, sort_order, published_at, updated_at
+      FROM blog_posts
+      ORDER BY sort_order ASC, published_at DESC NULLS LAST, created_at DESC
+    `);
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Blog admin GET list:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET single post (admin)
+app.get('/api/blog/admin/posts/:id', async (req, res) => {
+  try {
+    const result = await pool.query(`SELECT * FROM blog_posts WHERE id = $1`, [req.params.id]);
+    if (!result.rows[0]) return res.status(404).json({ error: 'Not found' });
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST create
+app.post('/api/blog/admin/posts', async (req, res) => {
+  try {
+    const {
+      slug, title, subtitle, date, excerpt, category, read_time,
+      author, author_bio, author_credential, author_expertise,
+      image, content, status, sort_order,
+      seo_title, seo_description, seo_og_image, canonical_url, focus_keyword
+    } = req.body;
+
+    const published_at = status === 'published' ? new Date() : null;
+
+    const result = await pool.query(`
+      INSERT INTO blog_posts (
+        slug, title, subtitle, date, excerpt, category, read_time,
+        author, author_bio, author_credential, author_expertise,
+        image, content, status, sort_order,
+        seo_title, seo_description, seo_og_image, canonical_url, focus_keyword,
+        published_at
+      ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21)
+      RETURNING id, slug, title, status
+    `, [
+      slug, title, subtitle||'', date||'', excerpt||'', category||'', read_time||'',
+      author||'', author_bio||'', author_credential||'',
+      author_expertise || [],
+      image||'', content||'', status||'draft', sort_order||0,
+      seo_title||'', seo_description||'', seo_og_image||'', canonical_url||'', focus_keyword||'',
+      published_at
+    ]);
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error('Blog POST:', err);
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// PUT update
+app.put('/api/blog/admin/posts/:id', async (req, res) => {
+  try {
+    const {
+      slug, title, subtitle, date, excerpt, category, read_time,
+      author, author_bio, author_credential, author_expertise,
+      image, content, status, sort_order,
+      seo_title, seo_description, seo_og_image, canonical_url, focus_keyword
+    } = req.body;
+
+    // Only set published_at if transitioning to published and not already set
+    const existingResult = await pool.query(
+      `SELECT published_at FROM blog_posts WHERE id = $1`, [req.params.id]
+    );
+    const existing = existingResult.rows[0];
+    const published_at = (status === 'published' && !existing?.published_at)
+      ? new Date()
+      : (existing?.published_at || null);
+
+    const result = await pool.query(`
+      UPDATE blog_posts SET
+        slug = $1, title = $2, subtitle = $3, date = $4, excerpt = $5,
+        category = $6, read_time = $7,
+        author = $8, author_bio = $9, author_credential = $10, author_expertise = $11,
+        image = $12, content = $13, status = $14, sort_order = $15,
+        seo_title = $16, seo_description = $17, seo_og_image = $18,
+        canonical_url = $19, focus_keyword = $20,
+        published_at = $21, updated_at = NOW()
+      WHERE id = $22
+      RETURNING id, slug, title, status
+    `, [
+      slug, title, subtitle||'', date||'', excerpt||'', category||'', read_time||'',
+      author||'', author_bio||'', author_credential||'',
+      author_expertise || [],
+      image||'', content||'', status||'draft', sort_order||0,
+      seo_title||'', seo_description||'', seo_og_image||'', canonical_url||'', focus_keyword||'',
+      published_at, req.params.id
+    ]);
+    if (!result.rows[0]) return res.status(404).json({ error: 'Not found' });
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Blog PUT:', err);
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// DELETE
+app.delete('/api/blog/admin/posts/:id', async (req, res) => {
+  try {
+    await pool.query(`DELETE FROM blog_posts WHERE id = $1`, [req.params.id]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ── Public blog API (for SSR fallback if needed) ─────────────
+app.get('/api/blog/posts', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT id, slug, title, subtitle, date, excerpt, category, read_time,
+             author, author_bio, author_credential, author_expertise, image,
+             seo_title, seo_description, seo_og_image, canonical_url, focus_keyword,
+             status, sort_order, published_at
+      FROM blog_posts
+      WHERE status = 'published'
+      ORDER BY sort_order ASC, published_at DESC NULLS LAST
+    `);
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/blog/posts/:slug', async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT * FROM blog_posts WHERE slug = $1 AND status = 'published'`,
+      [req.params.slug]
+    );
+    if (!result.rows[0]) return res.status(404).json({ error: 'Not found' });
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ════════════════════════════════════════════════════════════
+//  EXTERNAL BLOG API  (token-auth, for agents / integrations)
+// ════════════════════════════════════════════════════════════
+
+// POST /api/blog/external/posts — Create a blog post via token
+app.post('/api/blog/external/posts', requireToken, async (req, res) => {
+  const ts = new Date().toISOString();
+  console.log(`[Blog API] ▶ POST /api/blog/external/posts — ${ts}`);
+  console.log(`[Blog API]   Fields received: ${Object.keys(req.body || {}).join(', ') || '(none)'}`);
+
+  try {
+    const {
+      slug,
+      title,
+      subtitle,
+      date,
+      excerpt,
+      category,
+      read_time,
+      author,
+      author_bio,
+      author_credential,
+      author_expertise,
+      image,
+      content,
+      status,
+      sort_order,
+      seo_title,
+      seo_description,
+      seo_og_image,
+      canonical_url,
+      focus_keyword,
+    } = req.body;
+
+    // Required fields
+    const missing = [];
+    if (!slug)    missing.push('slug');
+    if (!title)   missing.push('title');
+    if (!content) missing.push('content');
+    if (missing.length) {
+      console.error(`[Blog API] ❌ Missing required fields: ${missing.join(', ')}`);
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required fields',
+        missing,
+        hint: `The following fields are required: slug, title, content. Received keys: ${Object.keys(req.body).join(', ')}`,
+      });
+    }
+
+    // Slug validation
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+      console.error(`[Blog API] ❌ Invalid slug: "${slug}"`);
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid slug format',
+        received: slug,
+        hint: 'Use only lowercase letters, numbers and hyphens. No uppercase, spaces, accents or underscores. Example: my-blog-post',
+      });
+    }
+
+    // Warn about unknown/ignored fields
+    const KNOWN = new Set(['slug','title','subtitle','date','excerpt','category','read_time','author','author_bio','author_credential','author_expertise','image','content','status','sort_order','seo_title','seo_description','seo_og_image','canonical_url','focus_keyword']);
+    const unknown = Object.keys(req.body).filter(k => !KNOWN.has(k));
+    if (unknown.length) {
+      console.warn(`[Blog API] ⚠️  Unknown fields (will be ignored): ${unknown.join(', ')}`);
+    }
+
+    const postStatus = ['published', 'draft'].includes(status) ? status : 'draft';
+    const published_at = postStatus === 'published' ? new Date() : null;
+
+    console.log(`[Blog API]   Inserting — slug: "${slug}" | status: ${postStatus} | author: "${author || ''}" | image: "${image ? 'yes' : 'empty'}"`);
+
+    const result = await pool.query(
+      `INSERT INTO blog_posts (
+        slug, title, subtitle, date, excerpt, category, read_time,
+        author, author_bio, author_credential, author_expertise,
+        image, content, status, sort_order,
+        seo_title, seo_description, seo_og_image, canonical_url, focus_keyword,
+        published_at
+      ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21)
+      RETURNING id, slug, title, status, published_at, created_at`,
+      [
+        slug,
+        title,
+        subtitle || '',
+        date || '',
+        excerpt || '',
+        category || '',
+        read_time || '',
+        author || '',
+        author_bio || '',
+        author_credential || '',
+        Array.isArray(author_expertise) ? author_expertise : [],
+        image || '',
+        content,
+        postStatus,
+        sort_order || 0,
+        seo_title || '',
+        seo_description || '',
+        seo_og_image || '',
+        canonical_url || '',
+        focus_keyword || '',
+        published_at,
+      ]
+    );
+
+    const created = result.rows[0];
+    console.log(`[Blog API] ✅ Post created — id: ${created.id} | slug: "${created.slug}" | status: ${created.status}`);
+    if (unknown.length) {
+      console.warn(`[Blog API] ⚠️  These fields were NOT saved (not in schema): ${unknown.join(', ')}`);
+    }
+    res.status(201).json({
+      success: true,
+      post: created,
+      warnings: unknown.length ? `These fields were ignored (not in schema): ${unknown.join(', ')}` : undefined,
+    });
+  } catch (err) {
+    if (err.code === '23505') {
+      console.error(`[Blog API] ❌ Slug conflict: "${req.body.slug}" already exists`);
+      return res.status(409).json({
+        success: false,
+        error: 'Slug already exists',
+        slug: req.body.slug,
+        hint: 'Change the slug to something unique. Example: add a suffix like -2 or -florida-2026',
+      });
+    }
+    console.error('[Blog API] ❌ DB error:', err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/blog/external/posts — List posts (published + draft) via token
+app.get('/api/blog/external/posts', requireToken, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT id, slug, title, status, date, sort_order, published_at, updated_at
+      FROM blog_posts
+      ORDER BY sort_order ASC, published_at DESC NULLS LAST, created_at DESC
+    `);
+    res.json({ success: true, posts: result.rows });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PATCH /api/blog/external/posts/:slug — Update a post's content via token
+app.patch('/api/blog/external/posts/:slug', requireToken, async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const allowed = ['content', 'title', 'subtitle', 'excerpt', 'date', 'category',
+      'read_time', 'author', 'author_bio', 'author_credential', 'author_expertise',
+      'image', 'status', 'sort_order', 'seo_title', 'seo_description', 'seo_og_image',
+      'canonical_url', 'focus_keyword'];
+    const fields = Object.keys(req.body).filter(k => allowed.includes(k));
+    if (fields.length === 0) return res.status(400).json({ error: 'No valid fields to update' });
+    const sets = fields.map((f, i) => `${f} = $${i + 1}`).join(', ');
+    const values = fields.map(f => req.body[f]);
+    values.push(slug);
+    const result = await pool.query(
+      `UPDATE blog_posts SET ${sets}, updated_at = NOW() WHERE slug = $${values.length} RETURNING id, slug, title, status`,
+      values
+    );
+    if (!result.rows[0]) return res.status(404).json({ error: `Post not found: ${slug}` });
+    res.json({ success: true, post: result.rows[0] });
+  } catch (err) {
+    console.error('Blog PATCH:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ════════════════════════════════════════════════════════════
+//  ERROR HANDLER
+// ════════════════════════════════════════════════════════════
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
     return res.status(400).json({ success: false, error: `File upload error: ${err.message}` });
@@ -416,20 +1092,42 @@ app.get('/api/health', (req, res) => {
 
 const distDir = path.join(__dirname, 'dist');
 if (fs.existsSync(distDir)) {
-  app.use(express.static(distDir));
-  app.get('/{*splat}', (req, res) => {
-    const splatParam = req.params.splat;
-    const reqPath = Array.isArray(splatParam) ? splatParam.join('/') : (splatParam || '');
-    const htmlFile = path.join(distDir, reqPath, 'index.html');
-    if (fs.existsSync(htmlFile)) {
-      return res.sendFile(htmlFile);
+  // Serve static assets from dist/client (hybrid mode)
+  const clientDir = path.join(distDir, 'client');
+  const hasClient = fs.existsSync(clientDir);
+  app.use(express.static(hasClient ? clientDir : distDir));
+
+  // Try to load Astro SSR middleware (hybrid mode)
+  const ssrEntryServer = path.join(distDir, 'server', 'entry.mjs');
+  const ssrEntryMiddleware = path.join(distDir, 'server', 'entry.mjs');
+  let astroMiddleware = null;
+  try {
+    const ssrPath = fs.existsSync(ssrEntryServer) ? ssrEntryServer : null;
+    if (ssrPath) {
+      const { handler } = await import(pathToFileURL(ssrPath).href);
+      astroMiddleware = handler;
     }
-    const directFile = path.join(distDir, reqPath + '.html');
-    if (fs.existsSync(directFile)) {
-      return res.sendFile(directFile);
-    }
-    res.sendFile(path.join(distDir, 'index.html'));
-  });
+  } catch (e) {
+    console.warn('Astro SSR middleware not loaded:', e.message);
+  }
+
+  if (astroMiddleware) {
+    app.use(astroMiddleware);
+  } else {
+    // Fallback: static file serving
+    app.get('/{*splat}', (req, res) => {
+      const splatParam = req.params.splat;
+      const reqPath = Array.isArray(splatParam) ? splatParam.join('/') : (splatParam || '');
+      const base = hasClient ? clientDir : distDir;
+      const htmlFile = path.join(base, reqPath, 'index.html');
+      if (fs.existsSync(htmlFile)) return res.sendFile(htmlFile);
+      const directFile = path.join(base, reqPath + '.html');
+      if (fs.existsSync(directFile)) return res.sendFile(directFile);
+      const indexFile = path.join(base, 'index.html');
+      if (fs.existsSync(indexFile)) return res.sendFile(indexFile);
+      res.status(404).send('Not found');
+    });
+  }
 }
 
 const PORT = process.env.PORT || 3000;
