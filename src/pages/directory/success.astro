@@ -68,13 +68,8 @@ import Nav from '../../components/Nav.astro';
         loadingEl.style.display = 'none';
         successEl.style.display = 'flex';
 
-        // Auto-download PDF once
-        const a = document.createElement('a');
-        a.href     = `/api/stripe/download/${data.token}`;
-        a.download = 'South-Florida-Med-Spa-Directory.pdf';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        // Auto-download PDF once — using location avoids browser popup blockers
+        window.location.href = `/api/stripe/download/${data.token}`;
 
       } catch (err) {
         showError('Network error. Please try again or contact support.');
