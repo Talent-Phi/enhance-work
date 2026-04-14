@@ -257,8 +257,11 @@ async function initDatabase() {
   `);
 
   const adminUsers = [
-    { name: 'Rafael',   email: 'rafael@perfectb.com',           password: 'Enhancerafael1!' },
-    { name: 'Santiago', email: 'santiago.loaiza@talentphi.com', password: 'Enhancesantiago1!' },
+    { name: 'Rafael',   email: 'rafael@perfectb.com',              password: 'Enhancerafael1!' },
+    { name: 'Santiago', email: 'santiago.loaiza@talentphi.com',    password: 'Enhancesantiago1!' },
+    { name: 'Camilo',   email: 'camilo.bedoya@talentphi.com',      password: 'Ehancecamilo1!' },
+    { name: 'Alexis',   email: 'alexis.restrepo@talentphi.com',    password: 'Ehancealexis1!' },
+    { name: 'Ambar',    email: 'ambar.garzon@talentphi.com',       password: 'Ehanceambar1!' },
   ];
   for (const u of adminUsers) {
     const exists = await pool.query('SELECT id FROM users WHERE email = $1', [u.email]);
