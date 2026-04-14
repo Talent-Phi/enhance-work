@@ -28,7 +28,7 @@ import Nav from '../../components/Nav.astro';
       </div>
 
       <h1 class="success-title">Payment Confirmed!</h1>
-      <p class="success-sub">Thank you for your purchase of <strong>The South Florida Med Spa Directory</strong>. A confirmation has been sent to <span id="customerEmail"></span>.</p>
+      <p class="success-sub">Your copy of <strong>The South Florida Med Spa Directory</strong> is downloading now. A confirmation has been sent to <span id="customerEmail"></span>.</p>
 
       <a class="download-btn" href="/">← Back to Home</a>
     </div>
@@ -64,8 +64,18 @@ import Nav from '../../components/Nav.astro';
         const data = await res.json();
         if (!res.ok) { showError(data.error || 'Payment not verified.'); return; }
         if (data.email) emailEl.textContent = data.email;
+
         loadingEl.style.display = 'none';
         successEl.style.display = 'flex';
+
+        // Auto-download PDF once
+        const a = document.createElement('a');
+        a.href     = `/api/stripe/download/${data.token}`;
+        a.download = 'South-Florida-Med-Spa-Directory.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
       } catch (err) {
         showError('Network error. Please try again or contact support.');
       }
