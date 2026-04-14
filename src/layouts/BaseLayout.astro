@@ -147,13 +147,36 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : siteUrl + ogImage;
     <!-- UTM capture — runs on every page so params survive navigation to the form -->
     <script is:inline>
     (function() {
-      var UTM_KEYS = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','utm_creative_format','gclid'];
+      // Captura TODOS los parámetros que empiecen con utm_, fb, gclid, gbraid, wbraid, gad, o cualquier parámetro de tracking
       var params = new URLSearchParams(window.location.search);
       var stored = {};
-      UTM_KEYS.forEach(function(k) {
-        var v = params.get(k);
-        if (v) stored[k] = v;
+      
+      // Capturar todos los parámetros de la URL
+      params.forEach(function(value, key) {
+        // Capturar parámetros UTM y de tracking conocidos
+        if (
+          key.startsWith('utm_') ||           // Todos los UTMs
+          key.startsWith('fb') ||              // Facebook/Meta
+          key.startsWith('gclid') ||           // Google Click ID
+          key.startsWith('gbraid') ||          // Google Brand ID
+          key.startsWith('wbraid') ||          // Google Web Brand ID
+          key.startsWith('gad') ||             // Google Ads
+          key.startsWith('msclkid') ||         // Microsoft/Bing Ads
+          key.startsWith('ttclid') ||          // TikTok
+          key.startsWith('li_') ||             // LinkedIn
+          key.startsWith('twclid') ||          // Twitter/X
+          key.startsWith('pin_') ||            // Pinterest
+          key.startsWith('sc_') ||             // Snapchat
+          key.startsWith('yclid') ||           // Yahoo
+          key.startsWith('irclickid') ||       // Impact Radius
+          key === 'ref' ||                     // Referral
+          key === 'source' ||                  // Source
+          key === 'campaign'                   // Campaign
+        ) {
+          stored[key] = value;
+        }
       });
+      
       if (Object.keys(stored).length) {
         sessionStorage.setItem('ew_utms', JSON.stringify(stored));
       }

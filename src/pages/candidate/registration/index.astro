@@ -44,5 +44,38 @@ import ApplyForm from '../../../components/ApplyForm.astro';
   <style>
     html, body { height: 100dvh; overflow: hidden; }
   </style>
+  
+  <!-- Restore UTMs from sessionStorage to URL -->
+  <script is:inline>
+  (function() {
+    var stored = sessionStorage.getItem('ew_utms');
+    if (stored) {
+      try {
+        var utms = JSON.parse(stored);
+        var currentParams = new URLSearchParams(window.location.search);
+        var hasUtms = false;
+        
+        // Check if URL already has UTMs
+        Object.keys(utms).forEach(function(key) {
+          if (currentParams.has(key)) hasUtms = true;
+        });
+        
+        // If no UTMs in URL, add them from storage
+        if (!hasUtms) {
+          Object.keys(utms).forEach(function(key) {
+            currentParams.set(key, utms[key]);
+          });
+          
+          // Update URL without reload
+          var newUrl = window.location.pathname + '?' + currentParams.toString();
+          window.history.replaceState({}, '', newUrl);
+        }
+      } catch (e) {
+        console.warn('Error restoring UTMs:', e);
+      }
+    }
+  })();
+  </script>
+  
   <ApplyForm />
 </BaseLayout>
