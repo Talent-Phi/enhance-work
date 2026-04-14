@@ -28,20 +28,9 @@ import Nav from '../../components/Nav.astro';
       </div>
 
       <h1 class="success-title">Payment Confirmed!</h1>
-      <p class="success-sub">Your copy of <strong>The South Florida Med Spa Directory</strong> is downloading now.</p>
+      <p class="success-sub">Thank you for your purchase of <strong>The South Florida Med Spa Directory</strong>. A confirmation has been sent to <span id="customerEmail"></span>.</p>
 
-      <a class="download-btn" id="downloadBtn" href="#" download="South-Florida-Med-Spa-Directory.pdf">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-          <polyline points="7 10 12 15 17 10"/>
-          <line x1="12" y1="15" x2="12" y2="3"/>
-        </svg>
-        Download PDF
-      </a>
-
-      <p class="success-note">Didn't start? <a id="manualLink" href="#">Click here</a> to download again.</p>
-      <p class="success-email">Confirmation sent to <span id="customerEmail"></span></p>
-      <p class="redirect-note">Returning to home in <span id="countdown">3</span>s…</p>
+      <a class="download-btn" href="/">← Back to Home</a>
     </div>
 
     <div class="success-card" id="errorState" style="display:none">
@@ -62,50 +51,21 @@ import Nav from '../../components/Nav.astro';
     const params    = new URLSearchParams(window.location.search);
     const sessionId = params.get('session_id');
 
-    const loadingEl  = document.getElementById('loadingState')!;
-    const successEl  = document.getElementById('successState')!;
-    const errorEl    = document.getElementById('errorState')!;
-    const downloadBtn = document.getElementById('downloadBtn') as HTMLAnchorElement;
-    const manualLink  = document.getElementById('manualLink') as HTMLAnchorElement;
-    const emailEl    = document.getElementById('customerEmail')!;
-    const errorMsg   = document.getElementById('errorMsg')!;
+    const loadingEl = document.getElementById('loadingState')!;
+    const successEl = document.getElementById('successState')!;
+    const errorEl   = document.getElementById('errorState')!;
+    const emailEl   = document.getElementById('customerEmail')!;
+    const errorMsg  = document.getElementById('errorMsg')!;
 
     async function verify() {
       if (!sessionId) { showError('No session ID found. Please contact support.'); return; }
-
       try {
         const res  = await fetch(`/api/stripe/verify-session/${sessionId}`);
         const data = await res.json();
         if (!res.ok) { showError(data.error || 'Payment not verified.'); return; }
-
-        const url = `/api/stripe/download/${data.token}`;
-        downloadBtn.href   = url;
-        manualLink.href    = url;
         if (data.email) emailEl.textContent = data.email;
-
         loadingEl.style.display = 'none';
         successEl.style.display = 'flex';
-
-        // Auto-download then redirect to home
-        const a = document.createElement('a');
-        a.href     = url;
-        a.download = 'South-Florida-Med-Spa-Directory.pdf';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-
-        // Countdown and redirect to home
-        const countdownEl = document.getElementById('countdown');
-        let secs = 3;
-        const interval = setInterval(() => {
-          secs--;
-          if (countdownEl) countdownEl.textContent = String(secs);
-          if (secs <= 0) {
-            clearInterval(interval);
-            (window.top || window).location.href = '/';
-          }
-        }, 1000);
-
       } catch (err) {
         showError('Network error. Please try again or contact support.');
       }
@@ -219,24 +179,7 @@ import Nav from '../../components/Nav.astro';
   color: #aaa;
   margin: 0;
 }
-.success-note a {
-  color: var(--color-accent);
-  text-decoration: underline;
-  cursor: pointer;
-}
-.success-email {
-  font-size: 0.82rem;
-  color: #bbb;
-  margin: 0;
-}
-.redirect-note {
-  font-size: 0.82rem;
-  color: var(--color-accent);
-  font-weight: 500;
-  margin: 0;
-}
-
-/* Download button */
+/* Home button */
 .download-btn {
   display: inline-flex;
   align-items: center;
