@@ -123,6 +123,21 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : siteUrl + ogImage;
         fbq('track', 'CompleteRegistration', { status: true }, { eventID: evId });
         sendCAPIviaServer('CompleteRegistration', evId, userData || {});
       };
+
+      // Generic tracker usable from any page
+      window.fbTrack = function(eventName, customData, userData) {
+        var evId = genEventId();
+        fbq('track', eventName, customData || {}, { eventID: evId });
+        var payload = Object.assign({ custom_data: customData || {} }, { event_name: eventName, event_id: evId, event_source_url: window.location.href, user_data: userData || {} });
+        var cookies = document.cookie.split(';').reduce(function(acc, c) { var p = c.trim().split('='); acc[p[0]] = p[1]; return acc; }, {});
+        if (cookies['_fbp']) payload.user_data.fbp = cookies['_fbp'];
+        if (cookies['_fbc']) payload.user_data.fbc = cookies['_fbc'];
+        fetch('/api/meta-capi', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+          .then(function(r) { return r.json(); })
+          .then(function(d) { console.log('[MetaPixel Browser]', eventName, 'eventID:', evId); })
+          .catch(function(e) { console.warn('[MetaCAPI] Error:', e); });
+        return evId;
+      };
     })();
     </script>
     <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=322421330936674&ev=PageView&noscript=1" /></noscript>

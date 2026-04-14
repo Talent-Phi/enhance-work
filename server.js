@@ -1125,12 +1125,39 @@ app.get('/api/stripe/verify-session/:sessionId', async (req, res) => {
     }
 
     const token = crypto.randomBytes(48).toString('hex');
+    const customerEmail = session.customer_details?.email || '';
     await pool.query(
       `INSERT INTO pdf_purchases (session_id, customer_email, amount_total, download_token)
        VALUES ($1, $2, $3, $4)`,
-      [sessionId, session.customer_details?.email, session.amount_total, token]
+      [sessionId, customerEmail, session.amount_total, token]
     );
-    res.json({ token, email: session.customer_details?.email });
+
+    // Meta CAPI — Purchase (server-side, with hashed email)
+    try {
+      const evId = `ev_purchase_${sessionId}`;
+      const hashedEm = customerEmail ? await sha256(customerEmail) : undefined;
+      const metaPayload = {
+        data: [{
+          event_name: 'Purchase',
+          event_time: Math.floor(Date.now() / 1000),
+          event_id: evId,
+          event_source_url: 'https://enhance.work',
+          action_source: 'website',
+          custom_data: { currency: 'USD', value: (session.amount_total / 100).toFixed(2), content_name: 'South Florida Med Spa Directory', num_items: 1 },
+          user_data: { em: hashedEm, client_ip_address: req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip, client_user_agent: req.headers['user-agent'] || '' }
+        }]
+      };
+      if (META_TEST_CODE) metaPayload.test_event_code = META_TEST_CODE;
+      const metaUrl = `https://graph.facebook.com/v19.0/${META_PIXEL_ID}/events?access_token=${META_CAPI_TOKEN}`;
+      fetch(metaUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(metaPayload) })
+        .then(r => r.json())
+        .then(d => console.log('[MetaCAPI Server] Purchase', d))
+        .catch(e => console.warn('[MetaCAPI] Purchase error:', e.message));
+    } catch (e) {
+      console.warn('[MetaCAPI] Purchase build error:', e.message);
+    }
+
+    res.json({ token, email: customerEmail });
   } catch (err) {
     console.error('[Stripe Verify] Error:', err.message);
     res.status(500).json({ error: 'Failed to verify session' });

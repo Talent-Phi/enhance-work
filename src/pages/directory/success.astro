@@ -68,6 +68,11 @@ import Nav from '../../components/Nav.astro';
         loadingEl.style.display = 'none';
         successEl.style.display = 'flex';
 
+        // Meta: Purchase (browser Pixel)
+        if (typeof window.fbTrack === 'function') {
+          window.fbTrack('Purchase', { currency: 'USD', value: 35.00, content_name: 'South Florida Med Spa Directory' }, { email: data.email || '' });
+        }
+
         // Auto-download PDF once — using location avoids browser popup blockers
         window.location.href = `/api/stripe/download/${data.token}`;
 

@@ -110,6 +110,12 @@
       const span = btn.querySelector('span');
       btn.disabled = true;
       if (span) span.textContent = 'Redirecting...';
+
+      // Meta: InitiateCheckout
+      if (typeof window.fbTrack === 'function') {
+        window.fbTrack('InitiateCheckout', { currency: 'USD', value: 35.00, num_items: 1, content_name: 'South Florida Med Spa Directory' });
+      }
+
       try {
         const res = await fetch('/api/stripe/create-checkout', {
           method: 'POST',
