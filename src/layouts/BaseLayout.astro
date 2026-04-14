@@ -180,6 +180,48 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : siteUrl + ogImage;
       if (Object.keys(stored).length) {
         sessionStorage.setItem('ew_utms', JSON.stringify(stored));
       }
+      
+      // Agregar UTMs a todos los enlaces de registro
+      function addUtmsToLinks() {
+        var storedUtms = sessionStorage.getItem('ew_utms');
+        if (!storedUtms) return;
+        
+        try {
+          var utms = JSON.parse(storedUtms);
+          var utmString = new URLSearchParams(utms).toString();
+          
+          // Encontrar todos los enlaces que apunten a /candidate/registration/
+          var links = document.querySelectorAll('a[href*="/candidate/registration"]');
+          links.forEach(function(link) {
+            var href = link.getAttribute('href');
+            if (href) {
+              var separator = href.indexOf('?') > -1 ? '&' : '?';
+              // Solo agregar si no tiene UTMs ya
+              if (href.indexOf('utm_') === -1 && href.indexOf('gclid') === -1 && href.indexOf('fbclid') === -1) {
+                link.setAttribute('href', href + separator + utmString);
+              }
+            }
+          });
+          
+          // También agregar a botones con clase apply-btn que abren el modal
+          var applyButtons = document.querySelectorAll('.apply-btn');
+          applyButtons.forEach(function(btn) {
+            btn.setAttribute('data-utms', utmString);
+          });
+        } catch (e) {
+          console.warn('Error adding UTMs to links:', e);
+        }
+      }
+      
+      // Ejecutar cuando el DOM esté listo
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addUtmsToLinks);
+      } else {
+        addUtmsToLinks();
+      }
+      
+      // También ejecutar después de un pequeño delay para capturar enlaces dinámicos
+      setTimeout(addUtmsToLinks, 500);
     })();
     </script>
     <!-- End UTM capture -->
