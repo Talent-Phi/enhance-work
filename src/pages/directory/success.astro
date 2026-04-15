@@ -9,41 +9,57 @@ import Nav from '../../components/Nav.astro';
 >
   <Nav />
 
-  <main class="success-page">
-    <div class="success-card" id="loadingState">
-      <div class="spinner-ring">
-        <svg viewBox="0 0 50 50" class="spinner-svg">
-          <circle cx="25" cy="25" r="20" fill="none" stroke-width="4"/>
-        </svg>
-      </div>
-      <p class="loading-text">Verifying your payment…</p>
-    </div>
+  <main class="ps-page">
+    <div class="ps-bg"></div>
 
-    <div class="success-card" id="successState" style="display:none">
-      <div class="check-wrap">
-        <svg class="check-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle class="check-circle" cx="40" cy="40" r="36" stroke="#2bbcb0" stroke-width="4"/>
-          <polyline class="check-mark" points="24,41 35,52 56,30" stroke="#2bbcb0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+    <div class="ps-wrap">
+
+      <!-- Loading -->
+      <div class="ps-card" id="loadingState">
+        <div class="ps-spinner">
+          <svg viewBox="0 0 50 50" class="ps-spinner-svg">
+            <circle cx="25" cy="25" r="20" fill="none" stroke-width="4"/>
+          </svg>
+        </div>
+        <p class="ps-loading-text">Verifying your payment…</p>
       </div>
 
-      <h1 class="success-title">Payment Confirmed!</h1>
-      <p class="success-sub">Your copy of <strong>The South Florida Med Spa Directory</strong> is downloading now. A confirmation has been sent to <span id="customerEmail"></span>.</p>
+      <!-- Success -->
+      <div class="ps-card" id="successState" style="display:none">
+        <div class="ps-icon">
+          <svg width="80" height="80" viewBox="0 0 56 56" fill="none">
+            <circle cx="28" cy="28" r="28" fill="#e4f7f6"/>
+            <path d="M17 28l8 8 14-16" stroke="#2bbcb0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
 
-      <a class="download-btn" href="/">← Back to Home</a>
-    </div>
+        <h1 class="ps-title">Purchase successful</h1>
+        <p class="ps-sub">Your guide is ready. Download it below.</p>
 
-    <div class="success-card" id="errorState" style="display:none">
-      <div class="error-icon">
-        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="40" cy="40" r="36" stroke="#ef4444" stroke-width="4"/>
-          <line x1="26" y1="26" x2="54" y2="54" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
-          <line x1="54" y1="26" x2="26" y2="54" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
-        </svg>
+        <p class="ps-dl-label">Download PDF</p>
+
+        <button class="ps-btn" id="downloadBtn">
+          Download PDF
+        </button>
+
+        <p class="ps-note">A copy has been sent to your email</p>
       </div>
-      <h1 class="success-title">Something went wrong</h1>
-      <p class="success-sub error-msg" id="errorMsg">We couldn't verify your payment. Please contact <a href="mailto:info@enhance.work">info@enhance.work</a>.</p>
-      <a class="download-btn outline" href="/">← Back to Home</a>
+
+      <!-- Error -->
+      <div class="ps-card" id="errorState" style="display:none">
+        <div class="ps-error-icon">
+          <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+            <circle cx="40" cy="40" r="36" stroke="#ef4444" stroke-width="4"/>
+            <line x1="26" y1="26" x2="54" y2="54" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
+            <line x1="54" y1="26" x2="26" y2="54" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h1 class="ps-title ps-title--error">Something went wrong</h1>
+        <p class="ps-sub" id="errorMsg">We couldn't verify your payment. Please contact <a href="mailto:info@enhance.work">info@enhance.work</a>.</p>
+      </div>
+
+      <!-- Back link (always visible below card) -->
+      <a href="/" class="ps-back">Back to home</a>
     </div>
   </main>
 
@@ -51,11 +67,17 @@ import Nav from '../../components/Nav.astro';
     const params    = new URLSearchParams(window.location.search);
     const sessionId = params.get('session_id');
 
-    const loadingEl = document.getElementById('loadingState')!;
-    const successEl = document.getElementById('successState')!;
-    const errorEl   = document.getElementById('errorState')!;
-    const emailEl   = document.getElementById('customerEmail')!;
-    const errorMsg  = document.getElementById('errorMsg')!;
+    const loadingEl  = document.getElementById('loadingState')!;
+    const successEl  = document.getElementById('successState')!;
+    const errorEl    = document.getElementById('errorState')!;
+    const errorMsg   = document.getElementById('errorMsg')!;
+    const downloadBtn = document.getElementById('downloadBtn') as HTMLButtonElement;
+
+    let downloadUrl = '';
+
+    downloadBtn?.addEventListener('click', () => {
+      if (downloadUrl) window.location.href = downloadUrl;
+    });
 
     async function verify() {
       if (!sessionId) { showError('No session ID found. Please contact support.'); return; }
@@ -63,12 +85,13 @@ import Nav from '../../components/Nav.astro';
         const res  = await fetch(`/api/stripe/verify-session/${sessionId}`);
         const data = await res.json();
         if (!res.ok) { showError(data.error || 'Payment not verified.'); return; }
-        if (data.email) emailEl.textContent = data.email;
+
+        downloadUrl = `/api/stripe/download/${data.token}`;
 
         loadingEl.style.display = 'none';
         successEl.style.display = 'flex';
 
-        // Meta: Purchase — fired directly to guarantee execution
+        // Meta CAPI: Payment Processed
         try {
           const pId = 'ev_purchase_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
           if (typeof (window as any).fbq === 'function') {
@@ -88,8 +111,8 @@ import Nav from '../../components/Nav.astro';
           }).catch(() => {});
         } catch(e) {}
 
-        // Auto-download PDF once — using location avoids browser popup blockers
-        window.location.href = `/api/stripe/download/${data.token}`;
+        // Auto-download PDF
+        window.location.href = downloadUrl;
 
       } catch (err) {
         showError('Network error. Please try again or contact support.');
@@ -107,130 +130,165 @@ import Nav from '../../components/Nav.astro';
 </BaseLayout>
 
 <style>
-.success-page {
+/* Page */
+.ps-page {
+  position: relative;
   min-height: calc(100vh - 80px);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 4rem 1.5rem;
-  background: var(--color-bg);
+  overflow: hidden;
 }
 
-.success-card {
-  background: #fff;
-  border-radius: 20px;
-  padding: 3.5rem 2.5rem;
-  max-width: 480px;
-  width: 100%;
-  text-align: center;
-  box-shadow: 0 12px 48px rgba(0,0,0,0.09);
+/* Background */
+.ps-bg {
+  position: absolute;
+  inset: 0;
+  background: url('/images/apply-success-bg.png') center center / cover no-repeat;
+  z-index: 0;
+}
+
+/* Wrapper */
+.ps-wrap {
+  position: relative;
+  z-index: 1;
+  display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.25rem;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 560px;
+}
+
+/* Card */
+.ps-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+  padding: 3rem 3rem 2.5rem;
+  width: 100%;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
   display: flex;
 }
 
-/* Loading spinner */
-.spinner-ring {
+/* Loading */
+.ps-spinner {
   width: 64px;
   height: 64px;
 }
-.spinner-svg {
+.ps-spinner-svg {
   width: 100%;
   height: 100%;
-  animation: rotate 1s linear infinite;
+  animation: ps-rotate 1s linear infinite;
 }
-.spinner-svg circle {
-  stroke: var(--color-accent);
+.ps-spinner-svg circle {
+  stroke: #2bbcb0;
   stroke-dasharray: 100;
   stroke-dashoffset: 75;
   stroke-linecap: round;
 }
-@keyframes rotate { to { transform: rotate(360deg); } }
-.loading-text {
-  color: var(--color-text-body);
-  font-size: 1rem;
-}
+@keyframes ps-rotate { to { transform: rotate(360deg); } }
+.ps-loading-text { color: #555; font-size: 1rem; margin: 0; }
 
-/* Checkmark */
-.check-wrap {
-  width: 90px;
-  height: 90px;
-}
-.check-svg {
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-.check-circle {
-  stroke-dasharray: 226;
-  stroke-dashoffset: 226;
-  animation: draw-circle 0.6s ease forwards;
-}
-.check-mark {
-  stroke-dasharray: 60;
-  stroke-dashoffset: 60;
-  animation: draw-check 0.4s ease 0.55s forwards;
-}
-@keyframes draw-circle {
-  to { stroke-dashoffset: 0; }
-}
-@keyframes draw-check {
-  to { stroke-dashoffset: 0; }
-}
+/* Icon */
+.ps-icon { margin-bottom: 0.25rem; }
 
-/* Error icon */
-.error-icon {
-  width: 80px;
-  height: 80px;
-}
-
-/* Text */
-.success-title {
-  font-family: var(--font-heading);
-  font-size: 1.75rem;
+/* Title */
+.ps-title {
+  font-family: var(--font-heading, 'Poppins', sans-serif);
+  font-size: 2rem;
   font-weight: 700;
-  color: var(--color-text-heading);
+  color: #2bbcb0;
   margin: 0;
 }
-.success-sub {
-  color: var(--color-text-body);
+.ps-title--error { color: #ef4444; }
+
+/* Subtitle */
+.ps-sub {
   font-size: 1rem;
-  line-height: 1.65;
+  color: #555;
+  line-height: 1.6;
   margin: 0;
 }
-.success-note {
-  font-size: 0.85rem;
+.ps-sub a { color: #2bbcb0; }
+
+/* Download label */
+.ps-dl-label {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a2a26;
+  margin: 0.5rem 0 0;
+}
+
+/* CTA button — same as Directory */
+.ps-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(180deg, #2BBCB0 0%, #208D84 100%);
+  color: #FFFFFF;
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 23px;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 10px 36px;
+  border-radius: 53px;
+  transition: all 0.25s ease;
+  letter-spacing: 0.03em;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0px 4px 4px rgba(0,0,0,0.25), 0px 0px 20px rgba(43,188,176,0.4);
+  min-width: 220px;
+  height: 48px;
+}
+.ps-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 0; height: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  transform: translate(-50%,-50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+.ps-btn:hover::before { width: 340px; height: 340px; }
+.ps-btn:hover {
+  background: linear-gradient(180deg, #27A99E 0%, #1a7a73 100%);
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 6px rgba(0,0,0,0.3), 0px 0px 25px rgba(43,188,176,0.6);
+}
+
+/* Note */
+.ps-note {
+  font-size: 0.88rem;
   color: #aaa;
   margin: 0;
 }
-/* Home button */
-.download-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  background: var(--color-accent);
-  color: #fff;
-  font-family: var(--font-heading);
+
+/* Error icon */
+.ps-error-icon { width: 80px; height: 80px; }
+
+/* Back link */
+.ps-back {
   font-size: 1rem;
-  font-weight: 600;
-  padding: 0.85rem 2rem;
-  border-radius: 10px;
-  text-decoration: none;
-  transition: background 0.2s, transform 0.15s;
-  margin-top: 0.25rem;
+  color: #888;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
 }
-.download-btn:hover {
-  background: var(--color-accent-hover);
-  transform: translateY(-1px);
-}
-.download-btn.outline {
-  background: transparent;
-  color: var(--color-accent);
-  border: 2px solid var(--color-accent);
-}
-.download-btn.outline:hover {
-  background: var(--color-accent-light);
-  transform: none;
+.ps-back:hover { color: #444; }
+
+@media (max-width: 600px) {
+  .ps-card { padding: 2rem 1.5rem; }
+  .ps-title { font-size: 1.6rem; }
 }
 </style>
