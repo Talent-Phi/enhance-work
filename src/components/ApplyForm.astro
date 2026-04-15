@@ -444,16 +444,50 @@
 
   <!-- ── Success screen ── -->
   <div id="ew-success" class="ew-success" hidden>
-    <div class="ew-success__inner">
-      <div class="ew-success__icon">
-        <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
-          <circle cx="36" cy="36" r="36" fill="#e4f7f6"/>
-          <path d="M22 36l10 10 18-20" stroke="#2bbcb0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+    <div class="ews-bg"></div>
+    <div class="ews-wrap">
+
+      <div class="ews-header">
+        <div class="ews-icon">
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+            <circle cx="28" cy="28" r="28" fill="#e4f7f6"/>
+            <path d="M17 28l8 8 14-16" stroke="#2bbcb0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h2 class="ews-title">Application submitted!</h2>
+        <p class="ews-sub">You're one step closer to your next opportunity in aesthetics.<br/>Our team will review your profile and match you with clinics in South Florida.</p>
       </div>
-      <h2 class="ew-success__title">Application submitted!</h2>
-      <p class="ew-success__sub">Thank you for applying to Enhance.work. Our team will review your profile and reach out to you within 2–3 business days.</p>
-      <button type="button" class="ew-btn ew-btn--continue" id="ew-success-close" style="margin-top:0.5rem">Back to home</button>
+
+      <div class="ews-card">
+        <div class="ews-card__left">
+          <h3 class="ews-card__heading">Want to <strong>stand out</strong> from <strong>other candidates?</strong></h3>
+          <p class="ews-card__pitch">Most professionals <strong>apply blindly</strong>. The ones who <strong>get hired apply smarter.</strong></p>
+          <p class="ews-card__access">Get access to every aesthetic clinic in South Florida:</p>
+          <ul class="ews-card__list">
+            <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#2bbcb0"/><path d="M4.5 8l2.5 2.5L11.5 5.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Direct contact info</li>
+            <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#2bbcb0"/><path d="M4.5 8l2.5 2.5L11.5 5.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Where they are hiring</li>
+            <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#2bbcb0"/><path d="M4.5 8l2.5 2.5L11.5 5.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Services &amp; specialties</li>
+            <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#2bbcb0"/><path d="M4.5 8l2.5 2.5L11.5 5.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>How to apply strategically</li>
+          </ul>
+          <p class="ews-card__offer-label">Special offer for applicants:</p>
+          <div class="ews-price-row">
+            <span class="ews-price-old">$50</span>
+            <span class="ews-price-new">$35</span>
+          </div>
+          <button type="button" class="ews-cta" id="ewsDirectoryCta">Get the full directory</button>
+          <p class="ews-fine">Instant download &bull; One-time payment</p>
+        </div>
+
+        <div class="ews-card__right">
+          <div class="ews-pages-stack">
+            <div class="ews-page ews-page--3"><img src="/images/mockups/access-to-manual/directory-page-listing.png" alt="Clinic listing" loading="lazy"/></div>
+            <div class="ews-page ews-page--2"><img src="/images/mockups/access-to-manual/directory-page-index.png" alt="Directory index" loading="lazy"/></div>
+            <div class="ews-page ews-page--1"><img src="/images/mockups/access-to-manual/directory-cover.png" alt="Directory cover" loading="lazy"/></div>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="ews-back" id="ew-success-close">Back to home</button>
     </div>
   </div>
 
@@ -1163,26 +1197,89 @@
 .ew-success {
   position: absolute;
   inset: 0;
-  background: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 25;
-  border-radius: inherit;
+  overflow-y: auto;
 }
 .ew-success[hidden] { display: none !important; }
-.ew-success__inner {
+.ews-bg {
+  position: absolute;
+  inset: 0;
+  background: url('/images/apply-success-bg.png') center center / cover no-repeat;
+  z-index: 0;
+}
+.ews-wrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 860px;
+  padding: 2.5rem 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.25rem;
-  text-align: center;
-  padding: 3rem 2rem;
-  max-width: 480px;
+  gap: 1.5rem;
 }
-.ew-success__icon { margin-bottom: 0.5rem; }
-.ew-success__title { font-family: var(--font-heading, 'Poppins', sans-serif); font-size: 1.75rem; font-weight: 600; color: #1a2a26; margin: 0; }
-.ew-success__sub { font-size: 0.9rem; color: #666; line-height: 1.65; margin: 0; }
+.ews-header { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; text-align: center; }
+.ews-icon { margin-bottom: 0.25rem; }
+.ews-title { font-family: var(--font-heading, 'Poppins', sans-serif); font-size: 1.75rem; font-weight: 600; color: #2bbcb0; margin: 0; }
+.ews-sub { font-size: 0.9rem; color: #555; line-height: 1.6; margin: 0; }
+.ews-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  overflow: hidden;
+  width: 100%;
+}
+.ews-card__left { padding: 2rem 2rem 2rem 2.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.ews-card__heading { font-family: var(--font-heading, 'Poppins', sans-serif); font-size: 1.2rem; font-weight: 400; color: #1a2a26; margin: 0; line-height: 1.35; }
+.ews-card__pitch { font-size: 0.88rem; color: #444; margin: 0; line-height: 1.55; }
+.ews-card__access { font-size: 0.88rem; color: #333; margin: 0; }
+.ews-card__list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem 1.25rem; }
+.ews-card__list li { display: flex; align-items: center; gap: 0.45rem; font-size: 0.85rem; color: #333; }
+.ews-card__list svg { flex-shrink: 0; }
+.ews-card__offer-label { font-size: 0.85rem; font-weight: 600; color: #444; margin: 0; }
+.ews-price-row { display: flex; align-items: baseline; gap: 0.6rem; }
+.ews-price-old { font-size: 1.25rem; color: #aaa; text-decoration: line-through; font-weight: 500; }
+.ews-price-new { font-size: 2rem; font-weight: 700; color: #1a2a26; }
+.ews-cta {
+  display: inline-flex; align-items: center; justify-content: center;
+  appearance: none; border: none; cursor: pointer;
+  background: linear-gradient(180deg, #2BBCB0 0%, #208D84 100%);
+  color: #fff; font-size: 0.95rem; font-weight: 600;
+  padding: 0.7rem 1.75rem; border-radius: 53px;
+  box-shadow: 0 4px 14px rgba(43,188,176,0.35);
+  transition: all 0.2s ease; align-self: flex-start;
+}
+.ews-cta:hover { background: linear-gradient(180deg, #27A99E 0%, #1a7a73 100%); transform: translateY(-1px); box-shadow: 0 6px 18px rgba(43,188,176,0.5); }
+.ews-cta:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+.ews-fine { font-size: 0.78rem; color: #999; margin: 0; }
+.ews-card__right {
+  background: linear-gradient(135deg, #e8f8f7 0%, #d4f0ee 100%);
+  display: flex; align-items: center; justify-content: center;
+  padding: 2rem 1.5rem; overflow: visible;
+}
+.ews-pages-stack { position: relative; width: 220px; height: 280px; }
+.ews-page { position: absolute; top: 0; left: 0; width: 100%; transition: all 0.8s cubic-bezier(0.34,1.56,0.64,1); transform-origin: bottom center; }
+.ews-page img { width: 100%; height: auto; display: block; border-radius: 6px; box-shadow: 0 12px 30px rgba(0,0,0,0.25); }
+.ews-page--3 { z-index: 1; transform: translate(70px,-18px) rotate(16deg) scale(0.92); opacity: 0.8; }
+.ews-page--2 { z-index: 2; transform: translate(35px,-9px) rotate(7deg) scale(0.96); opacity: 0.9; }
+.ews-page--1 { z-index: 3; transform: translate(0,0) rotate(-5deg) scale(1); }
+.ews-page.active { z-index: 10 !important; transform: translate(-8px,-16px) rotate(-4deg) scale(1.04) !important; opacity: 1 !important; }
+.ews-back { background: none; border: none; cursor: pointer; font-size: 0.85rem; color: #888; text-decoration: underline; padding: 0; }
+.ews-back:hover { color: #444; }
+@media (max-width: 640px) {
+  .ews-card { grid-template-columns: 1fr; }
+  .ews-card__right { min-height: 260px; }
+  .ews-pages-stack { width: 170px; height: 220px; }
+  .ews-page--3 { transform: translate(55px,-14px) rotate(15deg) scale(0.90); }
+  .ews-page--2 { transform: translate(28px,-7px) rotate(7deg) scale(0.95); }
+  .ews-card__list { grid-template-columns: 1fr; }
+  .ews-cta { align-self: stretch; width: 100%; }
+}
 
 /* ── Footer ── */
 .ew-form__footer {
@@ -1586,6 +1683,48 @@
   // Confirm modal buttons
   document.getElementById('ew-confirm-cancel')?.addEventListener('click', hideConfirm);
   document.getElementById('ew-success-close')?.addEventListener('click', close);
+
+  // ── "Get the full directory" button on success screen ──
+  const ewsCtaBtn = document.getElementById('ewsDirectoryCta');
+  if (ewsCtaBtn) {
+    ewsCtaBtn.addEventListener('click', async () => {
+      ewsCtaBtn.disabled = true;
+      ewsCtaBtn.textContent = 'Redirecting...';
+      try {
+        const icId = 'ev_ic_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        if (typeof (window as any).fbq === 'function') {
+          (window as any).fbq('trackCustom', 'Initiate Payment', { currency: 'USD', value: 35.00, num_items: 1, content_name: 'South Florida Med Spa Directory' }, { eventID: icId });
+        }
+        const cookies = document.cookie.split(';').reduce((acc: Record<string,string>, c: string) => { const p = c.trim().split('='); acc[p[0]] = p[1]; return acc; }, {});
+        fetch('/api/meta-capi', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ event_name: 'Initiate Payment', event_id: icId, event_source_url: window.location.href, custom_data: { currency: 'USD', value: 35.00 }, user_data: { fbp: cookies['_fbp'] || '', fbc: cookies['_fbc'] || '' } })
+        }).catch(() => {});
+      } catch(e) {}
+      try {
+        const res = await fetch('/api/stripe/create-checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) });
+        const data = await res.json();
+        if (data.url) { window.location.href = data.url; } else { throw new Error(data.error || 'Unknown'); }
+      } catch(err) {
+        ewsCtaBtn.disabled = false;
+        ewsCtaBtn.textContent = 'Get the full directory';
+        alert('Something went wrong. Please try again.');
+      }
+    });
+  }
+
+  // ── Animate pages on success screen ──
+  const ewsPages = Array.from(document.querySelectorAll('.ews-page'));
+  if (ewsPages.length) {
+    let ewsCurrent = ewsPages.length - 1;
+    function ewsRotate() {
+      ewsPages.forEach(p => p.classList.remove('active'));
+      ewsPages[ewsCurrent].classList.add('active');
+      ewsCurrent = (ewsCurrent + 1) % ewsPages.length;
+    }
+    ewsRotate();
+    setInterval(ewsRotate, 3500);
+  }
   document.getElementById('ew-confirm-submit')?.addEventListener('click', async () => {
     hideConfirm();
     _confirmingSubmit = true;
