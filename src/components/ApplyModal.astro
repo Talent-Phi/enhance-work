@@ -1625,6 +1625,16 @@
           formData.append('resume', resumeInput.files[0]);
         }
 
+        // Attach UTMs from sessionStorage
+        const UTM_KEYS = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','utm_id','utm_creative_format','gclid','gad_campaignid'];
+        try {
+          const utmRaw = sessionStorage.getItem('ew_utms');
+          const utms = utmRaw ? JSON.parse(utmRaw) : {};
+          UTM_KEYS.forEach(k => formData.append(k, utms[k] || ''));
+        } catch(e) {
+          UTM_KEYS.forEach(k => formData.append(k, ''));
+        }
+
         const resp = await fetch('/api/apply', { method: 'POST', body: formData });
         const result = await resp.json();
 
