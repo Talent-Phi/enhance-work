@@ -194,6 +194,21 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : siteUrl + ogImage;
       
       if (Object.keys(stored).length) {
         sessionStorage.setItem('ew_utms', JSON.stringify(stored));
+      } else {
+        // Referrer fallback — if no UTMs in URL but came from a known partner
+        var existing = sessionStorage.getItem('ew_utms');
+        if (!existing) {
+          var ref = document.referrer || '';
+          var refFallback = null;
+          if (ref.indexOf('perfectb.com') !== -1) {
+            refFallback = { utm_source: 'perfectb', utm_medium: 'referral', utm_campaign: 'careers' };
+          }
+          // Add more partners here as needed:
+          // else if (ref.indexOf('otherpartner.com') !== -1) { ... }
+          if (refFallback) {
+            sessionStorage.setItem('ew_utms', JSON.stringify(refFallback));
+          }
+        }
       }
       
       // Agregar UTMs a todos los enlaces de registro

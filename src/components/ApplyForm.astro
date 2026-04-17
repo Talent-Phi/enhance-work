@@ -1625,6 +1625,15 @@
     });
     if (Object.keys(stored).length) {
       sessionStorage.setItem('ew_utms', JSON.stringify(stored));
+    } else {
+      // Referrer fallback — preserve partner attribution even if no UTMs in URL
+      const existing = sessionStorage.getItem('ew_utms');
+      if (!existing) {
+        const ref = document.referrer || '';
+        if (ref.indexOf('perfectb.com') !== -1) {
+          sessionStorage.setItem('ew_utms', JSON.stringify({ utm_source: 'perfectb', utm_medium: 'referral', utm_campaign: 'careers' }));
+        }
+      }
     }
   })();
   // ──────────────────────────────────────────────────────────────────────────
