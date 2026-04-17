@@ -434,6 +434,16 @@
         <div class="ews-card__left">
           <h3 class="ews-card__heading">Want to <strong>stand out</strong> from <strong>other candidates?</strong></h3>
           <p class="ews-card__pitch">Most professionals <strong>apply blindly</strong>. The ones who <strong>get hired apply smarter.</strong></p>
+
+          <!-- Mobile-only mockup (shown between pitch and checklist) -->
+          <div class="ews-mockup-mobile">
+            <div class="ews-pages-stack">
+              <div class="ews-page ews-page--3"><img src="/images/mockups/access-to-manual/directory-page-listing.png" alt="Clinic listing page" loading="lazy"/></div>
+              <div class="ews-page ews-page--2"><img src="/images/mockups/access-to-manual/directory-page-index.png" alt="Directory index page" loading="lazy"/></div>
+              <div class="ews-page ews-page--1"><img src="/images/mockups/access-to-manual/directory-cover.png" alt="South Florida Med Spa Directory cover" loading="lazy"/></div>
+            </div>
+          </div>
+
           <p class="ews-card__access">Get access to every aesthetic clinic in South Florida:</p>
           <ul class="ews-card__list">
             <li><svg width="16" height="13" viewBox="0 0 16 13" fill="none"><path d="M1.5 6.5l4.5 4.5 8.5-10" stroke="#2bbcb0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Direct contact info</li>
@@ -1337,15 +1347,36 @@
 .ews-back { background: none; border: none; cursor: pointer; font-size: 1rem; color: #888; text-decoration: underline; padding: 0; }
 .ews-back:hover { color: #444; }
 
+/* Mobile-only mockup hidden on desktop */
+.ews-mockup-mobile { display: none; }
+
 /* Mobile */
 @media (max-width: 640px) {
   .ews-card { grid-template-columns: 1fr; }
-  .ews-card__right { min-height: 240px; padding: 0 0 1.5rem; }
-  .ews-pages-stack { width: 180px; height: 230px; margin-top: -30px; }
-  .ews-page--3 { transform: translate(58px,-14px) rotate(15deg) scale(0.90); }
-  .ews-page--2 { transform: translate(29px,-7px) rotate(7deg) scale(0.95); }
+  .ews-card__right { display: none; }
+
+  /* Show mobile mockup between pitch and checklist */
+  .ews-mockup-mobile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0 1rem;
+    min-height: 220px;
+  }
+  .ews-mockup-mobile .ews-pages-stack {
+    width: 190px;
+    height: 240px;
+    margin-top: 0;
+  }
+  .ews-mockup-mobile .ews-page--3 { transform: translate(62px,-14px) rotate(16deg) scale(0.90); }
+  .ews-mockup-mobile .ews-page--2 { transform: translate(31px,-7px) rotate(7deg) scale(0.95); }
+  .ews-mockup-mobile .ews-page--1 { transform: translate(0,0) rotate(-5deg) scale(1); }
+
   .ews-card__list { grid-template-columns: 1fr; }
   .ews-cta { width: 100%; }
+  .ews-card__left { padding: 1.5rem 1.25rem; }
+  .ews-wrap { padding: 2rem 1rem; }
+  .ews-title { font-size: 1.6rem; }
 }
 
 /* ── Footer ── */
