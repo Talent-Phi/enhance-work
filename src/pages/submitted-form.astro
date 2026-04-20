@@ -1,0 +1,260 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Application Submitted | Enhance.work"
+  description="Thank you for applying to Enhance.work. Our team will review your profile and reach out within 2–3 business days."
+>
+  <main class="sf-page" id="sf-page">
+    <div class="ews-bg"></div>
+
+    <div class="ews-wrap">
+
+      <div class="ews-header">
+        <div class="ews-icon">
+          <svg width="80" height="80" viewBox="0 0 56 56" fill="none">
+            <circle cx="28" cy="28" r="28" fill="#e4f7f6"/>
+            <path d="M17 28l8 8 14-16" stroke="#2bbcb0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h2 class="ews-title">Application submitted!</h2>
+        <p class="ews-sub">You're one step closer to your next opportunity in aesthetics.<br/>Our team will review your profile and match you with clinics in South Florida.</p>
+      </div>
+
+      <div class="ews-card">
+        <div class="ews-card__left">
+          <h3 class="ews-card__heading">Want to <strong>stand out</strong> from <strong>other candidates?</strong></h3>
+          <p class="ews-card__pitch">Most professionals <strong>apply blindly</strong>. The ones who <strong>get hired apply smarter.</strong></p>
+
+          <!-- Mobile-only mockup (shown between pitch and checklist) -->
+          <div class="ews-mockup-mobile">
+            <div class="ews-pages-stack">
+              <div class="ews-page ews-page--3"><img src="/images/mockups/access-to-manual/directory-page-listing.png" alt="Clinic listing" loading="lazy"/></div>
+              <div class="ews-page ews-page--2"><img src="/images/mockups/access-to-manual/directory-page-index.png" alt="Directory index" loading="lazy"/></div>
+              <div class="ews-page ews-page--1"><img src="/images/mockups/access-to-manual/directory-cover.png" alt="Directory cover" loading="lazy"/></div>
+            </div>
+          </div>
+
+          <p class="ews-card__access">Get access to every aesthetic clinic in South Florida:</p>
+          <ul class="ews-card__list">
+            <li><svg width="16" height="13" viewBox="0 0 16 13" fill="none"><path d="M1.5 6.5l4.5 4.5 8.5-10" stroke="#2bbcb0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Direct contact info</li>
+            <li><svg width="16" height="13" viewBox="0 0 16 13" fill="none"><path d="M1.5 6.5l4.5 4.5 8.5-10" stroke="#2bbcb0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Where they are hiring</li>
+            <li><svg width="16" height="13" viewBox="0 0 16 13" fill="none"><path d="M1.5 6.5l4.5 4.5 8.5-10" stroke="#2bbcb0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Services &amp; specialties</li>
+            <li><svg width="16" height="13" viewBox="0 0 16 13" fill="none"><path d="M1.5 6.5l4.5 4.5 8.5-10" stroke="#2bbcb0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>How to apply strategically</li>
+          </ul>
+          <p class="ews-card__offer-label">Special offer for applicants:</p>
+          <div class="ews-price-row">
+            <span class="ews-price-old">$50</span>
+            <span class="ews-price-new">$35</span>
+          </div>
+          <button type="button" class="ews-cta" id="ewsDirectoryCta">Get the full directory</button>
+          <p class="ews-fine">Instant download &bull; One-time payment</p>
+        </div>
+
+        <div class="ews-card__right">
+          <div class="ews-pages-stack">
+            <div class="ews-page ews-page--3"><img src="/images/mockups/access-to-manual/directory-page-listing.png" alt="Clinic listing" loading="lazy"/></div>
+            <div class="ews-page ews-page--2"><img src="/images/mockups/access-to-manual/directory-page-index.png" alt="Directory index" loading="lazy"/></div>
+            <div class="ews-page ews-page--1"><img src="/images/mockups/access-to-manual/directory-cover.png" alt="Directory cover" loading="lazy"/></div>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="ews-back" id="sf-back">Back to home</button>
+    </div>
+  </main>
+
+  <script>
+    // Fire CompleteRegistration with stored user data from form
+    (function() {
+      try {
+        const raw = sessionStorage.getItem('ew_cr_data');
+        if (raw) {
+          const userData = JSON.parse(raw);
+          sessionStorage.removeItem('ew_cr_data');
+          if (typeof (window as any).fbTrackCompleteRegistration === 'function') {
+            (window as any).fbTrackCompleteRegistration(userData);
+          } else {
+            // Fallback: wait for BaseLayout script to initialize
+            window.addEventListener('load', () => {
+              if (typeof (window as any).fbTrackCompleteRegistration === 'function') {
+                (window as any).fbTrackCompleteRegistration(userData);
+              }
+            });
+          }
+        }
+      } catch(e) {}
+    })();
+
+    // Back to home
+    document.getElementById('sf-back')?.addEventListener('click', () => {
+      window.location.href = '/';
+    });
+
+    // Directory CTA button
+    const ewsCtaBtn = document.getElementById('ewsDirectoryCta');
+    if (ewsCtaBtn) {
+      ewsCtaBtn.addEventListener('click', async () => {
+        ewsCtaBtn.disabled = true;
+        ewsCtaBtn.textContent = 'Redirecting...';
+        try {
+          const icId = 'ev_ic_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+          if (typeof (window as any).fbq === 'function') {
+            (window as any).fbq('trackCustom', 'Initiate Payment', { currency: 'USD', value: 35.00, num_items: 1, content_name: 'South Florida Med Spa Directory' }, { eventID: icId });
+          }
+          const cookies = document.cookie.split(';').reduce((acc: Record<string,string>, c: string) => { const p = c.trim().split('='); acc[p[0]] = p[1]; return acc; }, {});
+          fetch('/api/meta-capi', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ event_name: 'Initiate Payment', event_id: icId, event_source_url: window.location.href, custom_data: { currency: 'USD', value: 35.00 }, user_data: { fbp: cookies['_fbp'] || '', fbc: cookies['_fbc'] || '' } })
+          }).catch(() => {});
+        } catch(e) {}
+        try {
+          const res = await fetch('/api/stripe/create-checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) });
+          const data = await res.json();
+          if (data.url) { window.location.href = data.url; } else { throw new Error(data.error || 'Unknown'); }
+        } catch(err) {
+          ewsCtaBtn.disabled = false;
+          ewsCtaBtn.textContent = 'Get the full directory';
+          alert('Something went wrong. Please try again.');
+        }
+      });
+    }
+
+    // Animate pages stack
+    const ewsPages = Array.from(document.querySelectorAll('.ews-pages-stack .ews-page'));
+    if (ewsPages.length) {
+      let ewsCurrent = ewsPages.length - 1;
+      function ewsRotate() {
+        ewsPages.forEach(p => p.classList.remove('active'));
+        ewsPages[ewsCurrent].classList.add('active');
+        ewsCurrent = (ewsCurrent + 1) % ewsPages.length;
+      }
+      ewsRotate();
+      setInterval(ewsRotate, 3500);
+    }
+  </script>
+</BaseLayout>
+
+<style>
+.sf-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.ews-bg {
+  position: absolute;
+  inset: 0;
+  background: url('/images/apply-success-bg.png') center center / cover no-repeat;
+  z-index: 0;
+}
+
+.ews-wrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 980px;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.ews-header { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; text-align: center; }
+.ews-icon { margin-bottom: 0.35rem; }
+.ews-title { font-family: var(--font-heading, 'Poppins', sans-serif); font-size: 2.1rem; font-weight: 600; color: #2bbcb0; margin: 0; }
+.ews-sub { font-size: 1rem; color: #555; line-height: 1.65; margin: 0; }
+
+.ews-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  overflow: visible;
+  width: 100%;
+  position: relative;
+}
+.ews-card__left { padding: 2.25rem 1.75rem 2.25rem 2.5rem; display: flex; flex-direction: column; gap: 1.1rem; }
+.ews-card__heading { font-family: var(--font-heading,'Poppins',sans-serif); font-size: 1.45rem; font-weight: 400; color: #2bbcb0; margin: 0; line-height: 1.35; }
+.ews-card__pitch { font-size: 0.95rem; color: #444; margin: 0; line-height: 1.6; }
+.ews-card__access { font-size: 0.92rem; color: #333; margin: 0; }
+.ews-card__list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem 1rem; }
+.ews-card__list li { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; color: #333; }
+.ews-card__list svg { flex-shrink: 0; }
+.ews-card__offer-label { font-size: 0.92rem; font-weight: 600; color: #333; margin: 0; }
+.ews-price-row { display: flex; align-items: baseline; gap: 0.6rem; }
+.ews-price-old { font-size: 1.2rem; color: #aaa; text-decoration: line-through; font-weight: 500; }
+.ews-price-new { font-size: 2.4rem; font-weight: 700; color: #2bbcb0; }
+
+.ews-cta {
+  display: inline-flex; align-items: center; justify-content: center;
+  appearance: none; border: none; cursor: pointer;
+  background: linear-gradient(180deg, #2BBCB0 0%, #208D84 100%);
+  color: #FFFFFF; font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 600;
+  line-height: 23px; text-transform: uppercase; text-align: center;
+  padding: 10px 26px; border-radius: 53px; transition: all 0.25s ease;
+  align-self: center; letter-spacing: 0.03em; position: relative; overflow: hidden;
+  box-shadow: 0px 4px 4px rgba(0,0,0,0.25), 0px 0px 20px rgba(43,188,176,0.4);
+  min-width: 220px; height: 44px;
+}
+.ews-cta::before {
+  content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0;
+  border-radius: 50%; background: rgba(255,255,255,0.2); transform: translate(-50%,-50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+.ews-cta:hover::before { width: 300px; height: 300px; }
+.ews-cta:hover { background: linear-gradient(180deg, #27A99E 0%, #1a7a73 100%); transform: translateY(-2px); box-shadow: 0px 6px 6px rgba(0,0,0,0.3), 0px 0px 25px rgba(43,188,176,0.6); }
+.ews-cta:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+.ews-fine { font-size: 0.78rem; color: #999; margin: 0; text-align: center; }
+
+.ews-card__right {
+  background: transparent; display: flex; align-items: flex-end;
+  justify-content: center; padding: 0 1rem 1.5rem 0;
+  position: relative; overflow: visible;
+}
+.ews-pages-stack { position: relative; width: 265px; height: 340px; margin-top: -60px; }
+.ews-page { position: absolute; top: 0; left: 0; width: 100%; transition: all 0.8s cubic-bezier(0.34,1.56,0.64,1); transform-origin: bottom center; }
+.ews-page img { width: 100%; height: auto; display: block; border-radius: 6px; box-shadow: 0 12px 30px rgba(0,0,0,0.25); }
+.ews-page--3 { z-index: 1; transform: translate(75px,-18px) rotate(16deg) scale(0.92); opacity: 0.8; }
+.ews-page--2 { z-index: 2; transform: translate(37px,-9px) rotate(7deg) scale(0.96); opacity: 0.9; }
+.ews-page--1 { z-index: 3; transform: translate(0,0) rotate(-5deg) scale(1); }
+.ews-page.active { z-index: 10 !important; transform: translate(-8px,-16px) rotate(-4deg) scale(1.04) !important; opacity: 1 !important; }
+
+.ews-back { background: none; border: none; cursor: pointer; font-size: 1rem; color: #888; text-decoration: underline; padding: 0; }
+.ews-back:hover { color: #444; }
+
+.ews-mockup-mobile { display: none; }
+
+@media (max-width: 640px) {
+  .ews-card { grid-template-columns: 1fr; }
+  .ews-card__right { display: none; }
+
+  .ews-mockup-mobile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0 1rem;
+    min-height: 220px;
+  }
+  .ews-mockup-mobile .ews-pages-stack {
+    width: 190px;
+    height: 240px;
+    margin-top: 0;
+  }
+  .ews-mockup-mobile .ews-page--3 { transform: translate(62px,-14px) rotate(16deg) scale(0.90); }
+  .ews-mockup-mobile .ews-page--2 { transform: translate(31px,-7px) rotate(7deg) scale(0.95); }
+  .ews-mockup-mobile .ews-page--1 { transform: translate(0,0) rotate(-5deg) scale(1); }
+
+  .ews-card__list { grid-template-columns: 1fr; }
+  .ews-cta { width: 100%; }
+  .ews-card__left { padding: 1.5rem 1.25rem; }
+  .ews-wrap { padding: 2rem 1rem; }
+  .ews-title { font-size: 1.6rem; }
+}
+</style>

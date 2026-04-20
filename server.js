@@ -52,6 +52,32 @@ app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), async
           );
           console.log(`[Stripe Webhook] Purchase recorded for ${session.customer_details?.email}`);
         }
+
+        // Meta CAPI — Payment Processed (server-side, from webhook)
+        try {
+          const customerEmail = session.customer_details?.email || '';
+          const eventId = `ev_pp_wh_${session.id}`;
+          const hashedEmail = customerEmail ? await sha256(customerEmail) : null;
+          const capiPayload = {
+            data: [{
+              event_name: 'Payment Processed',
+              event_time: Math.floor(Date.now() / 1000),
+              event_id: eventId,
+              event_source_url: 'https://enhance.work/directory',
+              action_source: 'website',
+              user_data: { em: hashedEmail },
+              custom_data: { currency: 'USD', value: 35.00, content_name: 'South Florida Med Spa Directory' }
+            }]
+          };
+          if (META_TEST_CODE) capiPayload.test_event_code = META_TEST_CODE;
+          const capiUrl = `https://graph.facebook.com/v19.0/${META_PIXEL_ID}/events?access_token=${META_CAPI_TOKEN}`;
+          fetch(capiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(capiPayload) })
+            .then(r => r.json())
+            .then(d => console.log('[MetaCAPI Webhook] Payment Processed', d))
+            .catch(e => console.warn('[MetaCAPI Webhook] Error:', e.message));
+        } catch (e) {
+          console.warn('[MetaCAPI Webhook] Build error:', e.message);
+        }
       }
     }
 
