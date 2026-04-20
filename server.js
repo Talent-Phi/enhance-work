@@ -1090,12 +1090,25 @@ app.post('/api/stripe/create-checkout', async (req, res) => {
   try {
     const stripe = await getUncachableStripeClient();
     const priceId = process.env.STRIPE_PRICE_ID;
-    if (!priceId) return res.status(500).json({ error: 'Product not configured' });
 
     const baseUrl = `https://${(process.env.REPLIT_DOMAINS || 'enhance.work').split(',')[0]}`;
+
+    // In test mode (sk_test_...) the live price ID won't work — use inline price_data instead
+    const isTestMode = (process.env.STRIPE_SECRET_KEY || '').startsWith('sk_test_');
+    const lineItem = (priceId && !isTestMode)
+      ? { price: priceId, quantity: 1 }
+      : {
+          price_data: {
+            currency: 'usd',
+            unit_amount: 3500,
+            product: 'prod_UKYFu8HM1VnWgY',
+          },
+          quantity: 1,
+        };
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      line_items: [{ price: priceId, quantity: 1 }],
+      line_items: [lineItem],
       mode: 'payment',
       success_url: `${baseUrl}/directory/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: 'https://enhance.work',
