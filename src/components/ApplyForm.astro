@@ -114,7 +114,7 @@
                 <option value="">Select gender</option>
                 <option>Male</option>
                 <option>Female</option>
-                <option>Non-binary</option>
+                <option>Prefer not to say</option>
               </select>
               <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             </div>
@@ -240,7 +240,7 @@
               <select name="language_level">
                 <option value="">Native</option>
                 <option>Basic</option><option>Conversational</option>
-                <option>Fluent</option><option>Native</option>
+                <option>Fluent</option><option selected>Native</option>
               </select>
               <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             </div>
@@ -294,12 +294,8 @@
           <label>If you see fit, list some of your skills relevant to Aesthetics</label>
           <div class="ew-skills-row" id="ew-skills-row">
             <div id="ew-skill-chips"></div>
-            <div class="ew-skill-input-row">
-              <input type="text" id="ew-skill-input" placeholder="Type a skill…" autocomplete="off">
-              <button type="button" class="ew-skill-confirm" id="ew-skill-add" title="Add skill" aria-label="Add skill">
-                <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-            </div>
+            <span class="ew-skill-plus">+</span>
+            <input type="text" id="ew-skill-input" placeholder="Skill" autocomplete="off">
           </div>
         </div>
 
@@ -812,6 +808,10 @@
   -webkit-appearance: none;
 }
 .ew-form__card input::placeholder { color: #bbb; font-weight: 400; }
+/* Select placeholder (empty value selected) → gray; real value → dark */
+.ew-form__card select:has(option[value=""]:checked),
+.ew-field select:has(option[value=""]:checked) { color: #bbb; font-weight: 400; }
+.ew-form__card select option { color: #2a2a2a; font-weight: 400; }
 .ew-form__card input:focus,
 .ew-form__card select:focus {
   border-color: #2bbcb0;
@@ -956,8 +956,12 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 0.4rem;
-  min-height: 36px;
+  border: 1.5px dashed #2bbcb0;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  min-height: 44px;
   cursor: text;
+  background: #fff;
 }
 .ew-skills-row:focus-within { outline: none; }
 
@@ -983,14 +987,13 @@
 }
 #ew-skill-input {
   border: none;
-  border-bottom: 1.5px solid #2bbcb0;
   outline: none;
   font-size: 0.85rem;
   color: #2bbcb0;
   width: 100px;
   background: transparent;
   font-family: var(--font-body);
-  padding: 0 0 2px;
+  padding: 0;
 }
 #ew-skill-input::placeholder { color: #2bbcb0; opacity: 0.6; }
 :global(.ew-skill-tag) {
@@ -2060,7 +2063,7 @@
         </div>
         <div class="ew-field" style="gap:0.3rem">
           <label style="font-size:0.75rem;color:#aaa;font-weight:400">Proficiency level</label>
-          <div class="ew-select-wrap"><select name="language_level_${n}"><option value="">Select level</option>${levelOpts.map(o=>`<option>${o}</option>`).join('')}</select>${chevron}</div>
+          <div class="ew-select-wrap"><select name="language_level_${n}"><option value="">Select level</option>${levelOpts.map(o=>`<option${o==='Basic'?' selected':''}>${o}</option>`).join('')}</select>${chevron}</div>
         </div>
       </div>
     `;
