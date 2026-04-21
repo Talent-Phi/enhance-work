@@ -34,15 +34,8 @@ import Nav from '../../components/Nav.astro';
         </div>
 
         <h1 class="ps-title">Purchase successful</h1>
-        <p class="ps-sub">Your guide is ready. Download it below.</p>
-
-        <p class="ps-dl-label">Download PDF</p>
-
-        <button class="ps-btn" id="downloadBtn">
-          Download PDF
-        </button>
-
-        <p class="ps-note">A copy has been sent to your email</p>
+        <p class="ps-sub">Your guide is ready and will download automatically in a moment.</p>
+        <p class="ps-email-note">A copy has been sent to your email</p>
       </div>
 
       <!-- Error -->
@@ -67,17 +60,10 @@ import Nav from '../../components/Nav.astro';
     const params    = new URLSearchParams(window.location.search);
     const sessionId = params.get('session_id');
 
-    const loadingEl  = document.getElementById('loadingState')!;
-    const successEl  = document.getElementById('successState')!;
-    const errorEl    = document.getElementById('errorState')!;
-    const errorMsg   = document.getElementById('errorMsg')!;
-    const downloadBtn = document.getElementById('downloadBtn') as HTMLButtonElement;
-
-    let downloadUrl = '';
-
-    downloadBtn?.addEventListener('click', () => {
-      if (downloadUrl) window.location.href = downloadUrl;
-    });
+    const loadingEl = document.getElementById('loadingState')!;
+    const successEl = document.getElementById('successState')!;
+    const errorEl   = document.getElementById('errorState')!;
+    const errorMsg  = document.getElementById('errorMsg')!;
 
     async function verify() {
       if (!sessionId) { showError('No session ID found. Please contact support.'); return; }
@@ -86,12 +72,10 @@ import Nav from '../../components/Nav.astro';
         const data = await res.json();
         if (!res.ok) { showError(data.error || 'Payment not verified.'); return; }
 
-        downloadUrl = `/api/stripe/download/${data.token}`;
-
         loadingEl.style.display = 'none';
         successEl.style.display = 'flex';
 
-        // Meta CAPI: Payment Processed
+        // Meta CAPI: Payment Processed (browser pixel + server CAPI)
         try {
           const pId = 'ev_purchase_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
           if (typeof (window as any).fbq === 'function') {
@@ -111,8 +95,15 @@ import Nav from '../../components/Nav.astro';
           }).catch(() => {});
         } catch(e) {}
 
-        // Auto-download PDF
-        window.location.href = downloadUrl;
+        // Auto-download PDF via hidden link (doesn't navigate away)
+        if (data.token) {
+          const a = document.createElement('a');
+          a.href = `/api/stripe/download/${data.token}`;
+          a.download = 'South-Florida-Med-Spa-Directory.pdf';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        }
 
       } catch (err) {
         showError('Network error. Please try again or contact support.');
@@ -216,62 +207,12 @@ import Nav from '../../components/Nav.astro';
 }
 .ps-sub a { color: #2bbcb0; }
 
-/* Download label */
-.ps-dl-label {
-  font-size: 1.25rem;
+/* Email confirmation note */
+.ps-email-note {
+  font-size: 1.15rem;
   font-weight: 700;
   color: #1a2a26;
   margin: 0.5rem 0 0;
-}
-
-/* CTA button — same as Directory */
-.ps-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  appearance: none;
-  border: none;
-  cursor: pointer;
-  background: linear-gradient(180deg, #2BBCB0 0%, #208D84 100%);
-  color: #FFFFFF;
-  font-family: 'Inter', sans-serif;
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 23px;
-  text-transform: uppercase;
-  text-align: center;
-  padding: 10px 36px;
-  border-radius: 53px;
-  transition: all 0.25s ease;
-  letter-spacing: 0.03em;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0px 4px 4px rgba(0,0,0,0.25), 0px 0px 20px rgba(43,188,176,0.4);
-  min-width: 220px;
-  height: 48px;
-}
-.ps-btn::before {
-  content: '';
-  position: absolute;
-  top: 50%; left: 50%;
-  width: 0; height: 0;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.2);
-  transform: translate(-50%,-50%);
-  transition: width 0.6s ease, height 0.6s ease;
-}
-.ps-btn:hover::before { width: 340px; height: 340px; }
-.ps-btn:hover {
-  background: linear-gradient(180deg, #27A99E 0%, #1a7a73 100%);
-  transform: translateY(-2px);
-  box-shadow: 0px 6px 6px rgba(0,0,0,0.3), 0px 0px 25px rgba(43,188,176,0.6);
-}
-
-/* Note */
-.ps-note {
-  font-size: 0.88rem;
-  color: #aaa;
-  margin: 0;
 }
 
 /* Error icon */
