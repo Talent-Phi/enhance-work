@@ -35,9 +35,7 @@
       <!-- ── STEP 1 ── -->
       <div class="ew-step" data-step="1">
         <h2 class="ew-title">What role are you looking for?</h2>
-        <p class="ew-subtitle">Select all that apply</p>
         <hr class="ew-divider">
-        <p class="ew-field-label ew-field-label--grid">Select Position*</p>
         <div class="ew-role-grid ew-role-grid--main">
           <label class="ew-role-card">
             <input type="radio" name="role" value="aesthetic_provider">
@@ -85,10 +83,10 @@
       <!-- ── STEP 2 ── -->
       <div class="ew-step" data-step="2" hidden>
         <h2 class="ew-title">Help us get in touch with you.</h2>
-        <p class="ew-subtitle">Personal information</p>
         <hr class="ew-divider">
         <div class="ew-step-content">
-        <div class="ew-grid-3">
+        <!-- Row 1: First name | Last name -->
+        <div class="ew-grid-2">
           <div class="ew-field">
             <label>First name<span class="req">*</span></label>
             <input type="text" name="first_name" placeholder="Leo" autocomplete="given-name">
@@ -96,6 +94,18 @@
           <div class="ew-field">
             <label>Last name<span class="req">*</span></label>
             <input type="text" name="last_name" placeholder="Gibson" autocomplete="family-name">
+          </div>
+        </div>
+        <!-- Row 2: Date of birth | Gender -->
+        <div class="ew-grid-2 ew-grid-2--dob-gender">
+          <div class="ew-field">
+            <label>Date of birth<span class="req">*</span></label>
+            <div class="ew-dob">
+              <input type="text" name="dob_month" placeholder="Month" maxlength="2">
+              <input type="text" name="dob_day"   placeholder="Day"   maxlength="2">
+              <input type="text" name="dob_year"  placeholder="Year"  maxlength="4">
+            </div>
+            <p class="ew-hint">(This information is only used to verify your legal availability to work)</p>
           </div>
           <div class="ew-field">
             <label>Gender<span class="req">*</span></label>
@@ -110,15 +120,6 @@
             </div>
           </div>
         </div>
-        <div class="ew-field">
-          <label>Date of birth<span class="req">*</span></label>
-          <div class="ew-dob">
-            <input type="text" name="dob_month" placeholder="Month" maxlength="2">
-            <input type="text" name="dob_day"   placeholder="Day"   maxlength="2">
-            <input type="text" name="dob_year"  placeholder="Year"  maxlength="4">
-          </div>
-        </div>
-        <p class="ew-hint">(This information is only used to verify your legal availability to work)</p>
         <div class="ew-grid-2">
           <div class="ew-field">
             <label>Email<span class="req">*</span></label>
@@ -166,17 +167,18 @@
       <!-- ── STEP 3 ── -->
       <div class="ew-step" data-step="3" hidden>
         <h2 class="ew-title">Where are you located?</h2>
-        <p class="ew-subtitle">Your address details</p>
         <hr class="ew-divider">
         <div class="ew-step-content">
+        <!-- Row 1: Address Line 1 | Line 2 -->
         <div class="ew-field">
           <label>Address<span class="req">*</span></label>
-          <input type="text" name="address1" placeholder="Line 1" autocomplete="address-line1">
+          <div class="ew-grid-2">
+            <input type="text" name="address1" placeholder="Line 1" autocomplete="address-line1">
+            <input type="text" name="address2" placeholder="Line 2 (optional)" autocomplete="address-line2">
+          </div>
         </div>
-        <div class="ew-field">
-          <input type="text" name="address2" placeholder="Line 2 (optional)" autocomplete="address-line2">
-        </div>
-        <div class="ew-grid-2">
+        <!-- Row 2: State | City | Zip code -->
+        <div class="ew-grid-3">
           <div class="ew-field">
             <label>State<span class="req">*</span></label>
             <div class="ew-select-wrap">
@@ -207,11 +209,11 @@
             <label>City<span class="req">*</span></label>
             <input type="text" name="city" placeholder="City" autocomplete="address-level2">
           </div>
-        </div>
-        <div class="ew-field" style="max-width:340px">
-          <label>Zip code<span class="req">*</span></label>
-          <input type="text" name="zip" id="ew-zip" placeholder="e.g. 33101" maxlength="10" autocomplete="postal-code">
-          <p class="ew-zip-status" id="ew-zip-status" hidden></p>
+          <div class="ew-field">
+            <label>Zip code<span class="req">*</span></label>
+            <input type="text" name="zip" id="ew-zip" placeholder="e.g. 33101" maxlength="10" autocomplete="postal-code">
+            <p class="ew-zip-status" id="ew-zip-status" hidden></p>
+          </div>
         </div>
         </div><!-- /.ew-step-content -->
       </div>
@@ -219,29 +221,24 @@
       <!-- ── STEP 4 ── -->
       <div class="ew-step" data-step="4" hidden>
         <h2 class="ew-title">Competences</h2>
-        <p class="ew-subtitle">Languages and licenses you hold</p>
         <hr class="ew-divider">
         <div class="ew-step-content">
+        <!-- Languages section -->
+        <p class="ew-section-label">Languages</p>
         <div class="ew-field">
-          <label>Languages</label>
-        </div>
-        <div class="ew-grid-2">
-          <div class="ew-field" style="gap:0.3rem">
-            <label style="font-size:0.75rem;color:#aaa;font-weight:400">Language</label>
+          <label>Native language<span class="req">*</span></label>
+          <div class="ew-grid-2">
             <div class="ew-select-wrap">
               <select name="language">
-                <option value="">Select language</option>
+                <option value="">Select</option>
                 <option>English</option><option>Spanish</option><option>French</option>
                 <option>Portuguese</option><option>Mandarin</option><option>Other</option>
               </select>
               <span class="ew-chevron"><svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             </div>
-          </div>
-          <div class="ew-field" style="gap:0.3rem">
-            <label style="font-size:0.75rem;color:#aaa;font-weight:400">Proficiency level</label>
             <div class="ew-select-wrap">
               <select name="language_level">
-                <option value="">Select level</option>
+                <option value="">Native</option>
                 <option>Basic</option><option>Conversational</option>
                 <option>Fluent</option><option>Native</option>
               </select>
@@ -251,7 +248,7 @@
         </div>
         <div id="ew-extra-lang"></div>
         <button type="button" class="ew-link-btn" id="ew-add-lang">
-          <span style="font-size:1.1rem;line-height:1">+</span> Add another language
+          + Add something else.
         </button>
 
         <div class="ew-licenses-header">
@@ -285,7 +282,6 @@
       <!-- ── STEP 5 ── -->
       <div class="ew-step" data-step="5" hidden>
         <h2 class="ew-title">What is your Medical Aesthetics experience?</h2>
-        <p class="ew-subtitle">Tell us about your background</p>
         <hr class="ew-divider">
         <div class="ew-step-content">
 
@@ -329,7 +325,6 @@
       <!-- ── STEP 6 ── -->
       <div class="ew-step" data-step="6" hidden>
         <h2 class="ew-title">What are your compensation expectations?</h2>
-        <p class="ew-subtitle">Final step almost there</p>
         <hr class="ew-divider">
         <div class="ew-step-content">
 
@@ -662,6 +657,13 @@
   font-size: 0.82rem;
   color: #8a8a8a;
 }
+.ew-section-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #555;
+  margin: 0 0 0.75rem;
+  font-family: var(--font-body);
+}
 .req { color: #2bbcb0; }
 
 /* ── Role grid ── */
@@ -730,10 +732,12 @@
   font-weight: 500;
   background: #eaf8f7;
 }
-.ew-role-card:hover { border-color: #2bbcb0; }
+.ew-role-card:hover { border-color: #2bbcb0; border-width: 3px; box-shadow: 0 0 0 2px rgba(43, 188, 176, 0.15); }
 
 /* ── Grids ── */
 .ew-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+.ew-grid-2--dob-gender { align-items: start; }
+.ew-grid-2--dob-gender .ew-hint { margin-top: 0.4rem; margin-bottom: 0; }
 .ew-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; }
 .ew-grid-salary { display: grid; grid-template-columns: 1fr 260px; gap: 1.25rem; }
 .ew-salary-row {
@@ -952,14 +956,10 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 0.4rem;
-  border: 1.5px dashed #2bbcb0;
-  border-radius: 8px;
-  padding: 0.5rem 0.75rem;
-  min-height: 44px;
+  min-height: 36px;
   cursor: text;
-  background: #fff;
 }
-.ew-skills-row:focus-within { border-color: #2bbcb0; border-style: solid; }
+.ew-skills-row:focus-within { outline: none; }
 
 /* chip container must be flex so chips go inline */
 #ew-skill-chips {
@@ -983,13 +983,14 @@
 }
 #ew-skill-input {
   border: none;
+  border-bottom: 1.5px solid #2bbcb0;
   outline: none;
   font-size: 0.85rem;
   color: #2bbcb0;
-  width: 80px;
+  width: 100px;
   background: transparent;
   font-family: var(--font-body);
-  padding: 0;
+  padding: 0 0 2px;
 }
 #ew-skill-input::placeholder { color: #2bbcb0; opacity: 0.6; }
 :global(.ew-skill-tag) {
