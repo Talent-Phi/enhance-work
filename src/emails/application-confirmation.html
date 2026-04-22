@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Application Received – Enhance.work</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background-color: #f4f6f8; font-family: 'Inter', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+    .wrapper { max-width: 600px; margin: 0 auto; padding: 32px 16px; }
+    .card { background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.07); }
+    .header { background: linear-gradient(135deg, #2bbcb0 0%, #1a8c83 100%); padding: 40px 48px 36px; text-align: center; }
+    .header img { height: 32px; margin-bottom: 28px; }
+    .header-icon { width: 64px; height: 64px; background: rgba(255,255,255,0.2); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+    .header h1 { color: #ffffff; font-size: 24px; font-weight: 700; line-height: 1.3; margin: 0; }
+    .body { padding: 40px 48px; }
+    .greeting { font-size: 16px; color: #333; line-height: 1.6; margin-bottom: 20px; }
+    .highlight-box { background: #f0fbfa; border-left: 4px solid #2bbcb0; border-radius: 0 8px 8px 0; padding: 16px 20px; margin-bottom: 28px; }
+    .highlight-box p { font-size: 14px; color: #2a6b66; line-height: 1.6; margin: 0; }
+    .detail-block { margin-bottom: 28px; }
+    .detail-block h3 { font-size: 13px; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; }
+    .detail-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-label { font-size: 14px; color: #888; }
+    .detail-value { font-size: 14px; font-weight: 600; color: #1a2a26; text-align: right; max-width: 320px; }
+    .steps { margin-bottom: 32px; }
+    .steps h3 { font-size: 13px; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px; }
+    .step { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; }
+    .step-num { width: 28px; height: 28px; background: #e4f7f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #2bbcb0; flex-shrink: 0; }
+    .step-text { font-size: 14px; color: #555; line-height: 1.5; padding-top: 4px; }
+    .divider { border: none; border-top: 1px solid #f0f0f0; margin: 28px 0; }
+    .upsell { background: #f9fffe; border: 1.5px solid #c8eeeb; border-radius: 12px; padding: 24px; margin-bottom: 28px; text-align: center; }
+    .upsell h3 { font-size: 16px; font-weight: 700; color: #1a2a26; margin-bottom: 8px; }
+    .upsell p { font-size: 14px; color: #666; line-height: 1.5; margin-bottom: 16px; }
+    .upsell-price { display: inline-flex; align-items: baseline; gap: 8px; margin-bottom: 16px; }
+    .upsell-old { font-size: 14px; color: #bbb; text-decoration: line-through; }
+    .upsell-new { font-size: 26px; font-weight: 800; color: #2bbcb0; }
+    .btn { display: inline-block; background: linear-gradient(180deg, #2BBCB0 0%, #208D84 100%); color: #ffffff !important; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 14px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 14px rgba(43,188,176,0.4); }
+    .footer { padding: 24px 48px; text-align: center; border-top: 1px solid #f0f0f0; }
+    .footer p { font-size: 12px; color: #bbb; line-height: 1.6; }
+    .footer a { color: #2bbcb0; text-decoration: none; }
+    @media (max-width: 600px) {
+      .body, .footer, .header { padding-left: 24px; padding-right: 24px; }
+      .detail-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+      .detail-value { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="card">
+
+      <!-- Header -->
+      <div class="header">
+        <img src="https://enhance.work/images/logo-white.png" alt="Enhance.work" onerror="this.style.display='none'">
+        <div>
+          <div class="header-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+              <path d="M5 13l4 4L19 7" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <h1>Application received!</h1>
+      </div>
+
+      <!-- Body -->
+      <div class="body">
+
+        <p class="greeting">
+          Hi <strong>{{FIRST_NAME}}</strong>,<br><br>
+          Thank you for applying to Enhance.work. We've received your application and our team is already reviewing your profile. We'll be in touch within <strong>2–3 business days</strong>.
+        </p>
+
+        <div class="highlight-box">
+          <p>We match aesthetic professionals with top med spas and clinics in South Florida. Your profile has been added to our database and we'll reach out as soon as we find the right opportunity for you.</p>
+        </div>
+
+        <!-- Application details -->
+        <div class="detail-block">
+          <h3>Your Application</h3>
+          <div class="detail-row">
+            <span class="detail-label">Name</span>
+            <span class="detail-value">{{FULL_NAME}}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Position</span>
+            <span class="detail-value">{{ROLE}}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Application ID</span>
+            <span class="detail-value">{{APP_ID}}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Submitted</span>
+            <span class="detail-value">{{SUBMITTED_AT}}</span>
+          </div>
+        </div>
+
+        <!-- Next steps -->
+        <div class="steps">
+          <h3>What happens next</h3>
+          <div class="step">
+            <div class="step-num">1</div>
+            <p class="step-text">Our team reviews your profile and matches it with open positions.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <p class="step-text">We reach out to you via email or phone within 2–3 business days.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <p class="step-text">We connect you directly with the clinic — no middleman in the interview.</p>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- Upsell -->
+        <div class="upsell">
+          <h3>Want to stand out from other candidates?</h3>
+          <p>Get direct contact info, hiring status, and specialties of <strong>every med spa in South Florida</strong> — apply smarter, get hired faster.</p>
+          <div class="upsell-price">
+            <span class="upsell-old">$50</span>
+            <span class="upsell-new">$35</span>
+          </div>
+          <br>
+          <a class="btn" href="https://enhance.work/#directory">Get the Full Directory</a>
+          <p style="font-size:12px;color:#aaa;margin-top:12px;">Instant download &bull; One-time payment</p>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>
+          Questions? Reply to this email or write us at <a href="mailto:talent@enhance.work">talent@enhance.work</a><br><br>
+          &copy; 2025 Enhance.work &bull; South Florida, USA
+        </p>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

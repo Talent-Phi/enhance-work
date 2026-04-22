@@ -10,6 +10,7 @@ import { initGoogleSheets, appendApplicationRow, getSpreadsheetUrl } from './goo
 import { seedBlogPosts } from './scripts/blog-seed-data.mjs';
 import { getUncachableStripeClient } from './stripeClient.js';
 import crypto from 'crypto';
+import { sendApplicationConfirmation, sendApplicationNotification, sendPurchaseConfirmation } from './resendClient.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -51,6 +52,14 @@ app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), async
             [session.id, session.customer_details?.email, session.amount_total, token]
           );
           console.log(`[Stripe Webhook] Purchase recorded for ${session.customer_details?.email}`);
+
+          // Send purchase confirmation email with PDF download link
+          sendPurchaseConfirmation({
+            email:         session.customer_details?.email || '',
+            firstName:     session.customer_details?.name?.split(' ')[0] || '',
+            downloadToken: token,
+            purchaseDate:  new Date().toISOString(),
+          }).catch(e => console.warn('[Resend] Purchase confirmation fire-and-forget error:', e.message));
         }
 
         // Meta CAPI — Payment Processed (server-side, from webhook)
@@ -705,6 +714,31 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
       gclid: data.gclid || '',
       gad_campaignid: data.gad_campaignid || '',
     }).catch(() => {});
+
+    // Send emails async (fire-and-forget, don't block response)
+    const submittedAt = new Date().toISOString();
+    sendApplicationConfirmation({
+      firstName:      data.first_name,
+      lastName:       data.last_name,
+      email:          data.email,
+      role:           data.role,
+      appId,
+      submittedAt,
+    }).catch(e => console.warn('[Resend] Application confirmation fire-and-forget error:', e.message));
+
+    sendApplicationNotification({
+      firstName:       data.first_name,
+      lastName:        data.last_name,
+      email:           data.email,
+      phone:           data.phone || '',
+      role:            data.role,
+      appId,
+      submittedAt,
+      city:            data.city || '',
+      state:           data.state || '',
+      yearsExperience: data.years_experience || '',
+      utmSource:       data.utm_source || '',
+    }).catch(e => console.warn('[Resend] Team notification fire-and-forget error:', e.message));
 
     res.json({ success: true, id: appId });
   } catch (err) {
