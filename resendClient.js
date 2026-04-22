@@ -39,6 +39,7 @@ export async function sendApplicationConfirmation({ firstName, lastName, email, 
     const html = fill(loadTemplate('application-confirmation.html'), {
       FIRST_NAME:    firstName,
       FULL_NAME:     `${firstName} ${lastName}`,
+      EMAIL:         email,
       ROLE:          formatRole(role),
       APP_ID:        appId,
       SUBMITTED_AT:  formatDate(submittedAt),

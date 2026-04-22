@@ -5,9 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Your guide is ready — Enhance.work</title>
-  <!--[if mso]>
-  <noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript>
-  <![endif]-->
+  <!--
+    EMAIL IMAGE PATHS:
+    For local preview, images use relative paths (https://enhance.work/images/...).
+    For production, replace with: https://enhance.work/images/...
+  -->
   <style>
     body,table,td,p,a{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;margin:0;padding:0;}
     table,td{mso-table-lspace:0pt;mso-table-rspace:0pt;}
@@ -16,7 +18,6 @@
     @media only screen and (max-width:600px){
       .email-container{width:100%!important;border-radius:0!important;}
       .feat-cell{display:block!important;width:100%!important;padding:0 0 8px 0!important;}
-      .hero-title{font-size:22px!important;}
     }
   </style>
 </head>
@@ -27,30 +28,21 @@
 
 <table role="presentation" class="email-container" cellpadding="0" cellspacing="0" border="0" width="558" style="background:#ffffff;border-radius:14px;overflow:hidden;">
 
-  <!-- ═══════════════════════════════════════ -->
-  <!-- TEAL HEADER BAR WITH LOGO              -->
-  <!-- ═══════════════════════════════════════ -->
+  <!-- TEAL HEADER BAR -->
   <tr>
     <td align="center" style="background-color:#22968d;padding:24px 32px 16px;">
       <img src="https://enhance.work/images/logo-white.svg" alt="Enhance.work" width="220" style="display:block;height:auto;" />
     </td>
   </tr>
 
-  <!-- ═══════════════════════════════════════ -->
-  <!-- HERO — teal gradient with subtle texture -->
-  <!-- ═══════════════════════════════════════ -->
+  <!-- HERO -->
   <tr>
     <td align="center" style="background-color:#9dd4cf;" valign="top">
-      <!--[if !mso]><!-->
       <div style="background:linear-gradient(180deg,rgba(34,150,141,0.85) 0%,rgba(200,236,233,0.9) 55%,rgba(255,255,255,1) 100%),url('https://enhance.work/images/emails/hero-bg-purchase.png');background-size:cover;background-position:center;padding:50px 40px 55px;">
-      <!--<![endif]-->
-      <!--[if mso]>
-      <div style="padding:50px 40px 55px;">
-      <![endif]-->
         <p style="margin:0 0 12px;font-family:'Inter',Arial,sans-serif;font-size:11px;font-weight:600;color:#dff5f3;letter-spacing:1.8px;text-transform:uppercase;text-align:center;">
           Purchase Confirmation
         </p>
-        <h1 class="hero-title" style="margin:0 0 10px;font-family:'Inter',Arial,sans-serif;font-size:26px;font-weight:700;color:#1a1a1a;line-height:1.3;text-align:center;">
+        <h1 style="margin:0 0 10px;font-family:'Inter',Arial,sans-serif;font-size:26px;font-weight:700;color:#1a1a1a;line-height:1.3;text-align:center;">
           Your guide is ready!
         </h1>
         <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:500;color:rgba(0,0,0,0.45);text-align:center;">
@@ -60,13 +52,11 @@
     </td>
   </tr>
 
-  <!-- ═══════════════════════════════════════ -->
-  <!-- GREETING                               -->
-  <!-- ═══════════════════════════════════════ -->
+  <!-- GREETING -->
   <tr>
     <td style="padding:32px 32px 24px;">
       <p style="margin:0 0 16px;font-family:'Inter',Arial,sans-serif;font-size:16px;color:#1a1a1a;line-height:1.55;">
-        <strong>Hello</strong> {{buyer_first_name}},
+        <strong>Hello</strong> {{FIRST_NAME}},
       </p>
       <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:14px;color:#1a1a1a;line-height:1.75;">
         Your payment was successfully processed. You now have instant access to your guide save it so you can refer to it anytime.
@@ -74,25 +64,19 @@
     </td>
   </tr>
 
-  <!-- ═══════════════════════════════════════ -->
-  <!-- GUIDE CARD — image + download button   -->
-  <!-- ═══════════════════════════════════════ -->
+  <!-- GUIDE CARD -->
   <tr>
     <td style="padding:0 32px 24px;">
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid rgba(0,0,0,0.1);border-radius:14px;overflow:hidden;">
-        <!-- Cover image area with button overlay -->
         <tr>
           <td align="center" height="180" style="background-color:#dce8e6;">
-            <!--[if !mso]><!-->
             <div style="position:relative;width:100%;height:180px;overflow:hidden;background:#dce8e6;">
-              <!-- Stacked mockup images -->
               <img src="https://enhance.work/images/emails/guide-cover-bg.png" alt="South Florida Med Spa Directory" width="494" style="display:block;width:100%;height:180px;object-fit:cover;opacity:0.5;" />
-              <!-- Download button centered on image -->
               <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;">
                 <table role="presentation" cellpadding="0" cellspacing="0" border="0">
                   <tr>
-                    <td align="center" style="background:linear-gradient(180deg,#2bbcb0 0%,#208d84 100%);border-radius:8px;mso-padding-alt:0;">
-                      <a href="{{download_url}}" target="_blank" style="font-family:'Inter',Arial,sans-serif;font-size:14px;font-weight:600;color:#ffffff;text-decoration:none;display:inline-block;padding:14px 32px;white-space:nowrap;">
+                    <td align="center" style="background:linear-gradient(180deg,#2bbcb0 0%,#208d84 100%);border-radius:8px;">
+                      <a href="{{DOWNLOAD_URL}}" target="_blank" style="font-family:'Inter',Arial,sans-serif;font-size:14px;font-weight:600;color:#ffffff;text-decoration:none;display:inline-block;padding:14px 32px;white-space:nowrap;">
                         Download your guide now
                       </a>
                     </td>
@@ -100,96 +84,46 @@
                 </table>
               </div>
             </div>
-            <!--<![endif]-->
-            <!--[if mso]>
-            <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:494px;height:180px;">
-              <v:fill type="frame" src="https://enhance.work/images/mockups/access-to-manual/directory-cover.png" color="#dce8e6" />
-              <v:textbox inset="0,60px,0,60px">
-                <center>
-                  <a href="{{download_url}}" style="background:#2bbcb0;border-radius:8px;padding:14px 32px;font-family:Arial,sans-serif;font-size:14px;font-weight:bold;color:#ffffff;text-decoration:none;">Download your guide now</a>
-                </center>
-              </v:textbox>
-            </v:rect>
-            <![endif]-->
           </td>
         </tr>
-        <!-- Guide info bar (light gray) -->
         <tr>
           <td style="background-color:#f2f2f2;padding:14px 16px;">
-            <p style="margin:0 0 2px;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:500;color:#1a1a1a;line-height:1.5;">
-              Enhance.work Guide
-            </p>
-            <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:12px;font-weight:400;color:#666666;line-height:1.35;">
-              South Florida Med Spa Directory (PDF)
-            </p>
+            <p style="margin:0 0 2px;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:500;color:#1a1a1a;">Enhance.work Guide</p>
+            <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:12px;color:#666666;">South Florida Med Spa Directory (PDF)</p>
           </td>
         </tr>
       </table>
     </td>
   </tr>
 
-  <!-- ═══════════════════════════════════════ -->
-  <!-- DIVIDER                                -->
-  <!-- ═══════════════════════════════════════ -->
-  <tr>
-    <td style="padding:0 32px;">
-      <div style="border-top:1px solid rgba(0,0,0,0.1);"></div>
-    </td>
-  </tr>
+  <!-- DIVIDER -->
+  <tr><td style="padding:0 32px;"><div style="border-top:1px solid rgba(0,0,0,0.1);"></div></td></tr>
 
-  <!-- ═══════════════════════════════════════ -->
-  <!-- FEATURE CARDS (2 columns, mint bg)     -->
-  <!-- ═══════════════════════════════════════ -->
+  <!-- FEATURE CARDS -->
   <tr>
     <td style="padding:24px 32px;">
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
-          <!-- Actionable insights -->
           <td class="feat-cell" width="242" valign="top" style="padding-right:6px;">
             <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#dff5f3;border-radius:10px;">
-              <tr>
-                <td style="padding:16px 16px 20px;">
-                  <!-- Icon: dark teal rounded square -->
-                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
-                    <tr>
-                      <td width="30" height="30" align="center" valign="middle" style="background-color:#2d6a5a;border-radius:10px;">
-                        <!-- Clipboard/document icon -->
-                        <img src="https://img.icons8.com/ios-filled/20/ffffff/clipboard.png" alt="" width="16" height="16" style="display:block;" />
-                      </td>
-                    </tr>
-                  </table>
-                  <p style="margin:0 0 4px;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:500;color:#1a1a1a;line-height:1.5;">
-                    Actionable insights
-                  </p>
-                  <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:12px;font-weight:400;color:#666666;line-height:1.5;">
-                    Apply what you learn immediately.
-                  </p>
-                </td>
-              </tr>
+              <tr><td style="padding:16px 16px 20px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;"><tr>
+                  <td width="30" height="30" align="center" valign="middle" style="background-color:#2d6a5a;border-radius:10px;font-size:14px;color:#ffffff;">📋</td>
+                </tr></table>
+                <p style="margin:0 0 4px;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:500;color:#1a1a1a;">Actionable insights</p>
+                <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:12px;color:#666666;">Apply what you learn immediately.</p>
+              </td></tr>
             </table>
           </td>
-          <!-- Access anytime -->
           <td class="feat-cell" width="242" valign="top" style="padding-left:6px;">
             <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#dff5f3;border-radius:10px;">
-              <tr>
-                <td style="padding:16px 16px 20px;">
-                  <!-- Icon: dark teal rounded square -->
-                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;">
-                    <tr>
-                      <td width="30" height="30" align="center" valign="middle" style="background-color:#2d6a5a;border-radius:10px;">
-                        <!-- Clock/access icon -->
-                        <img src="https://img.icons8.com/ios-filled/20/ffffff/time.png" alt="" width="16" height="16" style="display:block;" />
-                      </td>
-                    </tr>
-                  </table>
-                  <p style="margin:0 0 4px;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:500;color:#1a1a1a;line-height:1.5;">
-                    Access anytime
-                  </p>
-                  <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:12px;font-weight:400;color:#666666;line-height:1.5;">
-                    Use it whenever you need it.
-                  </p>
-                </td>
-              </tr>
+              <tr><td style="padding:16px 16px 20px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;"><tr>
+                  <td width="30" height="30" align="center" valign="middle" style="background-color:#2d6a5a;border-radius:10px;font-size:14px;color:#ffffff;">🕐</td>
+                </tr></table>
+                <p style="margin:0 0 4px;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:500;color:#1a1a1a;">Access anytime</p>
+                <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:12px;color:#666666;">Use it whenever you need it.</p>
+              </td></tr>
             </table>
           </td>
         </tr>
@@ -197,41 +131,24 @@
     </td>
   </tr>
 
-  <!-- ═══════════════════════════════════════ -->
-  <!-- CLOSING MESSAGE                        -->
-  <!-- ═══════════════════════════════════════ -->
+  <!-- CLOSING -->
   <tr>
     <td style="padding:8px 32px 28px;">
-      <p style="margin:0 0 4px;font-family:'Inter',Arial,sans-serif;font-size:13px;color:#666666;line-height:1.65;">
-        We hope this guide helps you move faster and smarter in your career.
-      </p>
-      <p style="margin:0 0 16px;font-family:'Inter',Arial,sans-serif;font-size:13px;color:#666666;line-height:1.65;">
-        If you have any questions, just reply to this email we're here to help.
-      </p>
-      <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:13px;color:#666666;line-height:1.65;">
-        With care,<br>
-        <strong style="color:#404040;">The Enhance.work team</strong>
-      </p>
+      <p style="margin:0 0 4px;font-family:'Inter',Arial,sans-serif;font-size:13px;color:#666666;line-height:1.65;">We hope this guide helps you move faster and smarter in your career.</p>
+      <p style="margin:0 0 16px;font-family:'Inter',Arial,sans-serif;font-size:13px;color:#666666;line-height:1.65;">If you have any questions, just reply to this email we're here to help.</p>
+      <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:13px;color:#666666;line-height:1.65;">With care,<br><strong style="color:#404040;">The Enhance.work team</strong></p>
     </td>
   </tr>
 
-  <!-- ═══════════════════════════════════════ -->
-  <!-- FOOTER                                 -->
-  <!-- ═══════════════════════════════════════ -->
+  <!-- FOOTER -->
   <tr>
     <td style="border-top:1px solid rgba(0,0,0,0.1);padding:17px 32px;">
-      <p style="margin:0 0 4px;font-family:'Inter',Arial,sans-serif;font-size:11px;color:#595959;text-align:center;line-height:1.5;">
-        Enhance.work
-      </p>
-      <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:11px;color:#595959;text-align:center;line-height:1.5;">
-        Purchase confirmed
-      </p>
+      <p style="margin:0 0 4px;font-family:'Inter',Arial,sans-serif;font-size:11px;color:#595959;text-align:center;">Enhance.work</p>
+      <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:11px;color:#595959;text-align:center;">Purchase confirmed</p>
     </td>
   </tr>
 
 </table>
-<!-- /email-container -->
-
 </td></tr></table>
 </body>
 </html>

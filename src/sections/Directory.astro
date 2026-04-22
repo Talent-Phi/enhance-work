@@ -154,6 +154,12 @@
 
   // Auto-rotate pages animation — cover (page--1) always starts in front
   const pages = Array.from(document.querySelectorAll('.directory__page'));
+
+  // Auto-buy from email link (#buy hash)
+  if (window.location.hash === '#buy' && dirCta) {
+    setTimeout(() => { (dirCta as HTMLButtonElement).click(); }, 800);
+  }
+
   const totalPages = pages.length;
   const rotationInterval = 3500;
 
