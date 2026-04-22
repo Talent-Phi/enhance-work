@@ -1,144 +1,229 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Application Received – Enhance.work</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Thank you for applying — Enhance.work</title>
+  <!--[if mso]>
+  <noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript>
+  <![endif]-->
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background-color: #f4f6f8; font-family: 'Inter', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
-    .wrapper { max-width: 600px; margin: 0 auto; padding: 32px 16px; }
-    .card { background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.07); }
-    .header { background: linear-gradient(135deg, #2bbcb0 0%, #1a8c83 100%); padding: 40px 48px 36px; text-align: center; }
-    .header img { height: 32px; margin-bottom: 28px; }
-    .header-icon { width: 64px; height: 64px; background: rgba(255,255,255,0.2); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px; }
-    .header h1 { color: #ffffff; font-size: 24px; font-weight: 700; line-height: 1.3; margin: 0; }
-    .body { padding: 40px 48px; }
-    .greeting { font-size: 16px; color: #333; line-height: 1.6; margin-bottom: 20px; }
-    .highlight-box { background: #f0fbfa; border-left: 4px solid #2bbcb0; border-radius: 0 8px 8px 0; padding: 16px 20px; margin-bottom: 28px; }
-    .highlight-box p { font-size: 14px; color: #2a6b66; line-height: 1.6; margin: 0; }
-    .detail-block { margin-bottom: 28px; }
-    .detail-block h3 { font-size: 13px; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; }
-    .detail-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
-    .detail-row:last-child { border-bottom: none; }
-    .detail-label { font-size: 14px; color: #888; }
-    .detail-value { font-size: 14px; font-weight: 600; color: #1a2a26; text-align: right; max-width: 320px; }
-    .steps { margin-bottom: 32px; }
-    .steps h3 { font-size: 13px; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px; }
-    .step { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; }
-    .step-num { width: 28px; height: 28px; background: #e4f7f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #2bbcb0; flex-shrink: 0; }
-    .step-text { font-size: 14px; color: #555; line-height: 1.5; padding-top: 4px; }
-    .divider { border: none; border-top: 1px solid #f0f0f0; margin: 28px 0; }
-    .upsell { background: #f9fffe; border: 1.5px solid #c8eeeb; border-radius: 12px; padding: 24px; margin-bottom: 28px; text-align: center; }
-    .upsell h3 { font-size: 16px; font-weight: 700; color: #1a2a26; margin-bottom: 8px; }
-    .upsell p { font-size: 14px; color: #666; line-height: 1.5; margin-bottom: 16px; }
-    .upsell-price { display: inline-flex; align-items: baseline; gap: 8px; margin-bottom: 16px; }
-    .upsell-old { font-size: 14px; color: #bbb; text-decoration: line-through; }
-    .upsell-new { font-size: 26px; font-weight: 800; color: #2bbcb0; }
-    .btn { display: inline-block; background: linear-gradient(180deg, #2BBCB0 0%, #208D84 100%); color: #ffffff !important; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 14px 36px; border-radius: 50px; text-decoration: none; box-shadow: 0 4px 14px rgba(43,188,176,0.4); }
-    .footer { padding: 24px 48px; text-align: center; border-top: 1px solid #f0f0f0; }
-    .footer p { font-size: 12px; color: #bbb; line-height: 1.6; }
-    .footer a { color: #2bbcb0; text-decoration: none; }
-    @media (max-width: 600px) {
-      .body, .footer, .header { padding-left: 24px; padding-right: 24px; }
-      .detail-row { flex-direction: column; align-items: flex-start; gap: 4px; }
-      .detail-value { text-align: left; }
+    body,table,td,p,a{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
+    table,td{mso-table-lspace:0pt;mso-table-rspace:0pt;}
+    img{-ms-interpolation-mode:bicubic;border:0;outline:none;text-decoration:none;}
+    body{margin:0;padding:0;width:100%!important;background-color:#f2f2f2;}
+    @media only screen and (max-width:600px){
+      .email-container{width:100%!important;border-radius:0!important;}
+      .info-cell{display:block!important;width:100%!important;padding:0 0 8px 0!important;}
+      .cta-left{display:block!important;width:100%!important;padding:0 0 20px 0!important;}
+      .cta-right{display:block!important;width:100%!important;padding:0!important;}
     }
   </style>
 </head>
-<body>
-  <div class="wrapper">
-    <div class="card">
+<body style="margin:0;padding:0;background-color:#f2f2f2;">
 
-      <!-- Header -->
-      <div class="header">
-        <img src="https://enhance.work/images/logo-white.png" alt="Enhance.work" onerror="this.style.display='none'">
-        <div>
-          <div class="header-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-              <path d="M5 13l4 4L19 7" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-        </div>
-        <h1>Application received!</h1>
-      </div>
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f2f2f2;">
+<tr><td align="center" style="padding:35px 20px;">
 
-      <!-- Body -->
-      <div class="body">
+<table role="presentation" class="email-container" cellpadding="0" cellspacing="0" border="0" width="558" style="background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
 
-        <p class="greeting">
-          Hi <strong>{{FIRST_NAME}}</strong>,<br><br>
-          Thank you for applying to Enhance.work. We've received your application and our team is already reviewing your profile. We'll be in touch within <strong>2–3 business days</strong>.
-        </p>
+  <!-- TEAL HEADER BAR -->
+  <tr>
+    <td align="center" style="background-color:#22968d;padding:24px 32px 14px;">
+      <img src="https://enhance.work/images/logo-white.svg" alt="Enhance.work" width="220" style="display:block;height:auto;" />
+    </td>
+  </tr>
 
-        <div class="highlight-box">
-          <p>We match aesthetic professionals with top med spas and clinics in South Florida. Your profile has been added to our database and we'll reach out as soon as we find the right opportunity for you.</p>
-        </div>
+  <!-- HERO -->
+  <tr>
+    <td align="center" style="padding:50px 40px 55px;background:linear-gradient(180deg,#22968d 0%,#c8ece9 60%,#ffffff 100%);">
+      <h1 style="margin:0 0 10px;font-family:'Inter',Arial,sans-serif;font-size:39px;font-weight:700;color:#1a716a;line-height:1.3;text-align:center;">
+        Thank you for applying!
+      </h1>
+      <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:14px;font-weight:600;color:#1c1c1c;letter-spacing:2.7px;text-transform:uppercase;text-align:center;">
+        We've received your application
+      </p>
+    </td>
+  </tr>
 
-        <!-- Application details -->
-        <div class="detail-block">
-          <h3>Your Application</h3>
-          <div class="detail-row">
-            <span class="detail-label">Name</span>
-            <span class="detail-value">{{FULL_NAME}}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Position</span>
-            <span class="detail-value">{{ROLE}}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Application ID</span>
-            <span class="detail-value">{{APP_ID}}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Submitted</span>
-            <span class="detail-value">{{SUBMITTED_AT}}</span>
-          </div>
-        </div>
+  <!-- GREETING -->
+  <tr>
+    <td style="padding:32px 32px 24px;">
+      <p style="margin:0 0 16px;font-family:'Inter',Arial,sans-serif;font-size:16px;color:#1a1a1a;line-height:1.55;">Hello {{applicant_first_name}},</p>
+      <p style="margin:0 0 6px;font-family:'Inter',Arial,sans-serif;font-size:16px;color:#1a1a1a;line-height:1.55;">We've received your application at Enhance.work.</p>
+      <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:16px;color:#1a1a1a;line-height:1.55;">Our team will review your profile and contact you with next steps within the next few days.</p>
+    </td>
+  </tr>
 
-        <!-- Next steps -->
-        <div class="steps">
-          <h3>What happens next</h3>
-          <div class="step">
-            <div class="step-num">1</div>
-            <p class="step-text">Our team reviews your profile and matches it with open positions.</p>
-          </div>
-          <div class="step">
-            <div class="step-num">2</div>
-            <p class="step-text">We reach out to you via email or phone within 2–3 business days.</p>
-          </div>
-          <div class="step">
-            <div class="step-num">3</div>
-            <p class="step-text">We connect you directly with the clinic — no middleman in the interview.</p>
-          </div>
-        </div>
+  <!-- APPLICATION RECEIVED BADGE -->
+  <tr>
+    <td style="padding:0 26px 24px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#dff5f3;border-radius:14px;">
+        <tr>
+          <td width="60" valign="middle" style="padding:20px 0 20px 20px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+              <td width="40" height="40" align="center" valign="middle" style="background:linear-gradient(180deg,#2bbcb0 0%,#208d84 100%);border-radius:50%;">
+                <span style="color:#fff;font-size:18px;font-weight:700;">✓</span>
+              </td>
+            </tr></table>
+          </td>
+          <td valign="middle" style="padding:20px 20px 20px 16px;">
+            <p style="margin:0 0 4px;font-family:'Inter',Arial,sans-serif;font-size:14px;font-weight:500;color:#1c1c1c;">Application received</p>
+            <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:12px;color:#595959;">Reference number: #{{reference_number}} · {{application_date}}</p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
 
-        <hr class="divider">
+  <!-- DIVIDER -->
+  <tr><td style="padding:0 32px;"><div style="border-top:1px solid rgba(0,0,0,0.1);"></div></td></tr>
 
-        <!-- Upsell -->
-        <div class="upsell">
-          <h3>Want to stand out from other candidates?</h3>
-          <p>Get direct contact info, hiring status, and specialties of <strong>every med spa in South Florida</strong> — apply smarter, get hired faster.</p>
-          <div class="upsell-price">
-            <span class="upsell-old">$50</span>
-            <span class="upsell-new">$35</span>
-          </div>
-          <br>
-          <a class="btn" href="https://enhance.work/#directory">Get the Full Directory</a>
-          <p style="font-size:12px;color:#aaa;margin-top:12px;">Instant download &bull; One-time payment</p>
-        </div>
+  <!-- WHAT HAPPENS NEXT -->
+  <tr>
+    <td style="padding:24px 31px;">
+      <p style="margin:0 0 20px;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:500;color:#1a1a1a;">What happens next?</p>
 
-      </div>
+      <!-- Step 1 -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom:12px;"><tr>
+        <td width="24" valign="top" style="padding-right:14px;padding-top:2px;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+            <td width="24" height="24" align="center" valign="middle" style="background-color:#2bbcb0;border-radius:50%;font-family:'Inter',Arial,sans-serif;font-size:11px;font-weight:500;color:#fff;line-height:24px;">1</td>
+          </tr></table>
+        </td>
+        <td valign="top">
+          <p style="margin:0 0 2px;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:500;color:#1c1c1c;line-height:1.5;">Profile review</p>
+          <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:12px;color:#595959;line-height:1.6;">We evaluate your profile within 3–5 business days.</p>
+        </td>
+      </tr></table>
 
-      <!-- Footer -->
-      <div class="footer">
-        <p>
-          Questions? Reply to this email or write us at <a href="mailto:talent@enhance.work">talent@enhance.work</a><br><br>
-          &copy; 2025 Enhance.work &bull; South Florida, USA
-        </p>
-      </div>
+      <!-- Step 2 -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom:12px;"><tr>
+        <td width="24" valign="top" style="padding-right:14px;padding-top:2px;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+            <td width="24" height="24" align="center" valign="middle" style="background-color:#2bbcb0;border-radius:50%;font-family:'Inter',Arial,sans-serif;font-size:11px;font-weight:500;color:#fff;line-height:24px;">2</td>
+          </tr></table>
+        </td>
+        <td valign="top">
+          <p style="margin:0 0 2px;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:500;color:#1c1c1c;line-height:1.5;">Initial contact</p>
+          <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:12px;color:#595959;line-height:1.6;">If selected, we'll reach out to schedule a conversation.</p>
+        </td>
+      </tr></table>
 
-    </div>
-  </div>
+      <!-- Step 3 -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+        <td width="24" valign="top" style="padding-right:14px;padding-top:2px;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+            <td width="24" height="24" align="center" valign="middle" style="background-color:#2bbcb0;border-radius:50%;font-family:'Inter',Arial,sans-serif;font-size:11px;font-weight:500;color:#fff;line-height:24px;">3</td>
+          </tr></table>
+        </td>
+        <td valign="top">
+          <p style="margin:0 0 2px;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:500;color:#1c1c1c;line-height:1.5;">Next steps</p>
+          <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:12px;color:#595959;line-height:1.6;">Qualified candidates receive access and onboarding instructions.</p>
+        </td>
+      </tr></table>
+    </td>
+  </tr>
+
+  <!-- DIVIDER -->
+  <tr><td style="padding:0 32px;"><div style="border-top:1px solid rgba(0,0,0,0.1);"></div></td></tr>
+
+  <!-- INFO GRID 2×2 -->
+  <tr>
+    <td style="padding:24px 32px;">
+      <!-- Row 1 -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom:8px;"><tr>
+        <td class="info-cell" width="243" valign="top" style="padding-right:5px;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f4f3f3;border-radius:10px;"><tr><td style="padding:14px 14px 16px;">
+            <p style="margin:0 0 4px;font-family:'Inter',Arial,sans-serif;font-size:11px;color:#595959;letter-spacing:0.55px;text-transform:uppercase;">Applicant</p>
+            <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:500;color:#1c1c1c;">{{applicant_full_name}}</p>
+          </td></tr></table>
+        </td>
+        <td class="info-cell" width="243" valign="top" style="padding-left:5px;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f4f3f3;border-radius:10px;"><tr><td style="padding:14px 14px 16px;">
+            <p style="margin:0 0 4px;font-family:'Inter',Arial,sans-serif;font-size:11px;color:#595959;letter-spacing:0.55px;text-transform:uppercase;">Application Date</p>
+            <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:500;color:#1c1c1c;">{{application_date}}</p>
+          </td></tr></table>
+        </td>
+      </tr></table>
+      <!-- Row 2 -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+        <td class="info-cell" width="243" valign="top" style="padding-right:5px;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f4f3f3;border-radius:10px;"><tr><td style="padding:14px 14px 16px;">
+            <p style="margin:0 0 4px;font-family:'Inter',Arial,sans-serif;font-size:11px;color:#595959;letter-spacing:0.55px;text-transform:uppercase;">Registered Email</p>
+            <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:500;color:#1c1c1c;">{{applicant_email}}</p>
+          </td></tr></table>
+        </td>
+        <td class="info-cell" width="243" valign="top" style="padding-left:5px;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f4f3f3;border-radius:10px;"><tr><td style="padding:14px 14px 16px;">
+            <p style="margin:0 0 4px;font-family:'Inter',Arial,sans-serif;font-size:11px;color:#595959;letter-spacing:0.55px;text-transform:uppercase;">Status</p>
+            <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:500;color:#208d84;">Under Review</p>
+          </td></tr></table>
+        </td>
+      </tr></table>
+    </td>
+  </tr>
+
+  <!-- DIVIDER -->
+  <tr><td style="padding:0 32px;"><div style="border-top:1px solid rgba(0,0,0,0.1);"></div></td></tr>
+
+  <!-- UPSELL CARD (dark) -->
+  <tr>
+    <td style="padding:24px 26px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-radius:11px;overflow:hidden;">
+        <tr><td style="background-color:#18232c;padding:0;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+            <!-- Left column -->
+            <td class="cta-left" width="55%" valign="top" style="padding:28px 0 28px 28px;">
+              <p style="margin:0 0 14px;font-family:'Poppins','Inter',Arial,sans-serif;font-size:28px;line-height:1.15;">
+                <span style="color:#62fef1;font-weight:400;">Want to </span><span style="color:#fff;font-weight:600;">get<br>hired faster?</span>
+              </p>
+              <p style="margin:0 0 20px;font-family:'Inter',Arial,sans-serif;font-size:12px;color:#fff;line-height:1.5;">Most candidates apply blindly.<br>The ones who get hired apply strategically.</p>
+              <p style="margin:0 0 6px;font-family:'Inter',Arial,sans-serif;font-size:14px;color:#fff;"><span style="font-weight:600;">Special offer</span> for applicants:</p>
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:18px;"><tr>
+                <td style="font-family:'Poppins','Inter',Arial,sans-serif;font-size:20px;color:#fff;opacity:0.8;text-decoration:line-through;padding-right:10px;vertical-align:baseline;">$50</td>
+                <td style="font-family:'Poppins','Inter',Arial,sans-serif;font-size:29px;font-weight:600;color:#fff;vertical-align:baseline;">$35</td>
+              </tr></table>
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+                <td align="center" style="background:linear-gradient(180deg,#2bbcb0 0%,#208d84 100%);border-radius:27px;box-shadow:0 2px 2px rgba(0,0,0,0.25),0 0 10px rgba(43,188,176,0.4);">
+                  <a href="{{directory_purchase_url}}" target="_blank" style="font-family:'Inter',Arial,sans-serif;font-size:14px;font-weight:600;color:#fff;text-decoration:none;display:inline-block;padding:7px 16px;">Get instant access</a>
+                </td>
+              </tr></table>
+              <p style="margin:8px 0 0;font-family:'Inter',Arial,sans-serif;font-size:10px;color:#fff;opacity:0.7;text-align:center;max-width:170px;">Instant download · One-time payment</p>
+            </td>
+            <!-- Right column -->
+            <td class="cta-right" width="45%" valign="top" style="padding:28px 28px 28px 12px;">
+              <p style="margin:0 0 14px;font-family:'Inter',Arial,sans-serif;font-size:14px;font-weight:500;color:#fff;line-height:1.3;">Get access to every aesthetic clinic in South Florida:</p>
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tr><td style="padding:5px 0;font-family:'Inter',Arial,sans-serif;font-size:12px;font-weight:500;color:#fff;"><span style="color:#2bbcb0;margin-right:8px;">✓</span>Direct contact information</td></tr>
+                <tr><td style="padding:5px 0;font-family:'Inter',Arial,sans-serif;font-size:12px;font-weight:500;color:#fff;"><span style="color:#2bbcb0;margin-right:8px;">✓</span>Where clinics are actively hiring</td></tr>
+                <tr><td style="padding:5px 0;font-family:'Inter',Arial,sans-serif;font-size:12px;font-weight:500;color:#fff;"><span style="color:#2bbcb0;margin-right:8px;">✓</span>Services &amp; specialties</td></tr>
+                <tr><td style="padding:5px 0;font-family:'Inter',Arial,sans-serif;font-size:12px;font-weight:500;color:#fff;"><span style="color:#2bbcb0;margin-right:8px;">✓</span>How to apply strategically</td></tr>
+              </table>
+            </td>
+          </tr></table>
+        </td></tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- CLOSING -->
+  <tr>
+    <td style="padding:8px 32px 28px;">
+      <p style="margin:0 0 4px;font-family:'Inter',Arial,sans-serif;font-size:13px;color:#666;line-height:1.65;">In the meantime, if you have any questions, please reply directly to this email. We are here to help you.</p>
+      <p style="margin:16px 0 0;font-family:'Inter',Arial,sans-serif;font-size:13px;color:#666;line-height:1.65;">With love,<br>The Enhance.work team</p>
+    </td>
+  </tr>
+
+  <!-- FOOTER -->
+  <tr>
+    <td style="border-top:1px solid rgba(0,0,0,0.1);padding:16px 32px;">
+      <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:11px;color:#595959;text-align:center;">Enhance.work · hola@enhance.work</p>
+    </td>
+  </tr>
+
+</table>
+</td></tr></table>
 </body>
 </html>
