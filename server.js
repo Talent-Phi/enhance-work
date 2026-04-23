@@ -1253,10 +1253,6 @@ app.get('/api/stripe/download/:token', async (req, res) => {
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Invalid download link' });
     }
-    if (result.rows[0].downloaded) {
-      return res.status(410).json({ error: 'This download link has already been used.' });
-    }
-
     await pool.query(
       'UPDATE pdf_purchases SET downloaded = TRUE WHERE download_token = $1',
       [token]
