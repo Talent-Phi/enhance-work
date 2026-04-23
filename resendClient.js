@@ -114,7 +114,7 @@ export async function sendApplicationNotification({ firstName, lastName, email, 
   }
 }
 
-// ── Send purchase confirmation with PDF download link ───────────────────────
+// ── Send purchase confirmation with PDF attached ─────────────────────────────
 export async function sendPurchaseConfirmation({ email, firstName, downloadToken, purchaseDate }) {
   if (!process.env.RESEND_API_KEY) {
     console.warn('[Resend] RESEND_API_KEY not set — skipping purchase email');
@@ -132,11 +132,26 @@ export async function sendPurchaseConfirmation({ email, firstName, downloadToken
       PURCHASE_DATE: formatDate(purchaseDate),
     });
 
+    // Attach the PDF directly to the email
+    const pdfPath = path.join(__dirname, 'private', 'SFL_MedSpa_Directory.pdf');
+    const attachments = [];
+    if (fs.existsSync(pdfPath)) {
+      const pdfContent = fs.readFileSync(pdfPath);
+      attachments.push({
+        content:      pdfContent.toString('base64'),
+        filename:     'South-Florida-Med-Spa-Directory.pdf',
+        content_type: 'application/pdf',
+      });
+    } else {
+      console.warn('[Resend] PDF not found at', pdfPath, '— sending without attachment');
+    }
+
     const { data, error } = await resend.emails.send({
-      from:    FROM_ADDRESS,
-      to:      email,
-      subject: `Your South Florida Med Spa Directory is ready`,
+      from:        FROM_ADDRESS,
+      to:          email,
+      subject:     `Your South Florida Med Spa Directory is ready`,
       html,
+      attachments,
     });
 
     if (error) console.error('[Resend] Purchase confirmation error:', error);
