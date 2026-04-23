@@ -1242,6 +1242,17 @@ app.get('/api/stripe/verify-session/:sessionId', async (req, res) => {
   }
 });
 
+// GET /api/download/guide — Public PDF download (no token required)
+app.get('/api/download/guide', (req, res) => {
+  const pdfPath = path.join(__dirname, 'private', 'SFL_MedSpa_Directory.pdf');
+  if (!fs.existsSync(pdfPath)) {
+    return res.status(404).json({ error: 'PDF not found. Please contact support.' });
+  }
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', 'attachment; filename="South-Florida-Med-Spa-Directory.pdf"');
+  res.sendFile(pdfPath);
+});
+
 // GET /api/stripe/download/:token — Serve the PDF securely
 app.get('/api/stripe/download/:token', async (req, res) => {
   try {
