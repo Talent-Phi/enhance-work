@@ -1348,6 +1348,9 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
+// Always serve public/ so images are available in dev and prod
+app.use(express.static(path.join(__dirname, 'public')));
+
 const distDir = path.join(__dirname, 'dist');
 if (fs.existsSync(distDir)) {
   // Serve static assets from dist/client (hybrid mode)
