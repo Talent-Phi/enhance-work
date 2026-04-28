@@ -15,16 +15,22 @@
     body{margin:0;padding:0;width:100%!important;background-color:#e8f0ef;}
     @media only screen and (max-width:600px){
       .email-container{width:100%!important;border-radius:0!important;}
+      .main-pad{padding-left:16px!important;padding-right:16px!important;}
+      .hero-inner{padding:30px 20px 34px!important;}
+      .hero-h1{font-size:26px!important;line-height:1.25!important;}
       .info-cell{display:block!important;width:100%!important;padding:0 0 8px 0!important;}
-      .cta-left{display:block!important;width:100%!important;padding:0 0 20px 0!important;}
-      .cta-right{display:block!important;width:100%!important;padding:0!important;}
+      .info-cell-r{display:block!important;width:100%!important;padding:0!important;}
+      .cta-left{display:block!important;width:100%!important;padding:20px 20px 0 20px!important;}
+      .cta-right{display:block!important;width:100%!important;padding:16px 20px 20px!important;}
+      .cta-img{width:100%!important;max-width:220px!important;margin:0 auto 12px!important;}
+      .outer-pad{padding:16px 8px!important;}
     }
   </style>
 </head>
 <body style="margin:0;padding:0;background-color:#e8f0ef;">
 
-<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#e8f0ef;background-image:url('https://enhance.work/images/emails/email-outer-bg.png');background-size:cover;background-position:center top;">
-<tr><td align="center" style="padding:35px 20px;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#e8f0ef;">
+<tr><td align="center" class="outer-pad" style="padding:35px 20px;">
 
 <table role="presentation" class="email-container" cellpadding="0" cellspacing="0" border="0" width="558" style="background:#ffffff;border-radius:14px;overflow:hidden;box-shadow:0 8px 48px rgba(0,0,0,0.22),0 2px 12px rgba(0,0,0,0.12);">
 
@@ -41,8 +47,8 @@
         style="background-image:url('https://enhance.work/images/emails/hero-bg-application.png');background-size:cover;background-position:center top;"
         align="center" valign="middle">
       <!--[if gte mso 9]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:558px;height:240px;"><v:fill type="frame" src="https://enhance.work/images/emails/hero-bg-application.png" color="#c8ece9"/><v:textbox style="mso-fit-shape-to-text:true" inset="0,0,0,0"><![endif]-->
-      <div style="background:rgba(255,255,255,0.72);padding:50px 40px 55px;">
-        <h1 style="margin:0 0 10px;font-family:'Inter',Arial,sans-serif;font-size:39px;font-weight:700;color:#1a716a;line-height:1.3;text-align:center;">
+      <div class="hero-inner" style="background:rgba(255,255,255,0.72);padding:46px 40px 50px;">
+        <h1 class="hero-h1" style="margin:0 0 10px;font-family:'Inter',Arial,sans-serif;font-size:34px;font-weight:700;color:#1a716a;line-height:1.3;text-align:center;">
           Thank you for applying!
         </h1>
         <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:600;color:#1c1c1c;letter-spacing:2.7px;text-transform:uppercase;text-align:center;">
@@ -55,7 +61,7 @@
 
   <!-- GREETING -->
   <tr>
-    <td style="padding:32px 32px 24px;">
+    <td class="main-pad" style="padding:28px 32px 20px;">
       <p style="margin:0 0 16px;font-family:'Inter',Arial,sans-serif;font-size:16px;color:#1a1a1a;line-height:1.55;">Hello {{FIRST_NAME}},</p>
       <p style="margin:0 0 6px;font-family:'Inter',Arial,sans-serif;font-size:16px;color:#1a1a1a;line-height:1.55;">We've received your application at Enhance.work.</p>
       <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:16px;color:#1a1a1a;line-height:1.55;">Our team will review your profile and contact you with next steps within the next few days.</p>
@@ -64,7 +70,7 @@
 
   <!-- APPLICATION RECEIVED BADGE -->
   <tr>
-    <td style="padding:0 26px 24px;">
+    <td class="main-pad" style="padding:0 26px 20px;">
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#dff5f3;border-radius:14px;">
         <tr>
           <td width="60" valign="middle" style="padding:20px 0 20px 20px;">
@@ -88,7 +94,7 @@
 
   <!-- WHAT HAPPENS NEXT -->
   <tr>
-    <td style="padding:24px 31px;">
+    <td class="main-pad" style="padding:22px 31px;">
       <p style="margin:0 0 20px;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:500;color:#1a1a1a;">What happens next?</p>
 
       <!-- Step 1 -->
@@ -137,7 +143,7 @@
 
   <!-- INFO GRID 2×2 -->
   <tr>
-    <td style="padding:24px 32px;">
+    <td class="main-pad" style="padding:20px 32px;">
       <!-- Row 1 -->
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom:8px;"><tr>
         <td class="info-cell" width="243" valign="top" style="padding-right:5px;">
@@ -146,7 +152,7 @@
             <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:500;color:#1c1c1c;">{{FULL_NAME}}</p>
           </td></tr></table>
         </td>
-        <td class="info-cell" width="243" valign="top" style="padding-left:5px;">
+        <td class="info-cell-r" width="243" valign="top" style="padding-left:5px;">
           <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f4f3f3;border-radius:10px;"><tr><td style="padding:14px 14px 16px;">
             <p style="margin:0 0 4px;font-family:'Inter',Arial,sans-serif;font-size:11px;color:#595959;letter-spacing:0.55px;text-transform:uppercase;">Application Date</p>
             <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:500;color:#1c1c1c;">{{SUBMITTED_AT}}</p>
@@ -161,7 +167,7 @@
             <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:500;color:#1c1c1c;">{{EMAIL}}</p>
           </td></tr></table>
         </td>
-        <td class="info-cell" width="243" valign="top" style="padding-left:5px;">
+        <td class="info-cell-r" width="243" valign="top" style="padding-left:5px;">
           <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f4f3f3;border-radius:10px;"><tr><td style="padding:14px 14px 16px;">
             <p style="margin:0 0 4px;font-family:'Inter',Arial,sans-serif;font-size:11px;color:#595959;letter-spacing:0.55px;text-transform:uppercase;">Status</p>
             <p style="margin:0;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:500;color:#208d84;">Under Review</p>
@@ -210,7 +216,7 @@
                 </td>
                 <!-- RIGHT: guide image + checklist -->
                 <td class="cta-right" width="48%" valign="top" style="padding:18px 22px 22px 8px;">
-                  <img src="https://enhance.work/images/emails/guide-cover-bg.png" alt="South Florida Med Spa Directory" width="192" style="display:block;width:192px;max-width:100%;height:auto;margin:0 0 12px auto;" />
+                  <img class="cta-img" src="https://enhance.work/images/emails/guide-cover-bg.png" alt="South Florida Med Spa Directory" width="192" style="display:block;width:192px;max-width:100%;height:auto;margin:0 0 12px auto;" />
                   <p style="margin:0 0 8px;font-family:'Inter',Arial,sans-serif;font-size:12px;font-weight:500;color:#ffffff;line-height:1.4;">Get access to every aesthetic clinic in South Florida:</p>
                   <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
                     <tr><td style="padding:3px 0;font-family:'Inter',Arial,sans-serif;font-size:11px;color:#ffffff;line-height:1.4;"><span style="color:#2bbcb0;font-weight:700;margin-right:6px;">&#10003;</span>Direct contact information</td></tr>
@@ -230,7 +236,7 @@
 
   <!-- CLOSING -->
   <tr>
-    <td style="padding:8px 32px 28px;">
+    <td class="main-pad" style="padding:8px 32px 28px;">
       <p style="margin:0 0 4px;font-family:'Inter',Arial,sans-serif;font-size:13px;color:#666;line-height:1.65;">In the meantime, if you have any questions, please reply directly to this email. We are here to help you.</p>
       <p style="margin:16px 0 0;font-family:'Inter',Arial,sans-serif;font-size:13px;color:#666;line-height:1.65;">With love,<br>The Enhance.work team</p>
     </td>

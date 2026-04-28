@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const FROM_ADDRESS = 'talent@enhance.work';
+const FROM_ADDRESS = 'Enhance.work <talent@enhance.work>';
 const TEAM_EMAIL   = 'talent@enhance.work';
 
 function loadTemplate(filename) {
